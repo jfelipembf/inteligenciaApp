@@ -198,6 +198,35 @@ const SidebarContent = (props) => {
                 <li>
                   <Link to="/financeiro/caixa">{props.t("Caixa")}</Link>
                 </li>
+              </ul>
+            </li>
+
+            {/* Turmas */}
+            <li>
+              <Link to="/#" className="has-arrow">
+                <i className="bx bx-group"></i>
+                <span>{props.t("Turmas")}</span>
+              </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/create-class">{props.t("Criar Turma")}</Link>
+                </li>
+                <li>
+                  <Link to="/classes">{props.t("Visualizar Turmas")}</Link>
+                </li>
+              </ul>
+            </li>
+
+            {/* Financeiro */}
+            <li>
+              <Link to="/#" className="has-arrow">
+                <i className="bx bx-money"></i>
+                <span>{props.t("Financeiro")}</span>
+              </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/financeiro/caixa">{props.t("Caixa")}</Link>
+                </li>
                 <li>
                   <Link to="/financeiro/fluxo-caixa">{props.t("Fluxo de Caixa")}</Link>
                 </li>
