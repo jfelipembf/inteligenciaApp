@@ -184,6 +184,9 @@ import StudentProfile from "../pages/Students/StudentProfile/index";
 import Students from "../pages/Students/index";
 import TeacherProfile from "../pages/Teachers/TeacherProfile/index";
 import Teachers from "../pages/Teachers/index";
+import CreateClass from "../pages/Classes/CreateClass";
+import ListClasses from "../pages/Classes/ListClasses";
+import ViewClass from "../pages/Classes/ViewClass";
 
 import Caixa from "../pages/Financeiro/Caixa/index";
 
@@ -193,6 +196,11 @@ const authProtectedRoutes = [
   { path: "/dashboard-crypto", component: <DashboardCrypto /> },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
+
+  // Classes
+  { path: "/create-class", component: <CreateClass /> },
+  { path: "/classes", component: <ListClasses /> },
+  { path: "/classes/:id", component: <ViewClass /> },
 
   // Students
   { path: "/students", component: <Students /> },
@@ -340,6 +348,13 @@ const authProtectedRoutes = [
   { path: "/pages-timeline", component: <PagesTimeline /> },
   { path: "/pages-faqs", component: <PagesFaqs /> },
   { path: "/pages-pricing", component: <PagesPricing /> },
+
+  // Rotas de Classes
+  { path: "/students", component: <Students /> },
+  { path: "/student-profile", component: <StudentProfile /> },
+  { path: "/create-class", component: <CreateClass /> },
+  { path: "/classes", component: <ListClasses /> },
+
 
   // Rotas de Escolas
   { path: "/schools", component: <Schools /> },          // Lista de Escolas
