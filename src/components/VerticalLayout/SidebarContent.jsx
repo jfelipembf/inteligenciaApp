@@ -198,6 +198,14 @@ const SidebarContent = (props) => {
                 <span className="menu-item">{props.t("Professores")}</span>
               </Link>
             </li>
+
+            {/* Logout - positioned at bottom */}
+            <li style={{ position: 'absolute', bottom: '20px', width: '100%' }}>
+              <Link to="/logout" className="waves-effect text-danger">
+                <i className="bx bx-power-off font-size-18"></i>
+                <span className="menu-item">{props.t("Sair")}</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </SimpleBar>
