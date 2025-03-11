@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Table, Button } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card, CardBody, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
@@ -20,13 +20,71 @@ const ViewClass = () => {
     endDate: "15/12/2025"
   });
 
-  // Estado para armazenar a lista de alunos
+  // Estado para armazenar a lista de alunos da turma
   const [students, setStudents] = useState([
     { id: 1, name: "Ana Silva", age: 15, enrollment: "2025001", status: "Ativo" },
     { id: 2, name: "Pedro Santos", age: 16, enrollment: "2025002", status: "Ativo" },
     { id: 3, name: "Maria Oliveira", age: 15, enrollment: "2025003", status: "Ativo" },
-    // Dados de exemplo - substituir por dados reais da API
   ]);
+
+  // Estado para armazenar todos os alunos disponíveis
+  const [availableStudents, setAvailableStudents] = useState([
+    { id: 4, name: "João Pereira", age: 16, enrollment: "2025004", status: "Ativo" },
+    { id: 5, name: "Lucas Costa", age: 15, enrollment: "2025005", status: "Ativo" },
+    { id: 6, name: "Mariana Lima", age: 16, enrollment: "2025006", status: "Ativo" },
+    { id: 7, name: "Gabriel Santos", age: 15, enrollment: "2025007", status: "Ativo" },
+  ]);
+
+  // Estado para controlar o modal de adicionar aluno
+  const [addStudentModal, setAddStudentModal] = useState(false);
+  const [searchEnrollment, setSearchEnrollment] = useState("");
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+
+  // Toggle do modal
+  const toggleAddStudentModal = () => {
+    setAddStudentModal(!addStudentModal);
+    if (!addStudentModal) {
+      setSearchEnrollment("");
+      setSelectedStudents([]);
+      setFilteredStudents([]);
+    }
+  };
+
+  // Função para filtrar alunos baseado na matrícula
+  useEffect(() => {
+    if (searchEnrollment) {
+      const filtered = availableStudents.filter(
+        student => 
+          student.enrollment.toLowerCase().includes(searchEnrollment.toLowerCase()) ||
+          student.name.toLowerCase().includes(searchEnrollment.toLowerCase())
+      );
+      setFilteredStudents(filtered);
+    } else {
+      setFilteredStudents([]);
+    }
+  }, [searchEnrollment, availableStudents]);
+
+  // Função para adicionar aluno à lista de selecionados
+  const handleSelectStudent = (student) => {
+    if (!selectedStudents.find(s => s.id === student.id)) {
+      setSelectedStudents([...selectedStudents, student]);
+    }
+    setSearchEnrollment("");
+    setFilteredStudents([]);
+  };
+
+  // Função para remover aluno da lista de selecionados
+  const handleRemoveSelected = (studentId) => {
+    setSelectedStudents(selectedStudents.filter(student => student.id !== studentId));
+  };
+
+  // Função para adicionar alunos selecionados à turma
+  const handleAddStudents = () => {
+    setStudents(prev => [...prev, ...selectedStudents]);
+    setAvailableStudents(prev => prev.filter(student => !selectedStudents.find(s => s.id === student.id)));
+    toggleAddStudentModal();
+  };
 
   return (
     <React.Fragment>
@@ -73,7 +131,16 @@ const ViewClass = () => {
                     </table>
                   </div>
 
-                  <h4 className="card-title mb-4">Alunos Matriculados</h4>
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="card-title mb-0">Alunos Matriculados</h4>
+                    <Button
+                      color="primary"
+                      onClick={toggleAddStudentModal}
+                    >
+                      Adicionar Alunos
+                    </Button>
+                  </div>
+
                   <div className="table-responsive">
                     <Table className="table-centered table-nowrap mb-0">
                       <thead className="table-light">
@@ -119,6 +186,85 @@ const ViewClass = () => {
               </Card>
             </Col>
           </Row>
+
+          {/* Modal para adicionar alunos */}
+          <Modal isOpen={addStudentModal} toggle={toggleAddStudentModal} size="lg">
+            <ModalHeader toggle={toggleAddStudentModal}>Adicionar Alunos à Turma</ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <Label for="enrollment">Pesquisar por Matrícula ou Nome</Label>
+                  <Input
+                    type="text"
+                    name="enrollment"
+                    id="enrollment"
+                    value={searchEnrollment}
+                    onChange={(e) => setSearchEnrollment(e.target.value)}
+                    placeholder="Digite a matrícula ou nome do aluno"
+                  />
+                </FormGroup>
+
+                {/* Lista de alunos filtrados */}
+                {filteredStudents.length > 0 && (
+                  <div className="mt-3 border rounded p-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    {filteredStudents.map(student => (
+                      <div 
+                        key={student.id}
+                        className="d-flex justify-content-between align-items-center p-2 border-bottom cursor-pointer hover-bg-light"
+                        onClick={() => handleSelectStudent(student)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div>
+                          <strong>{student.name}</strong> - Matrícula: {student.enrollment}
+                        </div>
+                        <Button color="primary" size="sm">
+                          Adicionar
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Lista de alunos selecionados */}
+                {selectedStudents.length > 0 && (
+                  <div className="mt-4">
+                    <h5>Alunos Selecionados:</h5>
+                    <div className="border rounded p-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                      {selectedStudents.map(student => (
+                        <div 
+                          key={student.id}
+                          className="d-flex justify-content-between align-items-center p-2 border-bottom"
+                        >
+                          <div>
+                            <strong>{student.name}</strong> - Matrícula: {student.enrollment}
+                          </div>
+                          <Button
+                            color="danger"
+                            size="sm"
+                            onClick={() => handleRemoveSelected(student.id)}
+                          >
+                            Remover
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={toggleAddStudentModal}>
+                Cancelar
+              </Button>
+              <Button 
+                color="primary" 
+                onClick={handleAddStudents}
+                disabled={selectedStudents.length === 0}
+              >
+                Adicionar {selectedStudents.length} Aluno(s)
+              </Button>
+            </ModalFooter>
+          </Modal>
         </Container>
       </div>
     </React.Fragment>
