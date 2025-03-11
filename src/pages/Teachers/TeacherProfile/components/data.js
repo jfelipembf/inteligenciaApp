@@ -33,6 +33,59 @@ export const teacherData = {
       description: "Corrigiu provas do 9º Ano A",
       status: "completed"
     }
+  ],
+  // Novas tarefas enviadas pelo professor
+  sentTasks: [
+    {
+      id: 1,
+      date: "2025-03-10T14:30:00",
+      title: "Exercícios de Álgebra",
+      type: "Tarefa de Casa",
+      class: "9º Ano A",
+      description: "Resolução de equações de 2º grau - páginas 45-47 do livro",
+      dueDate: "2025-03-15",
+      status: "Enviada"
+    },
+    {
+      id: 2,
+      date: "2025-03-09T10:15:00",
+      title: "Trabalho em Grupo",
+      type: "Tarefa de Sala",
+      class: "8º Ano A",
+      description: "Construção de sólidos geométricos utilizando materiais recicláveis",
+      dueDate: "2025-03-20",
+      status: "Enviada"
+    },
+    {
+      id: 3,
+      date: "2025-03-08T09:45:00",
+      title: "Lista de Revisão",
+      type: "Tarefa de Casa",
+      class: "9º Ano B",
+      description: "Revisão para a avaliação bimestral - conteúdo: funções e gráficos",
+      dueDate: "2025-03-12",
+      status: "Enviada"
+    },
+    {
+      id: 4,
+      date: "2025-03-07T11:20:00",
+      title: "Desafio Matemático",
+      type: "Tarefa de Sala",
+      class: "7º Ano C",
+      description: "Resolução de problemas envolvendo razão e proporção",
+      dueDate: "2025-03-07",
+      status: "Concluída"
+    },
+    {
+      id: 5,
+      date: "2025-03-05T08:30:00",
+      title: "Pesquisa sobre Matemáticos",
+      type: "Tarefa de Casa",
+      class: "8º Ano A",
+      description: "Pesquisa sobre a vida e contribuições de um matemático famoso",
+      dueDate: "2025-03-15",
+      status: "Enviada"
+    }
   ]
 };
 
