@@ -88,7 +88,7 @@ const Students = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{ width: "250px" }}
                       />
-                      <Button color="primary">
+                      <Button color="primary" tag={Link} to="/add-student">
                         <i className="bx bx-plus me-1"></i> Novo Aluno
                       </Button>
                     </div>

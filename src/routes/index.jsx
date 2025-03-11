@@ -148,7 +148,6 @@ import UiImages from "../pages/Ui/UiImages";
 import UiLightbox from "../pages/Ui/UiLightbox";
 import UiModal from "../pages/Ui/UiModal/index";
 
-
 import UiTabsAccordions from "../pages/Ui/UiTabsAccordions";
 import UiTypography from "../pages/Ui/UiTypography";
 import UiVideo from "../pages/Ui/UiVideo";
@@ -176,12 +175,11 @@ import ContactsGrid from "../pages/Contacts/contacts-grid";
 import ContactsList from "../pages/Contacts/ContactList/contacts-list";
 import ContactsProfile from "../pages/Contacts/ContactsProfile/index";
 import UiProgressbar from "../pages/Ui/UiProgressbar";
-// import UiProgressbar from "../../src/pages/Ui/UiProgressbar"
 
 import Schools from "../pages/Schools/index";
 import SchoolProfile from "../pages/Schools/SchoolProfile";
-import StudentProfile from "../pages/Students/StudentProfile/index";
 import Students from "../pages/Students/index";
+import StudentProfile from "../pages/Students/StudentProfile/index";
 import TeacherProfile from "../pages/Teachers/TeacherProfile/index";
 import Teachers from "../pages/Teachers/index";
 import CreateClass from "../pages/Classes/CreateClass";
@@ -189,6 +187,9 @@ import ListClasses from "../pages/Classes/ListClasses";
 import ViewClass from "../pages/Classes/ViewClass";
 
 import Caixa from "../pages/Financeiro/Caixa/index";
+
+// Student routes
+import AddStudent from "../pages/Students/AddStudent";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -204,6 +205,7 @@ const authProtectedRoutes = [
 
   // Students
   { path: "/students", component: <Students /> },
+  { path: "/add-student", component: <AddStudent /> },
   { path: "/students/:id", component: <StudentProfile /> },
 
   // Teachers
@@ -350,8 +352,6 @@ const authProtectedRoutes = [
   { path: "/pages-pricing", component: <PagesPricing /> },
 
   // Rotas de Classes
-  { path: "/students", component: <Students /> },
-  { path: "/student-profile", component: <StudentProfile /> },
   { path: "/create-class", component: <CreateClass /> },
   { path: "/classes", component: <ListClasses /> },
 
@@ -401,6 +401,9 @@ const publicRoutes = [
     path: "/auth-two-step-verification-2",
     component: <TwostepVerification2 />,
   },
+
+  // Students
+  { path: "/add-student", component: <AddStudent /> },
 ];
 
 // export { authProtectedRoutes, publicRoutes };
