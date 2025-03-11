@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Card, CardBody } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { teacherData } from "./data";
 
 const NotificationsTab = () => {
@@ -15,6 +15,8 @@ const NotificationsTab = () => {
       minute: '2-digit'
     });
   };
+
+  const { id } = useParams();
 
   return (
     <React.Fragment>
@@ -42,7 +44,7 @@ const NotificationsTab = () => {
             ))}
           </ul>
           <div className="text-center mt-4">
-            <Link to="#" className="btn btn-primary waves-effect waves-light btn-sm">
+            <Link to={`/teachers/${id}/activities`} className="btn btn-primary waves-effect waves-light btn-sm">
               Ver Mais <i className="mdi mdi-arrow-right ms-1"></i>
             </Link>
           </div>
@@ -122,7 +124,7 @@ const NotificationsTab = () => {
             </table>
           </div>
           <div className="text-center mt-4">
-            <Link to="#" className="btn btn-primary waves-effect waves-light btn-sm">
+            <Link to={`/teachers/${id}/messages`} className="btn btn-primary waves-effect waves-light btn-sm">
               Ver Todas as Mensagens <i className="mdi mdi-arrow-right ms-1"></i>
             </Link>
           </div>

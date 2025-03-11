@@ -185,6 +185,8 @@ import Teachers from "../pages/Teachers/index";
 import CreateClass from "../pages/Classes/CreateClass";
 import ListClasses from "../pages/Classes/ListClasses";
 import ViewClass from "../pages/Classes/ViewClass";
+import TeacherActivities from "../pages/Teachers/TeacherActivities";
+import TeacherMessages from "../pages/Teachers/TeacherMessages";
 
 import Caixa from "../pages/Financeiro/Caixa/index";
 
@@ -213,6 +215,8 @@ const authProtectedRoutes = [
   { path: "/teachers", component: <Teachers /> },
   { path: "/add-teacher", component: <AddTeacher /> },
   { path: "/teachers/:id", component: <TeacherProfile /> },
+  { path: "/teachers/:id/activities", component: <TeacherActivities /> },
+  { path: "/teachers/:id/messages", component: <TeacherMessages /> },
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },
