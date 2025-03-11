@@ -9,31 +9,51 @@ import SidebarContent from "./SidebarContent";
 
 import { Link } from "react-router-dom";
 
-// Importar a nova logo
+// Importar as logos
 import logoWhite from "../../assets/images/logoWhite.png";
+import inteliIcon from "../../assets/images/inteli_icon.png";
+import inteliLogo from "../../assets/images/inteliLogo.png";
 
 const Sidebar = (props) => {
+  // Estado para controlar se o menu está colapsado
+  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(document.body.classList.contains("vertical-collpsed"));
+  
+  // Atualizar o estado quando a classe mudar
+  React.useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const bodyElement = document.body;
+      if (bodyElement) {
+        const isCollapsed = bodyElement.classList.contains("vertical-collpsed");
+        if (isCollapsed !== isMenuCollapsed) {
+          setIsMenuCollapsed(isCollapsed);
+        }
+      }
+    });
+    
+    observer.observe(document.body, { attributes: true });
+    
+    return () => observer.disconnect();
+  }, [isMenuCollapsed]);
+  
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div className="navbar-brand-box">
-          <Link to="/" className="logo logo-dark">
-            <span className="logo-sm">
-              <img src={logoWhite} alt="" height="45" />
-            </span>
-            <span className="logo-lg">
-              <img src={logoWhite} alt="" height="40" />
-            </span>
-          </Link>
-
-          <Link to="/" className="logo logo-light">
-            <span className="logo-sm">
-              <img src={logoWhite} alt="" height="45" />
-            </span>
-            <span className="logo-lg">
-              <img src={logoWhite} alt="" height="40" />
-            </span>
-          </Link>
+        <div className="navbar-brand-box" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 0' }}>
+          {isMenuCollapsed ? (
+            // Quando o menu estiver fechado (colapsado)
+            <Link to="/" className="logo">
+              <span style={{ display: 'flex', justifyContent: 'center' }}>
+                <img src={inteliIcon} alt="Inteli" height="24" />
+              </span>
+            </Link>
+          ) : (
+            // Quando o menu estiver aberto
+            <Link to="/" className="logo">
+              <span>
+                <img src={logoWhite} alt="Inteli" height="40" />
+              </span>
+            </Link>
+          )}
         </div>
         <div data-simplebar className="h-100">
           {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />}

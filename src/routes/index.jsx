@@ -148,7 +148,7 @@ import UiImages from "../pages/Ui/UiImages";
 import UiLightbox from "../pages/Ui/UiLightbox";
 import UiModal from "../pages/Ui/UiModal/index";
 
-import UiProgressbar from "../pages/Ui/UiProgressbar";
+
 import UiTabsAccordions from "../pages/Ui/UiTabsAccordions";
 import UiTypography from "../pages/Ui/UiTypography";
 import UiVideo from "../pages/Ui/UiVideo";
@@ -175,29 +175,32 @@ import Pages500 from "../pages/Utility/pages-500";
 import ContactsGrid from "../pages/Contacts/contacts-grid";
 import ContactsList from "../pages/Contacts/ContactList/contacts-list";
 import ContactsProfile from "../pages/Contacts/ContactsProfile/index";
+import UiProgressbar from "../pages/Ui/UiProgressbar";
+// import UiProgressbar from "../../src/pages/Ui/UiProgressbar"
 
 import Schools from "../pages/Schools/index";
 import SchoolProfile from "../pages/Schools/SchoolProfile";
 import StudentProfile from "../pages/Students/StudentProfile/index";
 import Students from "../pages/Students/index";
-import CreateClass from "../pages/Classes/CreateClass";
-import ListClasses from "../pages/Classes/ListClasses";
-import ViewClass from "../pages/Classes/ViewClass";
+import TeacherProfile from "../pages/Teachers/TeacherProfile/index";
+import Teachers from "../pages/Teachers/index";
 
 import Caixa from "../pages/Financeiro/Caixa/index";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
-  { path: "/dashboard-financeiro", component: <DashboardFinanceiro /> },
   { path: "/dashboard-crypto", component: <DashboardCrypto /> },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
 
-  // Classes
-  { path: "/create-class", component: <CreateClass /> },
-  { path: "/classes", component: <ListClasses /> },
-  { path: "/classes/:id", component: <ViewClass /> },
+  // Students
+  { path: "/students", component: <Students /> },
+  { path: "/students/:id", component: <StudentProfile /> },
+
+  // Teachers
+  { path: "/teachers", component: <Teachers /> },
+  { path: "/teachers/:id", component: <TeacherProfile /> },
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },
@@ -345,12 +348,6 @@ const authProtectedRoutes = [
 
   // Rotas Financeiro
   { path: "/financeiro/caixa", component: <Caixa /> },
-
-  // Rotas de Classes
-  { path: "/students", component: <Students /> },
-  { path: "/student-profile", component: <StudentProfile /> },
-  { path: "/create-class", component: <CreateClass /> },
-  { path: "/classes", component: <ListClasses /> },
 
   //   // this route should be at the end of all other routes
   //   // eslint-disable-next-line react/display-name

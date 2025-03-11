@@ -11,16 +11,14 @@ Chart.register(...registerables);
 // Import Components
 import WelcomeCard from "./components/WelcomeCard";
 import InformationTab from "./components/InformationTab";
-import GradesTab from "./components/GradesTab";
+import ClassesTab from "./components/ClassesTab";
+import PerformanceTab from "./components/PerformanceTab";
 import NotificationsTab from "./components/NotificationsTab";
-// import TasksTab from "./components/TasksTab";
-// import FinancialTab from "./components/FinancialTab";
-import StudiesTab from "./components/StudiesTab";
 
 // Import Data
-import { studentData } from "./components/data";
+import { teacherData } from "./components/data";
 
-const StudentProfile = () => {
+const TeacherProfile = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("1");
 
@@ -34,9 +32,9 @@ const StudentProfile = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Alunos" breadcrumbItem={studentData.name} />
+          <Breadcrumb title="Professores" breadcrumbItem={teacherData.name} />
           
-          {/* Card de boas-vindas com dados do aluno */}
+          {/* Card de boas-vindas com dados do professor */}
           <Row>
             <Col lg={12}>
               <WelcomeCard />
@@ -51,69 +49,82 @@ const StudentProfile = () => {
                   <Nav tabs className="nav-tabs-custom nav-justified">
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: activeTab === "1" })}
-                        onClick={() => toggleTab("1")}
+                        style={{ cursor: "pointer" }}
+                        className={classnames({
+                          active: activeTab === "1",
+                        })}
+                        onClick={() => {
+                          toggleTab("1");
+                        }}
                       >
-                        <span className="d-block d-sm-none"><i className="fas fa-user"></i></span>
-                        <span className="d-none d-sm-block">
-                          <i className="bx bx-user-circle me-1"></i> Informações
+                        <span className="d-block d-sm-none">
+                          <i className="fas fa-user"></i>
                         </span>
+                        <span className="d-none d-sm-block">Informações</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: activeTab === "2" })}
-                        onClick={() => toggleTab("2")}
+                        style={{ cursor: "pointer" }}
+                        className={classnames({
+                          active: activeTab === "2",
+                        })}
+                        onClick={() => {
+                          toggleTab("2");
+                        }}
                       >
-                        <span className="d-block d-sm-none"><i className="fas fa-chart-line"></i></span>
-                        <span className="d-none d-sm-block">
-                          <i className="bx bx-chart me-1"></i> Notas
+                        <span className="d-block d-sm-none">
+                          <i className="fas fa-book"></i>
                         </span>
+                        <span className="d-none d-sm-block">Turmas</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: activeTab === "3" })}
-                        onClick={() => toggleTab("3")}
+                        style={{ cursor: "pointer" }}
+                        className={classnames({
+                          active: activeTab === "3",
+                        })}
+                        onClick={() => {
+                          toggleTab("3");
+                        }}
                       >
-                        <span className="d-block d-sm-none"><i className="fas fa-bell"></i></span>
-                        <span className="d-none d-sm-block">
-                          <i className="bx bx-bell me-1"></i> Notificações
+                        <span className="d-block d-sm-none">
+                          <i className="fas fa-chart-bar"></i>
                         </span>
+                        <span className="d-none d-sm-block">Desempenho</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className={classnames({ active: activeTab === "4" })}
-                        onClick={() => toggleTab("4")}
+                        style={{ cursor: "pointer" }}
+                        className={classnames({
+                          active: activeTab === "4",
+                        })}
+                        onClick={() => {
+                          toggleTab("4");
+                        }}
                       >
-                        <span className="d-block d-sm-none"><i className="fas fa-book"></i></span>
-                        <span className="d-none d-sm-block">
-                          <i className="bx bx-book me-1"></i> Meus Estudos
+                        <span className="d-block d-sm-none">
+                          <i className="fas fa-bell"></i>
                         </span>
+                        <span className="d-none d-sm-block">Notificações</span>
                       </NavLink>
                     </NavItem>
                   </Nav>
 
                   <TabContent activeTab={activeTab} className="p-3">
-                    {/* Aba de Informações */}
                     <TabPane tabId="1">
                       <InformationTab />
                     </TabPane>
-
-                    {/* Aba de Notas */}
                     <TabPane tabId="2">
-                      <GradesTab />
+                      <ClassesTab />
                     </TabPane>
-
-                    {/* Aba de Notificações */}
                     <TabPane tabId="3">
-                      <NotificationsTab />
+                      <PerformanceTab />
                     </TabPane>
-
-                    {/* Aba Meus Estudos */}
                     <TabPane tabId="4">
-                      <StudiesTab />
+                      <NotificationsTab />
                     </TabPane>
                   </TabContent>
                 </CardBody>
@@ -126,4 +137,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default TeacherProfile;
