@@ -190,6 +190,7 @@ import Caixa from "../pages/Financeiro/Caixa/index";
 
 // Student routes
 import AddStudent from "../pages/Students/AddStudent";
+import AddTeacher from "../pages/Teachers/AddTeacher";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -210,6 +211,7 @@ const authProtectedRoutes = [
 
   // Teachers
   { path: "/teachers", component: <Teachers /> },
+  { path: "/add-teacher", component: <AddTeacher /> },
   { path: "/teachers/:id", component: <TeacherProfile /> },
 
   //   //Crypto
