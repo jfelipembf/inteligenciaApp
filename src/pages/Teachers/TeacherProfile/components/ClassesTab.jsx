@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, CardBody, Table, Badge, Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Alert, InputGroup } from "reactstrap";
 import { teacherData } from "./data";
+import { leftSideBarThemeTypes } from "../../../../constants/layout";
 
 const ClassesTab = () => {
   const [notificationModal, setNotificationModal] = useState(false);
@@ -196,7 +197,7 @@ const ClassesTab = () => {
       </Row>
       {/* Modal de Notificação */}
       <Modal isOpen={notificationModal} toggle={toggleNotificationModal} centered={true} size="lg">
-        <ModalHeader toggle={toggleNotificationModal} className="bg-dark text-white">
+        <ModalHeader toggle={toggleNotificationModal} className="bg-white text-black">
           <i className="mdi mdi-bell-outline me-2"></i>
           Enviar Notificação para a Turma
         </ModalHeader>
@@ -245,13 +246,13 @@ const ClassesTab = () => {
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={toggleNotificationModal}>Cancelar</Button>
-          <Button color="dark" className="text-white" onClick={handleSendNotification}>Enviar Notificação</Button>
+          <Button color="primary" onClick={handleSendNotification}>Enviar Notificação</Button>
         </ModalFooter>
       </Modal>
       
       {/* Modal de Lançamento de Notas */}
       <Modal isOpen={gradesModal} toggle={toggleGradesModal} size="xl">
-        <ModalHeader toggle={toggleGradesModal} className="bg-dark text-white">
+        <ModalHeader toggle={toggleGradesModal} className="bg-white text-black">
           <i className="mdi mdi-book-education me-2"></i>
           Registro de Notas - {selectedClass?.subject}
         </ModalHeader>
@@ -379,7 +380,7 @@ const ClassesTab = () => {
           <Button color="secondary" onClick={toggleGradesModal}>
             Cancelar
           </Button>
-          <Button color="dark" className="text-white" onClick={salvarNotas}>
+          <Button color="primary" className="text-white" onClick={salvarNotas}>
             Salvar Notas
           </Button>
         </ModalFooter>

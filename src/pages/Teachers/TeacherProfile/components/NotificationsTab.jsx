@@ -103,7 +103,7 @@ const NotificationsTab = () => {
 
       {/* Modal de Detalhes da Tarefa */}
       <Modal isOpen={taskDetailModal} toggle={toggleTaskDetailModal} centered={true}>
-        <ModalHeader toggle={toggleTaskDetailModal} className="bg-primary text-white">
+        <ModalHeader toggle={toggleTaskDetailModal} className="bg-white text-black">
           Detalhes da Tarefa
         </ModalHeader>
         <ModalBody>
