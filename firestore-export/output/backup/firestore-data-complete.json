@@ -1,0 +1,4561 @@
+{
+  "questions": {
+    "documents": {}
+  },
+  "schools": {
+    "documents": {
+      "colegio-darwin": {
+        "data": {
+          "name": "Colégio Darwin",
+          "addressInfo": {
+            "address": "Av. da Evolução",
+            "number": "500",
+            "complement": "Próximo ao Terminal",
+            "neighborhood": "Marcos Freire",
+            "city": "Nossa Senhora do Socorro",
+            "state": "SE",
+            "zipCode": "49160-000",
+            "coordinates": {
+              "latitude": -10.8512,
+              "longitude": -37.1261
+            }
+          },
+          "contactInfo": {
+            "phone": "7932458765",
+            "whatsapp": "79999887770",
+            "email": "contato@darwin.edu.br",
+            "website": "www.darwin.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Eduardo Santos",
+              "cpf": "012.345.678-99",
+              "phone": "79999887759",
+              "email": "eduardo.santos@darwin.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Camila Oliveira",
+              "cpf": "123.456.789-00",
+              "phone": "79999887748",
+              "email": "camila.oliveira@darwin.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Rafael Silva",
+              "cpf": "234.567.890-11",
+              "phone": "79999887737",
+              "email": "rafael.silva@darwin.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0005-05",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 274000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 274000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12349-0"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359435,
+              "_nanoseconds": 317000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "students": {
+            "documents": {
+              "0c68184b-7479-43d0-b455-6b208ce9e380": {
+                "data": {
+                  "uid": "0c68184b-7479-43d0-b455-6b208ce9e380",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Talita Barros Neto",
+                    "dateOfBirth": "2013-12-18",
+                    "cpf": "205.176.443-37",
+                    "rg": "6306124-0",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/37408072"
+                  },
+                  "contactInfo": {
+                    "email": "Mercia67@hotmail.com",
+                    "phone": "(15) 64057-0986",
+                    "whatsapp": "(72) 2918-0991",
+                    "parentEmail": "Heitor.Moreira27@gmail.com",
+                    "parentPhone": "(09) 76154-8803",
+                    "parentWhatsapp": "+55 (02) 5659-2651"
+                  },
+                  "addressInfo": {
+                    "cep": "24520-638",
+                    "address": "Pablo Marginal",
+                    "number": "57411",
+                    "complement": "Apto. 730",
+                    "neighborhood": "Ladislau Avenida",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-25"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 994000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 994000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "11b2317e-54f0-44fe-bae3-a00b747c9b6f": {
+                "data": {
+                  "uid": "11b2317e-54f0-44fe-bae3-a00b747c9b6f",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Suélen Reis",
+                    "dateOfBirth": "2016-01-03",
+                    "cpf": "091.264.098-88",
+                    "rg": "0632728-5",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/98165181"
+                  },
+                  "contactInfo": {
+                    "email": "Antonio_Oliveira@bol.com.br",
+                    "phone": "(77) 06607-2125",
+                    "whatsapp": "(59) 98833-6292",
+                    "parentEmail": "Gubio_Pereira@bol.com.br",
+                    "parentPhone": "(65) 1612-4243",
+                    "parentWhatsapp": "(26) 1358-0875"
+                  },
+                  "addressInfo": {
+                    "cep": "86843-999",
+                    "address": "Pereira Rua",
+                    "number": "430",
+                    "complement": "Lote 86",
+                    "neighborhood": "Moreira Rodovia",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-09-28"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 593000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 593000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "6a5b3a76-8213-40b4-96aa-f3fb1c10841a": {
+                "data": {
+                  "uid": "6a5b3a76-8213-40b4-96aa-f3fb1c10841a",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Ofélia Oliveira",
+                    "dateOfBirth": "2013-01-23",
+                    "cpf": "397.135.328-28",
+                    "rg": "3146766-8",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/25.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Breno15@yahoo.com",
+                    "phone": "+55 (06) 3970-7724",
+                    "whatsapp": "+55 (27) 5526-2509",
+                    "parentEmail": "Laura_Macedo@bol.com.br",
+                    "parentPhone": "(13) 50489-9198",
+                    "parentWhatsapp": "(70) 1642-4771"
+                  },
+                  "addressInfo": {
+                    "cep": "33621-502",
+                    "address": "Norberto Travessa",
+                    "number": "8253",
+                    "complement": "Sobrado 23",
+                    "neighborhood": "Rafaela Avenida",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-28"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359435,
+                      "_nanoseconds": 148000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359435,
+                      "_nanoseconds": 148000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "73ca43c3-4a5f-4bcf-9c7f-bf0cdecbf111": {
+                "data": {
+                  "uid": "73ca43c3-4a5f-4bcf-9c7f-bf0cdecbf111",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Gael Xavier",
+                    "dateOfBirth": "2011-10-17",
+                    "cpf": "186.760.743-17",
+                    "rg": "0729400-0",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/63.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "JulioCesar.Carvalho@gmail.com",
+                    "phone": "(30) 42907-9390",
+                    "whatsapp": "+55 (47) 5516-8324",
+                    "parentEmail": "PedroHenrique_Costa5@live.com",
+                    "parentPhone": "+55 (91) 8676-2063",
+                    "parentWhatsapp": "+55 (08) 8109-8397"
+                  },
+                  "addressInfo": {
+                    "cep": "71590-939",
+                    "address": "Batista Rua",
+                    "number": "425",
+                    "complement": "Sobrado 73",
+                    "neighborhood": "Albuquerque Avenida",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-02"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 749000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 749000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "782ab0bb-e34f-4296-b2db-08f9bb93f483": {
+                "data": {
+                  "uid": "782ab0bb-e34f-4296-b2db-08f9bb93f483",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Dr. Deneval Reis",
+                    "dateOfBirth": "2016-09-20",
+                    "cpf": "471.000.371-33",
+                    "rg": "8673680-1",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/69.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Raul.Braga@bol.com.br",
+                    "phone": "(70) 20428-9464",
+                    "whatsapp": "(75) 14420-6251",
+                    "parentEmail": "Heloisa.Batista@live.com",
+                    "parentPhone": "(36) 45506-5443",
+                    "parentWhatsapp": "+55 (57) 2099-4230"
+                  },
+                  "addressInfo": {
+                    "cep": "16340-668",
+                    "address": "Nogueira Travessa",
+                    "number": "31138",
+                    "complement": "Sobrado 89",
+                    "neighborhood": "Davi Lucca Marginal",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-10"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 510000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 510000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "7c5c274d-e4ff-490f-8b1d-8fbfcd16499b": {
+                "data": {
+                  "uid": "7c5c274d-e4ff-490f-8b1d-8fbfcd16499b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Nataniel Barros",
+                    "dateOfBirth": "2017-10-19",
+                    "cpf": "228.163.503-17",
+                    "rg": "6804986-2",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/11.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "AnaJulia_Albuquerque@yahoo.com",
+                    "phone": "(99) 2334-4387",
+                    "whatsapp": "(45) 4860-3141",
+                    "parentEmail": "Carla_Xavier83@gmail.com",
+                    "parentPhone": "+55 (96) 9286-6934",
+                    "parentWhatsapp": "(13) 04086-4908"
+                  },
+                  "addressInfo": {
+                    "cep": "16307-883",
+                    "address": "Júlia Avenida",
+                    "number": "4149",
+                    "complement": "Casa 8",
+                    "neighborhood": "Souza Travessa",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-02-04"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 431000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 431000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "8f9b0723-5758-4a59-b6dc-b6871c7911f6": {
+                "data": {
+                  "uid": "8f9b0723-5758-4a59-b6dc-b6871c7911f6",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Marcela Martins",
+                    "dateOfBirth": "2012-11-06",
+                    "cpf": "178.284.720-16",
+                    "rg": "6565937-2",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/50.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Nataniel.Reis26@yahoo.com",
+                    "phone": "(57) 59001-5794",
+                    "whatsapp": "(05) 63767-0768",
+                    "parentEmail": "Alessandra_Saraiva72@yahoo.com",
+                    "parentPhone": "+55 (65) 4637-4751",
+                    "parentWhatsapp": "(27) 6002-6398"
+                  },
+                  "addressInfo": {
+                    "cep": "99329-539",
+                    "address": "Ana Luiza Marginal",
+                    "number": "203",
+                    "complement": "Lote 94",
+                    "neighborhood": "Xavier Alameda",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-09-22"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 673000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 673000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "d6c953fc-f7b8-425b-9824-afe1cac93a6a": {
+                "data": {
+                  "uid": "d6c953fc-f7b8-425b-9824-afe1cac93a6a",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Lorraine Nogueira",
+                    "dateOfBirth": "2010-08-06",
+                    "cpf": "402.015.020-75",
+                    "rg": "4700683-7",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/72664273"
+                  },
+                  "contactInfo": {
+                    "email": "Suelen9@yahoo.com",
+                    "phone": "(70) 9083-7311",
+                    "whatsapp": "(98) 08035-2312",
+                    "parentEmail": "Roberto19@bol.com.br",
+                    "parentPhone": "(09) 97432-3483",
+                    "parentWhatsapp": "(28) 40810-8490"
+                  },
+                  "addressInfo": {
+                    "cep": "71978-215",
+                    "address": "Henrique Rua",
+                    "number": "1386",
+                    "complement": "Casa 1",
+                    "neighborhood": "Gustavo Rua",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-30"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 831000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 831000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "d7a498da-1e76-4982-b0da-57e448ee15de": {
+                "data": {
+                  "uid": "d7a498da-1e76-4982-b0da-57e448ee15de",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Liz Pereira",
+                    "dateOfBirth": "2012-03-07",
+                    "cpf": "668.537.602-00",
+                    "rg": "9919964-8",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/4919323"
+                  },
+                  "contactInfo": {
+                    "email": "Ricardo55@hotmail.com",
+                    "phone": "(18) 14133-9273",
+                    "whatsapp": "(98) 31297-1384",
+                    "parentEmail": "Feliciano26@gmail.com",
+                    "parentPhone": "(93) 7245-7886",
+                    "parentWhatsapp": "(84) 1757-1924"
+                  },
+                  "addressInfo": {
+                    "cep": "27991-657",
+                    "address": "Hélio Alameda",
+                    "number": "23192",
+                    "complement": "Quadra 44",
+                    "neighborhood": "Souza Avenida",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-03"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359435,
+                      "_nanoseconds": 72000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359435,
+                      "_nanoseconds": 72000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "fc990df7-34ca-4c3c-aa0e-ca357f637484": {
+                "data": {
+                  "uid": "fc990df7-34ca-4c3c-aa0e-ca357f637484",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Antônio Macedo",
+                    "dateOfBirth": "2020-12-25",
+                    "cpf": "693.863.427-20",
+                    "rg": "9621726-9",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/83.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Alessandra.Souza68@yahoo.com",
+                    "phone": "+55 (35) 2205-9496",
+                    "whatsapp": "(93) 9952-7122",
+                    "parentEmail": "Maria_Franco13@live.com",
+                    "parentPhone": "(82) 8629-6245",
+                    "parentWhatsapp": "(15) 68307-1932"
+                  },
+                  "addressInfo": {
+                    "cep": "76572-534",
+                    "address": "Saraiva Marginal",
+                    "number": "1920",
+                    "complement": "Casa 5",
+                    "neighborhood": "Félix Marginal",
+                    "city": "Nossa Senhora do Socorro",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-12-20"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 911000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359434,
+                      "_nanoseconds": 911000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      },
+      "colegio-einstein": {
+        "data": {
+          "name": "Colégio Einstein",
+          "addressInfo": {
+            "address": "Av. Beira Mar",
+            "number": "1500",
+            "complement": "Próximo ao Oceanário",
+            "neighborhood": "Atalaia",
+            "city": "Aracaju",
+            "state": "SE",
+            "zipCode": "49035-100",
+            "coordinates": {
+              "latitude": -10.9472468,
+              "longitude": -37.0731163
+            }
+          },
+          "contactInfo": {
+            "phone": "7932411234",
+            "whatsapp": "79999887766",
+            "email": "contato@einstein.edu.br",
+            "website": "www.einstein.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Ricardo Santos",
+              "cpf": "123.456.789-00",
+              "phone": "79999887755",
+              "email": "ricardo.santos@einstein.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Ana Beatriz Lima",
+              "cpf": "987.654.321-00",
+              "phone": "79999887744",
+              "email": "ana.lima@einstein.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Carlos Eduardo Silva",
+              "cpf": "456.789.123-00",
+              "phone": "79999887733",
+              "email": "carlos.silva@einstein.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0001-01",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 491000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 491000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12345-6"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 553000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "students": {
+            "documents": {
+              "0b4efda5-24ea-4428-b75e-053c383f2d74": {
+                "data": {
+                  "uid": "0b4efda5-24ea-4428-b75e-053c383f2d74",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Maitê Reis",
+                    "dateOfBirth": "2022-04-10",
+                    "cpf": "230.832.161-64",
+                    "rg": "4007250-5",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/98.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Helio.Oliveira82@yahoo.com",
+                    "phone": "+55 (51) 6194-2374",
+                    "whatsapp": "+55 (03) 0260-9374",
+                    "parentEmail": "Felipe67@bol.com.br",
+                    "parentPhone": "(02) 0191-2827",
+                    "parentWhatsapp": "(57) 93772-6685"
+                  },
+                  "addressInfo": {
+                    "cep": "06035-456",
+                    "address": "Xavier Rodovia",
+                    "number": "37559",
+                    "complement": "Lote 77",
+                    "neighborhood": "César Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-08"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 975000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 975000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "0e7b7a51-c708-420b-affa-bba2365f7075": {
+                "data": {
+                  "uid": "0e7b7a51-c708-420b-affa-bba2365f7075",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Felícia Nogueira",
+                    "dateOfBirth": "2016-02-20",
+                    "cpf": "654.526.375-10",
+                    "rg": "8013074-8",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/9489216"
+                  },
+                  "contactInfo": {
+                    "email": "Alice_Carvalho@yahoo.com",
+                    "phone": "+55 (41) 6795-6045",
+                    "whatsapp": "(35) 47944-3487",
+                    "parentEmail": "DaviLucca_Moreira@gmail.com",
+                    "parentPhone": "(34) 5052-5480",
+                    "parentWhatsapp": "(24) 7285-0426"
+                  },
+                  "addressInfo": {
+                    "cep": "17377-666",
+                    "address": "Maria Alice Avenida",
+                    "number": "80333",
+                    "complement": "Quadra 55",
+                    "neighborhood": "Rafael Alameda",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-07-26"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 226000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 226000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "1f2a4145-8db7-4ef0-b786-a2344a38e8f6": {
+                "data": {
+                  "uid": "1f2a4145-8db7-4ef0-b786-a2344a38e8f6",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "João Lucas Silva",
+                    "dateOfBirth": "2023-10-16",
+                    "cpf": "800.378.270-17",
+                    "rg": "7411779-2",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/47.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Carla_Albuquerque@hotmail.com",
+                    "phone": "(66) 84109-4243",
+                    "whatsapp": "(51) 7994-3913",
+                    "parentEmail": "Marli.Saraiva@live.com",
+                    "parentPhone": "(11) 2009-4803",
+                    "parentWhatsapp": "(23) 5789-9834"
+                  },
+                  "addressInfo": {
+                    "cep": "02534-639",
+                    "address": "Yango Avenida",
+                    "number": "513",
+                    "complement": "Sobrado 29",
+                    "neighborhood": "Carvalho Rodovia",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-31"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 723000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 723000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "645a6d6d-d90b-47ee-8a4a-0fbc1d072219": {
+                "data": {
+                  "uid": "645a6d6d-d90b-47ee-8a4a-0fbc1d072219",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Maria Clara Albuquerque",
+                    "dateOfBirth": "2014-07-25",
+                    "cpf": "464.626.399-80",
+                    "rg": "3219453-3",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/35946599"
+                  },
+                  "contactInfo": {
+                    "email": "Emanuelly_Nogueira@live.com",
+                    "phone": "+55 (03) 2962-8390",
+                    "whatsapp": "+55 (27) 8003-3337",
+                    "parentEmail": "Theo82@yahoo.com",
+                    "parentPhone": "(26) 13060-0981",
+                    "parentWhatsapp": "(45) 82239-7447"
+                  },
+                  "addressInfo": {
+                    "cep": "26314-542",
+                    "address": "Fabiano Alameda",
+                    "number": "8953",
+                    "complement": "Lote 18",
+                    "neighborhood": "Fábio Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-17"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 642000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 642000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "7b01841b-689a-44d2-8623-56ff3115ad8a": {
+                "data": {
+                  "uid": "7b01841b-689a-44d2-8623-56ff3115ad8a",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Margarida Santos",
+                    "dateOfBirth": "2013-12-29",
+                    "cpf": "727.222.007-60",
+                    "rg": "1677512-1",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/47680640"
+                  },
+                  "contactInfo": {
+                    "email": "Warley.Silva@bol.com.br",
+                    "phone": "+55 (45) 2316-1723",
+                    "whatsapp": "+55 (49) 9430-6349",
+                    "parentEmail": "Eloa91@gmail.com",
+                    "parentPhone": "+55 (93) 8514-4347",
+                    "parentWhatsapp": "(18) 3702-9014"
+                  },
+                  "addressInfo": {
+                    "cep": "23985-097",
+                    "address": "Souza Rodovia",
+                    "number": "464",
+                    "complement": "Sobrado 64",
+                    "neighborhood": "Souza Rua",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-29"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 146000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 146000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "b3d0ccd2-7b9c-4eec-8eda-b59d41dec10a": {
+                "data": {
+                  "uid": "b3d0ccd2-7b9c-4eec-8eda-b59d41dec10a",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Bryan Braga",
+                    "dateOfBirth": "2017-09-02",
+                    "cpf": "657.813.193-57",
+                    "rg": "8877306-1",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/4205249"
+                  },
+                  "contactInfo": {
+                    "email": "Vicente27@live.com",
+                    "phone": "(58) 47888-5132",
+                    "whatsapp": "+55 (50) 4739-2827",
+                    "parentEmail": "Enzo_Saraiva@gmail.com",
+                    "parentPhone": "(24) 27792-6585",
+                    "parentWhatsapp": "(61) 6707-4049"
+                  },
+                  "addressInfo": {
+                    "cep": "85178-676",
+                    "address": "Carvalho Travessa",
+                    "number": "823",
+                    "complement": "Quadra 69",
+                    "neighborhood": "Braga Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-04"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 385000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 385000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "bdf90e45-6cb8-4219-b8d4-0f5fe4471c92": {
+                "data": {
+                  "uid": "bdf90e45-6cb8-4219-b8d4-0f5fe4471c92",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Ladislau Macedo",
+                    "dateOfBirth": "2019-06-18",
+                    "cpf": "386.673.742-02",
+                    "rg": "1478954-6",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/72268629"
+                  },
+                  "contactInfo": {
+                    "email": "Benicio38@live.com",
+                    "phone": "(11) 7074-2597",
+                    "whatsapp": "+55 (27) 2500-1097",
+                    "parentEmail": "MariaAlice29@yahoo.com",
+                    "parentPhone": "+55 (76) 7863-1569",
+                    "parentWhatsapp": "+55 (20) 5393-3589"
+                  },
+                  "addressInfo": {
+                    "cep": "68415-437",
+                    "address": "Miguel Rua",
+                    "number": "719",
+                    "complement": "Lote 22",
+                    "neighborhood": "Macedo Avenida",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-08-30"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 59000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 59000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "c5af5cb4-fa2b-4176-8df7-e3a531fb3caa": {
+                "data": {
+                  "uid": "c5af5cb4-fa2b-4176-8df7-e3a531fb3caa",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Kléber Costa Neto",
+                    "dateOfBirth": "2024-09-24",
+                    "cpf": "777.608.842-62",
+                    "rg": "4280582-6",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/85435005"
+                  },
+                  "contactInfo": {
+                    "email": "Calebe.Santos@yahoo.com",
+                    "phone": "(99) 9366-5885",
+                    "whatsapp": "(88) 4375-6384",
+                    "parentEmail": "Marcela.Nogueira35@bol.com.br",
+                    "parentPhone": "(26) 74485-8252",
+                    "parentWhatsapp": "(50) 25468-0685"
+                  },
+                  "addressInfo": {
+                    "cep": "66159-803",
+                    "address": "Macedo Rodovia",
+                    "number": "48461",
+                    "complement": "Apto. 365",
+                    "neighborhood": "Macedo Avenida",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-01"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 888000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 888000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "d62a6d7f-bd59-407a-9187-b0f0ea40a49b": {
+                "data": {
+                  "uid": "d62a6d7f-bd59-407a-9187-b0f0ea40a49b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sr. Gúbio Batista",
+                    "dateOfBirth": "2023-10-06",
+                    "cpf": "796.023.819-55",
+                    "rg": "2113264-6",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/26.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "JoaoLucas_Nogueira19@hotmail.com",
+                    "phone": "(71) 6205-1203",
+                    "whatsapp": "+55 (59) 5181-1346",
+                    "parentEmail": "Silas30@bol.com.br",
+                    "parentPhone": "+55 (12) 7687-2922",
+                    "parentWhatsapp": "(91) 05222-0927"
+                  },
+                  "addressInfo": {
+                    "cep": "40340-035",
+                    "address": "Carvalho Marginal",
+                    "number": "120",
+                    "complement": "Sobrado 43",
+                    "neighborhood": "Pereira Avenida",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-12-08"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 303000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 303000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "daa997ad-e849-4f91-860c-c4109545c533": {
+                "data": {
+                  "uid": "daa997ad-e849-4f91-860c-c4109545c533",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sr. Heitor Saraiva",
+                    "dateOfBirth": "2014-11-23",
+                    "cpf": "504.448.681-08",
+                    "rg": "5480588-8",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/50.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Leonardo69@yahoo.com",
+                    "phone": "+55 (76) 7790-0132",
+                    "whatsapp": "+55 (88) 0469-2244",
+                    "parentEmail": "Gabriel67@yahoo.com",
+                    "parentPhone": "(22) 50329-7326",
+                    "parentWhatsapp": "+55 (84) 9728-1966"
+                  },
+                  "addressInfo": {
+                    "cep": "52685-946",
+                    "address": "Braga Avenida",
+                    "number": "61956",
+                    "complement": "Casa 7",
+                    "neighborhood": "Batista Rodovia",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-11-28"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 805000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 805000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      },
+      "colegio-galileu": {
+        "data": {
+          "name": "Colégio Galileu",
+          "addressInfo": {
+            "address": "Av. dos Astros",
+            "number": "300",
+            "complement": "Próximo ao Parque da Cidade",
+            "neighborhood": "Centro",
+            "city": "Itabaiana",
+            "state": "SE",
+            "zipCode": "49500-000",
+            "coordinates": {
+              "latitude": -10.6835,
+              "longitude": -37.4273
+            }
+          },
+          "contactInfo": {
+            "phone": "7932439876",
+            "whatsapp": "79999887768",
+            "email": "contato@galileu.edu.br",
+            "website": "www.galileu.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "José Carlos Almeida",
+              "cpf": "345.678.901-33",
+              "phone": "79999887757",
+              "email": "jose.almeida@galileu.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Luciana Mendes",
+              "cpf": "456.789.012-44",
+              "phone": "79999887746",
+              "email": "luciana.mendes@galileu.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Roberto Souza",
+              "cpf": "678.901.234-55",
+              "phone": "79999887735",
+              "email": "roberto.souza@galileu.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0003-03",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 885000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 885000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12347-8"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359432,
+              "_nanoseconds": 933000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "students": {
+            "documents": {
+              "454f6ac7-3f55-4ef8-83ce-7e222fb3df92": {
+                "data": {
+                  "uid": "454f6ac7-3f55-4ef8-83ce-7e222fb3df92",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Kléber Barros",
+                    "dateOfBirth": "2024-11-08",
+                    "cpf": "915.255.497-17",
+                    "rg": "4389921-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/27151486"
+                  },
+                  "contactInfo": {
+                    "email": "Helena_Batista@bol.com.br",
+                    "phone": "+55 (48) 2482-1414",
+                    "whatsapp": "(90) 84951-4647",
+                    "parentEmail": "Tertuliano_Macedo@live.com",
+                    "parentPhone": "(63) 4598-9553",
+                    "parentWhatsapp": "(49) 9635-0152"
+                  },
+                  "addressInfo": {
+                    "cep": "53430-399",
+                    "address": "Saraiva Rua",
+                    "number": "80131",
+                    "complement": "Sobrado 91",
+                    "neighborhood": "Melo Rodovia",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-11-02"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 677000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 677000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "455ad20c-e56b-4483-bca4-444095f6fb02": {
+                "data": {
+                  "uid": "455ad20c-e56b-4483-bca4-444095f6fb02",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Ofélia Nogueira",
+                    "dateOfBirth": "2015-02-07",
+                    "cpf": "840.267.471-39",
+                    "rg": "7355842-6",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/33436531"
+                  },
+                  "contactInfo": {
+                    "email": "Caua83@yahoo.com",
+                    "phone": "+55 (51) 7980-3460",
+                    "whatsapp": "(86) 27987-1779",
+                    "parentEmail": "Kleber35@live.com",
+                    "parentPhone": "(66) 75666-1013",
+                    "parentWhatsapp": "(76) 94553-1838"
+                  },
+                  "addressInfo": {
+                    "cep": "85768-445",
+                    "address": "Ana Luiza Rodovia",
+                    "number": "715",
+                    "complement": "Casa 7",
+                    "neighborhood": "Miguel Avenida",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-03-14"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 355000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 355000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "47954f30-be44-4b90-881b-0b30777951f4": {
+                "data": {
+                  "uid": "47954f30-be44-4b90-881b-0b30777951f4",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Karla Melo",
+                    "dateOfBirth": "2020-03-09",
+                    "cpf": "960.449.320-88",
+                    "rg": "0291792-0",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/88967333"
+                  },
+                  "contactInfo": {
+                    "email": "AnaJulia.Nogueira@gmail.com",
+                    "phone": "(03) 77350-6881",
+                    "whatsapp": "(36) 6391-3957",
+                    "parentEmail": "Joana66@bol.com.br",
+                    "parentPhone": "(79) 98917-2038",
+                    "parentWhatsapp": "(05) 3224-3900"
+                  },
+                  "addressInfo": {
+                    "cep": "79133-804",
+                    "address": "Dalila Rua",
+                    "number": "713",
+                    "complement": "Quadra 88",
+                    "neighborhood": "Luiza Avenida",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-27"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 189000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 189000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "5cf31188-3eab-4ae9-a8b3-a62807db3ca8": {
+                "data": {
+                  "uid": "5cf31188-3eab-4ae9-a8b3-a62807db3ca8",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Gabriel Carvalho",
+                    "dateOfBirth": "2024-03-23",
+                    "cpf": "094.412.855-87",
+                    "rg": "0964261-6",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/54919235"
+                  },
+                  "contactInfo": {
+                    "email": "Livia.Souza@yahoo.com",
+                    "phone": "(27) 6034-5554",
+                    "whatsapp": "+55 (85) 3859-4037",
+                    "parentEmail": "Maria.Melo22@yahoo.com",
+                    "parentPhone": "(44) 9491-4646",
+                    "parentWhatsapp": "(30) 49204-7650"
+                  },
+                  "addressInfo": {
+                    "cep": "95356-598",
+                    "address": "Esther Rua",
+                    "number": "1276",
+                    "complement": "Casa 9",
+                    "neighborhood": "Carvalho Alameda",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-03-24"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 514000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 514000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "68c0062b-2d70-445f-9887-45c411101574": {
+                "data": {
+                  "uid": "68c0062b-2d70-445f-9887-45c411101574",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Silas Braga Jr.",
+                    "dateOfBirth": "2015-09-16",
+                    "cpf": "340.084.363-51",
+                    "rg": "7363859-3",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/66793354"
+                  },
+                  "contactInfo": {
+                    "email": "Janaina23@gmail.com",
+                    "phone": "(72) 2684-3061",
+                    "whatsapp": "(91) 2671-8649",
+                    "parentEmail": "Bruna.Silva@live.com",
+                    "parentPhone": "+55 (32) 5491-2820",
+                    "parentWhatsapp": "(03) 1005-1052"
+                  },
+                  "addressInfo": {
+                    "cep": "30651-421",
+                    "address": "Nogueira Avenida",
+                    "number": "874",
+                    "complement": "Quadra 94",
+                    "neighborhood": "Albuquerque Avenida",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-12-24"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 278000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 278000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "85e9ba64-1599-4ae6-a44d-530715812377": {
+                "data": {
+                  "uid": "85e9ba64-1599-4ae6-a44d-530715812377",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Srta. Isadora Franco",
+                    "dateOfBirth": "2019-12-14",
+                    "cpf": "132.760.993-56",
+                    "rg": "7496035-9",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/25829205"
+                  },
+                  "contactInfo": {
+                    "email": "Lucas.Reis86@yahoo.com",
+                    "phone": "(53) 14534-1531",
+                    "whatsapp": "+55 (32) 4028-8276",
+                    "parentEmail": "Heitor75@bol.com.br",
+                    "parentPhone": "(40) 47285-4803",
+                    "parentWhatsapp": "(79) 29297-4554"
+                  },
+                  "addressInfo": {
+                    "cep": "09450-876",
+                    "address": "Rebeca Travessa",
+                    "number": "69615",
+                    "complement": "Casa 8",
+                    "neighborhood": "Eduarda Avenida",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-02-10"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 36000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 36000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "9bdaa89a-18d1-4e21-b9de-0422c24f5877": {
+                "data": {
+                  "uid": "9bdaa89a-18d1-4e21-b9de-0422c24f5877",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Nicolas Albuquerque",
+                    "dateOfBirth": "2015-10-31",
+                    "cpf": "471.510.220-41",
+                    "rg": "2690372-5",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/33640613"
+                  },
+                  "contactInfo": {
+                    "email": "Sarah.Reis@hotmail.com",
+                    "phone": "(48) 68907-8668",
+                    "whatsapp": "+55 (14) 4185-1027",
+                    "parentEmail": "Isabelly_Oliveira@live.com",
+                    "parentPhone": "(39) 65042-3532",
+                    "parentWhatsapp": "+55 (20) 0264-5060"
+                  },
+                  "addressInfo": {
+                    "cep": "32404-039",
+                    "address": "Nogueira Avenida",
+                    "number": "11980",
+                    "complement": "Quadra 82",
+                    "neighborhood": "Silva Rua",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-09-04"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 433000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 433000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "b493e773-27d5-4c20-903d-bf3ad75b7240": {
+                "data": {
+                  "uid": "b493e773-27d5-4c20-903d-bf3ad75b7240",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sra. Valentina Souza",
+                    "dateOfBirth": "2017-07-24",
+                    "cpf": "359.954.749-81",
+                    "rg": "8299866-5",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/98.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Gustavo20@bol.com.br",
+                    "phone": "(63) 7915-0941",
+                    "whatsapp": "(01) 61930-5608",
+                    "parentEmail": "Benicio_Macedo@bol.com.br",
+                    "parentPhone": "+55 (65) 9535-3173",
+                    "parentWhatsapp": "(54) 3632-5906"
+                  },
+                  "addressInfo": {
+                    "cep": "42797-299",
+                    "address": "Laura Avenida",
+                    "number": "806",
+                    "complement": "Apto. 319",
+                    "neighborhood": "Albuquerque Alameda",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-21"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 597000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 597000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "c0ecc947-7600-45ea-b7cb-3ae39f91c98f": {
+                "data": {
+                  "uid": "c0ecc947-7600-45ea-b7cb-3ae39f91c98f",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Frederico Batista",
+                    "dateOfBirth": "2010-04-29",
+                    "cpf": "797.190.328-46",
+                    "rg": "2271948-1",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/26408179"
+                  },
+                  "contactInfo": {
+                    "email": "Luiza70@gmail.com",
+                    "phone": "+55 (67) 4537-4765",
+                    "whatsapp": "(77) 19485-5058",
+                    "parentEmail": "Guilherme_Souza@gmail.com",
+                    "parentPhone": "(27) 5301-6382",
+                    "parentWhatsapp": "+55 (98) 2222-5914"
+                  },
+                  "addressInfo": {
+                    "cep": "75532-946",
+                    "address": "Batista Rua",
+                    "number": "3843",
+                    "complement": "Quadra 17",
+                    "neighborhood": "Souza Marginal",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-20"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 110000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 110000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "e5a6a3af-9e39-433d-bcdf-a627501c4ca2": {
+                "data": {
+                  "uid": "e5a6a3af-9e39-433d-bcdf-a627501c4ca2",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Dr. Lucas Oliveira",
+                    "dateOfBirth": "2024-05-30",
+                    "cpf": "878.325.295-89",
+                    "rg": "9091970-2",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/19738165"
+                  },
+                  "contactInfo": {
+                    "email": "MariaAlice18@bol.com.br",
+                    "phone": "(10) 63917-7651",
+                    "whatsapp": "+55 (69) 7945-6097",
+                    "parentEmail": "Lorraine.Oliveira@hotmail.com",
+                    "parentPhone": "(77) 1143-5469",
+                    "parentWhatsapp": "(07) 2765-8000"
+                  },
+                  "addressInfo": {
+                    "cep": "83808-512",
+                    "address": "Pereira Alameda",
+                    "number": "69397",
+                    "complement": "Casa 2",
+                    "neighborhood": "Nogueira Avenida",
+                    "city": "Itabaiana",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-18"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 754000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359432,
+                      "_nanoseconds": 754000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      },
+      "colegio-newton": {
+        "data": {
+          "name": "Colégio Newton",
+          "addressInfo": {
+            "address": "Rua da Ciência",
+            "number": "200",
+            "complement": "Em frente à Praça São Francisco",
+            "neighborhood": "Centro Histórico",
+            "city": "São Cristóvão",
+            "state": "SE",
+            "zipCode": "49100-000",
+            "coordinates": {
+              "latitude": -11.0089,
+              "longitude": -37.2067
+            }
+          },
+          "contactInfo": {
+            "phone": "7932425678",
+            "whatsapp": "79999887767",
+            "email": "contato@newton.edu.br",
+            "website": "www.newton.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Mariana Costa",
+              "cpf": "234.567.890-11",
+              "phone": "79999887756",
+              "email": "mariana.costa@newton.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Paulo Roberto Melo",
+              "cpf": "345.678.901-22",
+              "phone": "79999887745",
+              "email": "paulo.melo@newton.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Fernanda Oliveira",
+              "cpf": "567.890.123-33",
+              "phone": "79999887734",
+              "email": "fernanda.oliveira@newton.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0002-02",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 700000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 700000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12346-7"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 734000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "students": {
+            "documents": {
+              "2ad0f7b9-12d6-48fc-87cc-7de5483e694f": {
+                "data": {
+                  "uid": "2ad0f7b9-12d6-48fc-87cc-7de5483e694f",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Alexandre Martins",
+                    "dateOfBirth": "2014-01-12",
+                    "cpf": "357.448.947-42",
+                    "rg": "5140560-2",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/19260992"
+                  },
+                  "contactInfo": {
+                    "email": "Silvia_Carvalho97@gmail.com",
+                    "phone": "+55 (47) 1617-8758",
+                    "whatsapp": "(70) 4210-9988",
+                    "parentEmail": "Calebe_Oliveira@bol.com.br",
+                    "parentPhone": "(95) 91741-2524",
+                    "parentWhatsapp": "(35) 0913-8887"
+                  },
+                  "addressInfo": {
+                    "cep": "19505-639",
+                    "address": "Benjamin Avenida",
+                    "number": "868",
+                    "complement": "Sobrado 44",
+                    "neighborhood": "Franco Avenida",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-02-17"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 567000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 567000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "6c5b8596-dee9-48ef-918c-1d6ea3c940c7": {
+                "data": {
+                  "uid": "6c5b8596-dee9-48ef-918c-1d6ea3c940c7",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Maria Helena Souza Filho",
+                    "dateOfBirth": "2017-02-11",
+                    "cpf": "245.417.831-63",
+                    "rg": "4707810-9",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/18233260"
+                  },
+                  "contactInfo": {
+                    "email": "Alice80@hotmail.com",
+                    "phone": "(13) 87991-7081",
+                    "whatsapp": "+55 (81) 8646-2619",
+                    "parentEmail": "Marli88@live.com",
+                    "parentPhone": "+55 (16) 5000-5862",
+                    "parentWhatsapp": "(17) 22366-3467"
+                  },
+                  "addressInfo": {
+                    "cep": "51089-546",
+                    "address": "Moraes Alameda",
+                    "number": "99663",
+                    "complement": "Casa 4",
+                    "neighborhood": "Santos Marginal",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-12"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 253000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 253000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "6d9485a2-7519-4eef-bec3-84b10364538f": {
+                "data": {
+                  "uid": "6d9485a2-7519-4eef-bec3-84b10364538f",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Samuel Souza",
+                    "dateOfBirth": "2020-02-04",
+                    "cpf": "654.542.454-22",
+                    "rg": "9815595-1",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Joana99@yahoo.com",
+                    "phone": "(38) 8810-5243",
+                    "whatsapp": "+55 (42) 3647-1506",
+                    "parentEmail": "MariaClara80@live.com",
+                    "parentPhone": "+55 (14) 9715-7655",
+                    "parentWhatsapp": "+55 (65) 5688-6130"
+                  },
+                  "addressInfo": {
+                    "cep": "94671-770",
+                    "address": "Isabelly Rodovia",
+                    "number": "581",
+                    "complement": "Apto. 617",
+                    "neighborhood": "Roberto Travessa",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-14"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 330000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 330000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "7ec5a956-8d27-4853-afac-5da6a038321b": {
+                "data": {
+                  "uid": "7ec5a956-8d27-4853-afac-5da6a038321b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Salvador Nogueira",
+                    "dateOfBirth": "2017-04-28",
+                    "cpf": "469.048.738-74",
+                    "rg": "2791267-4",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/84911409"
+                  },
+                  "contactInfo": {
+                    "email": "JoaoLucas_Santos@hotmail.com",
+                    "phone": "(77) 57125-3469",
+                    "whatsapp": "+55 (50) 8156-9626",
+                    "parentEmail": "Yango42@gmail.com",
+                    "parentPhone": "(98) 39553-0259",
+                    "parentWhatsapp": "(96) 7739-7763"
+                  },
+                  "addressInfo": {
+                    "cep": "32593-500",
+                    "address": "Martins Marginal",
+                    "number": "174",
+                    "complement": "Casa 8",
+                    "neighborhood": "Mariana Rua",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-08-29"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 171000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 171000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "7fec994c-b25c-4625-8b5c-8b72dc26abc5": {
+                "data": {
+                  "uid": "7fec994c-b25c-4625-8b5c-8b72dc26abc5",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Ana Laura Moraes",
+                    "dateOfBirth": "2021-02-10",
+                    "cpf": "842.437.012-88",
+                    "rg": "1810862-2",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/56537050"
+                  },
+                  "contactInfo": {
+                    "email": "Marcos.Carvalho@yahoo.com",
+                    "phone": "(73) 10207-6080",
+                    "whatsapp": "(52) 1338-4537",
+                    "parentEmail": "Julia_Carvalho81@gmail.com",
+                    "parentPhone": "+55 (87) 6709-2510",
+                    "parentWhatsapp": "+55 (42) 9100-5962"
+                  },
+                  "addressInfo": {
+                    "cep": "25383-280",
+                    "address": "Moreira Travessa",
+                    "number": "28702",
+                    "complement": "Casa 9",
+                    "neighborhood": "Felipe Travessa",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-12-19"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 852000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 852000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "8ac494b2-347b-4bdf-a638-ac030f282d61": {
+                "data": {
+                  "uid": "8ac494b2-347b-4bdf-a638-ac030f282d61",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Davi Franco",
+                    "dateOfBirth": "2012-08-26",
+                    "cpf": "985.983.683-69",
+                    "rg": "0591336-5",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/41.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Alexandre.Melo78@gmail.com",
+                    "phone": "+55 (60) 1268-1617",
+                    "whatsapp": "+55 (11) 3604-6907",
+                    "parentEmail": "Alessandra.Nogueira40@live.com",
+                    "parentPhone": "(25) 4016-3000",
+                    "parentWhatsapp": "(46) 7789-5290"
+                  },
+                  "addressInfo": {
+                    "cep": "90551-786",
+                    "address": "Franco Marginal",
+                    "number": "22366",
+                    "complement": "Quadra 80",
+                    "neighborhood": "Pereira Rodovia",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-08-31"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 932000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359430,
+                      "_nanoseconds": 932000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "af8f4f97-3f8d-4742-872e-9a8aea636b67": {
+                "data": {
+                  "uid": "af8f4f97-3f8d-4742-872e-9a8aea636b67",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Carlos Franco",
+                    "dateOfBirth": "2015-04-18",
+                    "cpf": "491.627.514-65",
+                    "rg": "1357433-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/22.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Fabricio.Braga@hotmail.com",
+                    "phone": "(12) 8503-3245",
+                    "whatsapp": "(43) 6243-9936",
+                    "parentEmail": "Julia.Souza41@bol.com.br",
+                    "parentPhone": "+55 (55) 6802-4368",
+                    "parentWhatsapp": "(60) 8495-9653"
+                  },
+                  "addressInfo": {
+                    "cep": "79832-147",
+                    "address": "Larissa Alameda",
+                    "number": "893",
+                    "complement": "Quadra 72",
+                    "neighborhood": "Maria Marginal",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-09-22"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 95000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 95000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "b828dd15-836e-4899-9995-8072fd14645c": {
+                "data": {
+                  "uid": "b828dd15-836e-4899-9995-8072fd14645c",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Karla Souza",
+                    "dateOfBirth": "2011-04-12",
+                    "cpf": "779.446.326-93",
+                    "rg": "0101524-7",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/97051755"
+                  },
+                  "contactInfo": {
+                    "email": "JoaoPedro70@gmail.com",
+                    "phone": "(51) 1487-3770",
+                    "whatsapp": "(23) 90701-9628",
+                    "parentEmail": "Raul.Braga41@hotmail.com",
+                    "parentPhone": "(74) 3992-8536",
+                    "parentWhatsapp": "+55 (89) 7670-2907"
+                  },
+                  "addressInfo": {
+                    "cep": "17112-377",
+                    "address": "Martins Rodovia",
+                    "number": "667",
+                    "complement": "Quadra 12",
+                    "neighborhood": "Sophia Avenida",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-09-14"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 487000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 487000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "d029a195-118f-4ebc-9fd0-2ae06fa3bf4b": {
+                "data": {
+                  "uid": "d029a195-118f-4ebc-9fd0-2ae06fa3bf4b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Davi Costa",
+                    "dateOfBirth": "2024-02-29",
+                    "cpf": "960.130.642-38",
+                    "rg": "1771989-6",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/37.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Eduarda_Melo@hotmail.com",
+                    "phone": "(82) 2009-2675",
+                    "whatsapp": "(62) 4146-6719",
+                    "parentEmail": "Elisa_Saraiva96@gmail.com",
+                    "parentPhone": "+55 (36) 7109-4753",
+                    "parentWhatsapp": "(68) 92902-4449"
+                  },
+                  "addressInfo": {
+                    "cep": "55719-262",
+                    "address": "Batista Avenida",
+                    "number": "44762",
+                    "complement": "Lote 97",
+                    "neighborhood": "Reis Avenida",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-03-11"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 404000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 404000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "f44be11e-8d8b-4c62-8ddc-9432dbc55aa0": {
+                "data": {
+                  "uid": "f44be11e-8d8b-4c62-8ddc-9432dbc55aa0",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Alexandre Martins",
+                    "dateOfBirth": "2025-01-29",
+                    "cpf": "845.434.537-95",
+                    "rg": "5533302-3",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/32.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "AnaJulia.Martins18@hotmail.com",
+                    "phone": "(36) 21350-7803",
+                    "whatsapp": "+55 (89) 8740-7891",
+                    "parentEmail": "MariaClara_Braga61@gmail.com",
+                    "parentPhone": "(63) 62060-0620",
+                    "parentWhatsapp": "+55 (14) 9407-5220"
+                  },
+                  "addressInfo": {
+                    "cep": "69914-288",
+                    "address": "Aline Rua",
+                    "number": "285",
+                    "complement": "Sobrado 98",
+                    "neighborhood": "Carvalho Avenida",
+                    "city": "São Cristóvão",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-07"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 13000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359431,
+                      "_nanoseconds": 13000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      },
+      "colegio-tesla": {
+        "data": {
+          "name": "Colégio Tesla",
+          "addressInfo": {
+            "address": "Rua da Inovação",
+            "number": "400",
+            "complement": "Ao lado do Shopping",
+            "neighborhood": "Exposição",
+            "city": "Lagarto",
+            "state": "SE",
+            "zipCode": "49400-000",
+            "coordinates": {
+              "latitude": -10.9147,
+              "longitude": -37.6689
+            }
+          },
+          "contactInfo": {
+            "phone": "7932445432",
+            "whatsapp": "79999887769",
+            "email": "contato@tesla.edu.br",
+            "website": "www.tesla.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Patricia Lima",
+              "cpf": "789.012.345-66",
+              "phone": "79999887758",
+              "email": "patricia.lima@tesla.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Marcos Andrade",
+              "cpf": "890.123.456-77",
+              "phone": "79999887747",
+              "email": "marcos.andrade@tesla.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Sandra Costa",
+              "cpf": "901.234.567-88",
+              "phone": "79999887736",
+              "email": "sandra.costa@tesla.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0004-04",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359433,
+              "_nanoseconds": 84000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359433,
+              "_nanoseconds": 84000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12348-9"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 117000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "students": {
+            "documents": {
+              "056cd7d1-c78e-4540-a139-bbe3c9427701": {
+                "data": {
+                  "uid": "056cd7d1-c78e-4540-a139-bbe3c9427701",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Lorena Pereira",
+                    "dateOfBirth": "2017-11-20",
+                    "cpf": "258.738.199-75",
+                    "rg": "4753223-1",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/76.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Feliciano.Martins67@gmail.com",
+                    "phone": "+55 (38) 9678-0334",
+                    "whatsapp": "(05) 1316-0224",
+                    "parentEmail": "Leonardo.Nogueira@yahoo.com",
+                    "parentPhone": "+55 (10) 2818-5891",
+                    "parentWhatsapp": "(94) 9402-1522"
+                  },
+                  "addressInfo": {
+                    "cep": "51045-374",
+                    "address": "Arthur Rodovia",
+                    "number": "71227",
+                    "complement": "Apto. 858",
+                    "neighborhood": "Joaquim Marginal",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-19"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 874000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 874000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "30827407-f430-49b8-85fd-b6e0f5404abf": {
+                "data": {
+                  "uid": "30827407-f430-49b8-85fd-b6e0f5404abf",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Mércia Carvalho",
+                    "dateOfBirth": "2024-01-10",
+                    "cpf": "868.641.622-48",
+                    "rg": "0428882-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/44721059"
+                  },
+                  "contactInfo": {
+                    "email": "Lorenzo.Melo@gmail.com",
+                    "phone": "(43) 7651-5793",
+                    "whatsapp": "(84) 98701-0755",
+                    "parentEmail": "Antonio43@hotmail.com",
+                    "parentPhone": "(30) 2366-3173",
+                    "parentWhatsapp": "(01) 02632-8152"
+                  },
+                  "addressInfo": {
+                    "cep": "27330-357",
+                    "address": "Moreira Avenida",
+                    "number": "512",
+                    "complement": "Quadra 52",
+                    "neighborhood": "Ladislau Rua",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-27"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 385000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 385000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "53e9f8bb-50d3-4abf-b9db-dd372befcb01": {
+                "data": {
+                  "uid": "53e9f8bb-50d3-4abf-b9db-dd372befcb01",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Ana Júlia Melo",
+                    "dateOfBirth": "2015-05-24",
+                    "cpf": "412.182.057-49",
+                    "rg": "6269514-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/66.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Talita_Silva@yahoo.com",
+                    "phone": "(46) 39251-0438",
+                    "whatsapp": "+55 (33) 6547-0715",
+                    "parentEmail": "Nicolas71@bol.com.br",
+                    "parentPhone": "(53) 7424-1393",
+                    "parentWhatsapp": "(94) 51960-7034"
+                  },
+                  "addressInfo": {
+                    "cep": "41036-419",
+                    "address": "Martins Travessa",
+                    "number": "744",
+                    "complement": "Casa 4",
+                    "neighborhood": "Melo Alameda",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-12-10"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 958000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 958000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "578621cc-e84d-4054-8708-648ff0846acd": {
+                "data": {
+                  "uid": "578621cc-e84d-4054-8708-648ff0846acd",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Luiza Braga Filho",
+                    "dateOfBirth": "2021-03-24",
+                    "cpf": "244.422.732-39",
+                    "rg": "1422069-9",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/9913437"
+                  },
+                  "contactInfo": {
+                    "email": "Bruna_Batista81@hotmail.com",
+                    "phone": "(76) 7579-1422",
+                    "whatsapp": "+55 (50) 3862-5262",
+                    "parentEmail": "Marcelo.Saraiva21@gmail.com",
+                    "parentPhone": "+55 (95) 5155-4845",
+                    "parentWhatsapp": "(85) 61641-2073"
+                  },
+                  "addressInfo": {
+                    "cep": "71277-773",
+                    "address": "Franco Rodovia",
+                    "number": "104",
+                    "complement": "Casa 2",
+                    "neighborhood": "Xavier Avenida",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-08"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 542000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 542000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "58bedfd5-6e94-4e99-ac09-5366a36fd5fc": {
+                "data": {
+                  "uid": "58bedfd5-6e94-4e99-ac09-5366a36fd5fc",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Liz Albuquerque",
+                    "dateOfBirth": "2013-07-19",
+                    "cpf": "783.727.697-56",
+                    "rg": "2378525-6",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/88.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Julio33@live.com",
+                    "phone": "(01) 5253-6236",
+                    "whatsapp": "+55 (61) 2617-0904",
+                    "parentEmail": "Lucca_Martins72@gmail.com",
+                    "parentPhone": "+55 (86) 5771-7555",
+                    "parentWhatsapp": "(58) 4284-1696"
+                  },
+                  "addressInfo": {
+                    "cep": "16677-381",
+                    "address": "Albuquerque Rua",
+                    "number": "161",
+                    "complement": "Sobrado 82",
+                    "neighborhood": "Franco Alameda",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-23"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 707000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 707000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "85421dfb-4b4b-46c3-b94f-a6fda9317d76": {
+                "data": {
+                  "uid": "85421dfb-4b4b-46c3-b94f-a6fda9317d76",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sr. Danilo Barros",
+                    "dateOfBirth": "2024-02-11",
+                    "cpf": "322.467.169-05",
+                    "rg": "0689166-6",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/48.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Melissa59@yahoo.com",
+                    "phone": "(20) 4019-5758",
+                    "whatsapp": "+55 (89) 7421-3114",
+                    "parentEmail": "Celia_Moreira@yahoo.com",
+                    "parentPhone": "(92) 0132-0072",
+                    "parentWhatsapp": "+55 (31) 7347-9815"
+                  },
+                  "addressInfo": {
+                    "cep": "38665-364",
+                    "address": "Nogueira Rua",
+                    "number": "914",
+                    "complement": "Apto. 753",
+                    "neighborhood": "Sílvia Rua",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-11"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 233000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 233000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "aac3f2e1-97b3-4ccb-b2c4-6a856e027ad3": {
+                "data": {
+                  "uid": "aac3f2e1-97b3-4ccb-b2c4-6a856e027ad3",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Rebeca Franco",
+                    "dateOfBirth": "2014-11-04",
+                    "cpf": "418.857.592-46",
+                    "rg": "0115970-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/71.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Lara_Xavier74@gmail.com",
+                    "phone": "+55 (91) 4446-4155",
+                    "whatsapp": "+55 (89) 4277-4100",
+                    "parentEmail": "Pietro83@gmail.com",
+                    "parentPhone": "+55 (41) 4532-7596",
+                    "parentWhatsapp": "(86) 28987-3857"
+                  },
+                  "addressInfo": {
+                    "cep": "50225-517",
+                    "address": "Helena Alameda",
+                    "number": "2221",
+                    "complement": "Quadra 27",
+                    "neighborhood": "Gael Rodovia",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-02-11"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 311000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 311000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "cbe16dd5-b2e5-4bfd-a238-07231688a874": {
+                "data": {
+                  "uid": "cbe16dd5-b2e5-4bfd-a238-07231688a874",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Pietro Reis",
+                    "dateOfBirth": "2010-09-25",
+                    "cpf": "727.351.357-74",
+                    "rg": "7471219-5",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/50209090"
+                  },
+                  "contactInfo": {
+                    "email": "Cesar_Nogueira@live.com",
+                    "phone": "(80) 8115-3863",
+                    "whatsapp": "+55 (35) 8804-1355",
+                    "parentEmail": "Roberto_Martins@hotmail.com",
+                    "parentPhone": "(36) 0984-0576",
+                    "parentWhatsapp": "(41) 3612-0320"
+                  },
+                  "addressInfo": {
+                    "cep": "83382-593",
+                    "address": "Clara Avenida",
+                    "number": "40106",
+                    "complement": "Sobrado 36",
+                    "neighborhood": "Giovanna Travessa",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-07-31"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 459000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 459000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "d00a4d90-1999-4a88-910b-fa402d3042f5": {
+                "data": {
+                  "uid": "d00a4d90-1999-4a88-910b-fa402d3042f5",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Hélio Costa",
+                    "dateOfBirth": "2024-05-14",
+                    "cpf": "482.412.527-53",
+                    "rg": "3954405-2",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/64.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Samuel.Franco22@yahoo.com",
+                    "phone": "(14) 3624-8321",
+                    "whatsapp": "+55 (42) 2863-8466",
+                    "parentEmail": "Giovanna61@hotmail.com",
+                    "parentPhone": "(56) 68143-6588",
+                    "parentWhatsapp": "(08) 8443-0152"
+                  },
+                  "addressInfo": {
+                    "cep": "69588-460",
+                    "address": "Moraes Alameda",
+                    "number": "1151",
+                    "complement": "Sobrado 74",
+                    "neighborhood": "Santos Rua",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-25"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 628000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 628000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "f897092b-e70e-4e11-9fc0-cd38af648d92": {
+                "data": {
+                  "uid": "f897092b-e70e-4e11-9fc0-cd38af648d92",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Dalila Oliveira",
+                    "dateOfBirth": "2015-08-30",
+                    "cpf": "422.467.820-62",
+                    "rg": "3310377-1",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/52054647"
+                  },
+                  "contactInfo": {
+                    "email": "Janaina_Pereira@bol.com.br",
+                    "phone": "(78) 52612-9680",
+                    "whatsapp": "(94) 8767-9984",
+                    "parentEmail": "Joana_Moreira81@live.com",
+                    "parentPhone": "(87) 0082-3046",
+                    "parentWhatsapp": "(75) 9443-1474"
+                  },
+                  "addressInfo": {
+                    "cep": "03070-176",
+                    "address": "Xavier Travessa",
+                    "number": "8392",
+                    "complement": "Quadra 77",
+                    "neighborhood": "Ígor Avenida",
+                    "city": "Lagarto",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-10-14"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 788000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359433,
+                      "_nanoseconds": 788000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      },
+      "lavoisier-aracaju": {
+        "data": {
+          "name": "Colégio Lavoisier - Aracaju",
+          "addressInfo": {
+            "address": "Av. Beira Mar",
+            "number": "1500",
+            "complement": "Próximo ao Shopping Riomar",
+            "neighborhood": "Jardins",
+            "city": "Aracaju",
+            "state": "SE",
+            "zipCode": "49025-040",
+            "coordinates": {
+              "latitude": -10.9472468,
+              "longitude": -37.0731163
+            }
+          },
+          "contactInfo": {
+            "phone": "7932411234",
+            "whatsapp": "79999887766",
+            "email": "contato@lavoisier.edu.br",
+            "website": "www.lavoisier.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Felipe Macedo",
+              "cpf": "123.456.789-00",
+              "phone": "79999887755",
+              "email": "felipe.macedo@lavoisier.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Amanda Silva",
+              "cpf": "987.654.321-00",
+              "phone": "79999887744",
+              "email": "amanda.silva@lavoisier.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Lucas Oliveira",
+              "cpf": "456.789.123-00",
+              "phone": "79999887733",
+              "email": "lucas.oliveira@lavoisier.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0001-01",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 200000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 200000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12345-6"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 337000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "doubts": {
+            "documents": {
+              "doubt_001": {
+                "data": {
+                  "id": "doubt_001",
+                  "title": "Dúvida sobre fotossíntese",
+                  "content": "Como ocorre o processo de fotossíntese?",
+                  "subject": "Ciências",
+                  "topic": "Fotossíntese",
+                  "status": "answered",
+                  "student": {
+                    "id": "BWP4OG0w85NRQNFl5TwX4IPenlD3",
+                    "name": "Felipe Macedo",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T001",
+                    "name": "Maria Silva",
+                    "subject": "Ciências"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_001",
+                      "content": "Como ocorre o processo de fotossíntese?",
+                      "type": "question",
+                      "sender": {
+                        "id": "BWP4OG0w85NRQNFl5TwX4IPenlD3",
+                        "name": "Felipe Macedo",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:32.287Z"
+                    },
+                    {
+                      "id": "msg_002",
+                      "content": "A fotossíntese é o processo onde as plantas...",
+                      "type": "answer",
+                      "attachments": [
+                        {
+                          "id": "att_001",
+                          "name": "fotossintese.pdf",
+                          "url": "url_do_arquivo",
+                          "type": "pdf"
+                        }
+                      ],
+                      "sender": {
+                        "id": "T001",
+                        "name": "Maria Silva",
+                        "role": "teacher"
+                      },
+                      "createdAt": "2025-02-23T22:20:32.287Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 1,
+                    "likes": 0,
+                    "isPublic": false,
+                    "isResolved": true,
+                    "tags": [
+                      "fotossíntese",
+                      "plantas",
+                      "ciências"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349233,
+                    "_nanoseconds": 169000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349233,
+                    "_nanoseconds": 169000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_10": {
+                "data": {
+                  "id": "doubt_10",
+                  "title": "Dúvida sobre matemática",
+                  "content": "Asperiores qui ab nam deserunt magni. Ab rerum delectus nobis vitae tenetur. Beatae tenetur saepe laudantium eaque quo optio quasi ullam ipsam.",
+                  "subject": "Matemática",
+                  "topic": "eum placeat",
+                  "status": "pending",
+                  "student": {
+                    "id": "f7ba130d-c87c-4d65-bac0-4abb62600caf",
+                    "name": "Daniel Macedo Neto",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T001",
+                    "name": "Bernardo Moreira",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_de98976e-fa32-4e12-8ae7-630065118e5c",
+                      "content": "Perferendis non dignissimos suscipit aut minus dignissimos quis dicta assumenda. Sapiente quis cumque. Expedita ipsa consequatur quisquam nobis in.",
+                      "type": "question",
+                      "sender": {
+                        "id": "91b144f9-9eeb-4da3-b984-c360d9adaf85",
+                        "name": "Henrique Carvalho",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:34.341Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 46,
+                    "likes": 3,
+                    "isPublic": false,
+                    "isResolved": true,
+                    "tags": [
+                      "exercícios",
+                      "dever",
+                      "matemática"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 196000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 196000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_11": {
+                "data": {
+                  "id": "doubt_11",
+                  "title": "Dúvida sobre português",
+                  "content": "Quibusdam maiores dignissimos. Atque accusantium nihil quia reiciendis. Blanditiis nobis repudiandae necessitatibus nostrum nam.",
+                  "subject": "Ciências",
+                  "topic": "error dicta",
+                  "status": "pending",
+                  "student": {
+                    "id": "8029c8a5-4fa0-4c80-8784-c94d512d005c",
+                    "name": "Emanuel Melo",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T001",
+                    "name": "Dr. Feliciano Silva",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_04889748-0ecd-479c-9f29-3578d33a1a71",
+                      "content": "Quidem quos eveniet dignissimos quisquam culpa ipsam. Pariatur placeat rerum fugit cupiditate voluptatibus nihil quia. Architecto sunt quo.",
+                      "type": "question",
+                      "sender": {
+                        "id": "514998e2-5182-4c6f-b3cd-3229f8744acb",
+                        "name": "Maitê Saraiva",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:34.696Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 29,
+                    "likes": 6,
+                    "isPublic": false,
+                    "isResolved": false,
+                    "tags": [
+                      "matemática",
+                      "dever",
+                      "exercícios"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 551000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 551000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_2": {
+                "data": {
+                  "id": "doubt_2",
+                  "title": "Dúvida sobre português",
+                  "content": "Illum saepe odit debitis odit corrupti dolor fuga cupiditate. Fugiat qui rerum excepturi consequuntur quaerat sit porro animi deserunt. Saepe quis iste illo.",
+                  "subject": "Português",
+                  "topic": "enim ad",
+                  "status": "pending",
+                  "student": {
+                    "id": "a1b0d8c2-ebc3-4175-844b-2152c291e9ad",
+                    "name": "Nicolas Braga",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T005",
+                    "name": "Emanuelly Martins Jr.",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_a6119784-d2c1-4053-825a-acf50b4cda92",
+                      "content": "Ratione nesciunt minus doloribus aliquam a similique modi laudantium. Asperiores velit quisquam maxime. Officia itaque vero possimus incidunt fugiat ducimus accusantium ipsum.",
+                      "type": "question",
+                      "sender": {
+                        "id": "e8346017-89d5-4567-a4f9-b0cef3e26080",
+                        "name": "Ana Luiza Martins",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:32.750Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 31,
+                    "likes": 5,
+                    "isPublic": false,
+                    "isResolved": true,
+                    "tags": [
+                      "dever",
+                      "matemática",
+                      "exercícios"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349233,
+                    "_nanoseconds": 665000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349233,
+                    "_nanoseconds": 665000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_3": {
+                "data": {
+                  "id": "doubt_3",
+                  "title": "Dúvida sobre português",
+                  "content": "Nemo nam qui nemo minus nihil amet laborum. Amet officiis harum vel autem quam. Sapiente minima officia temporibus inventore dignissimos magnam.",
+                  "subject": "Ciências",
+                  "topic": "adipisci porro",
+                  "status": "closed",
+                  "student": {
+                    "id": "939cfa9c-25d0-475c-9af0-54ec68525569",
+                    "name": "Lucas Barros",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T008",
+                    "name": "Janaína Souza",
+                    "subject": "Português"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_8becbf0f-7f63-4332-803b-d537ff066811",
+                      "content": "Voluptatem placeat nisi voluptatum. Consequuntur officia cupiditate nam natus corrupti. Deleniti nulla voluptatem nemo nostrum consequatur deserunt impedit quos.",
+                      "type": "question",
+                      "sender": {
+                        "id": "398937f2-3bad-47e4-b9b0-091283f0ac4f",
+                        "name": "Benício Santos",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:33.224Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 25,
+                    "likes": 5,
+                    "isPublic": true,
+                    "isResolved": false,
+                    "tags": [
+                      "dever",
+                      "exercícios",
+                      "matemática"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 81000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 81000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_4": {
+                "data": {
+                  "id": "doubt_4",
+                  "title": "Dúvida sobre português",
+                  "content": "Cumque nisi nobis nesciunt repellendus. Unde quas occaecati nam. Ad nam itaque vel quasi aspernatur.",
+                  "subject": "Matemática",
+                  "topic": "commodi in",
+                  "status": "pending",
+                  "student": {
+                    "id": "139bef0e-3998-412f-9760-9d9ec517975f",
+                    "name": "Pietro Barros",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T005",
+                    "name": "César Melo",
+                    "subject": "Português"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_11d3d289-124c-4b11-8be1-1da2cc430d85",
+                      "content": "Aspernatur officiis similique. Earum error ipsum facere. Repellat optio officiis eos magni excepturi.",
+                      "type": "question",
+                      "sender": {
+                        "id": "2f4fc255-57f8-438c-89d4-4b6d1f38d88b",
+                        "name": "Vitor Barros",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:33.305Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 10,
+                    "likes": 7,
+                    "isPublic": false,
+                    "isResolved": true,
+                    "tags": [
+                      "matemática",
+                      "prova",
+                      "exercícios"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 152000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 152000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_5": {
+                "data": {
+                  "id": "doubt_5",
+                  "title": "Dúvida sobre português",
+                  "content": "Molestias facilis placeat ducimus fugiat aliquam fugit. Corrupti maxime atque quo quod reiciendis sunt dolorem nemo debitis. Illum vero saepe voluptatibus.",
+                  "subject": "Ciências",
+                  "topic": "quis facilis",
+                  "status": "pending",
+                  "student": {
+                    "id": "5df352bc-663d-445e-8681-fa24ba6532e6",
+                    "name": "Dr. Breno Silva",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T007",
+                    "name": "Calebe Moraes",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_2cf4b172-a18f-4f08-9d78-ba7ec2fd3d71",
+                      "content": "Consectetur delectus molestias enim. Cumque hic fugit vero ipsa ratione laboriosam modi itaque. Laboriosam magnam culpa ipsa quis expedita vero quasi facilis eum.",
+                      "type": "question",
+                      "sender": {
+                        "id": "86e9c6ec-71a9-43af-bcbb-be13441ae6a8",
+                        "name": "Felícia Moraes Filho",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:33.377Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 7,
+                    "likes": 10,
+                    "isPublic": false,
+                    "isResolved": false,
+                    "tags": [
+                      "matemática",
+                      "prova",
+                      "exercícios"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 236000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 236000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_6": {
+                "data": {
+                  "id": "doubt_6",
+                  "title": "Dúvida sobre português",
+                  "content": "Officiis ut esse id molestiae. Ullam totam natus labore explicabo animi. Repellat hic possimus accusantium quod.",
+                  "subject": "Matemática",
+                  "topic": "atque at",
+                  "status": "answered",
+                  "student": {
+                    "id": "4d1ed55c-53eb-406c-b549-345c82a3dcce",
+                    "name": "Isaac Braga",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T001",
+                    "name": "Heitor Carvalho",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_05a20625-95c9-40a9-a78e-ae451813ec1e",
+                      "content": "Esse nobis atque accusantium rem ipsum fugit facere quibusdam. Accusamus natus possimus ullam. Quam voluptate inventore deleniti.",
+                      "type": "question",
+                      "sender": {
+                        "id": "678479a7-3021-45a3-92df-d7ef43b831ad",
+                        "name": "Helena Pereira",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:33.469Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 14,
+                    "likes": 6,
+                    "isPublic": true,
+                    "isResolved": false,
+                    "tags": [
+                      "matemática",
+                      "prova",
+                      "exercícios"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 319000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 319000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_7": {
+                "data": {
+                  "id": "doubt_7",
+                  "title": "Dúvida sobre ciências",
+                  "content": "Et esse sequi dolorum quisquam porro eius omnis facere. Sequi illum error. Itaque atque facilis odio facere sed nesciunt aliquam.",
+                  "subject": "Ciências",
+                  "topic": "voluptates dolor",
+                  "status": "closed",
+                  "student": {
+                    "id": "507d5e8f-806f-4275-96b7-46a2d143f7c1",
+                    "name": "Anthony Martins",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T002",
+                    "name": "Sr. Fábio Barros",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_37ad2232-4cb3-4303-918d-3b0d2faa3940",
+                      "content": "Totam quae eveniet quisquam consectetur dolorem. At beatae totam. Deleniti tempora tempora in alias eos.",
+                      "type": "question",
+                      "sender": {
+                        "id": "9603bf68-4279-43d8-84a5-c23240aa19b6",
+                        "name": "Alexandre Carvalho",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:34.081Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 12,
+                    "likes": 0,
+                    "isPublic": false,
+                    "isResolved": true,
+                    "tags": [
+                      "matemática",
+                      "prova",
+                      "dever"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 934000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349234,
+                    "_nanoseconds": 934000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_8": {
+                "data": {
+                  "id": "doubt_8",
+                  "title": "Dúvida sobre ciências",
+                  "content": "Architecto libero quas quisquam ut mollitia. Cupiditate soluta atque at tenetur vitae error nam fuga. Pariatur ea tempora est quos earum perferendis debitis in repellendus.",
+                  "subject": "Matemática",
+                  "topic": "temporibus vitae",
+                  "status": "answered",
+                  "student": {
+                    "id": "fe87b855-58c8-4a09-b6f1-18dd8bc8389f",
+                    "name": "Roberto Nogueira",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T007",
+                    "name": "Isabelly Albuquerque",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_8aeefed0-4e0c-405e-b236-2685c907a9dd",
+                      "content": "Quaerat sed cumque alias ea libero voluptatum beatae praesentium explicabo. Fuga laudantium animi architecto dicta accusantium animi nisi. Ipsum consequatur facilis voluptatum fugit eveniet sit.",
+                      "type": "question",
+                      "sender": {
+                        "id": "e6f760b0-c176-49e8-b165-cab0210a7042",
+                        "name": "Aline Barros",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:34.165Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 32,
+                    "likes": 10,
+                    "isPublic": true,
+                    "isResolved": true,
+                    "tags": [
+                      "matemática",
+                      "dever",
+                      "prova"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 13000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 13000000
+                  }
+                },
+                "subcollections": {}
+              },
+              "doubt_9": {
+                "data": {
+                  "id": "doubt_9",
+                  "title": "Dúvida sobre português",
+                  "content": "Expedita voluptas facilis pariatur porro amet. Iure quibusdam autem expedita rem quisquam placeat id. Voluptas quibusdam ut fuga ut eveniet quia.",
+                  "subject": "Português",
+                  "topic": "saepe similique",
+                  "status": "closed",
+                  "student": {
+                    "id": "fc696d3b-d636-47b1-a706-1d9315330fd6",
+                    "name": "Noah Reis",
+                    "segment": "Jardim I",
+                    "classRoom": "A"
+                  },
+                  "teacher": {
+                    "id": "T004",
+                    "name": "Lorena Braga",
+                    "subject": "Matemática"
+                  },
+                  "messages": [
+                    {
+                      "attachments": [],
+                      "id": "msg_5e321c0a-44f4-4674-a9ce-78e789c627ae",
+                      "content": "Quasi nisi nobis officia eaque a. Incidunt similique dolorum. Rerum minima natus perferendis laboriosam nam ratione aspernatur.",
+                      "type": "question",
+                      "sender": {
+                        "id": "0511969d-db7f-4e91-9e95-173c9ac123a7",
+                        "name": "Sra. Maria Luiza Albuquerque",
+                        "role": "student"
+                      },
+                      "createdAt": "2025-02-23T22:20:34.248Z"
+                    }
+                  ],
+                  "metadata": {
+                    "views": 47,
+                    "likes": 0,
+                    "isPublic": true,
+                    "isResolved": true,
+                    "tags": [
+                      "exercícios",
+                      "matemática",
+                      "dever"
+                    ]
+                  },
+                  "createdAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 110000000
+                  },
+                  "updatedAt": {
+                    "_seconds": 1740349235,
+                    "_nanoseconds": 110000000
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          },
+          "students": {
+            "documents": {
+              "15b7e8ee-35a0-453a-bb36-3c0f8aef281e": {
+                "data": {
+                  "uid": "15b7e8ee-35a0-453a-bb36-3c0f8aef281e",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Hugo Souza",
+                    "dateOfBirth": "2014-07-18",
+                    "cpf": "021.793.717-00",
+                    "rg": "9238366-4",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/17717668"
+                  },
+                  "contactInfo": {
+                    "email": "Rafaela_Nogueira66@hotmail.com",
+                    "phone": "(35) 47367-8981",
+                    "whatsapp": "(55) 0729-1132",
+                    "parentEmail": "Carlos_Martins@bol.com.br",
+                    "parentPhone": "(67) 76355-2240",
+                    "parentWhatsapp": "(20) 44504-6129"
+                  },
+                  "addressInfo": {
+                    "cep": "56770-897",
+                    "address": "Xavier Travessa",
+                    "number": "6727",
+                    "complement": "Apto. 406",
+                    "neighborhood": "Hélio Rodovia",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250008",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-04-20"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 985000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 985000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "15c27f0a-0ad4-40f4-b44f-100f7d90d1b7": {
+                "data": {
+                  "uid": "15c27f0a-0ad4-40f4-b44f-100f7d90d1b7",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sílvia Albuquerque Neto",
+                    "dateOfBirth": "2012-01-11",
+                    "cpf": "216.267.153-08",
+                    "rg": "8729467-4",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/6.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Calebe.Melo63@bol.com.br",
+                    "phone": "(49) 05475-6109",
+                    "whatsapp": "(67) 8709-1338",
+                    "parentEmail": "MariaEduarda.Braga@hotmail.com",
+                    "parentPhone": "(05) 9450-6955",
+                    "parentWhatsapp": "(67) 0934-0912"
+                  },
+                  "addressInfo": {
+                    "cep": "39160-728",
+                    "address": "Noah Marginal",
+                    "number": "61218",
+                    "complement": "Apto. 648",
+                    "neighborhood": "Nogueira Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250005",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-05-15"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 716000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 716000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "373cce48-da64-4ec5-800f-041bf402738b": {
+                "data": {
+                  "uid": "373cce48-da64-4ec5-800f-041bf402738b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Isabella Macedo",
+                    "dateOfBirth": "2017-08-23",
+                    "cpf": "169.169.625-53",
+                    "rg": "9389050-5",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/99903922"
+                  },
+                  "contactInfo": {
+                    "email": "Isadora.Batista66@bol.com.br",
+                    "phone": "+55 (97) 3592-4116",
+                    "whatsapp": "+55 (88) 1057-7008",
+                    "parentEmail": "JoaoLucas7@yahoo.com",
+                    "parentPhone": "(78) 50540-5373",
+                    "parentWhatsapp": "(42) 33572-9105"
+                  },
+                  "addressInfo": {
+                    "cep": "57084-504",
+                    "address": "Barros Marginal",
+                    "number": "6180",
+                    "complement": "Casa 4",
+                    "neighborhood": "Enzo Gabriel Marginal",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250009",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2025-01-15"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 65000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 65000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "5f763591-a3c3-4b87-9767-99acfc8806b0": {
+                "data": {
+                  "uid": "5f763591-a3c3-4b87-9767-99acfc8806b0",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Isabela Souza",
+                    "dateOfBirth": "2016-10-12",
+                    "cpf": "934.865.775-27",
+                    "rg": "3562969-6",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/74.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Ofelia.Moraes@live.com",
+                    "phone": "(13) 8114-7018",
+                    "whatsapp": "+55 (81) 6096-0494",
+                    "parentEmail": "Calebe_Braga78@hotmail.com",
+                    "parentPhone": "+55 (98) 2223-8528",
+                    "parentWhatsapp": "(64) 4703-3796"
+                  },
+                  "addressInfo": {
+                    "cep": "91118-521",
+                    "address": "Théo Avenida",
+                    "number": "94596",
+                    "complement": "Apto. 301",
+                    "neighborhood": "Costa Avenida",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250002",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-07-15"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 462000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 462000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "70112ff3-976e-4bda-a324-7a60da845385": {
+                "data": {
+                  "uid": "70112ff3-976e-4bda-a324-7a60da845385",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Lorraine Albuquerque",
+                    "dateOfBirth": "2018-01-18",
+                    "cpf": "133.301.198-85",
+                    "rg": "6677197-9",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/92489034"
+                  },
+                  "contactInfo": {
+                    "email": "MariaAlice14@bol.com.br",
+                    "phone": "(12) 75728-3214",
+                    "whatsapp": "+55 (35) 4701-8670",
+                    "parentEmail": "Murilo.Xavier82@hotmail.com",
+                    "parentPhone": "(30) 49634-6974",
+                    "parentWhatsapp": "+55 (03) 5415-1185"
+                  },
+                  "addressInfo": {
+                    "cep": "95174-893",
+                    "address": "Souza Marginal",
+                    "number": "35176",
+                    "complement": "Casa 9",
+                    "neighborhood": "Franco Rua",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250003",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-14"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 545000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 545000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "7814a97a-ec41-469d-b457-aa918ab32574": {
+                "data": {
+                  "uid": "7814a97a-ec41-469d-b457-aa918ab32574",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sr. Henrique Franco",
+                    "dateOfBirth": "2022-06-30",
+                    "cpf": "070.136.810-05",
+                    "rg": "2684050-7",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/77.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Carla.Braga@hotmail.com",
+                    "phone": "(86) 90987-6456",
+                    "whatsapp": "(30) 72917-5544",
+                    "parentEmail": "DaviLucca.Pereira@gmail.com",
+                    "parentPhone": "(45) 1102-2245",
+                    "parentWhatsapp": "(10) 0191-0916"
+                  },
+                  "addressInfo": {
+                    "cep": "04800-415",
+                    "address": "Martins Alameda",
+                    "number": "458",
+                    "complement": "Quadra 64",
+                    "neighborhood": "Nogueira Alameda",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250007",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-08-24"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 886000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 886000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "84849e4b-d533-401f-becf-f585af3e1cf4": {
+                "data": {
+                  "uid": "84849e4b-d533-401f-becf-f585af3e1cf4",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Isis Saraiva",
+                    "dateOfBirth": "2013-11-02",
+                    "cpf": "985.779.617-75",
+                    "rg": "0536250-0",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/38049587"
+                  },
+                  "contactInfo": {
+                    "email": "Breno.Macedo10@hotmail.com",
+                    "phone": "+55 (67) 8854-7882",
+                    "whatsapp": "(89) 4331-3018",
+                    "parentEmail": "Isabela_Batista88@hotmail.com",
+                    "parentPhone": "+55 (27) 0477-8907",
+                    "parentWhatsapp": "(31) 8854-2626"
+                  },
+                  "addressInfo": {
+                    "cep": "73899-342",
+                    "address": "Mércia Rua",
+                    "number": "4123",
+                    "complement": "Casa 8",
+                    "neighborhood": "Warley Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250001",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-08-31"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 377000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 377000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "8dc18514-1578-4b04-8275-98398d9493a7": {
+                "data": {
+                  "uid": "8dc18514-1578-4b04-8275-98398d9493a7",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Cauã Souza",
+                    "dateOfBirth": "2014-01-29",
+                    "cpf": "029.999.678-13",
+                    "rg": "9639037-1",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/20.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Marcia.Saraiva@bol.com.br",
+                    "phone": "+55 (42) 8777-6292",
+                    "whatsapp": "(24) 5850-2709",
+                    "parentEmail": "Nataniel.Martins11@live.com",
+                    "parentPhone": "(57) 6104-1153",
+                    "parentWhatsapp": "+55 (11) 5695-4351"
+                  },
+                  "addressInfo": {
+                    "cep": "81141-361",
+                    "address": "Albuquerque Marginal",
+                    "number": "350",
+                    "complement": "Lote 13",
+                    "neighborhood": "Saraiva Avenida",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250006",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-06"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 805000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 805000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "9fef6e1d-8de6-4f13-a78b-2bd3ea90a675": {
+                "data": {
+                  "uid": "9fef6e1d-8de6-4f13-a78b-2bd3ea90a675",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Dra. Maria Helena Santos",
+                    "dateOfBirth": "2016-03-08",
+                    "cpf": "045.411.160-89",
+                    "rg": "5789037-9",
+                    "gender": "male",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://avatars.githubusercontent.com/u/5397969"
+                  },
+                  "contactInfo": {
+                    "email": "Kleber.Franco@yahoo.com",
+                    "phone": "+55 (19) 5258-2071",
+                    "whatsapp": "(47) 4918-3473",
+                    "parentEmail": "Cecilia64@yahoo.com",
+                    "parentPhone": "(88) 1709-1130",
+                    "parentWhatsapp": "+55 (09) 6480-0701"
+                  },
+                  "addressInfo": {
+                    "cep": "89477-896",
+                    "address": "Carvalho Rua",
+                    "number": "20652",
+                    "complement": "Casa 1",
+                    "neighborhood": "Isadora Travessa",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250010",
+                    "segment": "Ensino Médio",
+                    "grade": "3º Ano EM",
+                    "classRoom": "B",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-10-04"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 166000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359429,
+                      "_nanoseconds": 166000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              },
+              "a0fa7b82-6130-4122-83a8-43226e34001b": {
+                "data": {
+                  "uid": "a0fa7b82-6130-4122-83a8-43226e34001b",
+                  "role": "student",
+                  "status": "active",
+                  "personalInfo": {
+                    "name": "Sarah Batista",
+                    "dateOfBirth": "2017-06-22",
+                    "cpf": "033.746.232-68",
+                    "rg": "0699475-3",
+                    "gender": "female",
+                    "nationality": "Brasileiro(a)",
+                    "img": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/81.jpg"
+                  },
+                  "contactInfo": {
+                    "email": "Salvador_Moreira3@gmail.com",
+                    "phone": "(69) 52554-1797",
+                    "whatsapp": "(68) 59857-4879",
+                    "parentEmail": "Eloa.Souza@bol.com.br",
+                    "parentPhone": "(60) 31446-0856",
+                    "parentWhatsapp": "(04) 8601-8909"
+                  },
+                  "addressInfo": {
+                    "cep": "19393-392",
+                    "address": "Rafael Alameda",
+                    "number": "224",
+                    "complement": "Sobrado 54",
+                    "neighborhood": "Costa Alameda",
+                    "city": "Aracaju",
+                    "state": "SE",
+                    "country": "Brasil"
+                  },
+                  "schoolInfo": {
+                    "registration": "20250004",
+                    "segment": "Ensino Fundamental II",
+                    "grade": "9º Ano",
+                    "classRoom": "A",
+                    "shift": "manha",
+                    "dateOfAdmission": "2024-06-22"
+                  },
+                  "metadata": {
+                    "createdBy": "system",
+                    "updatedBy": "system",
+                    "createdAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 627000000
+                    },
+                    "updatedAt": {
+                      "_seconds": 1740359428,
+                      "_nanoseconds": 627000000
+                    }
+                  }
+                },
+                "subcollections": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "users": {
+    "documents": {
+      "DuQUmFroxTh8WgyBIPUx4XhAxBr2": {
+        "data": {
+          "uid": "DuQUmFroxTh8WgyBIPUx4XhAxBr2",
+          "role": "admin",
+          "status": "active",
+          "contactInfo": {
+            "email": "teste@gmail.com",
+            "phone": "79999999999",
+            "whatsapp": "79999999999"
+          },
+          "addressInfo": {
+            "cep": "49000-000",
+            "address": "Rua Principal",
+            "number": "123",
+            "complement": "Apt 101",
+            "neighborhood": "Centro",
+            "city": "Aracaju",
+            "state": "SE",
+            "country": "Brasil"
+          },
+          "permissions": {
+            "isGlobalAdmin": true,
+            "canManageSchools": true,
+            "canManageUsers": true,
+            "canAccessFinancial": true,
+            "canAccessReports": true,
+            "canManageSettings": true
+          },
+          "settings": {
+            "language": "pt-BR",
+            "theme": "light",
+            "notifications": {
+              "email": true,
+              "push": true,
+              "sms": true
+            }
+          },
+          "personalInfo": {
+            "dateOfBirth": "1984-10-16",
+            "img": "https://example.com/path/to/image.jpg",
+            "cpf": "12345678900",
+            "rg": "1234567-8",
+            "nationality": "Brasileiro",
+            "displayName": "Felipe Macedo  Barbosa",
+            "gender": "male",
+            "name": "Felipe Macedo"
+          },
+          "metadata": {
+            "lastLogin": null,
+            "lastPasswordChange": null,
+            "createdAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 18000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 18000000
+            }
+          }
+        },
+        "subcollections": {}
+      }
+    }
+  }
+}

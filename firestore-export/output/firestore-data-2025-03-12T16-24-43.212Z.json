@@ -1,0 +1,1871 @@
+{
+  "questions": {
+    "documents": {
+      "1-ano": {
+        "data": {
+          "name": "1º Ano",
+          "description": "Série para crianças de 6 anos",
+          "totalTime": 45,
+          "order": 3
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"questions/1-ano\". Your path does not contain an odd number of components."
+        }
+      },
+      "jardim-i": {
+        "data": {
+          "name": "Jardim I",
+          "description": "Série para crianças de 4 anos",
+          "totalTime": 30,
+          "order": 1
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"questions/jardim-i\". Your path does not contain an odd number of components."
+        }
+      },
+      "jardim-ii": {
+        "data": {
+          "name": "Jardim II",
+          "description": "Série para crianças de 5 anos",
+          "totalTime": 30,
+          "order": 2
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"questions/jardim-ii\". Your path does not contain an odd number of components."
+        }
+      }
+    }
+  },
+  "questions_flat": {
+    "documents": {
+      "Qcie11697": {
+        "data": {
+          "id": "Qcie11697",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "medium",
+          "questionText": "Qual é o nome do processo de troca de gases nos pulmões?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Digestão",
+            "Respiração",
+            "Hematose",
+            "Circulação"
+          ],
+          "correctAnswer": 2,
+          "explanation": "A hematose é o processo de troca de gases nos pulmões",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 51000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie14616": {
+        "data": {
+          "id": "Qcie14616",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "animais",
+          "topicName": "Animais",
+          "subtopicId": "aves",
+          "subtopicName": "Aves",
+          "difficulty": "easy",
+          "questionText": "Qual é a característica principal das aves?",
+          "topic": "Aves",
+          "options": [
+            "Pelos",
+            "Penas",
+            "Escamas",
+            "Nadadeiras"
+          ],
+          "correctAnswer": 1,
+          "explanation": "As aves têm o corpo coberto por penas",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 732000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie14639": {
+        "data": {
+          "id": "Qcie14639",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-digestivo",
+          "subtopicName": "Sistema Digestivo",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão responsável pela digestão dos alimentos?",
+          "topic": "Sistema Digestivo",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 3,
+          "explanation": "O estômago é o órgão responsável pela digestão dos alimentos",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 107000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie22099": {
+        "data": {
+          "id": "Qcie22099",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "medium",
+          "questionText": "Qual é o nome do processo de troca de gases nos pulmões?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Digestão",
+            "Respiração",
+            "Hematose",
+            "Circulação"
+          ],
+          "correctAnswer": 2,
+          "explanation": "A hematose é o processo de troca de gases nos pulmões",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 881000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie31549": {
+        "data": {
+          "id": "Qcie31549",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão principal do sistema respiratório?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 1,
+          "explanation": "O pulmão é o órgão principal do sistema respiratório",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 833000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie39851": {
+        "data": {
+          "id": "Qcie39851",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "animais",
+          "topicName": "Animais",
+          "subtopicId": "aves",
+          "subtopicName": "Aves",
+          "difficulty": "easy",
+          "questionText": "Qual é a característica principal das aves?",
+          "topic": "Aves",
+          "options": [
+            "Pelos",
+            "Penas",
+            "Escamas",
+            "Nadadeiras"
+          ],
+          "correctAnswer": 1,
+          "explanation": "As aves têm o corpo coberto por penas",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 980000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie47787": {
+        "data": {
+          "id": "Qcie47787",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-digestivo",
+          "subtopicName": "Sistema Digestivo",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão responsável pela digestão dos alimentos?",
+          "topic": "Sistema Digestivo",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 3,
+          "explanation": "O estômago é o órgão responsável pela digestão dos alimentos",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 679000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie66097": {
+        "data": {
+          "id": "Qcie66097",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "animais",
+          "topicName": "Animais",
+          "subtopicId": "aves",
+          "subtopicName": "Aves",
+          "difficulty": "easy",
+          "questionText": "Qual é a característica principal das aves?",
+          "topic": "Aves",
+          "options": [
+            "Pelos",
+            "Penas",
+            "Escamas",
+            "Nadadeiras"
+          ],
+          "correctAnswer": 1,
+          "explanation": "As aves têm o corpo coberto por penas",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 184000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie75810": {
+        "data": {
+          "id": "Qcie75810",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "medium",
+          "questionText": "Qual é o nome do processo de troca de gases nos pulmões?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Digestão",
+            "Respiração",
+            "Hematose",
+            "Circulação"
+          ],
+          "correctAnswer": 2,
+          "explanation": "A hematose é o processo de troca de gases nos pulmões",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 629000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie83063": {
+        "data": {
+          "id": "Qcie83063",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-digestivo",
+          "subtopicName": "Sistema Digestivo",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão responsável pela digestão dos alimentos?",
+          "topic": "Sistema Digestivo",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 3,
+          "explanation": "O estômago é o órgão responsável pela digestão dos alimentos",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 929000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie88075": {
+        "data": {
+          "id": "Qcie88075",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão principal do sistema respiratório?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 1,
+          "explanation": "O pulmão é o órgão principal do sistema respiratório",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 577000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qcie92634": {
+        "data": {
+          "id": "Qcie92634",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "ciencias",
+          "subjectName": "Ciências",
+          "topicId": "corpo-humano",
+          "topicName": "Corpo Humano",
+          "subtopicId": "sistema-respiratorio",
+          "subtopicName": "Sistema Respiratório",
+          "difficulty": "easy",
+          "questionText": "Qual é o órgão principal do sistema respiratório?",
+          "topic": "Sistema Respiratório",
+          "options": [
+            "Coração",
+            "Pulmão",
+            "Fígado",
+            "Estômago"
+          ],
+          "correctAnswer": 1,
+          "explanation": "O pulmão é o órgão principal do sistema respiratório",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 977000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat10350": {
+        "data": {
+          "id": "Qmat10350",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 5 + 3?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "5 + 3 = 8",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 39000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat13166": {
+        "data": {
+          "id": "Qmat13166",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "hard",
+          "questionText": "Quanto é 42 - 17?",
+          "topic": "Subtração",
+          "options": [
+            "23",
+            "24",
+            "25",
+            "26"
+          ],
+          "correctAnswer": 2,
+          "explanation": "42 - 17 = 25",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 352000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat14865": {
+        "data": {
+          "id": "Qmat14865",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 + 7?",
+          "topic": "Adição",
+          "options": [
+            "21",
+            "22",
+            "23",
+            "24"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 + 7 = 22",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 146000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat18985": {
+        "data": {
+          "id": "Qmat18985",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 - 7?",
+          "topic": "Subtração",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 - 7 = 8",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 541000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat20375": {
+        "data": {
+          "id": "Qmat20375",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 - 7?",
+          "topic": "Subtração",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 - 7 = 8",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 302000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat25588": {
+        "data": {
+          "id": "Qmat25588",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "hard",
+          "questionText": "Quanto é 42 - 17?",
+          "topic": "Subtração",
+          "options": [
+            "23",
+            "24",
+            "25",
+            "26"
+          ],
+          "correctAnswer": 2,
+          "explanation": "42 - 17 = 25",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 709000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat26637": {
+        "data": {
+          "id": "Qmat26637",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "geometria",
+          "topicName": "Geometria",
+          "subtopicId": "formas",
+          "subtopicName": "Formas Básicas",
+          "difficulty": "easy",
+          "questionText": "Qual é o nome da forma com 4 lados iguais?",
+          "topic": "Formas Básicas",
+          "options": [
+            "Círculo",
+            "Triângulo",
+            "Quadrado",
+            "Retângulo"
+          ],
+          "correctAnswer": 2,
+          "explanation": "O quadrado tem 4 lados iguais",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 775000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat26759": {
+        "data": {
+          "id": "Qmat26759",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "easy",
+          "questionText": "Quanto é 8 - 3?",
+          "topic": "Subtração",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "correctAnswer": 2,
+          "explanation": "8 - 3 = 5",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 564000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat27883": {
+        "data": {
+          "id": "Qmat27883",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "geometria",
+          "topicName": "Geometria",
+          "subtopicId": "formas",
+          "subtopicName": "Formas Básicas",
+          "difficulty": "easy",
+          "questionText": "Qual é o nome da forma com 4 lados iguais?",
+          "topic": "Formas Básicas",
+          "options": [
+            "Círculo",
+            "Triângulo",
+            "Quadrado",
+            "Retângulo"
+          ],
+          "correctAnswer": 2,
+          "explanation": "O quadrado tem 4 lados iguais",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 661000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat30053": {
+        "data": {
+          "id": "Qmat30053",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 5 + 3?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "5 + 3 = 8",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 281000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat31922": {
+        "data": {
+          "id": "Qmat31922",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "hard",
+          "questionText": "Quanto é 42 - 17?",
+          "topic": "Subtração",
+          "options": [
+            "23",
+            "24",
+            "25",
+            "26"
+          ],
+          "correctAnswer": 2,
+          "explanation": "42 - 17 = 25",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 606000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat37527": {
+        "data": {
+          "id": "Qmat37527",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "easy",
+          "questionText": "Quanto é 8 - 3?",
+          "topic": "Subtração",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "correctAnswer": 2,
+          "explanation": "8 - 3 = 5",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 483000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat40265": {
+        "data": {
+          "id": "Qmat40265",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 5 + 3?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "5 + 3 = 8",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 254000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat41312": {
+        "data": {
+          "id": "Qmat41312",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "easy",
+          "questionText": "Quanto é 8 - 3?",
+          "topic": "Subtração",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "correctAnswer": 2,
+          "explanation": "8 - 3 = 5",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 247000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat42217": {
+        "data": {
+          "id": "Qmat42217",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "subtracao",
+          "subtopicName": "Subtração",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 - 7?",
+          "topic": "Subtração",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 - 7 = 8",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 635000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat58569": {
+        "data": {
+          "id": "Qmat58569",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 2 + 6?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "2 + 6 = 8",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 354000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat61475": {
+        "data": {
+          "id": "Qmat61475",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 2 + 6?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "2 + 6 = 8",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 88000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat64336": {
+        "data": {
+          "id": "Qmat64336",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "easy",
+          "questionText": "Quanto é 2 + 6?",
+          "topic": "Adição",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "correctAnswer": 1,
+          "explanation": "2 + 6 = 8",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 306000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat71167": {
+        "data": {
+          "id": "Qmat71167",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 + 7?",
+          "topic": "Adição",
+          "options": [
+            "21",
+            "22",
+            "23",
+            "24"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 + 7 = 22",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 428000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat74554": {
+        "data": {
+          "id": "Qmat74554",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "medium",
+          "questionText": "Quanto é 15 + 7?",
+          "topic": "Adição",
+          "options": [
+            "21",
+            "22",
+            "23",
+            "24"
+          ],
+          "correctAnswer": 1,
+          "explanation": "15 + 7 = 22",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 368000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat85902": {
+        "data": {
+          "id": "Qmat85902",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "geometria",
+          "topicName": "Geometria",
+          "subtopicId": "formas",
+          "subtopicName": "Formas Básicas",
+          "difficulty": "easy",
+          "questionText": "Qual é o nome da forma com 4 lados iguais?",
+          "topic": "Formas Básicas",
+          "options": [
+            "Círculo",
+            "Triângulo",
+            "Quadrado",
+            "Retângulo"
+          ],
+          "correctAnswer": 2,
+          "explanation": "O quadrado tem 4 lados iguais",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 410000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat86980": {
+        "data": {
+          "id": "Qmat86980",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "hard",
+          "questionText": "Quanto é 28 + 14?",
+          "topic": "Adição",
+          "options": [
+            "40",
+            "41",
+            "42",
+            "43"
+          ],
+          "correctAnswer": 2,
+          "explanation": "28 + 14 = 42",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 493000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat88875": {
+        "data": {
+          "id": "Qmat88875",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "hard",
+          "questionText": "Quanto é 28 + 14?",
+          "topic": "Adição",
+          "options": [
+            "40",
+            "41",
+            "42",
+            "43"
+          ],
+          "correctAnswer": 2,
+          "explanation": "28 + 14 = 42",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 421000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qmat95215": {
+        "data": {
+          "id": "Qmat95215",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "matematica",
+          "subjectName": "Matemática",
+          "topicId": "aritmetica",
+          "topicName": "Aritmética",
+          "subtopicId": "adicao",
+          "subtopicName": "Adição",
+          "difficulty": "hard",
+          "questionText": "Quanto é 28 + 14?",
+          "topic": "Adição",
+          "options": [
+            "40",
+            "41",
+            "42",
+            "43"
+          ],
+          "correctAnswer": 2,
+          "explanation": "28 + 14 = 42",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 199000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor23516": {
+        "data": {
+          "id": "Qpor23516",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "verbos",
+          "subtopicName": "Verbos",
+          "difficulty": "easy",
+          "questionText": "O que é um verbo?",
+          "topic": "Verbos",
+          "options": [
+            "Palavra que indica ação, estado ou fenômeno",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Verbo é a palavra que indica ação, estado ou fenômeno",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 526000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor25026": {
+        "data": {
+          "id": "Qpor25026",
+          "gradeId": "1-ano",
+          "gradeName": "1º Ano",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "substantivos",
+          "subtopicName": "Substantivos",
+          "difficulty": "easy",
+          "questionText": "O que é um substantivo?",
+          "topic": "Substantivos",
+          "options": [
+            "Palavra que indica ação",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Substantivo é a palavra que nomeia seres, lugares, objetos, etc.",
+          "createdAt": {
+            "_seconds": 1741794895,
+            "_nanoseconds": 467000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor50094": {
+        "data": {
+          "id": "Qpor50094",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "substantivos",
+          "subtopicName": "Substantivos",
+          "difficulty": "easy",
+          "questionText": "O que é um substantivo?",
+          "topic": "Substantivos",
+          "options": [
+            "Palavra que indica ação",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Substantivo é a palavra que nomeia seres, lugares, objetos, etc.",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 719000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor67428": {
+        "data": {
+          "id": "Qpor67428",
+          "gradeId": "jardim-ii",
+          "gradeName": "Jardim II",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "verbos",
+          "subtopicName": "Verbos",
+          "difficulty": "easy",
+          "questionText": "O que é um verbo?",
+          "topic": "Verbos",
+          "options": [
+            "Palavra que indica ação, estado ou fenômeno",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Verbo é a palavra que indica ação, estado ou fenômeno",
+          "createdAt": {
+            "_seconds": 1741794894,
+            "_nanoseconds": 776000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor69006": {
+        "data": {
+          "id": "Qpor69006",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "substantivos",
+          "subtopicName": "Substantivos",
+          "difficulty": "easy",
+          "questionText": "O que é um substantivo?",
+          "topic": "Substantivos",
+          "options": [
+            "Palavra que indica ação",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Substantivo é a palavra que nomeia seres, lugares, objetos, etc.",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 845000000
+          }
+        },
+        "subcollections": {}
+      },
+      "Qpor76814": {
+        "data": {
+          "id": "Qpor76814",
+          "gradeId": "jardim-i",
+          "gradeName": "Jardim I",
+          "subjectId": "portugues",
+          "subjectName": "Português",
+          "topicId": "gramatica",
+          "topicName": "Gramática",
+          "subtopicId": "verbos",
+          "subtopicName": "Verbos",
+          "difficulty": "easy",
+          "questionText": "O que é um verbo?",
+          "topic": "Verbos",
+          "options": [
+            "Palavra que indica ação, estado ou fenômeno",
+            "Palavra que nomeia seres, lugares, objetos, etc.",
+            "Palavra que qualifica o substantivo",
+            "Palavra que substitui o substantivo"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Verbo é a palavra que indica ação, estado ou fenômeno",
+          "createdAt": {
+            "_seconds": 1741794893,
+            "_nanoseconds": 914000000
+          }
+        },
+        "subcollections": {}
+      }
+    }
+  },
+  "schools": {
+    "documents": {
+      "colegio-darwin": {
+        "data": {
+          "name": "Colégio Darwin",
+          "addressInfo": {
+            "address": "Av. da Evolução",
+            "number": "500",
+            "complement": "Próximo ao Terminal",
+            "neighborhood": "Marcos Freire",
+            "city": "Nossa Senhora do Socorro",
+            "state": "SE",
+            "zipCode": "49160-000",
+            "coordinates": {
+              "latitude": -10.8512,
+              "longitude": -37.1261
+            }
+          },
+          "contactInfo": {
+            "phone": "7932458765",
+            "whatsapp": "79999887770",
+            "email": "contato@darwin.edu.br",
+            "website": "www.darwin.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Eduardo Santos",
+              "cpf": "012.345.678-99",
+              "phone": "79999887759",
+              "email": "eduardo.santos@darwin.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Camila Oliveira",
+              "cpf": "123.456.789-00",
+              "phone": "79999887748",
+              "email": "camila.oliveira@darwin.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Rafael Silva",
+              "cpf": "234.567.890-11",
+              "phone": "79999887737",
+              "email": "rafael.silva@darwin.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0005-05",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 274000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 274000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12349-0"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359435,
+              "_nanoseconds": 317000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/colegio-darwin\". Your path does not contain an odd number of components."
+        }
+      },
+      "colegio-einstein": {
+        "data": {
+          "name": "Colégio Einstein",
+          "addressInfo": {
+            "address": "Av. Beira Mar",
+            "number": "1500",
+            "complement": "Próximo ao Oceanário",
+            "neighborhood": "Atalaia",
+            "city": "Aracaju",
+            "state": "SE",
+            "zipCode": "49035-100",
+            "coordinates": {
+              "latitude": -10.9472468,
+              "longitude": -37.0731163
+            }
+          },
+          "contactInfo": {
+            "phone": "7932411234",
+            "whatsapp": "79999887766",
+            "email": "contato@einstein.edu.br",
+            "website": "www.einstein.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Ricardo Santos",
+              "cpf": "123.456.789-00",
+              "phone": "79999887755",
+              "email": "ricardo.santos@einstein.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Ana Beatriz Lima",
+              "cpf": "987.654.321-00",
+              "phone": "79999887744",
+              "email": "ana.lima@einstein.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Carlos Eduardo Silva",
+              "cpf": "456.789.123-00",
+              "phone": "79999887733",
+              "email": "carlos.silva@einstein.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0001-01",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 491000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 491000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12345-6"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 553000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/colegio-einstein\". Your path does not contain an odd number of components."
+        }
+      },
+      "colegio-galileu": {
+        "data": {
+          "name": "Colégio Galileu",
+          "addressInfo": {
+            "address": "Av. dos Astros",
+            "number": "300",
+            "complement": "Próximo ao Parque da Cidade",
+            "neighborhood": "Centro",
+            "city": "Itabaiana",
+            "state": "SE",
+            "zipCode": "49500-000",
+            "coordinates": {
+              "latitude": -10.6835,
+              "longitude": -37.4273
+            }
+          },
+          "contactInfo": {
+            "phone": "7932439876",
+            "whatsapp": "79999887768",
+            "email": "contato@galileu.edu.br",
+            "website": "www.galileu.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "José Carlos Almeida",
+              "cpf": "345.678.901-33",
+              "phone": "79999887757",
+              "email": "jose.almeida@galileu.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Luciana Mendes",
+              "cpf": "456.789.012-44",
+              "phone": "79999887746",
+              "email": "luciana.mendes@galileu.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Roberto Souza",
+              "cpf": "678.901.234-55",
+              "phone": "79999887735",
+              "email": "roberto.souza@galileu.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0003-03",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 885000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 885000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12347-8"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359432,
+              "_nanoseconds": 933000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/colegio-galileu\". Your path does not contain an odd number of components."
+        }
+      },
+      "colegio-newton": {
+        "data": {
+          "name": "Colégio Newton",
+          "addressInfo": {
+            "address": "Rua da Ciência",
+            "number": "200",
+            "complement": "Em frente à Praça São Francisco",
+            "neighborhood": "Centro Histórico",
+            "city": "São Cristóvão",
+            "state": "SE",
+            "zipCode": "49100-000",
+            "coordinates": {
+              "latitude": -11.0089,
+              "longitude": -37.2067
+            }
+          },
+          "contactInfo": {
+            "phone": "7932425678",
+            "whatsapp": "79999887767",
+            "email": "contato@newton.edu.br",
+            "website": "www.newton.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Mariana Costa",
+              "cpf": "234.567.890-11",
+              "phone": "79999887756",
+              "email": "mariana.costa@newton.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Paulo Roberto Melo",
+              "cpf": "345.678.901-22",
+              "phone": "79999887745",
+              "email": "paulo.melo@newton.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Fernanda Oliveira",
+              "cpf": "567.890.123-33",
+              "phone": "79999887734",
+              "email": "fernanda.oliveira@newton.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0002-02",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 700000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359430,
+              "_nanoseconds": 700000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12346-7"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359431,
+              "_nanoseconds": 734000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/colegio-newton\". Your path does not contain an odd number of components."
+        }
+      },
+      "colegio-tesla": {
+        "data": {
+          "name": "Colégio Tesla",
+          "addressInfo": {
+            "address": "Rua da Inovação",
+            "number": "400",
+            "complement": "Ao lado do Shopping",
+            "neighborhood": "Exposição",
+            "city": "Lagarto",
+            "state": "SE",
+            "zipCode": "49400-000",
+            "coordinates": {
+              "latitude": -10.9147,
+              "longitude": -37.6689
+            }
+          },
+          "contactInfo": {
+            "phone": "7932445432",
+            "whatsapp": "79999887769",
+            "email": "contato@tesla.edu.br",
+            "website": "www.tesla.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Patricia Lima",
+              "cpf": "789.012.345-66",
+              "phone": "79999887758",
+              "email": "patricia.lima@tesla.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Marcos Andrade",
+              "cpf": "890.123.456-77",
+              "phone": "79999887747",
+              "email": "marcos.andrade@tesla.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Sandra Costa",
+              "cpf": "901.234.567-88",
+              "phone": "79999887736",
+              "email": "sandra.costa@tesla.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0004-04",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359433,
+              "_nanoseconds": 84000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359433,
+              "_nanoseconds": 84000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12348-9"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359434,
+              "_nanoseconds": 117000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/colegio-tesla\". Your path does not contain an odd number of components."
+        }
+      },
+      "lavoisier-aracaju": {
+        "data": {
+          "name": "Colégio Lavoisier - Aracaju",
+          "addressInfo": {
+            "address": "Av. Beira Mar",
+            "number": "1500",
+            "complement": "Próximo ao Shopping Riomar",
+            "neighborhood": "Jardins",
+            "city": "Aracaju",
+            "state": "SE",
+            "zipCode": "49025-040",
+            "coordinates": {
+              "latitude": -10.9472468,
+              "longitude": -37.0731163
+            }
+          },
+          "contactInfo": {
+            "phone": "7932411234",
+            "whatsapp": "79999887766",
+            "email": "contato@lavoisier.edu.br",
+            "website": "www.lavoisier.edu.br"
+          },
+          "responsibles": [
+            {
+              "role": "DIRETOR",
+              "name": "Felipe Macedo",
+              "cpf": "123.456.789-00",
+              "phone": "79999887755",
+              "email": "felipe.macedo@lavoisier.edu.br"
+            },
+            {
+              "role": "COORDENADOR_PEDAGOGICO",
+              "name": "Amanda Silva",
+              "cpf": "987.654.321-00",
+              "phone": "79999887744",
+              "email": "amanda.silva@lavoisier.edu.br"
+            },
+            {
+              "role": "FINANCEIRO",
+              "name": "Lucas Oliveira",
+              "cpf": "456.789.123-00",
+              "phone": "79999887733",
+              "email": "lucas.oliveira@lavoisier.edu.br"
+            }
+          ],
+          "status": "active",
+          "cnpj": "12.345.678/0001-01",
+          "segments": {
+            "Ensino Fundamental II": true,
+            "Ensino Médio": true
+          },
+          "metadata": {
+            "createdAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 200000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 200000000
+            }
+          },
+          "stats": {
+            "teachers": {
+              "total": 0
+            },
+            "totalClasses": 2,
+            "students": {
+              "total": 10
+            }
+          },
+          "billing": {
+            "pricePerStudent": 1,
+            "dueDay": 10,
+            "paymentMethod": "boleto",
+            "bankInfo": {
+              "bank": "Banco do Brasil",
+              "agency": "1234-5",
+              "account": "12345-6"
+            },
+            "lastUpdate": {
+              "_seconds": 1740359429,
+              "_nanoseconds": 337000000
+            },
+            "monthlyAmount": 10
+          }
+        },
+        "subcollections": {
+          "error": "Value for argument \"collectionPath\" must point to a collection, but was \"schools/lavoisier-aracaju\". Your path does not contain an odd number of components."
+        }
+      }
+    }
+  },
+  "users": {
+    "documents": {
+      "DuQUmFroxTh8WgyBIPUx4XhAxBr2": {
+        "data": {
+          "uid": "DuQUmFroxTh8WgyBIPUx4XhAxBr2",
+          "role": "admin",
+          "status": "active",
+          "contactInfo": {
+            "email": "teste@gmail.com",
+            "phone": "79999999999",
+            "whatsapp": "79999999999"
+          },
+          "addressInfo": {
+            "cep": "49000-000",
+            "address": "Rua Principal",
+            "number": "123",
+            "complement": "Apt 101",
+            "neighborhood": "Centro",
+            "city": "Aracaju",
+            "state": "SE",
+            "country": "Brasil"
+          },
+          "permissions": {
+            "isGlobalAdmin": true,
+            "canManageSchools": true,
+            "canManageUsers": true,
+            "canAccessFinancial": true,
+            "canAccessReports": true,
+            "canManageSettings": true
+          },
+          "settings": {
+            "language": "pt-BR",
+            "theme": "light",
+            "notifications": {
+              "email": true,
+              "push": true,
+              "sms": true
+            }
+          },
+          "personalInfo": {
+            "dateOfBirth": "1984-10-16",
+            "img": "https://example.com/path/to/image.jpg",
+            "cpf": "12345678900",
+            "rg": "1234567-8",
+            "nationality": "Brasileiro",
+            "displayName": "Felipe Macedo  Barbosa",
+            "gender": "male",
+            "name": "Felipe Macedo"
+          },
+          "metadata": {
+            "lastLogin": null,
+            "lastPasswordChange": null,
+            "createdAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 18000000
+            },
+            "updatedAt": {
+              "_seconds": 1740359428,
+              "_nanoseconds": 18000000
+            }
+          }
+        },
+        "subcollections": {}
+      }
+    }
+  }
+}
