@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
 import ImageUploader from "../../components/Common/ImageUploader";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
+import { getFirebaseBackend } from "../../helpers/firebase_helper";
 
 const AddTeacher = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -30,10 +36,56 @@ const AddTeacher = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Implement form submission logic here
-    console.log(formData);
+    try {
+      // Create user with email and password
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.cpf);
+      const user = userCredential.user;
+
+      // Upload profile image if exists
+      let profileImageUrl = null;
+      if (formData.profileImage) {
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`profile_images/${user.uid}`);
+        await imageRef.put(formData.profileImage);
+        profileImageUrl = await imageRef.getDownloadURL();
+      }
+
+      // Save user data to Firestore
+      await firebase.firestore().collection('users').doc(user.uid).set({
+        role: "professor",
+        personalInfo: {
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          birthDate: formData.birthDate,
+          cpf: formData.cpf,
+          profileImage: profileImageUrl
+        },
+        professionalInfo: {
+          registration: formData.registration,
+          specialty: formData.specialty,
+          education: formData.education,
+          admissionDate: formData.admissionDate,
+          department: formData.department
+        },
+        address: {
+          fullAddress: formData.address,
+          cep: formData.cep
+        },
+        metadata: {
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }
+      });
+
+      // Navigate to teachers list
+      navigate("/teachers");
+    } catch (error) {
+      console.error("Error creating teacher:", error);
+      alert("Erro ao criar professor: " + error.message);
+    }
   };
 
   return (
