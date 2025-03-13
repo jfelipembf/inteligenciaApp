@@ -1,8 +1,16 @@
-# React + Vite
+# Inteligência App - Painel Escolar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma aplicação React + Vite que implementa um painel escolar inteligente.
 
-Currently, two official plugins are available:
+## Sobre o Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O Painel Escolar é uma aplicação que utiliza o Firebase Firestore para armazenar e gerenciar questões, metadados escolares, informações de usuários e estatísticas.
+
+## Tecnologias
+
+Este template fornece uma configuração mínima para trabalhar com React em Vite com HMR e algumas regras ESLint.
+
+Atualmente, dois plugins oficiais estão disponíveis:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) usa [Babel](https://babeljs.io/) para Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) usa [SWC](https://swc.rs/) para Fast Refresh
