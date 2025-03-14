@@ -1,32 +1,36 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Spinner } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
 import ImageUploader from "../../components/Common/ImageUploader";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
-import { getFirebaseBackend } from "../../helpers/firebase_helper";
+import { useTeacherManagement } from "../../hooks/useTeacherManagement";
 
 const AddTeacher = () => {
   const navigate = useNavigate();
+  const { createTeacher, loading, error } = useTeacherManagement();
   const [formData, setFormData] = useState({
+    // Dados pessoais
     fullName: "",
     email: "",
     phone: "",
     birthDate: "",
     cpf: "",
+    password: "",
+    confirmPassword: "",
+    profileImage: null,
+    // Dados profissionais
     registration: "",
-    specialty: "",
-    education: "",
-    admissionDate: "",
-    department: "",
-    address: "",
+    specialization: "",
+    subjects: "",
+    // Endereço
     cep: "",
-    gender: "",
-    profileImage: null
+    street: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
   });
 
   const handleInputChange = (e) => {
@@ -37,62 +41,74 @@ const AddTeacher = () => {
     }));
   };
 
+  const searchCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
+      const data = await response.json();
+      if (!data.erro) {
+        setFormData(prev => ({
+          ...prev,
+          street: data.logradouro,
+          neighborhood: data.bairro,
+          city: data.localidade,
+          state: data.uf
+        }));
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+    }
+  };
+
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+      searchCep(cep);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
     try {
-      // Get current user to access schoolId
-      const currentUser = firebase.auth().currentUser;
-      const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get();
-      const schoolId = userDoc.data().schoolId;
-
-      // Create user with email and password
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.cpf);
-      const user = userCredential.user;
-
-      // Upload profile image if exists
-      let profileImageUrl = null;
-      if (formData.profileImage) {
-        const storageRef = firebase.storage().ref();
-        const imageRef = storageRef.child(`profile_images/${user.uid}`);
-        await imageRef.put(formData.profileImage);
-        profileImageUrl = await imageRef.getDownloadURL();
-      }
-
-      // Save user data to Firestore
-      await firebase.firestore().collection('users').doc(user.uid).set({
-        role: "professor",
-        schoolId: schoolId,
+      const userData = {
         personalInfo: {
           name: formData.fullName,
-          email: formData.email,
           phone: formData.phone,
           birthDate: formData.birthDate,
           cpf: formData.cpf,
-          gender: formData.gender,
-          profileImage: profileImageUrl
         },
         professionalInfo: {
           registration: formData.registration,
-          specialty: formData.specialty,
-          education: formData.education,
-          admissionDate: formData.admissionDate,
-          department: formData.department
+          specialization: formData.specialization,
+          subjects: formData.subjects.split(',').map(subject => subject.trim()),
         },
         address: {
-          fullAddress: formData.address,
-          cep: formData.cep
-        },
-        metadata: {
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          cep: formData.cep,
+          street: formData.street,
+          number: formData.number,
+          complement: formData.complement,
+          neighborhood: formData.neighborhood,
+          city: formData.city,
+          state: formData.state
         }
+      };
+
+      await createTeacher({
+        email: formData.email,
+        password: formData.password,
+        userData,
+        profileImage: formData.profileImage
       });
 
-      // Navigate to teachers list
+      alert("Professor cadastrado com sucesso!");
       navigate("/teachers");
-    } catch (error) {
-      console.error("Error creating teacher:", error);
-      alert("Erro ao criar professor: " + error.message);
+    } catch (err) {
+      alert("Erro ao criar professor: " + err.message);
     }
   };
 
@@ -152,38 +168,7 @@ const AddTeacher = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={3}>
-                        <FormGroup className="mb-3">
-                          <Label>Telefone</Label>
-                          <InputMask
-                            mask="(99) 99999-9999"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                          >
-                            {(inputProps) => (
-                              <Input
-                                {...inputProps}
-                                type="text"
-                                name="phone"
-                                required
-                              />
-                            )}
-                          </InputMask>
-                        </FormGroup>
-                      </Col>
-                      <Col md={3}>
-                        <FormGroup className="mb-3">
-                          <Label>Data de Nascimento</Label>
-                          <Input
-                            type="date"
-                            name="birthDate"
-                            value={formData.birthDate}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={3}>
+                      <Col md={4}>
                         <FormGroup className="mb-3">
                           <Label>CPF</Label>
                           <InputMask
@@ -202,30 +187,44 @@ const AddTeacher = () => {
                           </InputMask>
                         </FormGroup>
                       </Col>
-                      <Col md={3}>
+                      <Col md={4}>
                         <FormGroup className="mb-3">
-                          <Label>Sexo</Label>
+                          <Label>Telefone</Label>
+                          <InputMask
+                            mask="(99) 99999-9999"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="phone"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Data de Nascimento</Label>
                           <Input
-                            type="select"
-                            name="gender"
-                            value={formData.gender}
+                            type="date"
+                            name="birthDate"
+                            value={formData.birthDate}
                             onChange={handleInputChange}
                             required
-                          >
-                            <option value="">Selecione...</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
-                            <option value="outros">Outros</option>
-                          </Input>
+                          />
                         </FormGroup>
                       </Col>
                     </Row>
 
                     <h5 className="font-size-14 mb-3 mt-4">Dados Profissionais</h5>
                     <Row>
-                      <Col md={3}>
+                      <Col md={4}>
                         <FormGroup className="mb-3">
-                          <Label>Registro</Label>
+                          <Label>Matrícula</Label>
                           <Input
                             type="text"
                             name="registration"
@@ -235,71 +234,13 @@ const AddTeacher = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={3}>
+                      <Col md={4}>
                         <FormGroup className="mb-3">
-                          <Label>Especialidade</Label>
+                          <Label>Especialização</Label>
                           <Input
                             type="text"
-                            name="specialty"
-                            value={formData.specialty}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={3}>
-                        <FormGroup className="mb-3">
-                          <Label>Formação</Label>
-                          <Input
-                            type="text"
-                            name="education"
-                            value={formData.education}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={3}>
-                        <FormGroup className="mb-3">
-                          <Label>Data de Admissão</Label>
-                          <Input
-                            type="date"
-                            name="admissionDate"
-                            value={formData.admissionDate}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={12}>
-                        <FormGroup className="mb-3">
-                          <Label>Departamento</Label>
-                          <Input
-                            type="select"
-                            name="department"
-                            value={formData.department}
-                            onChange={handleInputChange}
-                            required
-                          >
-                            <option value="">Selecione...</option>
-                            <option value="Ciências Exatas">Ciências Exatas</option>
-                            <option value="Ciências Humanas">Ciências Humanas</option>
-                            <option value="Linguagens">Linguagens</option>
-                            <option value="Ciências da Natureza">Ciências da Natureza</option>
-                          </Input>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-
-                    <h5 className="font-size-14 mb-3 mt-4">Endereço</h5>
-                    <Row>
-                      <Col md={8}>
-                        <FormGroup className="mb-3">
-                          <Label>Endereço Completo</Label>
-                          <Input
-                            type="text"
-                            name="address"
-                            value={formData.address}
+                            name="specialization"
+                            value={formData.specialization}
                             onChange={handleInputChange}
                             required
                           />
@@ -307,11 +248,29 @@ const AddTeacher = () => {
                       </Col>
                       <Col md={4}>
                         <FormGroup className="mb-3">
+                          <Label>Disciplinas (separadas por vírgula)</Label>
+                          <Input
+                            type="text"
+                            name="subjects"
+                            value={formData.subjects}
+                            onChange={handleInputChange}
+                            placeholder="Ex: Matemática, Física"
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    <h5 className="font-size-14 mb-3 mt-4">Endereço</h5>
+                    <Row>
+                      <Col md={3}>
+                        <FormGroup className="mb-3">
                           <Label>CEP</Label>
                           <InputMask
                             mask="99999-999"
                             value={formData.cep}
                             onChange={handleInputChange}
+                            onBlur={handleCepBlur}
                           >
                             {(inputProps) => (
                               <Input
@@ -324,16 +283,133 @@ const AddTeacher = () => {
                           </InputMask>
                         </FormGroup>
                       </Col>
+                      <Col md={7}>
+                        <FormGroup className="mb-3">
+                          <Label>Rua</Label>
+                          <Input
+                            type="text"
+                            name="street"
+                            value={formData.street}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Número</Label>
+                          <Input
+                            type="text"
+                            name="number"
+                            value={formData.number}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Complemento</Label>
+                          <Input
+                            type="text"
+                            name="complement"
+                            value={formData.complement}
+                            onChange={handleInputChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Bairro</Label>
+                          <Input
+                            type="text"
+                            name="neighborhood"
+                            value={formData.neighborhood}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Cidade</Label>
+                          <Input
+                            type="text"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Estado</Label>
+                          <Input
+                            type="text"
+                            name="state"
+                            value={formData.state}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
                     </Row>
 
-                    <div className="d-flex justify-content-end gap-2 mt-4">
-                      <Button type="button" color="secondary" tag={Link} to="/teachers">
+                    <h5 className="font-size-14 mb-3 mt-4">Dados de Acesso</h5>
+                    <Row>
+                      <Col md={6}>
+                        <FormGroup className="mb-3">
+                          <Label>Senha</Label>
+                          <Input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={6}>
+                        <FormGroup className="mb-3">
+                          <Label>Confirmar Senha</Label>
+                          <Input
+                            type="password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    <div className="d-flex flex-wrap gap-2">
+                      <Button type="submit" color="primary" disabled={loading}>
+                        {loading ? (
+                          <>
+                            <Spinner size="sm" className="me-2" />
+                            Salvando...
+                          </>
+                        ) : (
+                          "Salvar"
+                        )}
+                      </Button>
+                      <Button 
+                        type="button" 
+                        color="secondary" 
+                        onClick={() => navigate("/teachers")}
+                        disabled={loading}
+                      >
                         Cancelar
                       </Button>
-                      <Button type="submit" color="primary">
-                        Cadastrar
-                      </Button>
                     </div>
+
+                    {error && (
+                      <div className="alert alert-danger mt-3">
+                        {error}
+                      </div>
+                    )}
                   </Form>
                 </CardBody>
               </Card>

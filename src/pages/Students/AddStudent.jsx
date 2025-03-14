@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Spinner } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
 import ImageUploader from "../../components/Common/ImageUploader";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
+import { useUserManagement } from "../../hooks/useUserManagement";
 
 const AddStudent = () => {
   const navigate = useNavigate();
+  const { createUser, loading, error } = useUserManagement();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -20,7 +18,22 @@ const AddStudent = () => {
     grade: "",
     class: "",
     gender: "",
-    profileImage: null
+    cpf: "",
+    password: "",
+    confirmPassword: "",
+    profileImage: null,
+    cep: "",
+    street: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    guardianName: "",
+    guardianCpf: "",
+    guardianEmail: "",
+    guardianPhone: "",
+    guardianRelationship: "",
   });
 
   const handleInputChange = (e) => {
@@ -31,55 +44,83 @@ const AddStudent = () => {
     }));
   };
 
+  const searchCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
+      const data = await response.json();
+      if (!data.erro) {
+        setFormData(prev => ({
+          ...prev,
+          street: data.logradouro,
+          neighborhood: data.bairro,
+          city: data.localidade,
+          state: data.uf
+        }));
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+    }
+  };
+
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+      searchCep(cep);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
     try {
-      // Get current user to access schoolId
-      const currentUser = firebase.auth().currentUser;
-      const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get();
-      const schoolId = userDoc.data().schoolId;
-
-      // Create user with email and password
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.registration);
-      const user = userCredential.user;
-
-      // Upload profile image if exists
-      let profileImageUrl = null;
-      if (formData.profileImage) {
-        const storageRef = firebase.storage().ref();
-        const imageRef = storageRef.child(`profile_images/${user.uid}`);
-        await imageRef.put(formData.profileImage);
-        profileImageUrl = await imageRef.getDownloadURL();
-      }
-
-      // Save user data to Firestore
-      await firebase.firestore().collection('users').doc(user.uid).set({
-        role: "aluno",
-        schoolId: schoolId,
+      const userData = {
         personalInfo: {
           name: formData.fullName,
-          email: formData.email,
           phone: formData.phone,
           birthDate: formData.birthDate,
           gender: formData.gender,
-          profileImage: profileImageUrl
+          cpf: formData.cpf,
         },
         academicInfo: {
           registration: formData.registration,
           grade: formData.grade,
           class: formData.class
         },
-        metadata: {
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        address: {
+          cep: formData.cep,
+          street: formData.street,
+          number: formData.number,
+          complement: formData.complement,
+          neighborhood: formData.neighborhood,
+          city: formData.city,
+          state: formData.state
+        },
+        guardian: {
+          name: formData.guardianName,
+          cpf: formData.guardianCpf,
+          email: formData.guardianEmail,
+          phone: formData.guardianPhone,
+          relationship: formData.guardianRelationship
         }
+      };
+
+      await createUser({
+        email: formData.email,
+        password: formData.password,
+        userData,
+        profileImage: formData.profileImage,
+        role: "aluno"
       });
 
-      // Navigate to students list
+      alert("Aluno cadastrado com sucesso!");
       navigate("/students");
-    } catch (error) {
-      console.error("Error creating student:", error);
-      alert("Erro ao criar aluno: " + error.message);
+    } catch (err) {
+      alert("Erro ao criar aluno: " + err.message);
     }
   };
 
@@ -94,7 +135,6 @@ const AddStudent = () => {
                 <CardBody>
                   <h4 className="card-title mb-4">Cadastro de Novo Aluno</h4>
                   <Form onSubmit={handleSubmit}>
-                    {/* Foto de Perfil */}
                     <FormGroup className="mb-4">
                       <Label>Foto de Perfil</Label>
                       <div className="d-flex align-items-center">
@@ -141,6 +181,25 @@ const AddStudent = () => {
                       </Col>
                       <Col md={3}>
                         <FormGroup className="mb-3">
+                          <Label>CPF</Label>
+                          <InputMask
+                            mask="999.999.999-99"
+                            value={formData.cpf}
+                            onChange={handleInputChange}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="cpf"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup className="mb-3">
                           <Label>Telefone</Label>
                           <InputMask
                             mask="(99) 99999-9999"
@@ -182,7 +241,43 @@ const AddStudent = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={3}>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Série</Label>
+                          <Input
+                            type="select"
+                            name="grade"
+                            value={formData.grade}
+                            onChange={handleInputChange}
+                            required
+                          >
+                            <option value="">Selecione...</option>
+                            <option value="6º Ano">6º Ano</option>
+                            <option value="7º Ano">7º Ano</option>
+                            <option value="8º Ano">8º Ano</option>
+                            <option value="9º Ano">9º Ano</option>
+                          </Input>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Turma</Label>
+                          <Input
+                            type="select"
+                            name="class"
+                            value={formData.class}
+                            onChange={handleInputChange}
+                            required
+                          >
+                            <option value="">Selecione...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                          </Input>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
                         <FormGroup className="mb-3">
                           <Label>Sexo</Label>
                           <Input
@@ -201,54 +296,240 @@ const AddStudent = () => {
                       </Col>
                     </Row>
 
-                    <h5 className="font-size-14 mb-3 mt-4">Dados Escolares</h5>
+                    <h5 className="font-size-14 mb-3 mt-4">Endereço</h5>
+                    <Row>
+                      <Col md={3}>
+                        <FormGroup className="mb-3">
+                          <Label>CEP</Label>
+                          <InputMask
+                            mask="99999-999"
+                            value={formData.cep}
+                            onChange={handleInputChange}
+                            onBlur={handleCepBlur}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="cep"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={7}>
+                        <FormGroup className="mb-3">
+                          <Label>Rua</Label>
+                          <Input
+                            type="text"
+                            name="street"
+                            value={formData.street}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Número</Label>
+                          <Input
+                            type="text"
+                            name="number"
+                            value={formData.number}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Complemento</Label>
+                          <Input
+                            type="text"
+                            name="complement"
+                            value={formData.complement}
+                            onChange={handleInputChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Bairro</Label>
+                          <Input
+                            type="text"
+                            name="neighborhood"
+                            value={formData.neighborhood}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Cidade</Label>
+                          <Input
+                            type="text"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <FormGroup className="mb-3">
+                          <Label>Estado</Label>
+                          <Input
+                            type="text"
+                            name="state"
+                            value={formData.state}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    <h5 className="font-size-14 mb-3 mt-4">Dados do Responsável</h5>
                     <Row>
                       <Col md={6}>
                         <FormGroup className="mb-3">
-                          <Label>Série</Label>
+                          <Label>Nome do Responsável</Label>
                           <Input
-                            type="select"
-                            name="grade"
-                            value={formData.grade}
+                            type="text"
+                            name="guardianName"
+                            value={formData.guardianName}
                             onChange={handleInputChange}
                             required
-                          >
-                            <option value="">Selecione...</option>
-                            <option value="5º Ano">5º Ano</option>
-                            <option value="6º Ano">6º Ano</option>
-                            <option value="7º Ano">7º Ano</option>
-                            <option value="8º Ano">8º Ano</option>
-                            <option value="9º Ano">9º Ano</option>
-                          </Input>
+                          />
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup className="mb-3">
-                          <Label>Turma</Label>
+                          <Label>Email do Responsável</Label>
+                          <Input
+                            type="email"
+                            name="guardianEmail"
+                            value={formData.guardianEmail}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>CPF do Responsável</Label>
+                          <InputMask
+                            mask="999.999.999-99"
+                            value={formData.guardianCpf}
+                            onChange={handleInputChange}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="guardianCpf"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Telefone do Responsável</Label>
+                          <InputMask
+                            mask="(99) 99999-9999"
+                            value={formData.guardianPhone}
+                            onChange={handleInputChange}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="guardianPhone"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Parentesco</Label>
                           <Input
                             type="select"
-                            name="class"
-                            value={formData.class}
+                            name="guardianRelationship"
+                            value={formData.guardianRelationship}
                             onChange={handleInputChange}
                             required
                           >
                             <option value="">Selecione...</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
+                            <option value="pai">Pai</option>
+                            <option value="mae">Mãe</option>
+                            <option value="avo">Avô/Avó</option>
+                            <option value="tio">Tio/Tia</option>
+                            <option value="outro">Outro</option>
                           </Input>
                         </FormGroup>
                       </Col>
                     </Row>
 
-                    <div className="d-flex justify-content-end gap-2 mt-4">
-                      <Button type="button" color="secondary" tag={Link} to="/students">
+                    <h5 className="font-size-14 mb-3 mt-4">Dados de Acesso</h5>
+                    <Row>
+                      <Col md={6}>
+                        <FormGroup className="mb-3">
+                          <Label>Senha</Label>
+                          <Input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={6}>
+                        <FormGroup className="mb-3">
+                          <Label>Confirmar Senha</Label>
+                          <Input
+                            type="password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    <div className="d-flex flex-wrap gap-2">
+                      <Button type="submit" color="primary" disabled={loading}>
+                        {loading ? (
+                          <>
+                            <Spinner size="sm" className="me-2" />
+                            Salvando...
+                          </>
+                        ) : (
+                          "Salvar"
+                        )}
+                      </Button>
+                      <Button 
+                        type="button" 
+                        color="secondary" 
+                        onClick={() => navigate("/students")}
+                        disabled={loading}
+                      >
                         Cancelar
                       </Button>
-                      <Button type="submit" color="primary">
-                        Cadastrar
-                      </Button>
                     </div>
+
+                    {error && (
+                      <div className="alert alert-danger mt-3">
+                        {error}
+                      </div>
+                    )}
                   </Form>
                 </CardBody>
               </Card>
