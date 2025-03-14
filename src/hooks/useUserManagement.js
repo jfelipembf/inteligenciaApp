@@ -4,21 +4,22 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 
-export const useStudentManagement = () => {
+export const useUserManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createStudent = async ({
+  const createUser = async ({
     email,
     password,
     userData,
-    profileImage
+    profileImage,
+    role
   }) => {
     setLoading(true);
     setError(null);
 
     try {
-      console.log("Iniciando criação do aluno...");
+      console.log("Iniciando criação do usuário...");
       
       // Verificar se há um usuário admin autenticado
       const currentUser = firebase.auth().currentUser;
@@ -36,9 +37,9 @@ export const useStudentManagement = () => {
       }
 
       // Criar usuário no Auth
-      console.log("Criando aluno no Firebase Auth...");
+      console.log("Criando usuário no Firebase Auth...");
       const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      console.log("Aluno criado com sucesso:", userCredential);
+      console.log("Usuário criado com sucesso:", userCredential);
       const newUserUid = userCredential.user.uid;
 
       // Upload da foto de perfil se existir
@@ -55,7 +56,7 @@ export const useStudentManagement = () => {
       // Preparar dados do usuário para o Firestore
       const finalUserData = {
         uid: newUserUid,
-        role: "aluno",
+        role,
         schoolId,
         ...userData,
         personalInfo: {
@@ -70,21 +71,21 @@ export const useStudentManagement = () => {
         }
       };
 
-      console.log("Salvando dados do aluno no Firestore:", finalUserData);
+      console.log("Salvando dados do usuário no Firestore:", finalUserData);
       await firebase.firestore().collection('users').doc(newUserUid).set(finalUserData);
-      console.log("Aluno salvo no Firestore com sucesso.");
+      console.log("Usuário salvo no Firestore com sucesso.");
 
       setLoading(false);
       return { success: true, uid: newUserUid };
     } catch (error) {
-      console.error("Erro na criação do aluno:", error);
+      console.error("Erro na criação do usuário:", error);
       setError(error.message);
 
       // Limpar conta do Auth em caso de erro
       try {
         const user = firebase.auth().currentUser;
         if (user && user.email === email) {
-          console.log("Removendo aluno criado no Auth devido a erro...");
+          console.log("Removendo usuário criado no Auth devido a erro...");
           await user.delete();
         }
       } catch (deleteError) {
@@ -94,6 +95,26 @@ export const useStudentManagement = () => {
       setLoading(false);
       throw error;
     }
+  };
+
+  return {
+    createUser,
+    loading,
+    error
+  };
+};
+
+export const useStudentManagement = () => {
+  const { createUser, loading, error } = useUserManagement();
+
+  const createStudent = async ({ email, password, userData, profileImage }) => {
+    return createUser({
+      email,
+      password,
+      userData,
+      profileImage,
+      role: "aluno"
+    });
   };
 
   return {
