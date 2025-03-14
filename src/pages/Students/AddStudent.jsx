@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
 import ImageUploader from "../../components/Common/ImageUploader";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 const AddStudent = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -14,6 +19,7 @@ const AddStudent = () => {
     registration: "",
     grade: "",
     class: "",
+    gender: "",
     profileImage: null
   });
 
@@ -25,10 +31,56 @@ const AddStudent = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Implement form submission logic here
-    console.log(formData);
+    try {
+      // Get current user to access schoolId
+      const currentUser = firebase.auth().currentUser;
+      const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get();
+      const schoolId = userDoc.data().schoolId;
+
+      // Create user with email and password
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.registration);
+      const user = userCredential.user;
+
+      // Upload profile image if exists
+      let profileImageUrl = null;
+      if (formData.profileImage) {
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`profile_images/${user.uid}`);
+        await imageRef.put(formData.profileImage);
+        profileImageUrl = await imageRef.getDownloadURL();
+      }
+
+      // Save user data to Firestore
+      await firebase.firestore().collection('users').doc(user.uid).set({
+        role: "aluno",
+        schoolId: schoolId,
+        personalInfo: {
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          birthDate: formData.birthDate,
+          gender: formData.gender,
+          profileImage: profileImageUrl
+        },
+        academicInfo: {
+          registration: formData.registration,
+          grade: formData.grade,
+          class: formData.class
+        },
+        metadata: {
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }
+      });
+
+      // Navigate to students list
+      navigate("/students");
+    } catch (error) {
+      console.error("Error creating student:", error);
+      alert("Erro ao criar aluno: " + error.message);
+    }
   };
 
   return (
@@ -87,7 +139,7 @@ const AddStudent = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={4}>
+                      <Col md={3}>
                         <FormGroup className="mb-3">
                           <Label>Telefone</Label>
                           <InputMask
@@ -106,7 +158,7 @@ const AddStudent = () => {
                           </InputMask>
                         </FormGroup>
                       </Col>
-                      <Col md={4}>
+                      <Col md={3}>
                         <FormGroup className="mb-3">
                           <Label>Data de Nascimento</Label>
                           <Input
@@ -118,7 +170,7 @@ const AddStudent = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={4}>
+                      <Col md={3}>
                         <FormGroup className="mb-3">
                           <Label>Matrícula</Label>
                           <Input
@@ -128,6 +180,23 @@ const AddStudent = () => {
                             onChange={handleInputChange}
                             required
                           />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup className="mb-3">
+                          <Label>Sexo</Label>
+                          <Input
+                            type="select"
+                            name="gender"
+                            value={formData.gender}
+                            onChange={handleInputChange}
+                            required
+                          >
+                            <option value="">Selecione...</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="outros">Outros</option>
+                          </Input>
                         </FormGroup>
                       </Col>
                     </Row>
