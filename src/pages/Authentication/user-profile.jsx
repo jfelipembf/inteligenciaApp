@@ -27,6 +27,10 @@ import avatar from "../../assets/images/users/avatar-1.jpg";
 import profileImg from "../../assets/images/profile-img.png";
 import { editProfile, resetProfileFlag } from "/src/store/actions";
 import { getFirebaseBackend } from "../../helpers/firebase_helper";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 const UserProfile = () => {
   document.title = "Perfil";
@@ -67,7 +71,9 @@ const UserProfile = () => {
     const loadUserData = async () => {
       if (localStorage.getItem("authUser")) {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        let firestoreUser = JSON.parse(localStorage.getItem("firestoreUser"));
+        const currentUser = firebase.auth().currentUser;
+        const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get()
+        let firestoreUser = userDoc.data();
 
         // Se não tiver dados do Firestore, busca novamente
         if (!firestoreUser) {
