@@ -326,7 +326,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="dateOfBirth"
-                              value={isEditing ? editForm.dateOfBirth : (userData.personalInfo?.dateOfBirth || '')}
+                              value={isEditing ? editForm.dateOfBirth : (userData.personalInfo?.birthDate || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -336,7 +336,7 @@ const UserProfile = () => {
                           <div className="mb-3">
                             <Label>Gênero</Label>
                             <Input
-                              type="select"
+                              type="text"
                               name="gender"
                               value={isEditing ? editForm.gender : (userData.personalInfo?.gender || '')}
                               onChange={handleInputChange}
@@ -363,11 +363,11 @@ const UserProfile = () => {
                       <Row>
                         <Col md={6}>
                           <div className="mb-3">
-                            <Label>Logradouro</Label>
+                            <Label>Rua</Label>
                             <Input
                               type="text"
                               name="address"
-                              value={isEditing ? editForm.address : (userData.addressInfo?.address || '')}
+                              value={isEditing ? editForm.address : (userData.address?.street || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -379,7 +379,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="number"
-                              value={isEditing ? editForm.number : (userData.addressInfo?.number || '')}
+                              value={isEditing ? editForm.number : (userData.address?.number || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -391,7 +391,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="complement"
-                              value={isEditing ? editForm.complement : (userData.addressInfo?.complement || '')}
+                              value={isEditing ? editForm.complement : (userData.address?.complement || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -403,7 +403,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="neighborhood"
-                              value={isEditing ? editForm.neighborhood : (userData.addressInfo?.neighborhood || '')}
+                              value={isEditing ? editForm.neighborhood : (userData.address?.neighborhood || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -415,7 +415,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="city"
-                              value={isEditing ? editForm.city : (userData.addressInfo?.city || '')}
+                              value={isEditing ? editForm.city : (userData.address?.city || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -427,7 +427,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="state"
-                              value={isEditing ? editForm.state : (userData.addressInfo?.state || '')}
+                              value={isEditing ? editForm.state : (userData.address?.state || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
@@ -439,19 +439,7 @@ const UserProfile = () => {
                             <Input
                               type="text"
                               name="cep"
-                              value={isEditing ? editForm.cep : (userData.addressInfo?.cep || '')}
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
-                            />
-                          </div>
-                        </Col>
-                        <Col md={6}>
-                          <div className="mb-3">
-                            <Label>País</Label>
-                            <Input
-                              type="text"
-                              name="country"
-                              value={isEditing ? editForm.country : (userData.addressInfo?.country || '')}
+                              value={isEditing ? editForm.cep : (userData.address?.cep || '')}
                               onChange={handleInputChange}
                               disabled={!isEditing}
                             />
