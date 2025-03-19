@@ -110,14 +110,14 @@ const UserProfile = () => {
         rg: userData.personalInfo?.rg || "",
         dateOfBirth: userData.personalInfo?.dateOfBirth || "",
         gender: userData.personalInfo?.gender || "",
-        address: userData.addressInfo?.address || "",
-        number: userData.addressInfo?.number || "",
-        complement: userData.addressInfo?.complement || "",
-        neighborhood: userData.addressInfo?.neighborhood || "",
-        city: userData.addressInfo?.city || "",
-        state: userData.addressInfo?.state || "",
-        cep: userData.addressInfo?.cep || "",
-        country: userData.addressInfo?.country || ""
+        address: userData.address?.street || "",
+        number: userData.address?.number || "",
+        complement: userData.address?.complement || "",
+        neighborhood: userData.address?.neighborhood || "",
+        city: userData.address?.city || "",
+        state: userData.address?.state || "",
+        cep: userData.address?.cep || "",
+        country: userData.address?.country || ""
       });
     }
   }, [userData]);
