@@ -16,6 +16,8 @@ const AddTeacher = () => {
     phone: "",
     birthDate: "",
     cpf: "",
+    rg: "",
+    gender: "",
     password: "",
     confirmPassword: "",
     profileImage: null,
@@ -81,6 +83,8 @@ const AddTeacher = () => {
           phone: formData.phone,
           birthDate: formData.birthDate,
           cpf: formData.cpf,
+          rg: formData.rg,
+          gender: formData.gender,
         },
         professionalInfo: {
           registration: formData.registration,
@@ -185,6 +189,42 @@ const AddTeacher = () => {
                               />
                             )}
                           </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>RG</Label>
+                          <InputMask
+                            mask="99.999.999-9"
+                            value={formData.rg}
+                            onChange={handleInputChange}
+                          >
+                            {(inputProps) => (
+                              <Input
+                                {...inputProps}
+                                type="text"
+                                name="rg"
+                                required
+                              />
+                            )}
+                          </InputMask>
+                        </FormGroup>
+                      </Col>
+                      <Col md={4}>
+                        <FormGroup className="mb-3">
+                          <Label>Gênero</Label>
+                          <Input
+                            type="select"
+                            name="gender"
+                            value={formData.gender}
+                            onChange={handleInputChange}
+                            required
+                          >
+                            <option value="">Selecione...</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="outro">Outro</option>
+                          </Input>
                         </FormGroup>
                       </Col>
                       <Col md={4}>
