@@ -194,6 +194,10 @@ import Caixa from "../pages/Financeiro/Caixa/index";
 import AddStudent from "../pages/Students/AddStudent";
 import AddTeacher from "../pages/Teachers/AddTeacher";
 
+//Coordenador
+import AddCoordinator from "../pages/Coordinator/AddCoordinator";
+import Coordinators from "../pages/Coordinator/index";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -217,6 +221,10 @@ const authProtectedRoutes = [
   { path: "/teachers/:id", component: <TeacherProfile /> },
   { path: "/teachers/:id/activities", component: <TeacherActivities /> },
   { path: "/teachers/:id/messages", component: <TeacherMessages /> },
+
+  //Coordinator
+  { path: "/add-coordinator", component: <AddCoordinator /> },
+  { path: "/coordinators", component: <Coordinators /> },
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },
@@ -361,10 +369,9 @@ const authProtectedRoutes = [
   { path: "/create-class", component: <CreateClass /> },
   { path: "/classes", component: <ListClasses /> },
 
-
   // Rotas de Escolas
-  { path: "/schools", component: <Schools /> },          // Lista de Escolas
-  { path: "/schools/new", component: <Schools /> },      // Nova Escola
+  { path: "/schools", component: <Schools /> }, // Lista de Escolas
+  { path: "/schools/new", component: <Schools /> }, // Nova Escola
   { path: "/schools/:id/*", component: <SchoolProfile /> },
 
   // Rotas Financeiro
@@ -413,4 +420,4 @@ const publicRoutes = [
 ];
 
 // export { authProtectedRoutes, publicRoutes };
-export { authProtectedRoutes, publicRoutes }
+export { authProtectedRoutes, publicRoutes };

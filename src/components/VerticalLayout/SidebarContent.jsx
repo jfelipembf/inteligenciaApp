@@ -150,7 +150,7 @@ const SidebarContent = (props) => {
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
-            
+
             {/* Dashboard */}
             <li>
               <Link to="/dashboard" className="waves-effect">
@@ -161,19 +161,19 @@ const SidebarContent = (props) => {
 
             {/* Turmas */}
             <li>
-               <Link to="/#" className="has-arrow">
-                 <i className="bx bx-group"></i>
-                 <span>{props.t("Turmas")}</span>
-               </Link>
-               <ul className="sub-menu" aria-expanded="false">
-                 <li>
-                   <Link to="/create-class">{props.t("Criar Turma")}</Link>
-                 </li>
-                 <li>
-                   <Link to="/classes">{props.t("Visualizar Turmas")}</Link>
-                 </li>
-               </ul>
-             </li>
+              <Link to="/#" className="has-arrow">
+                <i className="bx bx-group"></i>
+                <span>{props.t("Turmas")}</span>
+              </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/create-class">{props.t("Criar Turma")}</Link>
+                </li>
+                <li>
+                  <Link to="/classes">{props.t("Visualizar Turmas")}</Link>
+                </li>
+              </ul>
+            </li>
 
             {/* Alunos */}
             <li>
@@ -199,8 +199,16 @@ const SidebarContent = (props) => {
               </Link>
             </li>
 
+            {/* Coordenadores */}
+            <li>
+              <Link to="/coordinators" className="waves-effect">
+                <i className="bx bx-user-check font-size-18"></i>
+                <span className="menu-item">{props.t("Coordenadores")}</span>
+              </Link>
+            </li>
+
             {/* Logout - positioned at bottom */}
-            <li style={{ position: 'absolute', bottom: '20px', width: '100%' }}>
+            <li style={{ position: "absolute", bottom: "20px", width: "100%" }}>
               <Link to="/logout" className="waves-effect text-danger">
                 <i className="bx bx-power-off font-size-18"></i>
                 <span className="menu-item">{props.t("Sair")}</span>
