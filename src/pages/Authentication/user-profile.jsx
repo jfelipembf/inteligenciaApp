@@ -69,26 +69,26 @@ const UserProfile = () => {
 
   useEffect(() => {
     const loadUserData = async () => {
-      if (localStorage.getItem("authUser")) {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
+      
         const currentUser = firebase.auth().currentUser;
+        console.log(currentUser)
         const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get()
         let firestoreUser = userDoc.data();
 
         // Se não tiver dados do Firestore, busca novamente
         if (!firestoreUser) {
-          firestoreUser = await getFirebaseBackend().getUserData(obj.uid);
+          firestoreUser = await getFirebaseBackend().getUserData(currentUser.uid);
         }
 
-        console.log("Dados do Auth:", obj);
+        console.log("Dados do Auth:", currentUser);
         console.log("Dados do Firestore:", firestoreUser);
 
-        setname(obj.displayName);
-        setemail(obj.email);
-        setidx(obj.uid);
+        setname(currentUser.displayName);
+        setemail(currentUser.email);
+        setidx(currentUser.uid);
         setUserData(firestoreUser || {});
       }
-    };
+    
 
     loadUserData();
   }, []);
