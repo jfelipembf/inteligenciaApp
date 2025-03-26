@@ -14,9 +14,12 @@ import {
 import Select from "react-select";
 import Breadcrumb from "../../../components/Common/Breadcrumb";
 import { useNavigate } from "react-router-dom";
+import { useClassManagement } from "../../../hooks/useClassManagement";
 
 const CreateClass = () => {
   const navigate = useNavigate();
+  const { createClass, loading, error } = useClassManagement();
+
   const [formData, setFormData] = useState({
     className: "",
     series: "",
@@ -48,7 +51,7 @@ const CreateClass = () => {
     if (formData.startTime) {
       const hour = parseInt(formData.startTime.split(":")[0]);
       let period = "";
-      
+
       if (hour >= 5 && hour < 12) {
         period = "Manhã";
       } else if (hour >= 12 && hour < 18) {
@@ -57,9 +60,9 @@ const CreateClass = () => {
         period = "Noite";
       }
 
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        period
+        period,
       }));
     }
   }, [formData.startTime]);
@@ -73,8 +76,8 @@ const CreateClass = () => {
         const durationInMinutes = (end - start) / (1000 * 60);
         const hours = Math.floor(durationInMinutes / 60);
         const minutes = durationInMinutes % 60;
-        const duration = `${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`;
-        
+        const duration = `${hours}h${minutes > 0 ? ` ${minutes}min` : ""}`;
+
         setFormData((prev) => ({
           ...prev,
           duration: duration,
@@ -136,9 +139,18 @@ const CreateClass = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+
+    try {
+      const response = await createClass(formData);
+      console.log("Turma criada com sucesso:", response);
+      alert("Turma criada com sucesso!");
+      navigate("/classes");
+    } catch (err) {
+      console.error("Erro ao criar turma:", err);
+      alert("Erro ao criar turma: " + err.message);
+    }
   };
 
   return (
@@ -158,7 +170,9 @@ const CreateClass = () => {
                         <Select
                           name="series"
                           value={formData.series}
-                          onChange={(option) => handleSelectChange(option, { name: "series" })}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "series" })
+                          }
                           options={seriesOptions}
                           placeholder="Selecione a série"
                         />
@@ -170,7 +184,9 @@ const CreateClass = () => {
                         <Select
                           name="identifier"
                           value={formData.identifier}
-                          onChange={(option) => handleSelectChange(option, { name: "identifier" })}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "identifier" })
+                          }
                           options={identifierOptions}
                           placeholder="Selecione a turma"
                         />
@@ -182,7 +198,9 @@ const CreateClass = () => {
                         <Select
                           name="teacher"
                           value={formData.teacher}
-                          onChange={(option) => handleSelectChange(option, { name: "teacher" })}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "teacher" })
+                          }
                           options={teachers}
                           placeholder="Selecione o professor"
                         />
@@ -271,7 +289,9 @@ const CreateClass = () => {
                         <Select
                           name="room"
                           value={formData.room}
-                          onChange={(option) => handleSelectChange(option, { name: "room" })}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "room" })
+                          }
                           options={roomOptions}
                           placeholder="Selecione a sala"
                         />
@@ -284,7 +304,9 @@ const CreateClass = () => {
                           isMulti
                           name="daysOfWeek"
                           value={formData.daysOfWeek}
-                          onChange={(option) => handleSelectChange(option, { name: "daysOfWeek" })}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "daysOfWeek" })
+                          }
                           options={daysOfWeekOptions}
                           placeholder="Selecione os dias"
                         />
@@ -311,12 +333,24 @@ const CreateClass = () => {
                   <Row className="mt-4">
                     <Col>
                       <div className="text-end">
-                        <Button color="primary" type="submit">
-                          Criar Turma
+                        <Button
+                          color="primary"
+                          type="submit"
+                          disabled={loading}
+                        >
+                          {loading ? "Criando..." : "Criar Turma"}
                         </Button>
                       </div>
                     </Col>
                   </Row>
+
+                  {error && (
+                    <Row className="mt-3">
+                      <Col>
+                        <div className="alert alert-danger">{error}</div>
+                      </Col>
+                    </Row>
+                  )}
                 </Form>
               </CardBody>
             </Card>

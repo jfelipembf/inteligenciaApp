@@ -207,6 +207,14 @@ const SidebarContent = (props) => {
               </Link>
             </li>
 
+            {/* Administradores */}
+            <li>
+              <Link to="/administrators" className="waves-effect">
+                <i className="bx bx-user-circle font-size-18"></i>
+                <span className="menu-item">{props.t("Administradores")}</span>
+              </Link>
+            </li>
+
             {/* Logout - positioned at bottom */}
             <li style={{ position: "absolute", bottom: "20px", width: "100%" }}>
               <Link to="/logout" className="waves-effect text-danger">
