@@ -198,6 +198,10 @@ import AddTeacher from "../pages/Teachers/AddTeacher";
 import AddCoordinator from "../pages/Coordinator/AddCoordinator";
 import Coordinators from "../pages/Coordinator/index";
 
+//Admin
+import Administrators from "../pages/Administrators/index";
+import AddAdministrator from "../pages/Administrators/AddAdministrator";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -221,6 +225,10 @@ const authProtectedRoutes = [
   { path: "/teachers/:id", component: <TeacherProfile /> },
   { path: "/teachers/:id/activities", component: <TeacherActivities /> },
   { path: "/teachers/:id/messages", component: <TeacherMessages /> },
+
+  // Administrators
+  { path: "/administrators", component: <Administrators /> },
+  { path: "/add-administrator", component: <AddAdministrator /> },
 
   //Coordinator
   { path: "/add-coordinator", component: <AddCoordinator /> },
