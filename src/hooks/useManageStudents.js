@@ -16,11 +16,9 @@ const useManageStudents = (classId, schoolId) => {
       const studentsSnapshot = await firebase
         .firestore()
         .collection("users")
-        .where("role", "==", "aluno")
+        .where("role", "==", "aluno") // Certifique-se de que o valor "aluno" está correto
         .where("schoolId", "==", schoolId) // Filtrar pelo mesmo schoolId
         .get();
-
-      console.log("studentsSnapshot", studentsSnapshot);
 
       const fetchedStudents = studentsSnapshot.docs.map((doc) => ({
         id: doc.id,

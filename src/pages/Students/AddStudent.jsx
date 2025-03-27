@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Spinner } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Spinner,
+} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
@@ -16,7 +28,6 @@ const AddStudent = () => {
     birthDate: "",
     registration: "",
     grade: "",
-    class: "",
     gender: "",
     cpf: "",
     password: "",
@@ -38,23 +49,25 @@ const AddStudent = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const searchCep = async (cep) => {
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
+      const response = await fetch(
+        `https://viacep.com.br/ws/${cep.replace(/\D/g, "")}/json/`
+      );
       const data = await response.json();
       if (!data.erro) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           street: data.logradouro,
           neighborhood: data.bairro,
           city: data.localidade,
-          state: data.uf
+          state: data.uf,
         }));
       }
     } catch (error) {
@@ -63,7 +76,7 @@ const AddStudent = () => {
   };
 
   const handleCepBlur = (e) => {
-    const cep = e.target.value.replace(/\D/g, '');
+    const cep = e.target.value.replace(/\D/g, "");
     if (cep.length === 8) {
       searchCep(cep);
     }
@@ -89,7 +102,6 @@ const AddStudent = () => {
         academicInfo: {
           registration: formData.registration,
           grade: formData.grade,
-          class: formData.class
         },
         address: {
           cep: formData.cep,
@@ -98,15 +110,15 @@ const AddStudent = () => {
           complement: formData.complement,
           neighborhood: formData.neighborhood,
           city: formData.city,
-          state: formData.state
+          state: formData.state,
         },
         guardian: {
           name: formData.guardianName,
           cpf: formData.guardianCpf,
           email: formData.guardianEmail,
           phone: formData.guardianPhone,
-          relationship: formData.guardianRelationship
-        }
+          relationship: formData.guardianRelationship,
+        },
       };
 
       await createUser({
@@ -114,7 +126,7 @@ const AddStudent = () => {
         password: formData.password,
         userData,
         profileImage: formData.profileImage,
-        role: "aluno"
+        role: "aluno",
       });
 
       alert("Aluno cadastrado com sucesso!");
@@ -143,9 +155,9 @@ const AddStudent = () => {
                           onImageChange={(e) => {
                             const file = e.target.files[0];
                             if (file) {
-                              setFormData(prev => ({
+                              setFormData((prev) => ({
                                 ...prev,
-                                profileImage: file
+                                profileImage: file,
                               }));
                             }
                           }}
@@ -256,24 +268,6 @@ const AddStudent = () => {
                             <option value="7º Ano">7º Ano</option>
                             <option value="8º Ano">8º Ano</option>
                             <option value="9º Ano">9º Ano</option>
-                          </Input>
-                        </FormGroup>
-                      </Col>
-                      <Col md={4}>
-                        <FormGroup className="mb-3">
-                          <Label>Turma</Label>
-                          <Input
-                            type="select"
-                            name="class"
-                            value={formData.class}
-                            onChange={handleInputChange}
-                            required
-                          >
-                            <option value="">Selecione...</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
                           </Input>
                         </FormGroup>
                       </Col>
@@ -391,7 +385,9 @@ const AddStudent = () => {
                       </Col>
                     </Row>
 
-                    <h5 className="font-size-14 mb-3 mt-4">Dados do Responsável</h5>
+                    <h5 className="font-size-14 mb-3 mt-4">
+                      Dados do Responsável
+                    </h5>
                     <Row>
                       <Col md={6}>
                         <FormGroup className="mb-3">
@@ -515,9 +511,9 @@ const AddStudent = () => {
                           "Salvar"
                         )}
                       </Button>
-                      <Button 
-                        type="button" 
-                        color="secondary" 
+                      <Button
+                        type="button"
+                        color="secondary"
                         onClick={() => navigate("/students")}
                         disabled={loading}
                       >
@@ -526,9 +522,7 @@ const AddStudent = () => {
                     </div>
 
                     {error && (
-                      <div className="alert alert-danger mt-3">
-                        {error}
-                      </div>
+                      <div className="alert alert-danger mt-3">{error}</div>
                     )}
                   </Form>
                 </CardBody>
