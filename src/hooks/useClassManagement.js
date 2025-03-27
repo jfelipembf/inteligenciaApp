@@ -30,9 +30,15 @@ export const useClassManagement = () => {
         throw new Error("schoolId não encontrado para o usuário");
       }
 
+      // Gerar o className com base na série e na letra da turma
+      const seriesLabel = classData.series?.label || "";
+      const identifierLabel = classData.identifier?.label || "";
+      const className = `${seriesLabel} - ${identifierLabel}`;
+
       // Preparar dados da turma
       const finalClassData = {
         ...classData,
+        className, // Adiciona o className gerado
         schoolId,
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
