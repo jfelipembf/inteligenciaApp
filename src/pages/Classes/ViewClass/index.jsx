@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -19,23 +19,82 @@ import {
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import useClassData from "../../../hooks/useClassData";
+import useManageStudents from "../../../hooks/useManageStudents";
 
 const ViewClass = () => {
   const { id } = useParams();
-  const { classData, students, setStudents, loading, error } = useClassData(id);
+  const {
+    classData,
+    students,
+    setStudents,
+    loading: classLoading,
+    error: classError,
+  } = useClassData(id);
+  const {
+    availableStudents,
+    fetchAvailableStudents,
+    addStudentsToClass,
+    loading: studentsLoading,
+    error: studentsError,
+  } = useManageStudents(id, classData?.schoolId);
 
   const [addStudentModal, setAddStudentModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
 
+  // Toggle do modal
   const toggleAddStudentModal = () => {
     setAddStudentModal(!addStudentModal);
+    if (!addStudentModal) {
+      setSearchTerm("");
+      setFilteredStudents([]);
+      setSelectedStudents([]);
+      fetchAvailableStudents();
+    }
   };
 
-  if (loading) {
+  // Filtrar alunos com base no termo de pesquisa
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = availableStudents.filter(
+        (student) =>
+          student.enrollment
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          student.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredStudents(filtered);
+    } else {
+      setFilteredStudents([]);
+    }
+  }, [searchTerm, availableStudents]);
+
+  // Adicionar aluno à lista de selecionados
+  const handleSelectStudent = (student) => {
+    if (!selectedStudents.find((s) => s.id === student.id)) {
+      setSelectedStudents([...selectedStudents, student]);
+    }
+  };
+
+  // Remover aluno da lista de selecionados
+  const handleRemoveSelectedStudent = (studentId) => {
+    setSelectedStudents(selectedStudents.filter((s) => s.id !== studentId));
+  };
+
+  // Salvar alunos selecionados na subcoleção "students" da turma
+  const handleAddStudentsToClass = async () => {
+    await addStudentsToClass(selectedStudents);
+    setStudents((prev) => [...prev, ...selectedStudents]);
+    toggleAddStudentModal();
+  };
+
+  if (classLoading) {
     return <div>Carregando...</div>;
   }
 
-  if (error) {
-    return <div>Erro: {error}</div>;
+  if (classError) {
+    return <div>Erro: {classError}</div>;
   }
 
   return (
@@ -133,6 +192,99 @@ const ViewClass = () => {
               </Card>
             </Col>
           </Row>
+
+          {/* Modal para adicionar alunos */}
+          <Modal
+            isOpen={addStudentModal}
+            toggle={toggleAddStudentModal}
+            size="lg"
+          >
+            <ModalHeader toggle={toggleAddStudentModal}>
+              Adicionar Alunos à Turma
+            </ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <Label for="search">Pesquisar por Matrícula ou Nome</Label>
+                  <Input
+                    type="text"
+                    id="search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Digite a matrícula ou nome do aluno"
+                  />
+                </FormGroup>
+
+                <div className="mt-3">
+                  <h5>Alunos Disponíveis:</h5>
+                  <div
+                    className="border rounded p-2"
+                    style={{ maxHeight: "200px", overflowY: "auto" }}
+                  >
+                    {filteredStudents.map((student) => (
+                      <div
+                        key={student.id}
+                        className="d-flex justify-content-between align-items-center p-2 border-bottom"
+                      >
+                        <div>
+                          <strong>{student.name}</strong> - Matrícula:{" "}
+                          {student.enrollment}
+                        </div>
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={() => handleSelectStudent(student)}
+                        >
+                          Adicionar
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <h5>Alunos Selecionados:</h5>
+                  <div
+                    className="border rounded p-2"
+                    style={{ maxHeight: "200px", overflowY: "auto" }}
+                  >
+                    {selectedStudents.map((student) => (
+                      <div
+                        key={student.id}
+                        className="d-flex justify-content-between align-items-center p-2 border-bottom"
+                      >
+                        <div>
+                          <strong>{student.name}</strong> - Matrícula:{" "}
+                          {student.enrollment}
+                        </div>
+                        <Button
+                          color="danger"
+                          size="sm"
+                          onClick={() =>
+                            handleRemoveSelectedStudent(student.id)
+                          }
+                        >
+                          Remover
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={toggleAddStudentModal}>
+                Cancelar
+              </Button>
+              <Button
+                color="primary"
+                onClick={handleAddStudentsToClass}
+                disabled={selectedStudents.length === 0}
+              >
+                Adicionar {selectedStudents.length} Aluno(s)
+              </Button>
+            </ModalFooter>
+          </Modal>
         </Container>
       </div>
     </React.Fragment>

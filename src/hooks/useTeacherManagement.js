@@ -1,25 +1,20 @@
-import { useState } from 'react';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
+import { useState } from "react";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 export const useTeacherManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createTeacher = async ({
-    email,
-    password,
-    userData,
-    profileImage
-  }) => {
+  const createTeacher = async ({ email, password, userData, profileImage }) => {
     setLoading(true);
     setError(null);
 
     try {
       console.log("Iniciando criação do professor...");
-      
+
       // Verificar se há um usuário admin autenticado
       const currentUser = firebase.auth().currentUser;
       console.log("Usuário autenticado:", currentUser);
@@ -28,7 +23,11 @@ export const useTeacherManagement = () => {
       }
 
       // Buscar schoolId do admin atual
-      const userDoc = await firebase.firestore().collection('users').doc(currentUser.uid).get();
+      const userDoc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUser.uid)
+        .get();
       console.log("Dados do usuário admin:", userDoc.data());
       const schoolId = userDoc.data().schoolId;
       if (!schoolId) {
@@ -37,7 +36,9 @@ export const useTeacherManagement = () => {
 
       // Criar usuário no Auth
       console.log("Criando professor no Firebase Auth...");
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
       console.log("Professor criado com sucesso:", userCredential);
       const newUserUid = userCredential.user.uid;
 
@@ -61,17 +62,21 @@ export const useTeacherManagement = () => {
         personalInfo: {
           ...userData.personalInfo,
           email,
-          profileImage: profileImageUrl
+          profileImage: profileImageUrl,
         },
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          createdBy: currentUser.uid
-        }
+          createdBy: currentUser.uid,
+        },
       };
 
       console.log("Salvando dados do professor no Firestore:", finalUserData);
-      await firebase.firestore().collection('users').doc(newUserUid).set(finalUserData);
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(newUserUid)
+        .set(finalUserData);
       console.log("Professor salvo no Firestore com sucesso.");
 
       setLoading(false);
@@ -99,6 +104,6 @@ export const useTeacherManagement = () => {
   return {
     createTeacher,
     loading,
-    error
+    error,
   };
 };
