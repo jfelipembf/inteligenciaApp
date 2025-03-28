@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import useClassData from "../../../hooks/useClassData";
 import useManageStudents from "../../../hooks/useManageStudents";
+import firebase from "firebase/compat/app";
 
 const ViewClass = () => {
   const { id } = useParams();
@@ -39,11 +40,13 @@ const ViewClass = () => {
   } = useManageStudents(id, classData?.schoolId);
 
   const [addStudentModal, setAddStudentModal] = useState(false);
+  const [removeStudentModal, setRemoveStudentModal] = useState(false);
+  const [studentToRemove, setStudentToRemove] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
 
-  // Toggle do modal
+  // Toggle do modal de adicionar alunos
   const toggleAddStudentModal = () => {
     setAddStudentModal(!addStudentModal);
     if (!addStudentModal) {
@@ -54,24 +57,37 @@ const ViewClass = () => {
     }
   };
 
+  // Toggle do modal de remover aluno
+  const toggleRemoveStudentModal = (student) => {
+    setStudentToRemove(student);
+    setRemoveStudentModal(!removeStudentModal);
+  };
+
   // Atualizar lista de alunos filtrados
   useEffect(() => {
     if (searchTerm) {
-      const filtered = availableStudents.filter(
-        (student) =>
-          student.academicInfo.registration
-            ?.toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          student.personalInfo.name
-            ?.toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
+      const filtered = availableStudents
+        .filter(
+          (student) =>
+            student.academicInfo.registration
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            student.personalInfo.name
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        )
+        .filter(
+          (student) => !students.some((s) => s.id === student.id) // Filtrar alunos já matriculados
+        );
       setFilteredStudents(filtered);
     } else {
-      // Exibir todos os alunos disponíveis quando o campo de pesquisa estiver vazio
-      setFilteredStudents(availableStudents);
+      // Exibir todos os alunos disponíveis, excluindo os já matriculados
+      const filtered = availableStudents.filter(
+        (student) => !students.some((s) => s.id === student.id)
+      );
+      setFilteredStudents(filtered);
     }
-  }, [searchTerm, availableStudents]);
+  }, [searchTerm, availableStudents, students]);
 
   // Adicionar aluno à lista de selecionados
   const handleSelectStudent = (student) => {
@@ -90,6 +106,32 @@ const ViewClass = () => {
     await addStudentsToClass(selectedStudents);
     setStudents((prev) => [...prev, ...selectedStudents]);
     toggleAddStudentModal();
+  };
+
+  // Remover aluno da subcoleção "students" no Firestore
+  const handleConfirmRemoveStudent = async () => {
+    if (!studentToRemove) return;
+
+    try {
+      await firebase
+        .firestore()
+        .collection("schools")
+        .doc(classData.schoolId)
+        .collection("classes")
+        .doc(id)
+        .collection("students")
+        .doc(studentToRemove.id)
+        .delete();
+
+      // Atualizar a lista de alunos na interface
+      setStudents((prev) =>
+        prev.filter((student) => student.id !== studentToRemove.id)
+      );
+
+      toggleRemoveStudentModal(null);
+    } catch (error) {
+      console.error("Erro ao remover aluno:", error);
+    }
   };
 
   if (classLoading) {
@@ -163,17 +205,25 @@ const ViewClass = () => {
                             <td>{student.id}</td>
                             <td>{student.name}</td>
                             <td>{student.registration}</td>
-                            {console.log(student)}
-
                             <td>
                               <Button
                                 color="info"
                                 size="sm"
+                                className="me-1"
                                 onClick={() =>
                                   (window.location.href = `/student-profile/${student.id}`)
                                 }
                               >
                                 Ver Perfil
+                              </Button>
+                              <Button
+                                color="danger"
+                                size="sm"
+                                onClick={() =>
+                                  toggleRemoveStudentModal(student)
+                                }
+                              >
+                                Remover
                               </Button>
                             </td>
                           </tr>
@@ -220,7 +270,7 @@ const ViewClass = () => {
                         className="d-flex justify-content-between align-items-center p-2 border-bottom"
                       >
                         <div>
-                          <strong>{student.name}</strong>Matrícula:{" "}
+                          <strong>{student.registration}</strong>Matrícula:{" "}
                           {student.academicInfo.registration}
                         </div>
                         <div>
@@ -251,7 +301,7 @@ const ViewClass = () => {
                         className="d-flex justify-content-between align-items-center p-2 border-bottom"
                       >
                         <div>
-                          <strong>{student.name}</strong>Matrícula:{" "}
+                          <strong>{student.registration}</strong>Matrícula:{" "}
                           {student.academicInfo.registration}
                         </div>
                         <div>
@@ -283,6 +333,31 @@ const ViewClass = () => {
                 disabled={selectedStudents.length === 0}
               >
                 Adicionar {selectedStudents.length} Aluno(s)
+              </Button>
+            </ModalFooter>
+          </Modal>
+
+          {/* Modal para confirmar remoção de aluno */}
+          <Modal
+            isOpen={removeStudentModal}
+            toggle={() => toggleRemoveStudentModal(null)}
+          >
+            <ModalHeader toggle={() => toggleRemoveStudentModal(null)}>
+              Confirmar Remoção
+            </ModalHeader>
+            <ModalBody>
+              Tem certeza de que deseja remover o aluno{" "}
+              <strong>{studentToRemove?.name}</strong> da turma?
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="secondary"
+                onClick={() => toggleRemoveStudentModal(null)}
+              >
+                Cancelar
+              </Button>
+              <Button color="danger" onClick={handleConfirmRemoveStudent}>
+                Remover
               </Button>
             </ModalFooter>
           </Modal>
