@@ -15,6 +15,7 @@ import Select from "react-select";
 import Breadcrumb from "../../../components/Common/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import { useClassManagement } from "../../../hooks/useClassManagement";
+import CreatableSelect from "react-select/creatable";
 
 const CreateClass = () => {
   const navigate = useNavigate();
@@ -111,17 +112,12 @@ const CreateClass = () => {
     { value: "9", label: "9º ano" },
   ];
 
-  const identifierOptions = "ABCDEFGHIJ".split("").map((letter) => ({
-    value: letter,
-    label: letter,
-  }));
-
   const roomOptions = [
-    { value: "101", label: "Sala 101" },
-    { value: "102", label: "Sala 102" },
-    { value: "103", label: "Sala 103" },
-    { value: "104", label: "Sala 104" },
-    { value: "105", label: "Sala 105" },
+    { value: "1", label: "Sala 1" },
+    { value: "2", label: "Sala 2" },
+    { value: "3", label: "Sala 3" },
+    { value: "4", label: "Sala 4" },
+    { value: "5", label: "Sala 5" },
   ];
 
   const handleInputChange = (e) => {
@@ -167,28 +163,49 @@ const CreateClass = () => {
                     <Col md={4}>
                       <FormGroup>
                         <Label>Série</Label>
-                        <Select
+                        <CreatableSelect
                           name="series"
                           value={formData.series}
                           onChange={(option) =>
                             handleSelectChange(option, { name: "series" })
                           }
+                          formatCreateLabel={(inputValue) =>
+                            `Criar "${inputValue}"`
+                          }
+                          getNewOptionData={(inputValue, optionLabel) => ({
+                            value: inputValue,
+                            label: optionLabel,
+                          })}
                           options={seriesOptions}
-                          placeholder="Selecione a série"
+                          placeholder="Selecione ou digite a série"
+                          isClearable
                         />
                       </FormGroup>
                     </Col>
+
                     <Col md={4}>
                       <FormGroup>
                         <Label>Turma</Label>
-                        <Select
+                        <CreatableSelect
                           name="identifier"
                           value={formData.identifier}
                           onChange={(option) =>
                             handleSelectChange(option, { name: "identifier" })
                           }
-                          options={identifierOptions}
-                          placeholder="Selecione a turma"
+                          formatCreateLabel={(inputValue) =>
+                            `Criar "${inputValue}"`
+                          }
+                          getNewOptionData={(inputValue, optionLabel) => ({
+                            value: inputValue,
+                            label: optionLabel,
+                          })}
+                          options={[
+                            { value: "A", label: "A" },
+                            { value: "B", label: "B" },
+                            { value: "C", label: "C" },
+                          ]}
+                          placeholder="Selecione ou digite a turma"
+                          isClearable
                         />
                       </FormGroup>
                     </Col>
@@ -286,14 +303,22 @@ const CreateClass = () => {
                     <Col md={4}>
                       <FormGroup>
                         <Label>Sala</Label>
-                        <Select
+                        <CreatableSelect
                           name="room"
                           value={formData.room}
                           onChange={(option) =>
                             handleSelectChange(option, { name: "room" })
                           }
+                          formatCreateLabel={(inputValue) =>
+                            `Criar "${inputValue}"`
+                          }
+                          getNewOptionData={(inputValue, optionLabel) => ({
+                            value: inputValue,
+                            label: optionLabel,
+                          })}
                           options={roomOptions}
-                          placeholder="Selecione a sala"
+                          placeholder="Selecione ou digite a sala"
+                          isClearable
                         />
                       </FormGroup>
                     </Col>
