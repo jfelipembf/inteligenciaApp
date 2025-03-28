@@ -106,7 +106,7 @@ const ListClasses = () => {
                               <td>{classItem.className}</td>
                               <td>{classItem.period}</td>
                               <td>{classItem.teacher?.label || "N/A"}</td>
-                              <td>{classItem.students || 0}</td>
+                              <td>{classItem.studentCount || 0}</td>
                               <td>
                                 <Button
                                   color="info"

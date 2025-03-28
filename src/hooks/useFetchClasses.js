@@ -38,10 +38,25 @@ export const useFetchClasses = () => {
           .collection("classes")
           .get();
 
-        const fetchedClasses = classesSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const fetchedClasses = await Promise.all(
+          classesSnapshot.docs.map(async (doc) => {
+            // Contar o número de estudantes na subcoleção "students"
+            const studentsSnapshot = await firebase
+              .firestore()
+              .collection("schools")
+              .doc(schoolId)
+              .collection("classes")
+              .doc(doc.id)
+              .collection("students")
+              .get();
+
+            return {
+              id: doc.id,
+              ...doc.data(),
+              studentCount: studentsSnapshot.size, // Número de estudantes
+            };
+          })
+        );
 
         setClasses(fetchedClasses);
       } catch (error) {
