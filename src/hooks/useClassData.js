@@ -58,6 +58,8 @@ const useClassData = (classId) => {
 
         const fetchedStudents = studentsSnapshot.docs.map((doc) => ({
           id: doc.id,
+          name: doc.name,
+          registration: doc.registration,
           ...doc.data(),
         }));
 

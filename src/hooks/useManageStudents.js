@@ -50,7 +50,11 @@ const useManageStudents = (classId, schoolId) => {
 
       selectedStudents.forEach((student) => {
         const studentRef = classRef.collection("students").doc(student.id);
-        batch.set(studentRef, { id: student.id });
+        batch.set(studentRef, {
+          id: student.id,
+          name: student.personalInfo.name,
+          registration: student.academicInfo.registration,
+        });
       });
 
       await batch.commit();

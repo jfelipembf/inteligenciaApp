@@ -54,19 +54,22 @@ const ViewClass = () => {
     }
   };
 
-  // Filtrar alunos com base no termo de pesquisa
+  // Atualizar lista de alunos filtrados
   useEffect(() => {
     if (searchTerm) {
       const filtered = availableStudents.filter(
         (student) =>
-          student.enrollment
+          student.academicInfo.registration
             ?.toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          student.name?.toLowerCase().includes(searchTerm.toLowerCase())
+          student.personalInfo.name
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
       setFilteredStudents(filtered);
     } else {
-      setFilteredStudents([]);
+      // Exibir todos os alunos disponíveis quando o campo de pesquisa estiver vazio
+      setFilteredStudents(availableStudents);
     }
   }, [searchTerm, availableStudents]);
 
@@ -151,7 +154,6 @@ const ViewClass = () => {
                           <th>ID</th>
                           <th>Nome do Aluno</th>
                           <th>Matrícula</th>
-                          <th>Status</th>
                           <th>Ações</th>
                         </tr>
                       </thead>
@@ -160,18 +162,9 @@ const ViewClass = () => {
                           <tr key={student.id}>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
-                            <td>{student.enrollment}</td>
-                            <td>
-                              <span
-                                className={`badge bg-${
-                                  student.status === "Ativo"
-                                    ? "success"
-                                    : "danger"
-                                }`}
-                              >
-                                {student.status}
-                              </span>
-                            </td>
+                            <td>{student.registration}</td>
+                            {console.log(student)}
+
                             <td>
                               <Button
                                 color="info"
@@ -227,8 +220,12 @@ const ViewClass = () => {
                         className="d-flex justify-content-between align-items-center p-2 border-bottom"
                       >
                         <div>
-                          <strong>{student.name}</strong> - Matrícula:{" "}
-                          {student.enrollment}
+                          <strong>{student.name}</strong>Matrícula:{" "}
+                          {student.academicInfo.registration}
+                        </div>
+                        <div>
+                          <strong>{student.name}</strong>Nome:{" "}
+                          {student.personalInfo.name}
                         </div>
                         <Button
                           color="primary"
@@ -254,8 +251,12 @@ const ViewClass = () => {
                         className="d-flex justify-content-between align-items-center p-2 border-bottom"
                       >
                         <div>
-                          <strong>{student.name}</strong> - Matrícula:{" "}
-                          {student.enrollment}
+                          <strong>{student.name}</strong>Matrícula:{" "}
+                          {student.academicInfo.registration}
+                        </div>
+                        <div>
+                          <strong>{student.name}</strong>Nome:{" "}
+                          {student.personalInfo.name}
                         </div>
                         <Button
                           color="danger"
