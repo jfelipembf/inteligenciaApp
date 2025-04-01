@@ -20,10 +20,33 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { useFetchClasses } from "../../../hooks/useFetchClasses";
+import useUpdateClass from "../../../hooks/useUpdateClass";
+import CreatableSelect from "react-select/creatable";
+import useFetchTeachers from "../../../hooks/useFetchTeachers";
+import useDeleteClass from "../../../hooks/useDeleteClass";
+
+const roomOptions = [
+  { value: "1", label: "Sala 1" },
+  { value: "2", label: "Sala 2" },
+  { value: "3", label: "Sala 3" },
+  { value: "4", label: "Sala 4" },
+  { value: "5", label: "Sala 5" },
+];
 
 const ListClasses = () => {
   const navigate = useNavigate();
   const { classes, loading, error } = useFetchClasses();
+  const {
+    updateClass,
+    loading: updatingClass,
+    error: updateError,
+  } = useUpdateClass();
+
+  const {
+    teachers,
+    loading: loadingTeachers,
+    error: fetchError,
+  } = useFetchTeachers();
 
   const [modal, setModal] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
@@ -41,7 +64,7 @@ const ListClasses = () => {
       duration: classItem.duration || "",
       daysOfWeek: classItem.daysOfWeek || [],
       description: classItem.description || "",
-      room: classItem.room.label || null,
+      room: classItem.room || { value: "", label: "" },
       startDate: classItem.startDate || "",
       endDate: classItem.endDate || "",
     });
@@ -56,9 +79,47 @@ const ListClasses = () => {
     }));
   };
 
-  const handleSave = () => {
-    // Aqui você implementará a lógica para salvar as alterações
-    setModal(false);
+  const handleSave = async () => {
+    if (!currentClass || !currentClass.id) {
+      alert("Erro: Nenhuma turma selecionada para atualização.");
+      return;
+    }
+
+    try {
+      // Atualizar a turma no Firestore
+      await updateClass(currentClass.id, currentClass.schoolId, currentClass);
+      alert("Turma atualizada com sucesso!");
+      setModal(false);
+    } catch (err) {
+      console.error("Erro ao atualizar a turma:", err);
+      alert("Erro ao atualizar a turma: " + err.message);
+    }
+  };
+
+  const {
+    deleteClass,
+    loading: deletingClass,
+    error: deleteError,
+  } = useDeleteClass();
+
+  const handleDelete = async (classItem) => {
+    const confirmDelete = window.confirm(
+      `Tem certeza que deseja excluir a turma "${classItem.className}"?`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      await deleteClass(classItem.id, classItem.schoolId);
+      alert("Turma excluída com sucesso!");
+      // Atualizar a lista de turmas após a exclusão
+      window.location.reload(); // Ou use um método mais eficiente para atualizar a lista
+    } catch (err) {
+      console.error("Erro ao excluir a turma:", err);
+      alert("Erro ao excluir a turma: " + err.message);
+    }
   };
 
   return (
@@ -129,11 +190,10 @@ const ListClasses = () => {
                                 <Button
                                   color="danger"
                                   size="sm"
-                                  onClick={() => {
-                                    // Implementar exclusão
-                                  }}
+                                  onClick={() => handleDelete(classItem)}
+                                  disabled={deletingClass} // Desabilita o botão enquanto está excluindo
                                 >
-                                  Excluir
+                                  {deletingClass ? "Excluindo..." : "Excluir"}
                                 </Button>
                               </td>
                             </tr>
@@ -166,13 +226,28 @@ const ListClasses = () => {
                   </Col>
                   <Col md={6}>
                     <FormGroup>
-                      <Label>Professor</Label>
-                      <Input
-                        type="text"
-                        name="teacher"
-                        value={currentClass?.teacher.label || ""}
-                        onChange={handleInputChange}
-                      />
+                      <Label>Professor Responsável</Label>
+                      {loadingTeachers ? (
+                        <p>Carregando professores...</p>
+                      ) : fetchError ? (
+                        <p className="text-danger">
+                          Erro ao carregar professores: {fetchError}
+                        </p>
+                      ) : (
+                        <Select
+                          name="teacher"
+                          value={currentClass?.teacher || null} // Valor atual do professor selecionado
+                          onChange={(selectedOption) =>
+                            setCurrentClass((prev) => ({
+                              ...prev,
+                              teacher: selectedOption, // Atualiza o estado com o professor selecionado
+                            }))
+                          }
+                          options={teachers} // Lista de professores retornada pelo hook
+                          placeholder="Selecione o professor"
+                          isClearable
+                        />
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={6}>
@@ -189,11 +264,25 @@ const ListClasses = () => {
                   <Col md={6}>
                     <FormGroup>
                       <Label>Sala</Label>
-                      <Input
-                        type="text"
+                      <CreatableSelect
                         name="room"
-                        value={currentClass?.room || ""}
-                        onChange={handleInputChange}
+                        value={currentClass?.room || { value: "", label: "" }}
+                        onChange={(selectedOption) =>
+                          setCurrentClass((prev) => ({
+                            ...prev,
+                            room: selectedOption, // Atualiza no formato { value, label }
+                          }))
+                        }
+                        formatCreateLabel={(inputValue) =>
+                          `Criar "${inputValue}"`
+                        }
+                        getNewOptionData={(inputValue, optionLabel) => ({
+                          value: inputValue,
+                          label: optionLabel,
+                        })}
+                        options={roomOptions}
+                        placeholder="Selecione ou digite a sala"
+                        isClearable
                       />
                     </FormGroup>
                   </Col>
@@ -201,8 +290,12 @@ const ListClasses = () => {
               </Form>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={handleSave}>
-                Salvar
+              <Button
+                color="primary"
+                onClick={handleSave}
+                disabled={updatingClass}
+              >
+                {updatingClass ? "Salvando..." : "Salvar"}
               </Button>
               <Button color="secondary" onClick={toggle}>
                 Cancelar
