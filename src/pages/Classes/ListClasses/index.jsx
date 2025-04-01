@@ -33,17 +33,17 @@ const ListClasses = () => {
   const handleEdit = (classItem) => {
     setCurrentClass({
       ...classItem,
-      series: null,
-      identifier: null,
-      teacher: null,
-      startTime: "",
-      endTime: "",
-      duration: "",
-      daysOfWeek: [],
-      description: "",
-      room: null,
-      startDate: "",
-      endDate: "",
+      series: classItem.series || null,
+      identifier: classItem.identifier || null,
+      teacher: classItem.teacher || null, // Mantém o professor existente
+      startTime: classItem.startTime || "",
+      endTime: classItem.endTime || "",
+      duration: classItem.duration || "",
+      daysOfWeek: classItem.daysOfWeek || [],
+      description: classItem.description || "",
+      room: classItem.room.label || null,
+      startDate: classItem.startDate || "",
+      endDate: classItem.endDate || "",
     });
     setModal(true);
   };
@@ -166,11 +166,33 @@ const ListClasses = () => {
                   </Col>
                   <Col md={6}>
                     <FormGroup>
-                      <Label>Período</Label>
+                      <Label>Professor</Label>
                       <Input
                         type="text"
-                        name="period"
-                        value={currentClass?.period || ""}
+                        name="teacher"
+                        value={currentClass?.teacher.label || ""}
+                        onChange={handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label>Descrição</Label>
+                      <Input
+                        type="text"
+                        name="description"
+                        value={currentClass?.description || ""}
+                        onChange={handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label>Sala</Label>
+                      <Input
+                        type="text"
+                        name="room"
+                        value={currentClass?.room || ""}
                         onChange={handleInputChange}
                       />
                     </FormGroup>
