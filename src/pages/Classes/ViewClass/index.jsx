@@ -193,7 +193,7 @@ const ViewClass = () => {
                     <Table className="table-centered table-nowrap mb-0">
                       <thead className="table-light">
                         <tr>
-                          <th>ID</th>
+                          {/*<th>ID</th>*/}
                           <th>Nome do Aluno</th>
                           <th>Matrícula</th>
                           <th>Ações</th>
@@ -202,7 +202,7 @@ const ViewClass = () => {
                       <tbody>
                         {students.map((student) => (
                           <tr key={student.id}>
-                            <td>{student.id}</td>
+                            {/*<td>{student.id}</td>*/}
                             <td>{student.name}</td>
                             <td>{student.registration}</td>
                             <td>

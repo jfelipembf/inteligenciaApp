@@ -91,7 +91,7 @@ const ListClasses = () => {
                       <Table className="table-centered table-nowrap mb-0">
                         <thead className="table-light">
                           <tr>
-                            <th>ID</th>
+                            {/*<th>ID</th>*/}
                             <th>Nome da Turma</th>
                             <th>Período</th>
                             <th>Professor</th>
@@ -102,7 +102,7 @@ const ListClasses = () => {
                         <tbody>
                           {classes.map((classItem) => (
                             <tr key={classItem.id}>
-                              <td>{classItem.id}</td>
+                              {/*<td>{classItem.id}</td>*/}
                               <td>{classItem.className}</td>
                               <td>{classItem.period}</td>
                               <td>{classItem.teacher?.label || "N/A"}</td>

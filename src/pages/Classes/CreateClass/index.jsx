@@ -16,10 +16,20 @@ import Breadcrumb from "../../../components/Common/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import { useClassManagement } from "../../../hooks/useClassManagement";
 import CreatableSelect from "react-select/creatable";
+import useFetchTeachers from "../../../hooks/useFetchTeachers"; // Importação do hook
 
 const CreateClass = () => {
   const navigate = useNavigate();
-  const { createClass, loading, error } = useClassManagement();
+  const {
+    createClass,
+    loading: creatingClass,
+    error: createError,
+  } = useClassManagement();
+  const {
+    teachers,
+    loading: loadingTeachers,
+    error: fetchError,
+  } = useFetchTeachers(); // Uso do hook
 
   const [formData, setFormData] = useState({
     className: "",
@@ -36,16 +46,6 @@ const CreateClass = () => {
     startDate: "",
     endDate: "",
   });
-
-  const [teachers, setTeachers] = useState([]);
-
-  // Mock data for teachers - replace with API call
-  useEffect(() => {
-    setTeachers([
-      { value: "1", label: "Professor João Silva" },
-      { value: "2", label: "Professora Maria Santos" },
-    ]);
-  }, []);
 
   // Determina o período baseado no horário de início
   useEffect(() => {
@@ -101,15 +101,18 @@ const CreateClass = () => {
   ];
 
   const seriesOptions = [
-    { value: "1", label: "1º ano" },
-    { value: "2", label: "2º ano" },
-    { value: "3", label: "3º ano" },
-    { value: "4", label: "4º ano" },
-    { value: "5", label: "5º ano" },
-    { value: "6", label: "6º ano" },
-    { value: "7", label: "7º ano" },
-    { value: "8", label: "8º ano" },
-    { value: "9", label: "9º ano" },
+    { value: "1", label: "1º ano do fundamental" },
+    { value: "2", label: "2º ano do fundamental" },
+    { value: "3", label: "3º ano do fundamental" },
+    { value: "4", label: "4º ano do fundamental" },
+    { value: "5", label: "5º ano do fundamental" },
+    { value: "6", label: "6º ano do fundamental" },
+    { value: "7", label: "7º ano do fundamental" },
+    { value: "8", label: "8º ano do fundamental" },
+    { value: "9", label: "9º ano do fundamental" },
+    { value: "10", label: "1º ano do médio" },
+    { value: "11", label: "2º ano do médio" },
+    { value: "12", label: "3º ano do médio" },
   ];
 
   const roomOptions = [
@@ -139,7 +142,15 @@ const CreateClass = () => {
     e.preventDefault();
 
     try {
-      const response = await createClass(formData);
+      const classData = {
+        ...formData,
+        teacher: {
+          value: formData.teacher?.value, // ID do professor
+          label: formData.teacher?.label, // Nome do professor
+        },
+      };
+
+      const response = await createClass(classData);
       console.log("Turma criada com sucesso:", response);
       alert("Turma criada com sucesso!");
       navigate("/classes");
@@ -148,6 +159,16 @@ const CreateClass = () => {
       alert("Erro ao criar turma: " + err.message);
     }
   };
+
+  if (loadingTeachers) {
+    return <p>Carregando professores...</p>;
+  }
+
+  if (fetchError) {
+    return (
+      <p className="text-danger">Erro ao carregar professores: {fetchError}</p>
+    );
+  }
 
   return (
     <div className="page-content">
@@ -209,7 +230,9 @@ const CreateClass = () => {
                         />
                       </FormGroup>
                     </Col>
+
                     <Col md={4}>
+                      {console.log(teachers)}
                       <FormGroup>
                         <Label>Professor Responsável</Label>
                         <Select
@@ -339,40 +362,24 @@ const CreateClass = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-3">
-                    <Col md={12}>
-                      <FormGroup>
-                        <Label>Descrição da Turma</Label>
-                        <Input
-                          type="textarea"
-                          name="description"
-                          value={formData.description}
-                          onChange={handleInputChange}
-                          placeholder="Descreva os objetivos e características da turma"
-                          rows="4"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-
                   <Row className="mt-4">
                     <Col>
                       <div className="text-end">
                         <Button
                           color="primary"
                           type="submit"
-                          disabled={loading}
+                          disabled={creatingClass}
                         >
-                          {loading ? "Criando..." : "Criar Turma"}
+                          {creatingClass ? "Criando..." : "Criar Turma"}
                         </Button>
                       </div>
                     </Col>
                   </Row>
 
-                  {error && (
+                  {createError && (
                     <Row className="mt-3">
                       <Col>
-                        <div className="alert alert-danger">{error}</div>
+                        <div className="alert alert-danger">{createError}</div>
                       </Col>
                     </Row>
                   )}
