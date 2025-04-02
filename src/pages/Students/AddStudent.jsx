@@ -27,7 +27,6 @@ const AddStudent = () => {
     phone: "",
     birthDate: "",
     registration: "",
-    grade: "",
     gender: "",
     cpf: "",
     password: "",
@@ -253,24 +252,7 @@ const AddStudent = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={4}>
-                        <FormGroup className="mb-3">
-                          <Label>Série</Label>
-                          <Input
-                            type="select"
-                            name="grade"
-                            value={formData.grade}
-                            onChange={handleInputChange}
-                            required
-                          >
-                            <option value="">Selecione...</option>
-                            <option value="6º Ano">6º Ano</option>
-                            <option value="7º Ano">7º Ano</option>
-                            <option value="8º Ano">8º Ano</option>
-                            <option value="9º Ano">9º Ano</option>
-                          </Input>
-                        </FormGroup>
-                      </Col>
+
                       <Col md={4}>
                         <FormGroup className="mb-3">
                           <Label>Sexo</Label>

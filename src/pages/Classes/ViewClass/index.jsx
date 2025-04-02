@@ -113,15 +113,30 @@ const ViewClass = () => {
     if (!studentToRemove) return;
 
     try {
-      await firebase
+      const batch = firebase.firestore().batch();
+
+      // Remover o aluno da subcoleção "students" no Firestore
+      const studentRef = firebase
         .firestore()
         .collection("schools")
         .doc(classData.schoolId)
         .collection("classes")
         .doc(id)
         .collection("students")
-        .doc(studentToRemove.id)
-        .delete();
+        .doc(studentToRemove.id);
+      batch.delete(studentRef);
+
+      // Atualizar o campo "classId" no documento do aluno na coleção "users"
+      const userRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(studentToRemove.id);
+      batch.update(userRef, {
+        "academicInfo.classId": firebase.firestore.FieldValue.delete(), // Remove o campo "classId"
+      });
+
+      // Commit da operação em lote
+      await batch.commit();
 
       // Atualizar a lista de alunos na interface
       setStudents((prev) =>
@@ -131,6 +146,7 @@ const ViewClass = () => {
       toggleRemoveStudentModal(null);
     } catch (error) {
       console.error("Erro ao remover aluno:", error);
+      alert("Erro ao remover aluno: " + error.message);
     }
   };
 

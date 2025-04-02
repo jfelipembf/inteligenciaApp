@@ -49,11 +49,21 @@ const useManageStudents = (classId, schoolId) => {
         .doc(classId);
 
       selectedStudents.forEach((student) => {
+        // Adicionar o estudante à subcoleção "students" da turma
         const studentRef = classRef.collection("students").doc(student.id);
         batch.set(studentRef, {
           id: student.id,
           name: student.personalInfo.name,
           registration: student.academicInfo.registration,
+        });
+
+        // Atualizar o campo "classId" no documento do estudante na coleção "users"
+        const userRef = firebase
+          .firestore()
+          .collection("users")
+          .doc(student.id);
+        batch.update(userRef, {
+          "academicInfo.classId": classId,
         });
       });
 
