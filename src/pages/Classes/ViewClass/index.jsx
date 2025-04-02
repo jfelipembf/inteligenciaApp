@@ -132,7 +132,7 @@ const ViewClass = () => {
         .collection("users")
         .doc(studentToRemove.id);
       batch.update(userRef, {
-        "academicInfo.classId": firebase.firestore.FieldValue.delete(), // Remove o campo "classId"
+        "academicInfo.classId": null, // Remove o campo "classId"
       });
 
       // Commit da operação em lote

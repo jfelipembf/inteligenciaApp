@@ -27,6 +27,7 @@ const AddStudent = () => {
     phone: "",
     birthDate: "",
     registration: "",
+    classId: null,
     gender: "",
     cpf: "",
     password: "",
@@ -100,7 +101,7 @@ const AddStudent = () => {
         },
         academicInfo: {
           registration: formData.registration,
-          grade: formData.grade,
+          classId: formData.classId,
         },
         address: {
           cep: formData.cep,
