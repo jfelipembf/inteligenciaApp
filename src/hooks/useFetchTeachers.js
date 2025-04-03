@@ -44,6 +44,7 @@ const useFetchTeachers = () => {
             value: doc.id, // ID do professor
             label: data.personalInfo?.name || "Nome não disponível", // Nome do professor
             //registatrion: data.registration || "Registro não disponível", // Registro do professor
+            ...doc.data(),
           };
         });
 
