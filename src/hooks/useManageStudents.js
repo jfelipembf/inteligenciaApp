@@ -50,6 +50,20 @@ const useManageStudents = (classId, schoolId) => {
 
       selectedStudents.forEach((student) => {
         // Adicionar o estudante à subcoleção "students" da turma
+        if (student.academicInfo.classId !== null) {
+          const previousClassRef = firebase
+            .firestore()
+            .collection("schools")
+            .doc(schoolId)
+            .collection("classes")
+            .doc(student.academicInfo.classId) // Referência à turma anterior
+            .collection("students")
+            .doc(student.id);
+
+          // Remover o aluno da subcoleção "students" da turma anterior
+          batch.delete(previousClassRef);
+        }
+
         const studentRef = classRef.collection("students").doc(student.id);
         batch.set(studentRef, {
           id: student.id,

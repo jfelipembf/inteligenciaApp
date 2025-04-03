@@ -289,17 +289,38 @@ const ViewClass = () => {
                           <strong>{student.registration}</strong>Matrícula:{" "}
                           {student.academicInfo.registration}
                         </div>
+
                         <div>
                           <strong>{student.name}</strong>Nome:{" "}
                           {student.personalInfo.name}
                         </div>
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={() => handleSelectStudent(student)}
-                        >
-                          Adicionar
-                        </Button>
+                        {student.academicInfo.classId !== null ? (
+                          <div>
+                            <span className="badge bg-warning me-1 p-1 fs-6">
+                              Já em uma turma
+                            </span>
+                            <Button
+                              color="danger"
+                              size="sm"
+                              onClick={() => handleSelectStudent(student)}
+                            >
+                              Transferir
+                            </Button>
+                          </div>
+                        ) : (
+                          <div>
+                            <span className="badge bg-success me-1 p-1 fs-6">
+                              Disponível
+                            </span>
+                            <Button
+                              color="primary"
+                              size="sm"
+                              onClick={() => handleSelectStudent(student)}
+                            >
+                              Adicionar
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -324,15 +345,34 @@ const ViewClass = () => {
                           <strong>{student.name}</strong>Nome:{" "}
                           {student.personalInfo.name}
                         </div>
-                        <Button
-                          color="danger"
-                          size="sm"
-                          onClick={() =>
-                            handleRemoveSelectedStudent(student.id)
-                          }
-                        >
-                          Remover
-                        </Button>
+                        {student.academicInfo.classId !== null ? (
+                          <div>
+                            <span className="badge bg-warning me-1 p-1 fs-6">
+                              TRANSFERÊNCIA
+                            </span>
+                            <Button
+                              color="danger"
+                              size="sm"
+                              onClick={() =>
+                                handleRemoveSelectedStudent(student.id)
+                              }
+                            >
+                              Remover
+                            </Button>
+                          </div>
+                        ) : (
+                          <div>
+                            <Button
+                              color="danger"
+                              size="sm"
+                              onClick={() =>
+                                handleRemoveSelectedStudent(student.id)
+                              }
+                            >
+                              Remover
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
