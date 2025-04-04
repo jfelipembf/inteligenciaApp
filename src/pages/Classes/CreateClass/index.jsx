@@ -16,7 +16,6 @@ import Breadcrumb from "../../../components/Common/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import { useClassManagement } from "../../../hooks/useClassManagement";
 import CreatableSelect from "react-select/creatable";
-import useFetchTeachers from "../../../hooks/useFetchTeachers"; // Importação do hook
 
 const CreateClass = () => {
   const navigate = useNavigate();
@@ -25,80 +24,15 @@ const CreateClass = () => {
     loading: creatingClass,
     error: createError,
   } = useClassManagement();
-  const {
-    teachers,
-    loading: loadingTeachers,
-    error: fetchError,
-  } = useFetchTeachers(); // Uso do hook
 
   const [formData, setFormData] = useState({
     className: "",
     series: "",
     identifier: "",
-    teacher: null,
-    startTime: "",
-    endTime: "",
-    duration: "",
-    daysOfWeek: [],
-    description: "",
-    room: "",
     period: "",
     startDate: "",
     endDate: "",
   });
-
-  // Determina o período baseado no horário de início
-  useEffect(() => {
-    if (formData.startTime) {
-      const hour = parseInt(formData.startTime.split(":")[0]);
-      let period = "";
-
-      if (hour >= 5 && hour < 12) {
-        period = "Manhã";
-      } else if (hour >= 12 && hour < 18) {
-        period = "Tarde";
-      } else {
-        period = "Noite";
-      }
-
-      setFormData((prev) => ({
-        ...prev,
-        period,
-      }));
-    }
-  }, [formData.startTime]);
-
-  useEffect(() => {
-    if (formData.startTime && formData.endTime) {
-      const start = new Date(`1970-01-01T${formData.startTime}:00`);
-      const end = new Date(`1970-01-01T${formData.endTime}:00`);
-
-      if (end > start) {
-        const durationInMinutes = (end - start) / (1000 * 60);
-        const hours = Math.floor(durationInMinutes / 60);
-        const minutes = durationInMinutes % 60;
-        const duration = `${hours}h${minutes > 0 ? ` ${minutes}min` : ""}`;
-
-        setFormData((prev) => ({
-          ...prev,
-          duration: duration,
-        }));
-      } else {
-        setFormData((prev) => ({
-          ...prev,
-          duration: "",
-        }));
-      }
-    }
-  }, [formData.startTime, formData.endTime]);
-
-  const daysOfWeekOptions = [
-    { value: "segunda", label: "Segunda-feira" },
-    { value: "terca", label: "Terça-feira" },
-    { value: "quarta", label: "Quarta-feira" },
-    { value: "quinta", label: "Quinta-feira" },
-    { value: "sexta", label: "Sexta-feira" },
-  ];
 
   const seriesOptions = [
     { value: "1", label: "1º ano do fundamental" },
@@ -113,14 +47,6 @@ const CreateClass = () => {
     { value: "10", label: "1º ano do médio" },
     { value: "11", label: "2º ano do médio" },
     { value: "12", label: "3º ano do médio" },
-  ];
-
-  const roomOptions = [
-    { value: "1", label: "Sala 1" },
-    { value: "2", label: "Sala 2" },
-    { value: "3", label: "Sala 3" },
-    { value: "4", label: "Sala 4" },
-    { value: "5", label: "Sala 5" },
   ];
 
   const handleInputChange = (e) => {
@@ -144,10 +70,6 @@ const CreateClass = () => {
     try {
       const classData = {
         ...formData,
-        teacher: {
-          value: formData.teacher?.value, // ID do professor
-          label: formData.teacher?.label, // Nome do professor
-        },
       };
 
       const response = await createClass(classData);
@@ -159,16 +81,6 @@ const CreateClass = () => {
       alert("Erro ao criar turma: " + err.message);
     }
   };
-
-  if (loadingTeachers) {
-    return <p>Carregando professores...</p>;
-  }
-
-  if (fetchError) {
-    return (
-      <p className="text-danger">Erro ao carregar professores: {fetchError}</p>
-    );
-  }
 
   return (
     <div className="page-content">
@@ -230,61 +142,7 @@ const CreateClass = () => {
                         />
                       </FormGroup>
                     </Col>
-
-                    <Col md={4}>
-                      {console.log(teachers)}
-                      <FormGroup>
-                        <Label>Professor Responsável</Label>
-                        <Select
-                          name="teacher"
-                          value={formData.teacher}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "teacher" })
-                          }
-                          options={teachers}
-                          placeholder="Selecione o professor"
-                        />
-                      </FormGroup>
-                    </Col>
                   </Row>
-
-                  <Row className="mt-3">
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Horário de Início</Label>
-                        <Input
-                          type="time"
-                          name="startTime"
-                          value={formData.startTime}
-                          onChange={handleInputChange}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Horário de Término</Label>
-                        <Input
-                          type="time"
-                          name="endTime"
-                          value={formData.endTime}
-                          onChange={handleInputChange}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Duração</Label>
-                        <Input
-                          type="text"
-                          name="duration"
-                          value={formData.duration}
-                          disabled
-                          placeholder="Calculado automaticamente"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-
                   <Row className="mt-3">
                     <Col md={4}>
                       <FormGroup>
@@ -312,52 +170,16 @@ const CreateClass = () => {
                       <FormGroup>
                         <Label>Período</Label>
                         <Input
-                          type="text"
+                          type="select"
                           name="period"
                           value={formData.period}
-                          disabled
-                          placeholder="Determinado pelo horário"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Sala</Label>
-                        <CreatableSelect
-                          name="room"
-                          value={formData.room}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "room" })
-                          }
-                          formatCreateLabel={(inputValue) =>
-                            `Criar "${inputValue}"`
-                          }
-                          getNewOptionData={(inputValue, optionLabel) => ({
-                            value: inputValue,
-                            label: optionLabel,
-                          })}
-                          options={roomOptions}
-                          placeholder="Selecione ou digite a sala"
-                          isClearable
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={8}>
-                      <FormGroup>
-                        <Label>Dias da Semana</Label>
-                        <Select
-                          isMulti
-                          name="daysOfWeek"
-                          value={formData.daysOfWeek}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "daysOfWeek" })
-                          }
-                          options={daysOfWeekOptions}
-                          placeholder="Selecione os dias"
-                        />
+                          onChange={handleInputChange}
+                        >
+                          <option value="">Selecione o período</option>
+                          <option value="Manhã">Manhã</option>
+                          <option value="Tarde">Tarde</option>
+                          <option value="Noite">Noite</option>
+                        </Input>
                       </FormGroup>
                     </Col>
                   </Row>

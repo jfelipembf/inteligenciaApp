@@ -16,22 +16,13 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import { useNavigate } from "react-router-dom";
-import Select from "react-select";
+
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { useFetchClasses } from "../../../hooks/useFetchClasses";
 import useUpdateClass from "../../../hooks/useUpdateClass";
-import CreatableSelect from "react-select/creatable";
+import { useNavigate } from "react-router-dom";
 import useFetchTeachers from "../../../hooks/useFetchTeachers";
 import useDeleteClass from "../../../hooks/useDeleteClass";
-
-const roomOptions = [
-  { value: "1", label: "Sala 1" },
-  { value: "2", label: "Sala 2" },
-  { value: "3", label: "Sala 3" },
-  { value: "4", label: "Sala 4" },
-  { value: "5", label: "Sala 5" },
-];
 
 const ListClasses = () => {
   const navigate = useNavigate();
@@ -58,13 +49,7 @@ const ListClasses = () => {
       ...classItem,
       series: classItem.series || null,
       identifier: classItem.identifier || null,
-      teacher: classItem.teacher || null, // Mantém o professor existente
-      startTime: classItem.startTime || "",
-      endTime: classItem.endTime || "",
-      duration: classItem.duration || "",
-      daysOfWeek: classItem.daysOfWeek || [],
-      description: classItem.description || "",
-      room: classItem.room || { value: "", label: "" },
+      period: classItem.period || "",
       startDate: classItem.startDate || "",
       endDate: classItem.endDate || "",
     });
@@ -155,9 +140,16 @@ const ListClasses = () => {
                             {/*<th>ID</th>*/}
                             <th>Nome da Turma</th>
                             <th>Período</th>
-                            <th>Professor</th>
+
                             <th>Alunos</th>
-                            <th>Ações</th>
+                            <th>
+                              <div
+                                className="d-flex justify-content-end"
+                                style={{ marginRight: "7rem" }}
+                              >
+                                Ações
+                              </div>
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -166,35 +158,37 @@ const ListClasses = () => {
                               {/*<td>{classItem.id}</td>*/}
                               <td>{classItem.className}</td>
                               <td>{classItem.period}</td>
-                              <td>{classItem.teacher?.label || "N/A"}</td>
+
                               <td>{classItem.studentCount || 0}</td>
                               <td>
-                                <Button
-                                  color="info"
-                                  size="sm"
-                                  className="me-2"
-                                  onClick={() =>
-                                    navigate(`/classes/${classItem.id}`)
-                                  }
-                                >
-                                  Ver
-                                </Button>
-                                <Button
-                                  color="warning"
-                                  size="sm"
-                                  className="me-2"
-                                  onClick={() => handleEdit(classItem)}
-                                >
-                                  Editar
-                                </Button>
-                                <Button
-                                  color="danger"
-                                  size="sm"
-                                  onClick={() => handleDelete(classItem)}
-                                  disabled={deletingClass} // Desabilita o botão enquanto está excluindo
-                                >
-                                  {deletingClass ? "Excluindo..." : "Excluir"}
-                                </Button>
+                                <div className="d-flex justify-content-end">
+                                  <Button
+                                    color="info"
+                                    size="sm"
+                                    className="me-2"
+                                    onClick={() =>
+                                      navigate(`/classes/${classItem.id}`)
+                                    }
+                                  >
+                                    Ver
+                                  </Button>
+                                  <Button
+                                    color="warning"
+                                    size="sm"
+                                    className="me-2"
+                                    onClick={() => handleEdit(classItem)}
+                                  >
+                                    Editar
+                                  </Button>
+                                  <Button
+                                    color="danger"
+                                    size="sm"
+                                    onClick={() => handleDelete(classItem)}
+                                    disabled={deletingClass} // Desabilita o botão enquanto está excluindo
+                                  >
+                                    {deletingClass ? "Excluindo..." : "Excluir"}
+                                  </Button>
+                                </div>
                               </td>
                             </tr>
                           ))}
@@ -224,66 +218,21 @@ const ListClasses = () => {
                       />
                     </FormGroup>
                   </Col>
+
                   <Col md={6}>
                     <FormGroup>
-                      <Label>Professor Responsável</Label>
-                      {loadingTeachers ? (
-                        <p>Carregando professores...</p>
-                      ) : fetchError ? (
-                        <p className="text-danger">
-                          Erro ao carregar professores: {fetchError}
-                        </p>
-                      ) : (
-                        <Select
-                          name="teacher"
-                          value={currentClass?.teacher || null} // Valor atual do professor selecionado
-                          onChange={(selectedOption) =>
-                            setCurrentClass((prev) => ({
-                              ...prev,
-                              teacher: selectedOption, // Atualiza o estado com o professor selecionado
-                            }))
-                          }
-                          options={teachers} // Lista de professores retornada pelo hook
-                          placeholder="Selecione o professor"
-                          isClearable
-                        />
-                      )}
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label>Descrição</Label>
+                      <Label>Período</Label>
                       <Input
-                        type="text"
-                        name="description"
-                        value={currentClass?.description || ""}
+                        type="select"
+                        name="period"
+                        value={currentClass?.period}
                         onChange={handleInputChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label>Sala</Label>
-                      <CreatableSelect
-                        name="room"
-                        value={currentClass?.room || { value: "", label: "" }}
-                        onChange={(selectedOption) =>
-                          setCurrentClass((prev) => ({
-                            ...prev,
-                            room: selectedOption, // Atualiza no formato { value, label }
-                          }))
-                        }
-                        formatCreateLabel={(inputValue) =>
-                          `Criar "${inputValue}"`
-                        }
-                        getNewOptionData={(inputValue, optionLabel) => ({
-                          value: inputValue,
-                          label: optionLabel,
-                        })}
-                        options={roomOptions}
-                        placeholder="Selecione ou digite a sala"
-                        isClearable
-                      />
+                      >
+                        <option value="">Selecione o período</option>
+                        <option value="Manhã">Manhã</option>
+                        <option value="Tarde">Tarde</option>
+                        <option value="Noite">Noite</option>
+                      </Input>
                     </FormGroup>
                   </Col>
                 </Row>

@@ -182,21 +182,12 @@ const ViewClass = () => {
                           <th scope="row">Período:</th>
                           <td>{classData.period}</td>
                         </tr>
-                        <tr>
-                          <th scope="row">Professor:</th>
-                          <td>{classData.teacher?.label || "N/A"}</td>
-                          <th scope="row">Sala:</th>
-                          <td>{classData.room?.label || "N/A"}</td>
-                        </tr>
+
                         <tr>
                           <th scope="row">Data de Início:</th>
                           <td>{classData.startDate}</td>
                           <th scope="row">Data de Término:</th>
                           <td>{classData.endDate}</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Descrição:</th>
-                          <td colSpan="3">{classData.description}</td>
                         </tr>
                       </tbody>
                     </table>
