@@ -20,9 +20,13 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import useClassData from "../../../hooks/useClassData";
 import useManageStudents from "../../../hooks/useManageStudents";
+import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 
 const ViewClass = () => {
+  const { id: classId } = useParams(); // Pega o ID da turma da URL
+  const navigate = useNavigate(); // Hook para navegação
+
   const { id } = useParams();
   const {
     classData,
@@ -199,9 +203,64 @@ const ViewClass = () => {
                   </div>
 
                   <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h4 className="card-title mb-0">Alunos Matriculados</h4>
+                    <h4 className="card-title mb-0">Alunos Matriculados </h4>
                     <Button color="primary" onClick={toggleAddStudentModal}>
                       Adicionar Alunos
+                    </Button>
+                  </div>
+
+                  <div className="table-responsive mb-4">
+                    <Table className="table-centered table-nowrap mb-0">
+                      <thead className="table-light">
+                        <tr>
+                          {/*<th>ID</th>*/}
+                          <th>Nome do Aluno</th>
+                          <th>Matrícula</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {students.map((student) => (
+                          <tr key={student.id}>
+                            {/*<td>{student.id}</td>*/}
+                            <td>{student.name}</td>
+                            <td>{student.registration}</td>
+                            <td>
+                              <Button
+                                color="info"
+                                size="sm"
+                                className="me-1"
+                                onClick={() =>
+                                  (window.location.href = `/student-profile/${student.id}`)
+                                }
+                              >
+                                Ver Perfil
+                              </Button>
+                              <Button
+                                color="danger"
+                                size="sm"
+                                onClick={() =>
+                                  toggleRemoveStudentModal(student)
+                                }
+                              >
+                                Remover
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                  {/**********************************************/}
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="card-title mb-0">Aulas</h4>
+                    <Button
+                      color="primary"
+                      onClick={() =>
+                        navigate(`/classes/${classId}/create-classroom`)
+                      }
+                    >
+                      Adicionar Aula
                     </Button>
                   </div>
 

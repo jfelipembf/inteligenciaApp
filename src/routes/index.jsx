@@ -201,6 +201,7 @@ import Coordinators from "../pages/Coordinator/index";
 //Admin
 import Administrators from "../pages/Administrators/index";
 import AddAdministrator from "../pages/Administrators/AddAdministrator";
+import CreateClassroom from "../pages/Classes/Classroom/CreateClassroom";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -213,6 +214,9 @@ const authProtectedRoutes = [
   { path: "/create-class", component: <CreateClass /> },
   { path: "/classes", component: <ListClasses /> },
   { path: "/classes/:id", component: <ViewClass /> },
+
+  // Classrooms
+  { path: "classes/:classId/create-classroom", component: <CreateClassroom /> },
 
   // Students
   { path: "/students", component: <Students /> },

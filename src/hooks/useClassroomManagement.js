@@ -2,16 +2,16 @@ import { useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-export const useClassManagement = () => {
+export const useClassroomManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createClass = async (classData) => {
+  const createClass = async (classId, classData) => {
     setLoading(true);
     setError(null);
 
     try {
-      console.log("Iniciando criação da turma...");
+      console.log("Iniciando criação da aula...");
 
       // Verificar se há um usuário autenticado
       const currentUser = firebase.auth().currentUser;
@@ -30,16 +30,9 @@ export const useClassManagement = () => {
         throw new Error("schoolId não encontrado para o usuário");
       }
 
-      // Gerar o className com base na série e na letra da turma
-      const seriesLabel = classData.series?.label || "";
-      const identifierLabel = classData.identifier?.label || "";
-      const currentYear = new Date().getFullYear();
-      const className = `${seriesLabel} - ${identifierLabel} (${currentYear})`;
-
-      // Preparar dados da turma
+      // Preparar dados da aula
       const finalClassData = {
         ...classData,
-        className, // Adiciona o className gerado
         schoolId,
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -47,22 +40,24 @@ export const useClassManagement = () => {
         },
       };
 
-      console.log("Salvando dados da turma na escola:", schoolId);
+      console.log("Salvando aula na subcoleção da turma:", classId);
 
-      // Salvar a turma na subcoleção "classes" dentro da escola
-      const classRef = await firebase
+      // Salvar a aula na subcoleção "lessons" dentro da turma
+      const lessonRef = await firebase
         .firestore()
         .collection("schools")
         .doc(schoolId)
         .collection("classes")
+        .doc(classId)
+        .collection("lessons")
         .add(finalClassData);
 
-      console.log("Turma criada com sucesso na escola:", classRef.id);
+      console.log("Aula criada com sucesso:", lessonRef.id);
 
       setLoading(false);
-      return { success: true, id: classRef.id };
+      return { success: true, id: lessonRef.id };
     } catch (error) {
-      console.error("Erro na criação da turma:", error);
+      console.error("Erro na criação da aula:", error);
       setError(error.message);
       setLoading(false);
       throw error;
@@ -75,3 +70,5 @@ export const useClassManagement = () => {
     error,
   };
 };
+
+export default useClassroomManagement;
