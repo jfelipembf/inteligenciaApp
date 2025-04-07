@@ -16,12 +16,14 @@ import Breadcrumb from "../../../../components/Common/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import useClassroomManagement from "../../../../hooks/useClassroomManagement";
 import { useParams } from "react-router-dom";
-
 import CreatableSelect from "react-select/creatable";
 import useFetchTeachers from "../../../../hooks/useFetchTeachers"; // Importação do hook
+import firebase from "firebase/compat/app";
 
 const CreateClassroom = () => {
   const { classId } = useParams(); // Obtenção do classId da URL
+  const [classPeriod, setClassPeriod] = useState("");
+  const [lessons, setLessons] = useState([]);
 
   const navigate = useNavigate();
   const {
@@ -44,6 +46,47 @@ const CreateClassroom = () => {
     daysOfWeek: [],
     room: "",
   });
+
+  useEffect(() => {
+    const fetchClass = async () => {
+      try {
+        const currentUser = firebase.auth().currentUser;
+
+        const userDoc = await firebase
+          .firestore()
+          .collection("users")
+          .doc(currentUser.uid)
+          .get();
+
+        const classDoc = await firebase
+          .firestore()
+          .collection("schools")
+          .doc(userDoc.data().schoolId)
+          .collection("classes")
+          .doc(classId)
+          .get();
+
+        if (classDoc.exists) {
+          setClassPeriod(classDoc.data().period); // Armazena o período da classe
+
+          const lessonsSnapshot = await classDoc.ref
+            .collection("lessons")
+            .get();
+          const lessons = lessonsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setLessons(lessons); // Armazena as aulas existentes na turma
+        } else {
+          console.error("Classe não encontrada");
+        }
+      } catch (err) {
+        console.error("Erro ao buscar o período da classe:", err);
+      }
+    };
+
+    fetchClass();
+  }, [classId]);
 
   // Determina o período baseado no horário de início
   useEffect(() => {
@@ -125,6 +168,35 @@ const CreateClassroom = () => {
     e.preventDefault();
 
     try {
+      console.log(classPeriod);
+      if (formData.period !== classPeriod) {
+        alert(
+          `O período da aula (${formData.period}) não corresponde ao período da classe (${classPeriod}).`
+        );
+        return;
+      }
+
+      const newStart = new Date(`1970-01-01T${formData.startTime}:00`);
+      const newEnd = new Date(`1970-01-01T${formData.endTime}:00`);
+
+      const hasConflict = lessons.some((lesson) => {
+        const existingStart = new Date(`1970-01-01T${lesson.startTime}:00`);
+        const existingEnd = new Date(`1970-01-01T${lesson.endTime}:00`);
+
+        return (
+          (newStart >= existingStart && newStart < existingEnd) || // Início da nova aula está dentro de uma aula existente
+          (newEnd > existingStart && newEnd <= existingEnd) || // Fim da nova aula está dentro de uma aula existente
+          (newStart <= existingStart && newEnd >= existingEnd) // Nova aula engloba uma aula existente
+        );
+      });
+
+      if (hasConflict) {
+        alert(
+          "O horário da aula entra em conflito com outra aula já existente."
+        );
+        return;
+      }
+
       const classData = {
         ...formData,
         teacher: {
@@ -165,7 +237,6 @@ const CreateClassroom = () => {
                 <Form onSubmit={handleSubmit}>
                   <Row>
                     <Col md={4}>
-                      {console.log(teachers)}
                       <FormGroup>
                         <Label>Professor Responsável</Label>
                         <Select
