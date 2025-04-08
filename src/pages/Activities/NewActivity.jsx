@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -12,10 +12,13 @@ import {
   Button,
 } from "reactstrap";
 import Select from "react-select";
-import CreatableSelect from "react-select/creatable";
+// import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
-import { useActivityManagement } from "../../hooks/useActivityManagement"; // hook hipotético
+import { useActivityManagement } from "../../hooks/useActivityManagement";
+import { useFetchClasses } from "../../hooks/useFetchClasses";
+import useFetchTeachers from "../../hooks/useFetchTeachers";
+
 
 const NewActivity = () => {
   const navigate = useNavigate();
@@ -34,6 +37,20 @@ const NewActivity = () => {
     startDate: "",
     endDate: "",
   });
+
+	const [teachers, setTeachers] = useState([]);
+  const [classes, setClasses] = useState([]);
+
+  const { teachers: fetchedTeachers } = useFetchTeachers();
+  const { classes: fetchedClasses } = useFetchClasses();
+
+  useEffect(() => {
+    setTeachers(fetchedTeachers);
+  }, [fetchedTeachers]);
+
+  useEffect(() => {
+    setClasses(fetchedClasses);
+  }, [fetchedClasses]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -73,21 +90,26 @@ const NewActivity = () => {
       alert("Erro ao criar atividade: " + err.message);
     }
   };
+	
+	const classOptions = classes.map((c) => ({
+		value: c.id,
+		label: `${c.className}`,
+	}));
+	
+	// Atualize teacherOptions para manter o objeto original como metadata
+	const teacherOptions = teachers.map((t) => ({
+		value: t.uid,
+		label: `${t.personalInfo.name}`,
+		data: t, // armazenamos o objeto original para usar depois
+	}));
 
-  const teacherOptions = [
-    { value: "1", label: "Prof. João" },
-    { value: "2", label: "Profª. Maria" },
-  ];
-
-  const subjectOptions = [
-    { value: "1", label: "Matemática" },
-    { value: "2", label: "Português" },
-  ];
-
-  const classOptions = [
-    { value: "1A", label: "1º Ano - A" },
-    { value: "2B", label: "2º Ano - B" },
-  ];
+	// Atualize subjectOptions com base no professor selecionado
+	const selectedTeacher = formData.teacher?.data;
+	const subjectOptions =
+		selectedTeacher?.professionalInfo?.subjects?.map((s) => ({
+			value: s,
+			label: s,
+		})) || [];
 
   return (
     <div className="page-content">
@@ -119,15 +141,16 @@ const NewActivity = () => {
                       <FormGroup>
                         <Label>Disciplina</Label>
                         <Select
-                          name="subject"
-                          value={formData.subject}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "subject" })
-                          }
-                          options={subjectOptions}
-                          placeholder="Selecione a disciplina"
-                          isClearable
-                        />
+													name="subject"
+													value={formData.subject}
+													onChange={(option) =>
+														handleSelectChange(option, { name: "subject" })
+													}
+													options={subjectOptions}
+													placeholder="Selecione a disciplina"
+													isClearable
+													isDisabled={!formData.teacher}
+												/>
                       </FormGroup>
                     </Col>
                     <Col md={4}>

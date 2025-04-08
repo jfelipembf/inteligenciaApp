@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -35,15 +35,21 @@ const Activities = () => {
     };
 
     fetchActivities();
-  }, []);
+  }, [getActivities]);
 
-  useEffect(() => {
-    const filtered = activities.filter((activity) =>
-      activity.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredActivities(filtered);
-    setCurrentPage(1);
-  }, [searchTerm, activities]);
+  // Atualiza as atividades filtradas sempre que o termo de busca ou a lista mudar
+	useEffect(() => {
+		const filtered = activities.filter((activity) =>
+			activity.name.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+		setFilteredActivities(filtered);
+	}, [searchTerm, activities]);
+
+	// Reseta a página apenas quando o termo de busca mudar
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm]);
+
 
   const handleEdit = (id) => {
     navigate(`/activities/edit-activity/${id}`);
