@@ -22,10 +22,99 @@ import useClassData from "../../../hooks/useClassData";
 import useManageStudents from "../../../hooks/useManageStudents";
 import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
+import useFetchLessons from "../../../hooks/useFetchLessons";
+import useUpdateLesson from "../../../hooks/useUpdateLesson";
+import useFetchTeachers from "../../../hooks/useFetchTeachers";
+import CreatableSelect from "react-select/creatable"; // Importar o componente
+import { label } from "yet-another-react-lightbox";
 
 const ViewClass = () => {
   const { id: classId } = useParams(); // Pega o ID da turma da URL
+  const { lessons, loading, error } = useFetchLessons(classId);
   const navigate = useNavigate(); // Hook para navegação
+  const [localLessons, setLocalLessons] = useState([]);
+  const [editLessonModal, setEditLessonModal] = useState(false);
+  const [lessonToEdit, setLessonToEdit] = useState(null);
+  const {
+    teachers,
+    loading: loadingTeachers,
+    error: fetchTeachersError,
+  } = useFetchTeachers();
+  const [removeLessonModal, setRemoveLessonModal] = useState(false);
+  const [lessonToRemove, setLessonToRemove] = useState(null);
+
+  const toggleRemoveLessonModal = (lesson) => {
+    setLessonToRemove(lesson);
+    setRemoveLessonModal(!removeLessonModal);
+  };
+  const toggleEditLessonModal = (lesson) => {
+    setLessonToEdit(lesson);
+    setEditLessonModal(!editLessonModal);
+  };
+  useEffect(() => {
+    if (!loading && lessons) {
+      setLocalLessons(lessons);
+    }
+  }, [loading, lessons]);
+
+  const handleConfirmRemoveLesson = async () => {
+    if (!lessonToRemove) return;
+
+    try {
+      // Remover a aula do Firestore
+      const lessonRef = firebase
+        .firestore()
+        .collection("schools")
+        .doc(classData.schoolId)
+        .collection("classes")
+        .doc(classId)
+        .collection("lessons")
+        .doc(lessonToRemove.id);
+
+      await lessonRef.delete();
+
+      // Atualizar a lista local de aulas
+      setLocalLessons((prev) =>
+        prev.filter((lesson) => lesson.id !== lessonToRemove.id)
+      );
+
+      toggleRemoveLessonModal(null);
+      alert("Aula removida com sucesso!");
+    } catch (error) {
+      console.error("Erro ao remover aula:", error);
+      alert("Erro ao remover aula: " + error.message);
+    }
+  };
+  const handleSaveLesson = async () => {
+    if (!lessonToEdit) return;
+
+    const success = await updateLesson(lessonToEdit.id, {
+      teacher: {
+        label: lessonToEdit.teacher.label,
+        value: lessonToEdit.teacher.value,
+      },
+      room: {
+        label: lessonToEdit.room.label,
+        value: lessonToEdit.room.value,
+      },
+    });
+
+    if (success) {
+      // Atualizar a cópia local das aulas
+      setLocalLessons((prev) =>
+        prev.map((lesson) =>
+          lesson.id === lessonToEdit.id
+            ? { ...lesson, ...lessonToEdit }
+            : lesson
+        )
+      );
+
+      toggleEditLessonModal(null);
+      alert("Aula atualizada com sucesso!");
+    } else {
+      alert("Erro ao atualizar a aula.");
+    }
+  };
 
   const { id } = useParams();
   const {
@@ -35,6 +124,11 @@ const ViewClass = () => {
     loading: classLoading,
     error: classError,
   } = useClassData(id);
+  const {
+    updateLesson,
+    loading: updatingLesson,
+    error: updateError,
+  } = useUpdateLesson(classId, classData?.schoolId);
   const {
     availableStudents,
     fetchAvailableStudents,
@@ -260,34 +354,30 @@ const ViewClass = () => {
                       <thead className="table-light">
                         <tr>
                           {/*<th>ID</th>*/}
-                          <th>Nome do Aluno</th>
-                          <th>Matrícula</th>
+                          <th>Disciplina</th>
+                          <th>Professor</th>
                           <th>Ações</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {students.map((student) => (
-                          <tr key={student.id}>
+                        {localLessons.map((lesson) => (
+                          <tr key={lesson.id}>
                             {/*<td>{student.id}</td>*/}
-                            <td>{student.name}</td>
-                            <td>{student.registration}</td>
+                            <td>{lesson.subject}</td>
+                            <td>{lesson.teacher.label}</td>
                             <td>
                               <Button
                                 color="info"
                                 size="sm"
                                 className="me-1"
-                                onClick={() =>
-                                  (window.location.href = `/student-profile/${student.id}`)
-                                }
+                                onClick={() => toggleEditLessonModal(lesson)}
                               >
-                                Ver Perfil
+                                Editar
                               </Button>
                               <Button
                                 color="danger"
                                 size="sm"
-                                onClick={() =>
-                                  toggleRemoveStudentModal(student)
-                                }
+                                onClick={() => toggleRemoveLessonModal(lesson)}
                               >
                                 Remover
                               </Button>
@@ -443,6 +533,107 @@ const ViewClass = () => {
             </ModalFooter>
           </Modal>
 
+          {/* Modal para editar aula */}
+          <Modal
+            isOpen={editLessonModal}
+            toggle={() => toggleEditLessonModal(null)}
+          >
+            <ModalHeader toggle={() => toggleEditLessonModal(null)}>
+              Editar Aula
+            </ModalHeader>
+            <ModalBody>
+              {lessonToEdit && (
+                <Form>
+                  <FormGroup>
+                    <Label for="teacher">Professor</Label>
+                    {loadingTeachers ? (
+                      <div>Carregando professores...</div>
+                    ) : fetchTeachersError ? (
+                      <div>
+                        Erro ao carregar professores: {fetchTeachersError}
+                      </div>
+                    ) : (
+                      <Input
+                        type="select"
+                        id="teacher"
+                        value={lessonToEdit.teacher?.value || ""}
+                        onChange={(e) => {
+                          const selectedTeacher = teachers.find(
+                            (teacher) => teacher.value === e.target.value
+                          );
+                          setLessonToEdit((prev) => ({
+                            ...prev,
+                            teacher: {
+                              label: selectedTeacher.label,
+                              value: selectedTeacher.value,
+                            },
+                          }));
+                        }}
+                      >
+                        <option value="" disabled>
+                          Selecione um professor
+                        </option>
+                        {teachers.map((teacher) => (
+                          <option key={teacher.value} value={teacher.value}>
+                            {teacher.label}
+                          </option>
+                        ))}
+                      </Input>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="room">Sala</Label>
+                    <CreatableSelect
+                      id="room"
+                      isClearable
+                      formatCreateLabel={(inputValue) =>
+                        `Criar "${inputValue}"`
+                      }
+                      options={[
+                        { value: "Sala 1", label: "Sala 1" },
+                        { value: "Sala 2", label: "Sala 2" },
+                        { value: "Sala 3", label: "Sala 3" },
+                        { value: "Sala 4", label: "Sala 4" },
+                        { value: "Sala 5", label: "Sala 5" },
+                      ]}
+                      value={
+                        lessonToEdit.room
+                          ? {
+                              value: lessonToEdit.room.value,
+                              label: lessonToEdit.room.label,
+                            }
+                          : null
+                      }
+                      onChange={(selectedOption) =>
+                        setLessonToEdit((prev) => ({
+                          ...prev,
+                          room: selectedOption
+                            ? {
+                                label: selectedOption.label,
+                                value: selectedOption.value,
+                              }
+                            : null,
+                        }))
+                      }
+                      placeholder="Selecione ou digite uma sala"
+                    />
+                  </FormGroup>
+                </Form>
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="secondary"
+                onClick={() => toggleEditLessonModal(null)}
+              >
+                Cancelar
+              </Button>
+              <Button color="primary" onClick={handleSaveLesson}>
+                Salvar
+              </Button>
+            </ModalFooter>
+          </Modal>
+
           {/* Modal para confirmar remoção de aluno */}
           <Modal
             isOpen={removeStudentModal}
@@ -463,6 +654,31 @@ const ViewClass = () => {
                 Cancelar
               </Button>
               <Button color="danger" onClick={handleConfirmRemoveStudent}>
+                Remover
+              </Button>
+            </ModalFooter>
+          </Modal>
+
+          {/* Modal para confirmar remoção de aula */}
+          <Modal
+            isOpen={removeLessonModal}
+            toggle={() => toggleRemoveLessonModal(null)}
+          >
+            <ModalHeader toggle={() => toggleRemoveLessonModal(null)}>
+              Confirmar Remoção
+            </ModalHeader>
+            <ModalBody>
+              Tem certeza de que deseja remover a aula de{" "}
+              <strong>{lessonToRemove?.subject}</strong>?
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="secondary"
+                onClick={() => toggleRemoveLessonModal(null)}
+              >
+                Cancelar
+              </Button>
+              <Button color="danger" onClick={handleConfirmRemoveLesson}>
                 Remover
               </Button>
             </ModalFooter>
