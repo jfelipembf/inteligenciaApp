@@ -92,7 +92,7 @@ const NewActivity = () => {
   return (
     <div className="page-content">
       <Container fluid>
-        <Breadcrumb title="Criar Atividade" breadcrumbItem="Nova Atividade" />
+        <Breadcrumb title="Criar Atividade" breadcrumbItem="Atividades" />
 
         <Row>
           <Col lg={12}>
@@ -200,19 +200,26 @@ const NewActivity = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-4">
-                    <Col>
-                      <div className="text-end">
-                        <Button
-                          color="primary"
-                          type="submit"
-                          disabled={creatingActivity}
-                        >
-                          {creatingActivity ? "Criando..." : "Criar Atividade"}
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
+									<Row className="mt-4">
+										<Col className="text-end">
+											<div className="d-flex justify-content-end gap-2">
+												<Button
+													color="primary"
+													type="submit"
+													disabled={creatingActivity}
+												>
+													{creatingActivity ? "Criando..." : "Criar Atividade"}
+												</Button>
+												<Button
+													color="secondary"
+													onClick={() => navigate("/activities")}
+												>
+													Voltar
+												</Button>
+											</div>
+										</Col>
+									</Row>
+
 
                   {createError && (
                     <Row className="mt-3">

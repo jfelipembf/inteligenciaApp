@@ -204,10 +204,16 @@ const EditActivity = () => {
                     </Col>
                   </Row>
 
-                  <div className="text-end mt-4">
+                  <div className="mt-4 d-flex justify-content-end gap-2">
                     <Button color="primary" type="submit" disabled={loading}>
                       {loading ? "Salvando..." : "Salvar Alterações"}
                     </Button>
+                    <Button
+                     color="secondary"
+                     onClick={() => navigate("/activities")}
+                    >
+                     Voltar
+                    </Button>                                
                   </div>
 
                   {error && (
