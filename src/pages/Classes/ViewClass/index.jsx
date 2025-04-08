@@ -295,13 +295,20 @@ const ViewClass = () => {
                   </div>
 
                   <div className="table-responsive mb-4">
-                    <Table className="table-centered table-nowrap mb-0">
+                    <Table className="table-centered table-nowrap table-striped mb-0">
                       <thead className="table-light">
                         <tr>
                           {/*<th>ID</th>*/}
-                          <th>Nome do Aluno</th>
-                          <th>Matrícula</th>
-                          <th>Ações</th>
+                          <th style={{ width: "40%" }}>Nome do Aluno</th>
+                          <th style={{ width: "30%" }}>Matrícula</th>
+                          <th style={{ width: "30%" }}>
+                            <div
+                              className="d-flex justify-content-end"
+                              style={{ marginRight: "5rem" }}
+                            >
+                              Ações
+                            </div>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -311,25 +318,27 @@ const ViewClass = () => {
                             <td>{student.name}</td>
                             <td>{student.registration}</td>
                             <td>
-                              <Button
-                                color="info"
-                                size="sm"
-                                className="me-1"
-                                onClick={() =>
-                                  (window.location.href = `/student-profile/${student.id}`)
-                                }
-                              >
-                                Ver Perfil
-                              </Button>
-                              <Button
-                                color="danger"
-                                size="sm"
-                                onClick={() =>
-                                  toggleRemoveStudentModal(student)
-                                }
-                              >
-                                Remover
-                              </Button>
+                              <div className="d-flex justify-content-end">
+                                <Button
+                                  color="info"
+                                  size="sm"
+                                  className="me-1"
+                                  onClick={() =>
+                                    (window.location.href = `/student-profile/${student.id}`)
+                                  }
+                                >
+                                  Ver Perfil
+                                </Button>
+                                <Button
+                                  color="danger"
+                                  size="sm"
+                                  onClick={() =>
+                                    toggleRemoveStudentModal(student)
+                                  }
+                                >
+                                  Remover
+                                </Button>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -350,13 +359,20 @@ const ViewClass = () => {
                   </div>
 
                   <div className="table-responsive">
-                    <Table className="table-centered table-nowrap mb-0">
+                    <Table className="table-centered table-nowrap table-striped mb-0">
                       <thead className="table-light">
                         <tr>
                           {/*<th>ID</th>*/}
-                          <th>Disciplina</th>
-                          <th>Professor</th>
-                          <th>Ações</th>
+                          <th style={{ width: "40%" }}>Disciplina</th>
+                          <th style={{ width: "30%" }}>Professor</th>
+                          <th style={{ width: "30%" }}>
+                            <div
+                              className="d-flex justify-content-end"
+                              style={{ marginRight: "5rem" }}
+                            >
+                              Ações
+                            </div>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -366,21 +382,25 @@ const ViewClass = () => {
                             <td>{lesson.subject}</td>
                             <td>{lesson.teacher.label}</td>
                             <td>
-                              <Button
-                                color="info"
-                                size="sm"
-                                className="me-1"
-                                onClick={() => toggleEditLessonModal(lesson)}
-                              >
-                                Editar
-                              </Button>
-                              <Button
-                                color="danger"
-                                size="sm"
-                                onClick={() => toggleRemoveLessonModal(lesson)}
-                              >
-                                Remover
-                              </Button>
+                              <div className="d-flex justify-content-end">
+                                <Button
+                                  color="info"
+                                  size="sm"
+                                  className="me-1"
+                                  onClick={() => toggleEditLessonModal(lesson)}
+                                >
+                                  Editar
+                                </Button>
+                                <Button
+                                  color="danger"
+                                  size="sm"
+                                  onClick={() =>
+                                    toggleRemoveLessonModal(lesson)
+                                  }
+                                >
+                                  Remover
+                                </Button>
+                              </div>
                             </td>
                           </tr>
                         ))}
