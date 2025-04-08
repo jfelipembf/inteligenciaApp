@@ -26,7 +26,7 @@ import useDeleteClass from "../../../hooks/useDeleteClass";
 
 const ListClasses = () => {
   const navigate = useNavigate();
-  const { classes, loading, error } = useFetchClasses();
+  const { classes, loading, error, refetch } = useFetchClasses();
   const {
     updateClass,
     loading: updatingClass,
@@ -71,10 +71,10 @@ const ListClasses = () => {
     }
 
     try {
-      // Atualizar a turma no Firestore
       await updateClass(currentClass.id, currentClass.schoolId, currentClass);
       alert("Turma atualizada com sucesso!");
       setModal(false);
+      refetch(); // Recarregar a lista de turmas
     } catch (err) {
       console.error("Erro ao atualizar a turma:", err);
       alert("Erro ao atualizar a turma: " + err.message);
@@ -99,8 +99,7 @@ const ListClasses = () => {
     try {
       await deleteClass(classItem.id, classItem.schoolId);
       alert("Turma excluída com sucesso!");
-      // Atualizar a lista de turmas após a exclusão
-      window.location.reload(); // Ou use um método mais eficiente para atualizar a lista
+      refetch(); // Recarregar a lista de turmas
     } catch (err) {
       console.error("Erro ao excluir a turma:", err);
       alert("Erro ao excluir a turma: " + err.message);
