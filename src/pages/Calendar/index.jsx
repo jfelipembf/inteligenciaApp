@@ -1,276 +1,240 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-import {
-  Button,
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-  Nav,
-  NavItem,
-  NavLink
-} from "reactstrap";
-
-//Import Breadcrumb
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import Breadcrumbs from "/src/components/Common/Breadcrumb";
+import useFetchClasses from "../../hooks/useFetchClasses";
+import useFetchLessons from "../../hooks/useFetchLessons";
 
-import GradesModal from "./AttendanceModal";
-
-import { initialEvents, initialCategories, turnos, horariosAula, diasSemana } from "./mockData";
-
-const Calender = (props) => {
-  //meta title
+const Calendar = () => {
   document.title = "Calendário Escolar | Painel Escolar";
 
-  const [events, setEvents] = useState(initialEvents);
-  const [categories, setCategories] = useState(initialCategories);
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const diasSemana = [
+    { label: "Segunda", value: "segunda" },
+    { label: "Terça", value: "terca" },
+    { label: "Quarta", value: "quarta" },
+    { label: "Quinta", value: "quinta" },
+    { label: "Sexta", value: "sexta" },
+    { label: "Sábado", value: "sabado" },
+  ];
+
+  // Estados
   const [selectedTurma, setSelectedTurma] = useState(null);
   const [turmasDisponiveis, setTurmasDisponiveis] = useState([]);
-  const [selectedTurno, setSelectedTurno] = useState("Manhã");
-  const [horariosTurno, setHorariosTurno] = useState(horariosAula["Manhã"]);
+  const [aulas, setAulas] = useState([]);
+  const [horariosTurno, setHorariosTurno] = useState([]);
 
-  const [selectedAula, setSelectedAula] = useState(null);
+  // Hooks para buscar dados
+  const { classes, loading: loadingClasses } = useFetchClasses();
+  const { lessons, loading: loadingLessons } = useFetchLessons(
+    selectedTurma?.id
+  );
 
-  // Estados para o modal de notas
-  const [gradesModal, setGradesModal] = useState(false);
-
+  // Atualizar turmas disponíveis ao carregar as classes
   useEffect(() => {
-    // Inicializar os eventos filtrados com todos os eventos (excluindo eventos escolares)
-    setFilteredEvents(events.filter(event => event.categoria !== "Eventos Escolares"));
-  }, [events]);
+    if (classes) {
+      setTurmasDisponiveis(classes);
+    }
+  }, [classes]);
 
-  // Função para filtrar eventos por categoria e turma
-  const filtrarEventos = (categoria, turma) => {
-    if (!categoria) {
-      // Excluir eventos da categoria "Eventos Escolares"
-      setFilteredEvents(events.filter(event => event.categoria !== "Eventos Escolares"));
-      setTurmasDisponiveis([]);
-      setSelectedTurma(null);
-      return;
+  // Atualizar aulas ao carregar as aulas da turma selecionada
+  useEffect(() => {
+    if (lessons) {
+      setAulas(lessons);
+
+      // Gerar horários dinamicamente
+      const horarios = gerarHorarios(lessons);
+      setHorariosTurno(horarios);
+    }
+  }, [lessons]);
+
+  // Função para gerar os horários dinamicamente
+  const gerarHorarios = (aulas) => {
+    if (!aulas || aulas.length === 0) return [];
+
+    // Obter o menor horário de início e o maior horário de término
+    const minStartTime = aulas.reduce(
+      (min, aula) => (aula.startTime < min ? aula.startTime : min),
+      aulas[0].startTime
+    );
+    const maxEndTime = aulas.reduce(
+      (max, aula) => (aula.endTime > max ? aula.endTime : max),
+      aulas[0].endTime
+    );
+
+    const horarios = [];
+    let currentTime = minStartTime;
+
+    while (currentTime < maxEndTime) {
+      // Encontre a aula correspondente ao horário atual
+      const aulaAtual = aulas.find((aula) => aula.startTime === currentTime);
+
+      // Determine o próximo horário com base em aula.endTime ou use um intervalo padrão
+      const nextTime = aulaAtual
+        ? aulaAtual.endTime
+        : adicionarMinutos(currentTime, 60);
+
+      // Adicione o intervalo ao array de horários
+      horarios.push(`${currentTime} - ${nextTime}`);
+
+      // Atualize o horário atual para o próximo
+      currentTime = nextTime;
     }
 
-    // Filtrar eventos pela categoria selecionada (excluindo "Eventos Escolares")
-    const eventosFiltrados = events.filter(event => event.categoria === categoria && event.categoria !== "Eventos Escolares");
-    
-    // Obter turmas disponíveis para esta categoria
-    const turmasUnicas = [...new Set(eventosFiltrados.map(event => event.turma))].filter(Boolean);
-    setTurmasDisponiveis(turmasUnicas.sort());
-    
-    // Se uma turma for selecionada, filtrar por ela também
-    if (turma) {
-      setFilteredEvents(eventosFiltrados.filter(event => event.turma === turma));
-    } else {
-      setFilteredEvents(eventosFiltrados);
-      // Se tiver turmas disponíveis, selecionar a primeira por padrão
-      if (turmasUnicas.length > 0) {
-        setSelectedTurma(turmasUnicas[0]);
-        setFilteredEvents(eventosFiltrados.filter(event => event.turma === turmasUnicas[0]));
-      }
-    }
+    return horarios;
   };
 
-  // Manipular clique em uma categoria
-  const handleCategoriaClick = (categoria) => {
-    if (selectedCategory === categoria) {
-      // Se clicar na mesma categoria, limpa o filtro
-      setSelectedCategory(null);
-      filtrarEventos(null, null);
-    } else {
-      setSelectedCategory(categoria);
-      filtrarEventos(categoria, null);
-    }
+  // Função auxiliar para adicionar minutos a um horário
+  const adicionarMinutos = (horario, minutos) => {
+    const [hora, minuto] = horario.split(":").map(Number);
+    const date = new Date();
+    date.setHours(hora, minuto + minutos);
+    const novaHora = date.getHours().toString().padStart(2, "0");
+    const novoMinuto = date.getMinutes().toString().padStart(2, "0");
+    return `${novaHora}:${novoMinuto}`;
   };
 
-  // Manipular clique em uma turma
-  const handleTurmaClick = (turma) => {
+  // Manipular mudança de turma
+  const handleTurmaChange = (turmaId) => {
+    const turma = turmasDisponiveis.find((t) => t.id === turmaId);
     setSelectedTurma(turma);
-    filtrarEventos(selectedCategory, turma);
-  };
-  
-  // Manipular mudança de turno
-  const handleTurnoChange = (turno) => {
-    setSelectedTurno(turno);
-    setHorariosTurno(horariosAula[turno]);
-  };
-  
-  // Função para abrir o modal de notas
-  const toggleGradesModal = (evento) => {
-    if (gradesModal) {
-      setGradesModal(false);
-      setSelectedAula(null);
-    } else {
-      setSelectedAula(evento);
-      setGradesModal(true);
-    }
   };
 
   return (
     <React.Fragment>
-      <GradesModal
-        isOpen={gradesModal}
-        toggle={toggleGradesModal}
-        aula={selectedAula}
-      />
       <div className="page-content">
         <Container fluid={true}>
-          {/* Render Breadcrumb */}
-          <Breadcrumbs title="Calendário" breadcrumbItem="Calendário de Aulas" />
+          {/* Breadcrumb */}
+          <Breadcrumbs
+            title="Calendário"
+            breadcrumbItem="Calendário de Aulas"
+          />
+
           <Row>
             <Col xl={12} lg={12} className="mb-4">
               <div className="d-flex align-items-center">
-                <div className="me-3">
-                  <label className="mb-0 me-2">Selecione a Série:</label>
-                </div>
-                <div style={{ minWidth: "250px" }}>
-                  <select
-                    className="form-select"
-                    value={selectedCategory || ""}
-                    onChange={(e) => handleCategoriaClick(e.target.value)}
-                  >
-                    <option value="">Todas as Séries</option>
-                    {categories &&
-                      (categories || []).map((category) => (
-                        <option 
-                          key={"cat-" + category.id} 
-                          value={category.title}
-                        >
-                          {category.title}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                {selectedCategory && turmasDisponiveis.length > 0 && (
-                  <div className="ms-4 d-flex align-items-center">
-                    <label className="mb-0 me-2">Turma:</label>
-                    <select
-                      className="form-select"
-                      style={{ minWidth: "150px" }}
-                      value={selectedTurma || ""}
-                      onChange={(e) => handleTurmaClick(e.target.value)}
-                    >
-                      <option value="">Todas as Turmas</option>
-                      {turmasDisponiveis.map((turma, index) => (
-                        <option key={index} value={turma}>
-                          Turma {turma}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                <label className="me-3">Selecione a Turma:</label>
+                <select
+                  className="form-select"
+                  style={{ minWidth: "250px" }}
+                  value={selectedTurma?.id || ""}
+                  onChange={(e) => handleTurmaChange(e.target.value)}
+                >
+                  <option value="">Selecione uma turma</option>
+                  {turmasDisponiveis.map((turma) => (
+                    <option key={turma.id} value={turma.id}>
+                      {turma.className}
+                    </option>
+                  ))}
+                </select>
               </div>
             </Col>
-            
+
             <Col className="col-12">
               <Card>
                 <CardBody>
                   <div className="mb-4">
                     <h4 className="card-title mb-0">Calendário Escolar</h4>
                   </div>
-                  
-                  <Row>
-                    <Col className="col-12">
-                      {/* fullcalendar control */}
-                      <Card className="border shadow-none">
-                        <CardBody className="p-4">
-                          {/* Abas para os turnos */}
-                          <div className="mb-4">
-                            <Nav tabs className="nav-tabs-custom">
-                              {turnos.map((turno, index) => (
-                                <NavItem key={index}>
-                                  <NavLink
-                                    className={selectedTurno === turno ? "active" : ""}
-                                    onClick={() => handleTurnoChange(turno)}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    {turno}
-                                  </NavLink>
-                                </NavItem>
-                              ))}
-                            </Nav>
-                          </div>
-                          
-                          {/* Grade de horários com dias da semana */}
-                          <div className="table-responsive">
-                            <table className="table table-bordered" style={{ tableLayout: 'fixed', width: '100%' }}>
-                              <thead>
-                                <tr>
-                                  <th style={{ width: '15%' }}>Horário</th>
-                                  {diasSemana.map((dia, index) => (
-                                    <th key={index} style={{ width: '12%' }}>{dia}</th>
-                                  ))}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {horariosTurno.map((horario, indexHorario) => (
-                                  <tr key={indexHorario}>
-                                    <td className="text-center fw-bold" style={{ width: '15%' }}>{horario}</td>
-                                    {diasSemana.map((dia, indexDia) => {
-                                      // Filtrar eventos para este dia e horário
-                                      const eventosHorario = filteredEvents.filter(evento => {
-                                        // Aqui seria necessário uma lógica real para verificar o dia e horário
-                                        // Esta é uma simplificação para demonstração
-                                        return (indexDia === (evento.id % 7)) && (indexHorario === (evento.id % 5));
-                                      });
-                                      
-                                      return (
-                                        <td key={indexDia} className="position-relative" style={{ height: '120px', verticalAlign: 'top', width: '12%' }}>
-                                          {eventosHorario.length > 0 ? (
-                                            eventosHorario.map((evento, i) => (
-                                              <div 
-                                                key={i} 
-                                                className={`${evento.className} p-2 mb-1 rounded border d-flex flex-column`}
-                                                style={{ height: '100px', overflow: 'hidden' }}
-                                              >
-                                                <div className="fw-bold" style={{ fontSize: '12px' }}>{evento.title}</div>
-                                                {evento.professor && (
-                                                  <div><small style={{ fontSize: '9px' }}>Prof: {evento.professor}</small></div>
-                                                )}
-                                                <div className="mt-auto d-flex justify-content-end">
-                                                  <Button
-                                                    color="light"
-                                                    size="sm"
-                                                    className="btn-sm"
-                                                    onClick={(e) => {
-                                                      e.stopPropagation();
-                                                      // Adicionar horário e dia da semana ao evento
-                                                      const eventoComHorario = {
-                                                        ...evento,
-                                                        horario: horario,
-                                                        diaSemana: dia
-                                                      };
-                                                      toggleGradesModal(eventoComHorario);
-                                                    }}
-                                                    style={{ padding: '4px 8px' }}
-                                                  >
-                                                    <i className="mdi mdi-pencil font-size-14"></i>
-                                                  </Button>
-                                                </div>
-                                              </div>
-                                            ))
-                                          ) : (
-                                            <div 
-                                              className="text-center d-flex align-items-center justify-content-center text-muted" 
-                                              style={{ height: '100px' }}
-                                            >
-                                              {/* Célula vazia */}
-                                            </div>
-                                          )}
-                                        </td>
-                                      );
-                                    })}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
+
+                  {/* Grade de horários com dias da semana */}
+                  <div className="table-responsive">
+                    <table
+                      className="table table-bordered"
+                      style={{ tableLayout: "fixed", width: "100%" }}
+                    >
+                      <thead>
+                        <tr>
+                          <th style={{ width: "15%" }}>Horário</th>
+                          {diasSemana.map((dia, index) => (
+                            <th key={index} style={{ width: "12%" }}>
+                              {dia.label}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {horariosTurno.map((horario, indexHorario) => (
+                          <tr key={indexHorario}>
+                            <td
+                              className="text-center fw-bold"
+                              style={{ width: "15%" }}
+                            >
+                              {horario}
+                            </td>
+                            {diasSemana.map((dia, indexDia) => {
+                              const eventosHorario = aulas.filter((aula) => {
+                                const [horarioInicio, horarioFim] =
+                                  horario.split(" - ");
+
+                                const diaCorresponde = aula.daysOfWeek.some(
+                                  (d) =>
+                                    d.value.toLowerCase() ===
+                                    dia.value.toLowerCase()
+                                );
+
+                                const horarioCorresponde =
+                                  aula.startTime >= horarioInicio &&
+                                  aula.startTime < horarioFim;
+
+                                return diaCorresponde && horarioCorresponde;
+                              });
+
+                              return (
+                                <td
+                                  key={indexDia}
+                                  className="position-relative"
+                                  style={{
+                                    height: "120px",
+                                    verticalAlign: "top",
+                                    width: "12%",
+                                  }}
+                                >
+                                  {eventosHorario.length > 0 ? (
+                                    eventosHorario.map((aula, i) => (
+                                      <div
+                                        key={i}
+                                        className="p-2 mb-1 rounded border d-flex flex-column"
+                                        style={{
+                                          height: "100px",
+                                          overflow: "hidden",
+                                          backgroundColor: "#2a3042",
+                                          color: "#fff",
+                                        }}
+                                      >
+                                        <div
+                                          className="fw-bold"
+                                          style={{ fontSize: "12px" }}
+                                        >
+                                          {aula.subject}
+                                        </div>
+                                        <div>
+                                          <small style={{ fontSize: "11px" }}>
+                                            Prof: {aula.teacher.label}
+                                          </small>
+                                        </div>
+                                        <div>
+                                          <small style={{ fontSize: "11px" }}>
+                                            Sala: {aula.room.label}
+                                          </small>
+                                        </div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div
+                                      className="text-center text-muted"
+                                      style={{ height: "100px" }}
+                                    >
+                                      Sem aulas
+                                    </div>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </CardBody>
               </Card>
             </Col>
@@ -281,8 +245,8 @@ const Calender = (props) => {
   );
 };
 
-Calender.propTypes = {
+Calendar.propTypes = {
   className: PropTypes.string,
 };
 
-export default Calender;
+export default Calendar;

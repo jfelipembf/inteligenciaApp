@@ -69,3 +69,5 @@ export const useFetchClasses = () => {
 
   return { classes, loading, error, refetch: fetchClasses };
 };
+
+export default useFetchClasses;
