@@ -30,12 +30,19 @@ const Activities = () => {
 
   useEffect(() => {
     const fetchActivities = async () => {
-      const data = await getActivities();
-      setActivities(data);
+      try {
+        const data = await getActivities();
+        setActivities(data);
+      } catch (error) {
+        console.error("Erro ao carregar atividades:", error);
+      }
     };
-
+  
     fetchActivities();
-  }, [getActivities]);
+    console.log(activities);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
 
   // Atualiza as atividades filtradas sempre que o termo de busca ou a lista mudar
 	useEffect(() => {
@@ -51,9 +58,11 @@ const Activities = () => {
 	}, [searchTerm]);
 
 
-  const handleEdit = (id) => {
-    navigate(`/activities/edit-activity/${id}`);
+  const handleEdit = (activity) => {
+
+    navigate(`/activities/edit-activity/${activity.id}/${activity.class.id}/${activity.subject.id}`);
   };
+  
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -98,6 +107,12 @@ const Activities = () => {
 
     return pages;
   };
+
+  function formatDateBr(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+  }
+  
 
   return (
     <div className="page-content">
@@ -149,16 +164,16 @@ const Activities = () => {
                         {paginatedActivities.map((activity) => (
                           <tr key={activity.id}>
                             <td className="align-middle">{activity.name}</td>
-                            <td className="align-middle">{activity.subject?.label || "-"}</td>
-                            <td className="align-middle">{activity.class?.label || "-"}</td>
-                            <td className="align-middle">{activity.startDate}</td>
-                            <td className="align-middle">{activity.endDate}</td>
+                            <td className="align-middle">{activity.subject?.name || "-"}</td>
+                            <td className="align-middle">{activity.class?.name || "-"}</td>
+                            <td className="align-middle">{formatDateBr(activity.startDate)}</td>
+                            <td className="align-middle">{formatDateBr(activity.endDate)}</td>
                             <td className="align-middle">
                               <Button
                                 color="primary"
                                 size="sm"
                                 className="me-2"
-                                onClick={() => handleEdit(activity.id)}
+                                onClick={() => handleEdit(activity)}
                               >
                                 <i className="bx bx-edit-alt"></i>
                               </Button>

@@ -1,202 +1,221 @@
-// src/hooks/useActivityManagement.js
-
 import { useState } from 'react'
-
-// Dados mockados simulando banco de dados local
-let mockActivities = [
-  {
-    id: 1,
-    name: 'Atividade de Matemática',
-    score: '10',
-    startDate: '2025-04-10',
-    endDate: '2025-04-20',
-    class: { value: 'turma1', label: 'Turma 1' },
-    subject: { value: 'matematica', label: 'Matemática' },
-    teacher: { value: 'prof1', label: 'Prof. João' }
-  },
-  {
-    id: 2,
-    name: 'Atividade de História',
-    score: '8',
-    startDate: '2025-04-12',
-    endDate: '2025-04-18',
-    class: { value: 'turma2', label: 'Turma 2' },
-    subject: { value: 'historia', label: 'História' },
-    teacher: { value: 'prof2', label: 'Prof. Ana' }
-  },
-  {
-    id: 3,
-    name: 'Atividade de Geografia',
-    score: '7',
-    startDate: '2025-04-15',
-    endDate: '2025-04-22',
-    class: { value: 'turma3', label: 'Turma 3' },
-    subject: { value: 'geografia', label: 'Geografia' },
-    teacher: { value: 'prof3', label: 'Prof. Carlos' }
-  },
-  {
-    id: 4,
-    name: 'Atividade de Física',
-    score: '9',
-    startDate: '2025-04-11',
-    endDate: '2025-04-21',
-    class: { value: 'turma1', label: 'Turma 1' },
-    subject: { value: 'fisica', label: 'Física' },
-    teacher: { value: 'prof4', label: 'Prof. Marta' }
-  },
-  {
-    id: 5,
-    name: 'Atividade de Química',
-    score: '10',
-    startDate: '2025-04-13',
-    endDate: '2025-04-19',
-    class: { value: 'turma2', label: 'Turma 2' },
-    subject: { value: 'quimica', label: 'Química' },
-    teacher: { value: 'prof5', label: 'Prof. Ricardo' }
-  },
-  {
-    id: 6,
-    name: 'Atividade de Português',
-    score: '6',
-    startDate: '2025-04-14',
-    endDate: '2025-04-23',
-    class: { value: 'turma3', label: 'Turma 3' },
-    subject: { value: 'portugues', label: 'Português' },
-    teacher: { value: 'prof6', label: 'Prof. Juliana' }
-  },
-  {
-    id: 7,
-    name: 'Atividade de Inglês',
-    score: '7.5',
-    startDate: '2025-04-10',
-    endDate: '2025-04-17',
-    class: { value: 'turma1', label: 'Turma 1' },
-    subject: { value: 'ingles', label: 'Inglês' },
-    teacher: { value: 'prof7', label: 'Prof. Marcos' }
-  },
-  {
-    id: 8,
-    name: 'Atividade de Biologia',
-    score: '9.5',
-    startDate: '2025-04-16',
-    endDate: '2025-04-25',
-    class: { value: 'turma2', label: 'Turma 2' },
-    subject: { value: 'biologia', label: 'Biologia' },
-    teacher: { value: 'prof8', label: 'Prof. Camila' }
-  },
-  {
-    id: 9,
-    name: 'Atividade de Artes',
-    score: '10',
-    startDate: '2025-04-09',
-    endDate: '2025-04-15',
-    class: { value: 'turma3', label: 'Turma 3' },
-    subject: { value: 'artes', label: 'Artes' },
-    teacher: { value: 'prof9', label: 'Prof. Lucas' }
-  },
-  {
-    id: 10,
-    name: 'Atividade de Educação Física',
-    score: '8.5',
-    startDate: '2025-04-08',
-    endDate: '2025-04-14',
-    class: { value: 'turma1', label: 'Turma 1' },
-    subject: { value: 'edfisica', label: 'Educação Física' },
-    teacher: { value: 'prof10', label: 'Prof. Paula' }
-  },
-  {
-    id: 11,
-    name: 'Atividade de Filosofia',
-    score: '7',
-    startDate: '2025-04-18',
-    endDate: '2025-04-24',
-    class: { value: 'turma2', label: 'Turma 2' },
-    subject: { value: 'filosofia', label: 'Filosofia' },
-    teacher: { value: 'prof11', label: 'Prof. André' }
-  }
-]
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/firestore'
 
 export const useActivityManagement = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  const getSchoolId = async () => {
+    const currentUser = firebase.auth().currentUser
+    if (!currentUser) throw new Error('Usuário não autenticado')
+
+    const userDoc = await firebase
+      .firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .get()
+
+    const schoolId = userDoc.data()?.schoolId
+    if (!schoolId) throw new Error('schoolId não encontrado')
+
+    return schoolId
+  }
+
   const createActivity = async activityData => {
     setLoading(true)
     setError(null)
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (!activityData.name) {
-          setError('O nome da atividade é obrigatório.')
-          setLoading(false)
-          return reject(new Error('O nome da atividade é obrigatório.'))
-        }
+    try {
+      const schoolId = await getSchoolId()
 
-        const newActivity = {
-          id: Date.now(),
-          ...activityData
-        }
+      const activityWithFlag = {
+        ...activityData,
+        avaliation:
+          activityData.score && Number(activityData.score) > 0 ? true : false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
 
-        mockActivities.push(newActivity)
-        setLoading(false)
-        resolve(newActivity)
-      }, 1000)
-    })
+      const docRef = await firebase
+        .firestore()
+        .collection('schools')
+        .doc(schoolId)
+        .collection('classes')
+        .doc(activityData.class.id)
+        .collection('lessons')
+        .doc(activityData.subject.id)
+        .collection('activities')
+        .add(activityWithFlag)
+
+      return { id: docRef.id, ...activityWithFlag }
+    } catch (err) {
+      setError(err.message)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const getActivities = async () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve([...mockActivities])
-      }, 500)
-    })
-  }
-
-  const getActivityById = async id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const activity = mockActivities.find(a => a.id === Number(id))
-        resolve(activity || null)
-      }, 500)
-    })
-  }
-
-  const updateActivity = async (id, updatedData) => {
+  const updateActivity = async (activityId, updatedData) => {
     setLoading(true)
     setError(null)
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = mockActivities.findIndex(a => a.id === Number(id))
-        if (index === -1) {
-          setError('Atividade não encontrada.')
-          setLoading(false)
-          return reject(new Error('Atividade não encontrada.'))
-        }
+    try {
+      const schoolId = await getSchoolId()
 
-        mockActivities[index] = { ...mockActivities[index], ...updatedData }
-        setLoading(false)
-        resolve(mockActivities[index])
-      }, 1000)
-    })
+      const updatedWithFlag = {
+        ...updatedData,
+        avaliation:
+          updatedData.score && Number(updatedData.score) > 0 ? true : false,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+
+      await firebase
+        .firestore()
+        .collection('schools')
+        .doc(schoolId)
+        .collection('classes')
+        .doc(updatedData.class.id)
+        .collection('lessons')
+        .doc(updatedData.subject.id)
+        .collection('activities')
+        .doc(activityId)
+        .update(updatedWithFlag)
+
+      return { id: activityId, ...updatedWithFlag }
+    } catch (err) {
+      setError(err.message)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const deleteActivity = async id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // Simula exclusão no mock
-        mockActivities = mockActivities.filter(a => a.id !== id)
-        resolve(true)
-      }, 300)
-    })
+  const getActivities = async () => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const schoolId = await getSchoolId()
+
+      const classesSnapshot = await firebase
+        .firestore()
+        .collection('schools')
+        .doc(schoolId)
+        .collection('classes')
+        .get()
+
+      const allActivities = []
+
+      for (const classDoc of classesSnapshot.docs) {
+        const classId = classDoc.id
+
+        const lessonsSnapshot = await firebase
+          .firestore()
+          .collection('schools')
+          .doc(schoolId)
+          .collection('classes')
+          .doc(classId)
+          .collection('lessons')
+          .get()
+
+        for (const lessonDoc of lessonsSnapshot.docs) {
+          const subjectId = lessonDoc.id
+
+          const activitiesSnapshot = await firebase
+            .firestore()
+            .collection('schools')
+            .doc(schoolId)
+            .collection('classes')
+            .doc(classId)
+            .collection('lessons')
+            .doc(subjectId)
+            .collection('activities')
+            .orderBy('createdAt', 'desc')
+            .get()
+
+          activitiesSnapshot.forEach(activityDoc => {
+            allActivities.push({
+              id: activityDoc.id,
+              ...activityDoc.data()
+            })
+          })
+        }
+      }
+
+      return allActivities
+    } catch (err) {
+      setError(err.message)
+      return []
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getActivityById = async (classId, subjectId, activityId) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const schoolId = await getSchoolId()
+
+      const doc = await firebase
+        .firestore()
+        .collection('schools')
+        .doc(schoolId)
+        .collection('classes')
+        .doc(classId)
+        .collection('lessons')
+        .doc(subjectId)
+        .collection('activities')
+        .doc(activityId)
+        .get()
+
+      if (!doc.exists) throw new Error('Atividade não encontrada')
+
+      return { id: doc.id, ...doc.data() }
+    } catch (err) {
+      setError(err.message)
+      return null
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const deleteActivity = async (classId, subjectId, activityId) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const schoolId = await getSchoolId()
+
+      await firebase
+        .firestore()
+        .collection('schools')
+        .doc(schoolId)
+        .collection('classes')
+        .doc(classId)
+        .collection('lessons')
+        .doc(subjectId)
+        .collection('activities')
+        .doc(activityId)
+        .delete()
+
+      return true
+    } catch (err) {
+      setError(err.message)
+      return false
+    } finally {
+      setLoading(false)
+    }
   }
 
   return {
     createActivity,
     updateActivity,
     getActivities,
-    deleteActivity,
     getActivityById,
+    deleteActivity,
     loading,
     error
   }

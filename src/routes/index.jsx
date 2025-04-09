@@ -395,7 +395,7 @@ const authProtectedRoutes = [
   //Rotas de Atividades
   { path:"/activities", component: <Activities />},
   { path:"/activities/add-activity", component: <NewActivity />},
-  { path:"/activities/edit-activity/:id", component: <EditActivity />},
+  { path:"/activities/edit-activity/:id/:classId/:lessonId", component: <EditActivity />},
 
   // Rotas Financeiro
   { path: "/financeiro/caixa", component: <Caixa /> },

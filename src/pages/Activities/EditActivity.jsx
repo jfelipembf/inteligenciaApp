@@ -1,5 +1,4 @@
-// ...imports mantidos
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -13,23 +12,24 @@ import {
   Button,
 } from "reactstrap";
 import Select from "react-select";
-import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useNavigate, useParams } from "react-router-dom";
+import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 import { useFetchClasses } from "../../hooks/useFetchClasses";
-import useFetchTeachers from "../../hooks/useFetchTeachers";
+import useFetchLessons from "../../hooks/useFetchLessons";
 
 const EditActivity = () => {
-  const { id } = useParams();
+  const { classId, lessonId, id } = useParams();
   const navigate = useNavigate();
 
-  const { getActivityById, updateActivity } = useActivityManagement();
-  const { teachers } = useFetchTeachers();
-  const { classes } = useFetchClasses();
+  const {
+    getActivityById,
+    updateActivity,
+    loading: saving,
+    error,
+  } = useActivityManagement();
 
-  const [activity, setActivity] = useState(null);
   const [formData, setFormData] = useState({
-    teacher: null,
     subject: null,
     class: null,
     name: "",
@@ -38,28 +38,52 @@ const EditActivity = () => {
     endDate: "",
   });
 
-  // 🔹 1. Buscar atividade ao carregar
+  const [classes, setClasses] = useState([]);
+  const [isStartDateLocked, setIsStartDateLocked] = useState(false);
+
+  const { classes: fetchedClasses } = useFetchClasses();
+
+  useEffect(() => {
+    setClasses(fetchedClasses);
+  }, [fetchedClasses]);
+
   useEffect(() => {
     const fetchActivity = async () => {
-      const data = await getActivityById(id);
-      setActivity(data);
-    };
-    fetchActivity();
-  }, [getActivityById, id]);
+      try {
+        const activity = await getActivityById(classId, lessonId, id);
 
-  // 🔹 2. Preencher o formulário com os dados da atividade
-  useEffect(() => {
-    if (!activity) return;
-    setFormData({
-      teacher: activity.teacher || null,
-      subject: activity.subject || null,
-      class: activity.class || null,
-      name: activity.name || "",
-      score: activity.score || "",
-      startDate: activity.startDate || "",
-      endDate: activity.endDate || "",
-    });
-  }, [activity]);
+        const today = new Date().toISOString().split("T")[0];
+        const startDate = activity.startDate;
+
+        setFormData({
+          class: activity.class
+            ? { value: activity.class.id, label: activity.class.name }
+            : null,
+          subject: activity.subject
+            ? { value: activity.subject.id, label: activity.subject.name }
+            : null,
+          name: activity.name || "",
+          score: activity.score || "",
+          startDate: startDate || "",
+          endDate: activity.endDate || "",
+        });
+
+        // Bloqueia edição se a data de início for hoje ou anterior
+        if (startDate && startDate <= today) {
+          setIsStartDateLocked(true);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar atividade:", err);
+        alert("Erro ao carregar atividade");
+      }
+    };
+
+    fetchActivity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const selectedClassId = formData.class?.value;
+  const { lessons, loading: loadingLessons } = useFetchLessons(selectedClassId);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,59 +93,61 @@ const EditActivity = () => {
     }));
   };
 
-  const handleSelectChange = (option, { name }) => {
-    if (name === "teacher") {
-      setFormData((prev) => ({
-        ...prev,
-        teacher: option,
-        subject: null,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: option,
-      }));
-    }
+  const handleSelectChange = (selectedOption, { name }) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: selectedOption,
+      ...(name === "class" && { subject: null }),
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updatedData = {
-      teacher: formData.teacher,
-      subject: formData.subject,
-      class: formData.class,
-      name: formData.name,
-      score: formData.score || null,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-    };
+    if (!formData.subject || !formData.class || !formData.name || !formData.startDate || !formData.endDate) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+    if (formData.startDate > formData.endDate) {
+      alert("A data de início não pode ser posterior à de término.");
+      return;
+    }
+
+    if (formData.endDate < today) {
+      alert("A data de término não pode estar no passado.");
+      return;
+    }
 
     try {
-      await updateActivity(id, updatedData);
+      const updated = {
+        subject: { id: formData.subject.value, name: formData.subject.label },
+        class: { id: formData.class.value, name: formData.class.label },
+        name: formData.name,
+        score: formData.score || null,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      };
+
+      await updateActivity(id, updated);
       alert("Atividade atualizada com sucesso!");
       navigate("/activities");
     } catch (err) {
+      console.error("Erro ao atualizar atividade:", err);
       alert("Erro ao atualizar atividade: " + err.message);
     }
   };
 
-  const teacherOptions = teachers.map((t) => ({
-    value: t.uid,
-    label: t.personalInfo.name,
-    data: t,
-  }));
-
-  const selectedTeacher = formData.teacher?.data;
-  const subjectOptions =
-    selectedTeacher?.professionalInfo?.subjects?.map((s) => ({
-      value: s,
-      label: s,
-    })) || [];
-
   const classOptions = classes.map((c) => ({
     value: c.id,
     label: c.className,
+    data: c,
+  }));
+
+  const subjectOptions = lessons.map((lesson) => ({
+    value: lesson.id || lesson.subject || lesson,
+    label: lesson.subject || lesson.subject || lesson,
   }));
 
   return (
@@ -135,38 +161,7 @@ const EditActivity = () => {
               <CardBody>
                 <Form onSubmit={handleSubmit}>
                   <Row>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Professor Responsável</Label>
-                        <Select
-                          name="teacher"
-                          value={formData.teacher}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "teacher" })
-                          }
-                          options={teacherOptions}
-                          placeholder="Selecione o professor"
-                        />
-                      </FormGroup>
-                    </Col>
-
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Disciplina</Label>
-                        <Select
-                          name="subject"
-                          value={formData.subject}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "subject" })
-                          }
-                          options={subjectOptions}
-                          placeholder="Selecione a disciplina"
-                          isDisabled={!formData.teacher}
-                        />
-                      </FormGroup>
-                    </Col>
-
-                    <Col md={4}>
+                    <Col md={6}>
                       <FormGroup>
                         <Label>Turma</Label>
                         <Select
@@ -177,6 +172,25 @@ const EditActivity = () => {
                           }
                           options={classOptions}
                           placeholder="Selecione a turma"
+                          isClearable
+                          required
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <Label>Disciplina</Label>
+                        <Select
+                          name="subject"
+                          value={formData.subject}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "subject" })
+                          }
+                          options={subjectOptions}
+                          placeholder={loadingLessons ? "Carregando disciplinas..." : "Selecione a disciplina"}
+                          isClearable
+                          isDisabled={!formData.class || loadingLessons}
+                          required
                         />
                       </FormGroup>
                     </Col>
@@ -191,6 +205,7 @@ const EditActivity = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
+                          placeholder="Digite o nome da atividade"
                           required
                         />
                       </FormGroup>
@@ -203,6 +218,7 @@ const EditActivity = () => {
                           name="score"
                           value={formData.score}
                           onChange={handleInputChange}
+                          placeholder="Ex: 10"
                         />
                       </FormGroup>
                     </Col>
@@ -217,6 +233,8 @@ const EditActivity = () => {
                           name="startDate"
                           value={formData.startDate}
                           onChange={handleInputChange}
+                          required
+                          disabled={isStartDateLocked}
                         />
                       </FormGroup>
                     </Col>
@@ -228,6 +246,7 @@ const EditActivity = () => {
                           name="endDate"
                           value={formData.endDate}
                           onChange={handleInputChange}
+                          required
                         />
                       </FormGroup>
                     </Col>
@@ -236,15 +255,26 @@ const EditActivity = () => {
                   <Row className="mt-4">
                     <Col className="text-end">
                       <div className="d-flex justify-content-end gap-2">
-                        <Button color="primary" type="submit">
-                          Salvar Alterações
+                        <Button color="primary" type="submit" disabled={saving}>
+                          {saving ? "Salvando..." : "Salvar Alterações"}
                         </Button>
-                        <Button color="secondary" onClick={() => navigate("/activities")}>
-                          Voltar
+                        <Button
+                          color="secondary"
+                          onClick={() => navigate("/activities")}
+                        >
+                          Cancelar
                         </Button>
                       </div>
                     </Col>
                   </Row>
+
+                  {error && (
+                    <Row className="mt-3">
+                      <Col>
+                        <div className="alert alert-danger">{error}</div>
+                      </Col>
+                    </Row>
+                  )}
                 </Form>
               </CardBody>
             </Card>

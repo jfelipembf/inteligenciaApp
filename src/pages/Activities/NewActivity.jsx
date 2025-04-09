@@ -12,13 +12,11 @@ import {
   Button,
 } from "reactstrap";
 import Select from "react-select";
-// import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 import { useFetchClasses } from "../../hooks/useFetchClasses";
-import useFetchTeachers from "../../hooks/useFetchTeachers";
-
+import useFetchLessons from "../../hooks/useFetchLessons";
 
 const NewActivity = () => {
   const navigate = useNavigate();
@@ -29,7 +27,6 @@ const NewActivity = () => {
   } = useActivityManagement();
 
   const [formData, setFormData] = useState({
-    teacher: null,
     subject: null,
     class: null,
     name: "",
@@ -38,19 +35,15 @@ const NewActivity = () => {
     endDate: "",
   });
 
-	const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
-
-  const { teachers: fetchedTeachers } = useFetchTeachers();
   const { classes: fetchedClasses } = useFetchClasses();
-
-  useEffect(() => {
-    setTeachers(fetchedTeachers);
-  }, [fetchedTeachers]);
 
   useEffect(() => {
     setClasses(fetchedClasses);
   }, [fetchedClasses]);
+
+  const selectedClassId = formData.class?.value;
+  const { lessons, loading: loadingLessons } = useFetchLessons(selectedClassId);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,17 +57,34 @@ const NewActivity = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: selectedOption,
+      ...(name === "class" && { subject: null }), // resetar subject quando turma mudar
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.subject || !formData.class || !formData.name || !formData.startDate || !formData.endDate) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+
+    if (formData.startDate < today || formData.endDate < today) {
+      alert("Datas não podem estar no passado.");
+      return;
+    }
+
+    if (formData.startDate > formData.endDate) {
+      alert("A data de início não pode ser posterior à de término.");
+      return;
+    }
+
     try {
       const activityData = {
-        teacherId: formData.teacher?.value,
-        subjectId: formData.subject?.value,
-        classId: formData.class?.value,
+        subject: { name: formData.subject.label, id: formData.subject.value },
+        class: { name: formData.class.label, id: formData.class.value },
         name: formData.name,
         score: formData.score || null,
         startDate: formData.startDate,
@@ -90,26 +100,17 @@ const NewActivity = () => {
       alert("Erro ao criar atividade: " + err.message);
     }
   };
-	
-	const classOptions = classes.map((c) => ({
-		value: c.id,
-		label: `${c.className}`,
-	}));
-	
-	// Atualize teacherOptions para manter o objeto original como metadata
-	const teacherOptions = teachers.map((t) => ({
-		value: t.uid,
-		label: `${t.personalInfo.name}`,
-		data: t, // armazenamos o objeto original para usar depois
-	}));
 
-	// Atualize subjectOptions com base no professor selecionado
-	const selectedTeacher = formData.teacher?.data;
-	const subjectOptions =
-		selectedTeacher?.professionalInfo?.subjects?.map((s) => ({
-			value: s,
-			label: s,
-		})) || [];
+  const classOptions = classes.map((c) => ({
+    value: c.id,
+    label: `${c.className}`,
+    data: c,
+  }));
+
+  const subjectOptions = lessons.map((lesson) => ({
+    value: lesson.id || lesson.subject || lesson,
+    label: lesson.subject || lesson.subject || lesson,
+  }));
 
   return (
     <div className="page-content">
@@ -122,38 +123,7 @@ const NewActivity = () => {
               <CardBody>
                 <Form onSubmit={handleSubmit}>
                   <Row>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Professor Responsável</Label>
-                        <Select
-                          name="teacher"
-                          value={formData.teacher}
-                          onChange={(option) =>
-                            handleSelectChange(option, { name: "teacher" })
-                          }
-                          options={teacherOptions}
-                          placeholder="Selecione o professor"
-                          isClearable
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label>Disciplina</Label>
-                        <Select
-													name="subject"
-													value={formData.subject}
-													onChange={(option) =>
-														handleSelectChange(option, { name: "subject" })
-													}
-													options={subjectOptions}
-													placeholder="Selecione a disciplina"
-													isClearable
-													isDisabled={!formData.teacher}
-												/>
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
+                    <Col md={6}>
                       <FormGroup>
                         <Label>Turma</Label>
                         <Select
@@ -165,6 +135,24 @@ const NewActivity = () => {
                           options={classOptions}
                           placeholder="Selecione a turma"
                           isClearable
+                          required
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <Label>Disciplina</Label>
+                        <Select
+                          name="subject"
+                          value={formData.subject}
+                          onChange={(option) =>
+                            handleSelectChange(option, { name: "subject" })
+                          }
+                          options={subjectOptions}
+                          placeholder={loadingLessons ? "Carregando disciplinas..." : "Selecione a disciplina"}
+                          isClearable
+                          isDisabled={!formData.class || loadingLessons}
+                          required
                         />
                       </FormGroup>
                     </Col>
@@ -207,6 +195,7 @@ const NewActivity = () => {
                           name="startDate"
                           value={formData.startDate}
                           onChange={handleInputChange}
+                          required
                         />
                       </FormGroup>
                     </Col>
@@ -218,31 +207,31 @@ const NewActivity = () => {
                           name="endDate"
                           value={formData.endDate}
                           onChange={handleInputChange}
+                          required
                         />
                       </FormGroup>
                     </Col>
                   </Row>
 
-									<Row className="mt-4">
-										<Col className="text-end">
-											<div className="d-flex justify-content-end gap-2">
-												<Button
-													color="primary"
-													type="submit"
-													disabled={creatingActivity}
-												>
-													{creatingActivity ? "Criando..." : "Criar Atividade"}
-												</Button>
-												<Button
-													color="secondary"
-													onClick={() => navigate("/activities")}
-												>
-													Voltar
-												</Button>
-											</div>
-										</Col>
-									</Row>
-
+                  <Row className="mt-4">
+                    <Col className="text-end">
+                      <div className="d-flex justify-content-end gap-2">
+                        <Button
+                          color="primary"
+                          type="submit"
+                          disabled={creatingActivity}
+                        >
+                          {creatingActivity ? "Criando..." : "Criar Atividade"}
+                        </Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => navigate("/activities")}
+                        >
+                          Voltar
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
 
                   {createError && (
                     <Row className="mt-3">
