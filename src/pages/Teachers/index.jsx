@@ -66,20 +66,15 @@ const Teachers = () => {
                       <Table className="table table-centered table-nowrap mb-0">
                         <thead className="table-light">
                           <tr>
-                            <th>ID</th>
                             <th>Nome</th>
                             <th>Registro</th>
-                            <th>Departamento</th>
                             <th>Especialidade</th>
-                            <th>Status</th>
-                            <th>Ações</th>
                           </tr>
                         </thead>
                         <tbody>
                           {filteredTeachers.map((teacher) => (
                             <tr key={teacher.id}>
-                              <td>{teacher.id}</td>
-                              <td>
+                              <td width="40%">
                                 <Link
                                   to={`/teachers/${teacher.id}`}
                                   className="text-body fw-bold"
@@ -87,55 +82,12 @@ const Teachers = () => {
                                   {teacher.personalInfo?.name || "N/A"}
                                 </Link>
                               </td>
-                              <td>{teacher.registration || "N/A"}</td>
-                              <td>{teacher.department || "N/A"}</td>
-                              <td>{teacher.specialty || "N/A"}</td>
-                              <td>
-                                <Badge
-                                  className={
-                                    "font-size-11 badge-soft-" +
-                                    (teacher.status === "active"
-                                      ? "success"
-                                      : "danger")
-                                  }
-                                  color={
-                                    teacher.status === "active"
-                                      ? "success"
-                                      : "danger"
-                                  }
-                                  pill
-                                >
-                                  {teacher.status === "active"
-                                    ? "Ativo"
-                                    : "Inativo"}
-                                </Badge>
+                              <td width="30%">
+                                {teacher.professionalInfo.registration || "N/A"}
                               </td>
-                              <td>
-                                <div className="d-flex gap-2">
-                                  <Link
-                                    to={`/teachers/${teacher.id}`}
-                                    className="text-primary"
-                                  >
-                                    <i className="bx bx-user-circle font-size-18"></i>
-                                  </Link>
-                                  <a
-                                    href={`mailto:${teacher.email}`}
-                                    className="text-info"
-                                  >
-                                    <i className="bx bx-envelope font-size-18"></i>
-                                  </a>
-                                  <a
-                                    href={`https://wa.me/55${teacher.phone?.replace(
-                                      /\D/g,
-                                      ""
-                                    )}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-success"
-                                  >
-                                    <i className="bx bxl-whatsapp font-size-18"></i>
-                                  </a>
-                                </div>
+                              <td width="30%">
+                                {teacher.professionalInfo.specialization ||
+                                  "N/A"}
                               </td>
                             </tr>
                           ))}
