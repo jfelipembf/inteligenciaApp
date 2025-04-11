@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import useFetchStudents from "../../hooks/useFetchStudents";
 import useFetchUsers from "../../hooks/useFetchUsers";
-
+import useFetchClasses from "../../hooks/useFetchClasses";
+import { Table, Progress, Badge } from "reactstrap";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Charts
-
 import ClassAveragesList from "./ClassAveragesList";
 
 //i18n
@@ -17,9 +17,40 @@ import { withTranslation } from "react-i18next";
 const Dashboard = (props) => {
   // Definindo o perfil como gestor permanentemente
   const userRole = "gestor";
-  const { students, loading, error } = useFetchStudents(userRole);
-  const { users } = useFetchUsers();
+  const {
+    students,
+    loading: loadingStudents,
+    error: errorStudents,
+  } = useFetchStudents(userRole);
+  const { users, loading: loadingUsers, error: errorUsers } = useFetchUsers();
+  const {
+    classes,
+    loading: loadingClasses,
+    error: errorClasses,
+  } = useFetchClasses();
 
+  // Função para determinar a cor da badge com base na média
+  const getBadgeColor = (average) => {
+    if (average >= 9.0) return "success";
+    if (average >= 8.0) return "primary";
+    if (average >= 7.0) return "info";
+    if (average >= 6.0) return "warning";
+    return "danger";
+  };
+
+  // Função para determinar a porcentagem da barra de progresso
+  const getProgressPercentage = (average) => {
+    return (average / 10) * 100;
+  };
+
+  // Função para determinar a cor da barra de progresso
+  const getProgressColor = (average) => {
+    if (average >= 9.0) return "success";
+    if (average >= 8.0) return "info";
+    if (average >= 7.0) return "primary";
+    if (average >= 6.0) return "warning";
+    return "danger";
+  };
   // Dados para o perfil de Gestor/Coordenador
   const reports = [
     {
@@ -32,7 +63,6 @@ const Dashboard = (props) => {
       iconClass: "bx-check-circle",
       description: users.length,
     },
-    // { title: "Usuários Inativos", iconClass: "bx-x-circle", description: "255" },
   ];
 
   //meta title
@@ -76,16 +106,47 @@ const Dashboard = (props) => {
           </Row>
 
           {/* Lista de Médias por Turma */}
-          <Row className="mt-4">
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <h4 className="card-title mb-4">Média Geral por Turma</h4>
-                  <ClassAveragesList userRole={userRole} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          <div className="table-responsive">
+            <Table className="table-centered table-nowrap mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th>Turma</th>
+                  <th>Alunos</th>
+                  <th>Média Geral</th>
+                  <th>Desempenho</th>
+                </tr>
+              </thead>
+              <tbody>
+                {classes.map((classItem) => (
+                  <tr key={classItem.id}>
+                    <td>{classItem.className || "Sem nome"}</td>
+
+                    <td>{classItem.studentCount || 0}</td>
+                    <td>
+                      {classItem.average !== undefined ? (
+                        <Badge color={getBadgeColor(classItem.average)} pill>
+                          {classItem.average.toFixed(1)}
+                        </Badge>
+                      ) : (
+                        "N/A"
+                      )}
+                    </td>
+                    <td style={{ width: "30%" }}>
+                      {classItem.average !== undefined ? (
+                        <Progress
+                          value={getProgressPercentage(classItem.average)}
+                          color={getProgressColor(classItem.average)}
+                          style={{ height: "10px" }}
+                        />
+                      ) : (
+                        "Sem dados"
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
         </Container>
       </div>
     </React.Fragment>
