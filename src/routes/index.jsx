@@ -198,6 +198,7 @@ import AddTeacher from "../pages/Teachers/AddTeacher";
 import Activities from "../pages/Activities/Activities";
 import NewActivity from "../pages/Activities/NewActivity";
 import EditActivity from "../pages/Activities/EditActivity";
+import Activity from "../pages/Activities/Activity";
 
 //Coordenador
 import AddCoordinator from "../pages/Coordinator/AddCoordinator";
@@ -396,6 +397,7 @@ const authProtectedRoutes = [
   { path:"/activities", component: <Activities />},
   { path:"/activities/add-activity", component: <NewActivity />},
   { path:"/activities/edit-activity/:id/:classId/:lessonId", component: <EditActivity />},
+  { path:"/activities/activity/:id/:classId/:lessonId", component: <Activity />},
 
   // Rotas Financeiro
   { path: "/financeiro/caixa", component: <Caixa /> },

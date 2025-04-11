@@ -36,7 +36,10 @@ const EditActivity = () => {
     score: "",
     startDate: "",
     endDate: "",
+    activityType: null,
+    description: "",
   });
+  
 
   const [classes, setClasses] = useState([]);
   const [isStartDateLocked, setIsStartDateLocked] = useState(false);
@@ -64,11 +67,14 @@ const EditActivity = () => {
             : null,
           name: activity.name || "",
           score: activity.score || "",
-          startDate: startDate || "",
+          startDate: activity.startDate || "",
           endDate: activity.endDate || "",
-        });
+          activityType: activity.activityType
+            ? { value: activity.activityType, label: activity.activityType.toUpperCase() }
+            : null,
+          description: activity.description || "",
+        });        
 
-        // Bloqueia edição se a data de início for hoje ou anterior
         if (startDate && startDate <= today) {
           setIsStartDateLocked(true);
         }
@@ -79,17 +85,17 @@ const EditActivity = () => {
     };
 
     fetchActivity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedClassId = formData.class?.value;
   const { lessons, loading: loadingLessons } = useFetchLessons(selectedClassId);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -128,7 +134,9 @@ const EditActivity = () => {
         score: formData.score || null,
         startDate: formData.startDate,
         endDate: formData.endDate,
-      };
+        activityType: formData.activityType?.value || null,
+        description: formData.description || "",
+      };      
 
       await updateActivity(id, updated);
       alert("Atividade atualizada com sucesso!");
@@ -249,6 +257,35 @@ const EditActivity = () => {
                           required
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={3}>
+                      <FormGroup>
+                        <Label>Tipo de Atividade</Label>
+                        <Input
+                          type="select"
+                          name="activityType"
+                          value={formData.activityType}
+                          onChange={handleInputChange}
+                        >
+                          <option value="sala">Para Sala</option>
+                          <option value="casa">Para Casa</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col md={12}>
+                      <FormGroup>
+                        <Label>Descrição</Label>
+                        <Input
+                          type="textarea"
+                          name="description"
+                          value={formData.description}
+                          onChange={handleInputChange}
+                          placeholder="Descreva a atividade (opcional)"
+                          rows={4}
+                        />
+                        </FormGroup>
                     </Col>
                   </Row>
 

@@ -39,7 +39,7 @@ const Activities = () => {
     };
   
     fetchActivities();
-    console.log(activities);
+    // console.log(activities);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
@@ -57,6 +57,9 @@ const Activities = () => {
 		setCurrentPage(1);
 	}, [searchTerm]);
 
+  const handleGoToActivity = (activity) => {
+    navigate(`/activities/activity/${activity.id}/${activity.class.id}/${activity.subject.id}`);
+  };
 
   const handleEdit = (activity) => {
 
@@ -68,6 +71,7 @@ const Activities = () => {
 
   const handleDeleteClick = (activity) => {
     setSelectedActivity(activity);
+    deleteActivity(activity.class.id, activity.subject.id, activity.id);
     toggleModal();
   };
 
@@ -76,7 +80,7 @@ const Activities = () => {
       await deleteActivity(selectedActivity.id);
       setActivities((prev) => prev.filter((act) => act.id !== selectedActivity.id));
       toggleModal();
-      alert("Atividade apagada com sucesso!");
+      // alert("Atividade apagada com sucesso!");
     } catch (err) {
       alert("Erro ao apagar atividade.");
       console.error(err);
@@ -169,6 +173,14 @@ const Activities = () => {
                             <td className="align-middle">{formatDateBr(activity.startDate)}</td>
                             <td className="align-middle">{formatDateBr(activity.endDate)}</td>
                             <td className="align-middle">
+                              <Button
+                                color="info"
+                                size="sm"
+                                className="me-2"
+                                onClick={() => handleGoToActivity(activity)}
+                              >
+                                <i className="bx bx-spreadsheet"></i>
+                              </Button>
                               <Button
                                 color="primary"
                                 size="sm"

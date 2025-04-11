@@ -33,7 +33,10 @@ const NewActivity = () => {
     score: "",
     startDate: "",
     endDate: "",
+    activityType: "sala",
+    description: "",
   });
+  
 
   const [classes, setClasses] = useState([]);
   const { classes: fetchedClasses } = useFetchClasses();
@@ -89,7 +92,10 @@ const NewActivity = () => {
         score: formData.score || null,
         startDate: formData.startDate,
         endDate: formData.endDate,
+        activityType: formData.activityType, // novo campo
+        description: formData.description,   // novo campo
       };
+      
 
       const response = await createActivity(activityData);
       console.log("Atividade criada com sucesso:", response);
@@ -211,7 +217,38 @@ const NewActivity = () => {
                         />
                       </FormGroup>
                     </Col>
+                    <Col md={3}>
+                      <FormGroup>
+                        <Label>Tipo de Atividade</Label>
+                        <Input
+                          type="select"
+                          name="activityType"
+                          value={formData.activityType}
+                          onChange={handleInputChange}
+                        >
+                          <option value="sala">Para Sala</option>
+                          <option value="casa">Para Casa</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
                   </Row>
+
+                  <Row className="mt-3">
+                    <Col md={12}>
+                      <FormGroup>
+                        <Label>Descrição da Atividade</Label>
+                        <Input
+                          type="textarea"
+                          name="description"
+                          value={formData.description}
+                          onChange={handleInputChange}
+                          placeholder="Descreva a atividade..."
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+
 
                   <Row className="mt-4">
                     <Col className="text-end">
