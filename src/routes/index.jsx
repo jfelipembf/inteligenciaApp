@@ -203,6 +203,9 @@ import Administrators from "../pages/Administrators/index";
 import AddAdministrator from "../pages/Administrators/AddAdministrator";
 import CreateClassroom from "../pages/Classes/Classroom/CreateClassroom";
 
+// Attendance
+import AttendancePage from "../pages/Attendance";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -429,6 +432,9 @@ const publicRoutes = [
 
   // Students
   { path: "/add-student", component: <AddStudent /> },
+
+  // Attendance
+  { path: "/attendance", component: <AttendancePage /> },
 ];
 
 // export { authProtectedRoutes, publicRoutes };
