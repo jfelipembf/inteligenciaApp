@@ -416,7 +416,7 @@ const authProtectedRoutes = [
   { path: "/notifications", component: <Notifications /> },
   { path: "/notifications/create", component: <CreateNotification /> },
   { path: "/notifications/:id", component: <ViewNotification /> },
-  
+
   // Rota de Configurações
   { path: "/settings", component: <Settings /> },
 
@@ -426,7 +426,7 @@ const authProtectedRoutes = [
   { path: "/messages/:id", component: <ReplyMessage /> },
   { path: "/messages/reply/:id", component: <ReplyMessage /> },
   { path: "/messages/forward/:id", component: <CreateMessage /> },
-  
+
   // Redirecionamento de /chat para /messages
   { path: "/chat", component: <Navigate to="/messages" /> },
 

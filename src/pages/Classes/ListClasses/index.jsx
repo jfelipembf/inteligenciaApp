@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   Container,
   Row,
@@ -20,7 +20,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import TableContainer from "../../../components/Common/TableContainer";
 import useFetchClasses from "../../../hooks/useFetchClasses";
-import { EDUCATION_LEVELS, ALL_SCHOOL_YEARS, SCHOOL_YEAR_STATUS } from "../../../constants/schoolYear";
+import {
+  EDUCATION_LEVELS,
+  ALL_SCHOOL_YEARS,
+  SCHOOL_YEAR_STATUS,
+} from "../../../constants/schoolYear";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -49,39 +53,45 @@ const ListClasses = () => {
   // Função para extrair texto de um valor, lidando com objetos
   const getTextValue = (value) => {
     if (value === null || value === undefined) return "";
-    
+
     // Se for um objeto com propriedade label (react-select)
     if (typeof value === "object" && value.label !== undefined) {
       return value.label;
     }
-    
+
     // Se for um objeto com propriedade value (react-select)
     if (typeof value === "object" && value.value !== undefined) {
       return value.value;
     }
-    
+
     // Se for outro tipo de objeto, converta para string
     if (typeof value === "object") {
       return JSON.stringify(value);
     }
-    
+
     return String(value);
   };
 
-  const onClickDelete = (classItem) => {
+  const handleViewClass = useCallback(
+    (id) => {
+      navigate(`/classes/${id}`);
+      toast.info("Carregando detalhes da turma...");
+    },
+    [navigate]
+  );
+
+  const handleEditClass = useCallback(
+    (id) => {
+      navigate(`/classes/${id}/edit`);
+      toast.info("Carregando formulário de edição...");
+    },
+    [navigate]
+  );
+
+  const onClickDelete = useCallback((classItem) => {
     setCurrentClass(classItem);
     setDeleteModal(true);
-  };
-
-  const handleViewClass = (id) => {
-    navigate(`/classes/${id}`);
-    toast.info("Carregando detalhes da turma...");
-  };
-
-  const handleEditClass = (id) => {
-    navigate(`/classes/${id}/edit`);
-    toast.info("Carregando formulário de edição...");
-  };
+  }, []);
 
   const handleDeleteClass = async () => {
     if (!currentClass || !currentClass.id) {
@@ -93,7 +103,7 @@ const ListClasses = () => {
       setIsDeleting(true);
       // Implementar a lógica de exclusão de turma aqui
       // await deleteClass(currentClass.id);
-      
+
       // Simulação de exclusão bem-sucedida
       setTimeout(() => {
         setIsDeleting(false);
@@ -105,30 +115,32 @@ const ListClasses = () => {
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir a turma:", err);
-      toast.error("Erro ao excluir a turma: " + (err.message || "Erro desconhecido"));
+      toast.error(
+        "Erro ao excluir a turma: " + (err.message || "Erro desconhecido")
+      );
     }
   };
 
   // Função para obter a cor do período
   const getPeriodColor = (period) => {
     const periodMap = {
-      "Manhã": "primary",
-      "Tarde": "success",
-      "Noite": "info",
-      "Integral": "warning"
+      Manhã: "primary",
+      Tarde: "success",
+      Noite: "info",
+      Integral: "warning",
     };
-    
+
     return periodMap[period] || "secondary";
   };
 
   // Função para obter a cor do status
   const getStatusColor = (status) => {
     const statusMap = {
-      "Ativo": "success",
-      "Inativo": "danger",
-      "Pendente": "warning"
+      Ativo: "success",
+      Inativo: "danger",
+      Pendente: "warning",
     };
-    
+
     return statusMap[status] || "secondary";
   };
 
@@ -144,15 +156,15 @@ const ListClasses = () => {
           const series = cellProps.row.original.series;
           const seriesText = series ? getTextValue(series) : "N/A";
           return (
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               onClick={() => handleViewClass(cellProps.row.original.id)}
               className="text-body fw-bold"
             >
               {seriesText}
             </Link>
           );
-        }
+        },
       },
       {
         header: "Turma",
@@ -162,12 +174,8 @@ const ListClasses = () => {
         cell: (cellProps) => {
           const identifier = cellProps.row.original.identifier;
           const identifierText = identifier ? getTextValue(identifier) : "N/A";
-          return (
-            <span>
-              {identifierText}
-            </span>
-          );
-        }
+          return <span>{identifierText}</span>;
+        },
       },
       {
         header: "Nível de Ensino",
@@ -176,13 +184,11 @@ const ListClasses = () => {
         enableSorting: true,
         cell: (cellProps) => {
           const educationLevel = cellProps.row.original.educationLevel;
-          const educationLevelText = educationLevel ? getTextValue(educationLevel) : "N/A";
-          return (
-            <span>
-              {educationLevelText}
-            </span>
-          );
-        }
+          const educationLevelText = educationLevel
+            ? getTextValue(educationLevel)
+            : "N/A";
+          return <span>{educationLevelText}</span>;
+        },
       },
       {
         header: "Período",
@@ -193,15 +199,9 @@ const ListClasses = () => {
           const period = cellProps.row.original.period;
           const periodText = period ? getTextValue(period) : "N/A";
           const periodColor = getPeriodColor(periodText);
-          
-          return (
-            <Badge
-              color={periodColor}
-            >
-              {periodText}
-            </Badge>
-          );
-        }
+
+          return <Badge color={periodColor}>{periodText}</Badge>;
+        },
       },
       {
         header: "Alunos",
@@ -209,12 +209,8 @@ const ListClasses = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          return (
-            <span>
-              {cellProps.row.original.studentCount || 0}
-            </span>
-          );
-        }
+          return <span>{cellProps.row.original.studentCount || 0}</span>;
+        },
       },
       {
         header: "Status",
@@ -224,15 +220,9 @@ const ListClasses = () => {
         cell: (cellProps) => {
           const status = getTextValue(cellProps.row.original.status);
           const statusColor = getStatusColor(status);
-          
-          return (
-            <Badge
-              color={statusColor}
-            >
-              {status || "N/A"}
-            </Badge>
-          );
-        }
+
+          return <Badge color={statusColor}>{status || "N/A"}</Badge>;
+        },
       },
       {
         header: "Ações",
@@ -292,15 +282,18 @@ const ListClasses = () => {
               <Card>
                 <CardBody className="border-bottom">
                   <div className="d-flex align-items-center">
-                    <h5 className="mb-0 card-title flex-grow-1">Lista de Turmas</h5>
+                    <h5 className="mb-0 card-title flex-grow-1">
+                      Lista de Turmas
+                    </h5>
                     <div className="flex-shrink-0">
-                      <Link
-                        to="/create-class"
-                        className="btn btn-primary me-1"
-                      >
+                      <Link to="/create-class" className="btn btn-primary me-1">
                         <i className="bx bx-plus me-1"></i> Nova Turma
                       </Link>
-                      <Link to="#!" onClick={refetch} className="btn btn-light me-1">
+                      <Link
+                        to="#!"
+                        onClick={refetch}
+                        className="btn btn-light me-1"
+                      >
                         <i className="mdi mdi-refresh"></i>
                       </Link>
                       <UncontrolledDropdown className="dropdown d-inline-block me-1">
@@ -329,7 +322,10 @@ const ListClasses = () => {
                 <CardBody>
                   {loading ? (
                     <div className="text-center my-4">
-                      <div className="spinner-border text-primary" role="status">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
                         <span className="visually-hidden">Carregando...</span>
                       </div>
                       <p className="mt-2">Carregando turmas...</p>
@@ -338,7 +334,11 @@ const ListClasses = () => {
                     <div className="text-center my-4 text-danger">
                       <i className="bx bx-error-circle display-4"></i>
                       <p className="mt-2">Erro ao carregar dados: {error}</p>
-                      <Button color="primary" onClick={refetch} className="mt-2">
+                      <Button
+                        color="primary"
+                        onClick={refetch}
+                        className="mt-2"
+                      >
                         <i className="bx bx-refresh me-1"></i> Tentar Novamente
                       </Button>
                     </div>
@@ -362,14 +362,31 @@ const ListClasses = () => {
           </Row>
 
           {/* Modal de Exclusão */}
-          <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)} centered={true} size="sm">
-            <ModalHeader toggle={() => setDeleteModal(false)}>Confirmar Exclusão</ModalHeader>
+          <Modal
+            isOpen={deleteModal}
+            toggle={() => setDeleteModal(false)}
+            centered={true}
+            size="sm"
+          >
+            <ModalHeader toggle={() => setDeleteModal(false)}>
+              Confirmar Exclusão
+            </ModalHeader>
             <ModalBody>
-              <p>Tem certeza que deseja excluir a turma "{getTextValue(currentClass?.identifier)} - {getTextValue(currentClass?.series)}"?</p>
-              <p className="text-danger mb-0">Esta ação não pode ser desfeita.</p>
+              <p>
+                Tem certeza que deseja excluir a turma "
+                {getTextValue(currentClass?.identifier)} -{" "}
+                {getTextValue(currentClass?.series)}"?
+              </p>
+              <p className="text-danger mb-0">
+                Esta ação não pode ser desfeita.
+              </p>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={handleDeleteClass} disabled={isDeleting}>
+              <Button
+                color="danger"
+                onClick={handleDeleteClass}
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Excluindo..." : "Sim, Excluir"}
               </Button>
               <Button color="secondary" onClick={() => setDeleteModal(false)}>
