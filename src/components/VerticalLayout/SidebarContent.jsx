@@ -159,13 +159,19 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu" aria-expanded="false">
                 <li>
-                  <Link to="/dashboard-gestor">{props.t("Dashboard Gestor")}</Link>
+                  <Link to="/dashboard-gestor">
+                    {props.t("Dashboard Gestor")}
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard-coordenador">{props.t("Dashboard Coordenador")}</Link>
+                  <Link to="/dashboard-coordenador">
+                    {props.t("Dashboard Coordenador")}
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard-professor">{props.t("Dashboard Professor")}</Link>
+                  <Link to="/dashboard-professor">
+                    {props.t("Dashboard Professor")}
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -229,6 +235,14 @@ const SidebarContent = (props) => {
               <Link to="/students" className="waves-effect">
                 <i className="bx bx-user-circle"></i>
                 <span className="menu-item">{props.t("Alunos")}</span>
+              </Link>
+            </li>
+
+            {/* Atividades */}
+            <li>
+              <Link to="/activities" className="waves-effect">
+                <i className="bx bx-clipboard font-size-18"></i>
+                <span className="menu-item">{props.t("Atividades")}</span>
               </Link>
             </li>
 

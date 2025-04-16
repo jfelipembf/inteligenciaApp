@@ -197,6 +197,12 @@ import Caixa from "../pages/Financeiro/Caixa/index";
 import AddStudent from "../pages/Students/AddStudent";
 import AddTeacher from "../pages/Teachers/AddTeacher";
 
+// Acivities routes
+import Activities from "../pages/Activities/Activities";
+import NewActivity from "../pages/Activities/NewActivity";
+import EditActivity from "../pages/Activities/EditActivity";
+import Activity from "../pages/Activities/Activity";
+
 //Coordenador
 import AddCoordinator from "../pages/Coordinator/AddCoordinator";
 import Coordinators from "../pages/Coordinator/index";
@@ -402,6 +408,18 @@ const authProtectedRoutes = [
   { path: "/schools", component: <Schools /> }, // Lista de Escolas
   { path: "/schools/new", component: <Schools /> }, // Nova Escola
   { path: "/schools/:id/*", component: <SchoolProfile /> },
+
+  //Rotas de Atividades
+  { path: "/activities", component: <Activities /> },
+  { path: "/activities/add-activity", component: <NewActivity /> },
+  {
+    path: "/activities/edit-activity/:id/:classId/:lessonId",
+    component: <EditActivity />,
+  },
+  {
+    path: "/activities/activity/:id/:classId/:lessonId",
+    component: <Activity />,
+  },
 
   // Rotas Financeiro
   { path: "/financeiro/caixa", component: <Caixa /> },
