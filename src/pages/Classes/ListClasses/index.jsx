@@ -27,6 +27,8 @@ import {
 } from "../../../constants/schoolYear";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useDeleteClass from "../../../hooks/useDeleteClass";
+import useUser from "../../../hooks/useUser";
 
 // Constantes para período
 const PERIOD_OPTIONS = [
@@ -44,11 +46,14 @@ const CLASS_STATUS_OPTIONS = [
 ];
 
 const ListClasses = () => {
+  const { userDetails } = useUser(true); // Obter dados do usuário atual
+
   const navigate = useNavigate();
   const { classes, loading, error, refetch } = useFetchClasses();
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { deleteClass } = useDeleteClass();
 
   // Função para extrair texto de um valor, lidando com objetos
   const getTextValue = (value) => {
@@ -101,17 +106,13 @@ const ListClasses = () => {
 
     try {
       setIsDeleting(true);
-      // Implementar a lógica de exclusão de turma aqui
-      // await deleteClass(currentClass.id);
 
-      // Simulação de exclusão bem-sucedida
-      setTimeout(() => {
-        setIsDeleting(false);
-        setDeleteModal(false);
-        setCurrentClass(null);
-        toast.success("Turma excluída com sucesso!");
-        refetch(); // Recarregar a lista de turmas
-      }, 1000);
+      await deleteClass(currentClass.id, userDetails.schoolId); // Exclusão usando o hook useDeleteClass
+      setIsDeleting(false);
+      setDeleteModal(false);
+      setCurrentClass(null);
+      toast.success("Turma excluída com sucesso!");
+      refetch(); // Recarregar a lista de turmas
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir a turma:", err);
