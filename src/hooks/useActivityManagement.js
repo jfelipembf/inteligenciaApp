@@ -1,34 +1,22 @@
 import { useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
+import { use } from "react";
 
 export const useActivityManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const getSchoolId = async () => {
-    const currentUser = firebase.auth().currentUser;
-    if (!currentUser) throw new Error("Usuário não autenticado");
+  const { userDetails } = useUser(true);
 
-    const userDoc = await firebase
-      .firestore()
-      .collection("users")
-      .doc(currentUser.uid)
-      .get();
-
-    const schoolId = userDoc.data()?.schoolId;
-    if (!schoolId) throw new Error("schoolId não encontrado");
-
-    return schoolId;
-  };
+  const schoolId = userDetails?.schoolId || null;
 
   const createActivity = async (activityData) => {
     setLoading(true);
     setError(null);
 
     try {
-      const schoolId = await getSchoolId();
-
       const activityWithFlag = {
         ...activityData,
         avaliation:
@@ -61,8 +49,6 @@ export const useActivityManagement = () => {
     setError(null);
 
     try {
-      const schoolId = await getSchoolId();
-
       const updatedWithFlag = {
         ...updatedData,
         avaliation:
@@ -96,8 +82,6 @@ export const useActivityManagement = () => {
     setError(null);
 
     try {
-      const schoolId = await getSchoolId();
-
       const classesSnapshot = await firebase
         .firestore()
         .collection("schools")
@@ -153,12 +137,16 @@ export const useActivityManagement = () => {
   };
 
   const getActivityById = async (classId, subjectId, activityId) => {
+    console.log("getActivityById chamado com IDs:", {
+      classId,
+      subjectId,
+      activityId,
+    });
+
     setLoading(true);
     setError(null);
 
     try {
-      const schoolId = await getSchoolId();
-
       const doc = await firebase
         .firestore()
         .collection("schools")
@@ -172,6 +160,8 @@ export const useActivityManagement = () => {
         .get();
 
       if (!doc.exists) throw new Error("Atividade não encontrada");
+
+      console.log("Atividade encontrada:", doc.data());
 
       return { id: doc.id, ...doc.data() };
     } catch (err) {
@@ -187,8 +177,6 @@ export const useActivityManagement = () => {
     setError(null);
 
     try {
-      const schoolId = await getSchoolId();
-
       await firebase
         .firestore()
         .collection("schools")

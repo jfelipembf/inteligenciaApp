@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 import useClassData from "../../hooks/useClassData";
+import useFetchOnce from "../../hooks/useFetchOnce";
 
 const Activity = () => {
   const { id, classId, lessonId } = useParams();
@@ -13,11 +14,17 @@ const Activity = () => {
 
   const [activity, setActivity] = useState(null);
   const [responses, setResponses] = useState([]);
+  const fetchOnce = useFetchOnce(getActivityById);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const activityData = await getActivityById(classId, lessonId, id);
+        const activityData = await fetchOnce(
+          `${classId}-${lessonId}-${id}`,
+          classId,
+          lessonId,
+          id
+        );
         setActivity(activityData);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -25,50 +32,18 @@ const Activity = () => {
     };
 
     fetchData();
+  }, [classId, lessonId, id, fetchOnce]);
 
+  useEffect(() => {
     if (students.length > 0 && responses.length === 0) {
-      const responses = students.map((student) => ({
+      const initialResponses = students.map((student) => ({
         studentId: student.id,
         studentName: student.name,
         delivered: false,
-        score: null,
       }));
-      setResponses(responses);
+      setResponses(initialResponses);
     }
-  }, [id, classId, lessonId, getActivityById, students, responses.length]);
-
-  const handleResponseChange = (index, field, value) => {
-    setResponses((prev) =>
-      prev.map((r, i) => {
-        if (i !== index) return r;
-
-        if (field === "delivered") {
-          console.log("clicado");
-          return {
-            ...r,
-            delivered: value,
-            score: value ? r.score : null,
-          };
-        }
-
-        if (field === "score") {
-          let numeric = Number(value);
-
-          // Impede valores menores que 0 ou maiores que a nota máxima
-          if (isNaN(numeric)) return r;
-          if (numeric < 0) numeric = 0;
-          if (numeric > activity.score) numeric = activity.score;
-
-          return {
-            ...r,
-            score: value === "" ? null : numeric,
-          };
-        }
-
-        return r;
-      })
-    );
-  };
+  }, [students, responses.length]);
 
   const handleSave = () => {
     console.log("Respostas salvas:", responses);
@@ -92,15 +67,9 @@ const Activity = () => {
                 <h5>Turma: {activity.class.name}</h5>
                 <p>Disciplina: {activity.subject.name}</p>
                 <p>Atividade: {activity.name}</p>
-                <p>
-                  Tipo de Atividade:{" "}
-                  <strong className="text-uppercase">
-                    {activity.activityType}
-                  </strong>
-                </p>
                 <p>Data de Início: {formatDateBr(activity.startDate)}</p>
                 <p>Data de Término: {formatDateBr(activity.endDate)}</p>
-                {activity.score && <p>Nota Máxima: {activity.score}</p>}
+                {activity.score && <p>Pontuação: {activity.score}</p>}
                 {activity.description && (
                   <p>Descrição: {activity.description}</p>
                 )}
@@ -114,9 +83,6 @@ const Activity = () => {
                     <tr>
                       <th className="text-center align-middle">Aluno</th>
                       <th className="text-center align-middle">Entregue</th>
-                      {activity.score && (
-                        <th className="text-center align-middle">Nota</th>
-                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -129,35 +95,21 @@ const Activity = () => {
                           {typeof res.delivered === "boolean" && (
                             <Input
                               type="checkbox"
-                              value={res.delivered}
-                              onChange={(e) =>
-                                handleResponseChange(
-                                  index,
-                                  "delivered",
-                                  e.target.checked
-                                )
-                              }
+                              onChange={(e) => {
+                                setResponses((prevResponses) =>
+                                  prevResponses.map((response, i) =>
+                                    i === index
+                                      ? {
+                                          ...response,
+                                          delivered: e.target.checked,
+                                        }
+                                      : response
+                                  )
+                                );
+                              }}
                             />
                           )}
                         </td>
-                        {activity.score && (
-                          <td className="text-center align-middle">
-                            <Input
-                              type="number"
-                              min={0}
-                              max={activity.score}
-                              value={res.score ?? ""}
-                              onChange={(e) =>
-                                handleResponseChange(
-                                  index,
-                                  "score",
-                                  e.target.value
-                                )
-                              }
-                              disabled={res.delivered}
-                            />
-                          </td>
-                        )}
                       </tr>
                     ))}
                   </tbody>

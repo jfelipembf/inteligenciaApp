@@ -9,16 +9,21 @@ const useClassData = (classId) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("useClassData executado", { classId });
+
     const fetchClassData = async () => {
       setLoading(true);
       setError(null);
 
       try {
+        console.log("Iniciando fetchClassData");
+
         // Verificar se há um usuário autenticado
         const currentUser = firebase.auth().currentUser;
         if (!currentUser) {
           throw new Error("Usuário não autenticado");
         }
+        console.log("Usuário autenticado:", currentUser.uid);
 
         // Buscar schoolId do usuário atual
         const userDoc = await firebase
@@ -30,6 +35,7 @@ const useClassData = (classId) => {
         if (!schoolId) {
           throw new Error("schoolId não encontrado para o usuário");
         }
+        console.log("schoolId encontrado:", schoolId);
 
         // Buscar dados da turma específica
         const classDoc = await firebase
@@ -43,6 +49,8 @@ const useClassData = (classId) => {
         if (!classDoc.exists) {
           throw new Error("Turma não encontrada");
         }
+
+        console.log("Dados da turma encontrados:", classDoc.data());
 
         const classData = classDoc.data();
 
@@ -62,6 +70,7 @@ const useClassData = (classId) => {
           registration: doc.registration,
           ...doc.data(),
         }));
+        console.log("Alunos encontrados:", fetchedStudents);
 
         setClassData(classData);
         setStudents(fetchedStudents);
@@ -69,6 +78,8 @@ const useClassData = (classId) => {
         console.error("Erro ao buscar dados da turma:", error);
         setError(error.message);
       } finally {
+        console.log("Finalizando fetchClassData");
+
         setLoading(false);
       }
     };
