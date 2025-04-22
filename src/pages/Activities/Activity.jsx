@@ -5,12 +5,14 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 import useClassData from "../../hooks/useClassData";
 import useFetchOnce from "../../hooks/useFetchOnce";
+import useSaveSubmissions from "../../hooks/useSaveSubmissions";
 
 const Activity = () => {
   const { id, classId, lessonId } = useParams();
   const navigate = useNavigate();
   const { getActivityById } = useActivityManagement();
   const { students } = useClassData(classId);
+  const { saveSubmissions } = useSaveSubmissions();
 
   const [activity, setActivity] = useState(null);
   const [responses, setResponses] = useState([]);
@@ -45,11 +47,18 @@ const Activity = () => {
     }
   }, [students, responses.length]);
 
-  const handleSave = () => {
-    console.log("Respostas salvas:", responses);
-    alert("Respostas salvas com sucesso!");
+  const handleSave = async () => {
+    if (!activity) return;
+    console.log("Salvando respostas:", responses);
+    const result = await saveSubmissions(
+      activity,
+      classId,
+      lessonId,
+      id,
+      responses
+    );
+    alert(result.message);
   };
-
   const formatDateBr = (dateString) => {
     const [year, month, day] = dateString.split("-");
     return `${day}/${month}/${year}`;
