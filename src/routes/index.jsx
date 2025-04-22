@@ -226,6 +226,8 @@ import ReplyMessage from "../pages/Messages/ReplyMessage";
 
 import Settings from "../pages/Settings/index";
 
+import GradesPage from "../pages/Grades/GradesPage";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -235,6 +237,9 @@ const authProtectedRoutes = [
   { path: "/dashboard-professor", component: <ProfessorDashboard /> },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
+
+  // Grades
+  { path: "/grades", component: <GradesPage /> },
 
   // Classes
   { path: "/create-class", component: <CreateClass /> },
