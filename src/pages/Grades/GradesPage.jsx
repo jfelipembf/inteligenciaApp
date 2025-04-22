@@ -50,6 +50,7 @@ const GradesPage = () => {
 
               {/* Seleção de Turma */}
               <FormGroup>
+                <br />
                 <Label for="classSelect">Selecione a Turma</Label>
                 <Input
                   type="select"
