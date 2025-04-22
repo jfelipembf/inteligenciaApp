@@ -246,6 +246,14 @@ const SidebarContent = (props) => {
               </Link>
             </li>
 
+            {/* Notas */}
+            <li>
+              <Link to="/grades" className="waves-effect">
+                <i className="bx bx-clipboard font-size-18"></i>
+                <span className="menu-item">{props.t("Notas")}</span>
+              </Link>
+            </li>
+
             {/* Calendário */}
             <li>
               <Link to="/calendar" className="waves-effect">

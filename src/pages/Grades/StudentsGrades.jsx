@@ -9,8 +9,7 @@ const StudentsGrades = ({ lesson, classId }) => {
 
   const [grades, setGrades] = useState({});
   const [unit, setUnit] = useState(""); // Unidade (ex: Unidade 1)
-  const [year, setYear] = useState(new Date().getFullYear()); // Ano
-  const [fields, setFields] = useState([{ name: "Prova", weight: 10 }]); // Campos personalizados
+  const [fields, setFields] = useState([{ name: "Prova" }]); // Campos personalizados
 
   const handleGradeChange = (studentId, fieldName, value) => {
     setGrades((prev) => ({
@@ -23,7 +22,7 @@ const StudentsGrades = ({ lesson, classId }) => {
   };
 
   const handleAddField = () => {
-    setFields((prev) => [...prev, { name: "", weight: 0 }]);
+    setFields((prev) => [...prev, { name: "" }]);
   };
 
   const handleFieldChange = (index, key, value) => {
@@ -36,12 +35,18 @@ const StudentsGrades = ({ lesson, classId }) => {
     try {
       const formattedGrades = {
         unit,
-        year,
         subject: lesson.subject,
         teacher: lesson.teacher,
-        grades,
+        grades: students.reduce((acc, student) => {
+          acc[student.id] = {
+            name: student.name, // Adicionar o nome do aluno
+            grades: grades[student.id] || {}, // Notas do aluno
+          };
+          return acc;
+        }, {}),
       };
-      await saveGrades(lesson.id, formattedGrades);
+
+      await saveGrades(lesson.id, classId, formattedGrades);
       alert("Notas salvas com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar notas:", error);
@@ -54,10 +59,10 @@ const StudentsGrades = ({ lesson, classId }) => {
   }
 
   return (
-    <div>
+    <div style={{ paddingBottom: "2rem" }}>
       <h5 className="mb-4">Adicionar Notas para {lesson.subject}</h5>
 
-      {/* Unidade e Ano */}
+      {/* Unidade */}
       <FormGroup>
         <Label for="unit">Unidade</Label>
         <Input
@@ -65,17 +70,7 @@ const StudentsGrades = ({ lesson, classId }) => {
           id="unit"
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
-          placeholder="Digite a unidade (ex: Unidade 1)"
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="year">Ano</Label>
-        <Input
-          type="number"
-          id="year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          placeholder="Digite o ano"
+          placeholder="Digite a unidade (ex: 1° Unidade)"
         />
       </FormGroup>
 
@@ -85,7 +80,6 @@ const StudentsGrades = ({ lesson, classId }) => {
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Peso</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -100,18 +94,6 @@ const StudentsGrades = ({ lesson, classId }) => {
                     handleFieldChange(index, "name", e.target.value)
                   }
                   placeholder="Ex: Trabalho, Prova"
-                />
-              </td>
-              <td>
-                <Input
-                  type="number"
-                  value={field.weight}
-                  onChange={(e) =>
-                    handleFieldChange(index, "weight", e.target.value)
-                  }
-                  placeholder="Peso"
-                  min="0"
-                  max="100"
                 />
               </td>
               <td>
@@ -159,6 +141,7 @@ const StudentsGrades = ({ lesson, classId }) => {
                     placeholder={`Nota (${field.name})`}
                     min="0"
                     max="10"
+                    onWheel={(e) => e.target.blur()} // Evitar alteração com o scroll do mouse
                   />
                 </td>
               ))}
