@@ -10,10 +10,15 @@ import {
   Input,
   Table,
   Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
 import useFetchClasses from "../../hooks/useFetchClasses";
 import useFetchLessons from "../../hooks/useFetchLessons";
 import useUser from "../../hooks/useUser";
+import useUpdateGrade from "../../hooks/useUpdateGrade";
 import firebase from "firebase/compat/app";
 
 const GradesListPage = () => {
@@ -22,6 +27,9 @@ const GradesListPage = () => {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [grades, setGrades] = useState([]);
   const [loadingGrades, setLoadingGrades] = useState(false);
+  const [editingGrade, setEditingGrade] = useState(null); // Estado para o modal de edição
+  const [updatedGrades, setUpdatedGrades] = useState({});
+  const { updateGrade, loading: updatingGrade } = useUpdateGrade();
 
   const { classes, loading: loadingClasses } = useFetchClasses();
   const { lessons, loading: loadingLessons } = useFetchLessons(
@@ -71,6 +79,38 @@ const GradesListPage = () => {
     }
   };
 
+  const handleEditClick = (grade) => {
+    setEditingGrade(grade);
+    setUpdatedGrades(grade.grades);
+  };
+
+  const handleGradeChange = (field, value) => {
+    setUpdatedGrades((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    if (!editingGrade) return;
+
+    try {
+      await updateGrade(
+        userDetails.schoolId,
+        selectedClass.id,
+        selectedLesson.id,
+        editingGrade.id,
+        updatedGrades
+      );
+      alert("Nota atualizada com sucesso!");
+      fetchGrades(selectedLesson.id); // Recarregar as notas
+      setEditingGrade(null); // Fechar o modal
+    } catch (error) {
+      console.error("Erro ao atualizar nota:", error);
+      alert("Erro ao atualizar nota.");
+    }
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -82,7 +122,6 @@ const GradesListPage = () => {
               </h4>
 
               {/* Seleção de Turma */}
-
               <FormGroup>
                 <Label for="classSelect">Selecione a Turma</Label>
                 <Input
@@ -140,6 +179,7 @@ const GradesListPage = () => {
                           <th>Unidade</th>
                           <th>Notas</th>
                           <th>Data</th>
+                          <th>Ações</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -161,6 +201,15 @@ const GradesListPage = () => {
                                 grade.timestamp?.toDate()
                               ).toLocaleString()}
                             </td>
+                            <td>
+                              <Button
+                                color="primary"
+                                size="sm"
+                                onClick={() => handleEditClick(grade)}
+                              >
+                                Editar
+                              </Button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -172,6 +221,45 @@ const GradesListPage = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Modal de Edição */}
+      {editingGrade && (
+        <Modal isOpen={!!editingGrade} toggle={() => setEditingGrade(null)}>
+          <ModalHeader toggle={() => setEditingGrade(null)}>
+            Editar Notas - {editingGrade.studentName}
+          </ModalHeader>
+          <ModalBody>
+            {Object.entries(updatedGrades).map(([field, value]) => (
+              <FormGroup key={field}>
+                <Label>{field}</Label>
+                <Input
+                  type="number"
+                  value={value}
+                  onChange={(e) => handleGradeChange(field, e.target.value)}
+                  min="0"
+                  max="10"
+                />
+              </FormGroup>
+            ))}
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="secondary"
+              onClick={() => setEditingGrade(null)}
+              disabled={updatingGrade}
+            >
+              Cancelar
+            </Button>
+            <Button
+              color="primary"
+              onClick={handleSaveChanges}
+              disabled={updatingGrade}
+            >
+              {updatingGrade ? "Salvando..." : "Salvar"}
+            </Button>
+          </ModalFooter>
+        </Modal>
+      )}
     </Container>
   );
 };
