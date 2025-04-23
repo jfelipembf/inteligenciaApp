@@ -70,6 +70,12 @@ const GradesListPage = () => {
         ...doc.data(),
       }));
 
+      fetchedGrades.sort((a, b) => {
+        if (a.unit < b.unit) return -1;
+        if (a.unit > b.unit) return 1;
+        return a.studentName.localeCompare(b.studentName);
+      });
+
       setGrades(fetchedGrades);
     } catch (error) {
       console.error("Erro ao buscar notas:", error);
