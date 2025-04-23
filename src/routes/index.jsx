@@ -228,6 +228,8 @@ import Settings from "../pages/Settings/index";
 
 import GradesPage from "../pages/Grades/GradesPage";
 
+import GradesListPage from "../pages/Grades/GradesListPage";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -240,6 +242,7 @@ const authProtectedRoutes = [
 
   // Grades
   { path: "/grades", component: <GradesPage /> },
+  { path: "/grades-list", component: <GradesListPage /> },
 
   // Classes
   { path: "/create-class", component: <CreateClass /> },
