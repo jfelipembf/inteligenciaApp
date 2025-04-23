@@ -240,10 +240,22 @@ const SidebarContent = (props) => {
 
             {/* Atividades */}
             <li>
-              <Link to="/activities" className="waves-effect">
+              <Link to="/#" className="has-arrow">
                 <i className="bx bx-clipboard font-size-18"></i>
-                <span className="menu-item">{props.t("Atividades")}</span>
+                <span>{props.t("Atividades")}</span>
               </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/activities">
+                    {props.t("Visualizar atividades")}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/activities/add-activity">
+                    {props.t("Criar Atividade")}
+                  </Link>
+                </li>
+              </ul>
             </li>
 
             {/* Notas */}

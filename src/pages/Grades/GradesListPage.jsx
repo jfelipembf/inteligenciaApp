@@ -78,7 +78,7 @@ const GradesListPage = () => {
           <Card>
             <CardBody>
               <h4 className="card-title mb-4" style={{ paddingTop: "4rem" }}>
-                Visualizar Notas
+                LISTA DE NOTAS
               </h4>
 
               {/* Seleção de Turma */}

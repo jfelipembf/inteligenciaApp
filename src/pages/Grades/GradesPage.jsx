@@ -47,7 +47,7 @@ const GradesPage = () => {
           <Card>
             <CardBody>
               <h4 className="card-title mb-4" style={{ paddingTop: "4rem" }}>
-                Adicionar Notas
+                ADICIONAR NOTAS
               </h4>
 
               {/* Seleção de Turma */}
