@@ -21,6 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Dropzone from "react-dropzone";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useSaveEvent from "../../hooks/useSaveEvent";
 
 // Dados de exemplo para turmas
 const CLASS_OPTIONS = [
@@ -46,7 +47,7 @@ const SAMPLE_EVENTS = [
     value: "Gratuito",
     status: "Agendado",
     image: null,
-    notes: "Trazer projetos uma hora antes para montagem"
+    notes: "Trazer projetos uma hora antes para montagem",
   },
   {
     id: "evt002",
@@ -60,7 +61,7 @@ const SAMPLE_EVENTS = [
     value: "R$ 10,00",
     status: "Agendado",
     image: null,
-    notes: "Traje típico é opcional"
+    notes: "Traje típico é opcional",
   },
   {
     id: "evt003",
@@ -74,14 +75,15 @@ const SAMPLE_EVENTS = [
     value: "R$ 25,00",
     status: "Agendado",
     image: null,
-    notes: "Levar autorização dos pais e lanche"
-  }
+    notes: "Levar autorização dos pais e lanche",
+  },
 ];
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = !!id;
+  const { saveEvent, loading: savingEvent } = useSaveEvent();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -93,7 +95,7 @@ const CreateEvent = () => {
     location: "",
     value: "",
     image: null,
-    notes: ""
+    notes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -104,26 +106,30 @@ const CreateEvent = () => {
     if (isEditMode) {
       // Carregar dados do evento para edição
       setLoading(true);
-      
+
       // Simulação de busca de dados
       setTimeout(() => {
-        const eventData = SAMPLE_EVENTS.find(event => event.id === id);
-        
+        const eventData = SAMPLE_EVENTS.find((event) => event.id === id);
+
         if (eventData) {
           // Converter classes para formato do react-select
-          const classesOptions = eventData.classes.map(classId => 
-            CLASS_OPTIONS.find(option => option.value === classId) || { value: classId, label: classId }
+          const classesOptions = eventData.classes.map(
+            (classId) =>
+              CLASS_OPTIONS.find((option) => option.value === classId) || {
+                value: classId,
+                label: classId,
+              }
           );
-          
+
           setFormData({
             ...eventData,
-            classes: classesOptions
+            classes: classesOptions,
           });
         } else {
           toast.error("Evento não encontrado!");
           navigate("/events");
         }
-        
+
         setLoading(false);
       }, 800);
     }
@@ -133,14 +139,14 @@ const CreateEvent = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
-    
+
     // Limpar erro do campo quando o usuário digita
     if (errors[name]) {
       setErrors({
         ...errors,
-        [name]: ""
+        [name]: "",
       });
     }
   };
@@ -148,83 +154,100 @@ const CreateEvent = () => {
   const handleSelectChange = (selectedOption, { name }) => {
     setFormData({
       ...formData,
-      [name]: selectedOption
+      [name]: selectedOption,
     });
-    
+
     // Limpar erro do campo quando o usuário seleciona
     if (errors[name]) {
       setErrors({
         ...errors,
-        [name]: ""
+        [name]: "",
       });
     }
   };
 
   const handleFileChange = (acceptedFiles) => {
     setSelectedFiles(acceptedFiles);
-    
+
     // Limpar erro do campo quando o usuário seleciona um arquivo
     if (errors.image) {
       setErrors({
         ...errors,
-        image: ""
+        image: "",
       });
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = "Nome do evento é obrigatório";
     }
-    
+
     if (!formData.startDate) {
       newErrors.startDate = "Data de início é obrigatória";
     }
-    
+
     if (!formData.endDate) {
       newErrors.endDate = "Data de término é obrigatória";
     } else if (formData.endDate < formData.startDate) {
       newErrors.endDate = "Data de término deve ser posterior à data de início";
     }
-    
+
     if (!formData.startTime) {
       newErrors.startTime = "Hora de início é obrigatória";
     }
-    
+
     if (!formData.endTime) {
       newErrors.endTime = "Hora de término é obrigatória";
     }
-    
+
     if (!formData.location.trim()) {
       newErrors.location = "Local é obrigatório";
     }
-    
+
     if (!formData.classes || formData.classes.length === 0) {
       newErrors.classes = "Selecione pelo menos uma turma";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setLoading(true);
-      
-      // Simulação de envio de dados
-      setTimeout(() => {
+
+      try {
+        const eventData = {
+          name: formData.name,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          startTime: formData.startTime,
+          endTime: formData.endTime,
+          classes: formData.classes.map((cls) => cls.value),
+          location: formData.location,
+          value: formData.value || "Gratuito",
+          notes: formData.notes,
+          image: selectedFiles.length > 0 ? selectedFiles[0].name : null,
+        };
+
+        await saveEvent(eventData);
+
+        toast.success(
+          isEditMode
+            ? "Evento atualizado com sucesso!"
+            : "Evento criado com sucesso!"
+        );
+        navigate("/events");
+      } catch (err) {
+        toast.error(`Erro ao salvar evento: ${err.message}`);
+      } finally {
         setLoading(false);
-        toast.success(isEditMode ? "Evento atualizado com sucesso!" : "Evento criado com sucesso!");
-        
-        // Redirecionar para a lista de eventos após salvar
-        setTimeout(() => {
-          navigate("/events");
-        }, 1500);
-      }, 1000);
+      }
     } else {
       toast.error("Por favor, corrija os erros no formulário");
     }
@@ -235,9 +258,9 @@ const CreateEvent = () => {
       <div className="page-content">
         <Container fluid>
           {/* Breadcrumb */}
-          <Breadcrumbs 
-            title="Eventos" 
-            breadcrumbItem={isEditMode ? "Editar Evento" : "Criar Evento"} 
+          <Breadcrumbs
+            title="Eventos"
+            breadcrumbItem={isEditMode ? "Editar Evento" : "Criar Evento"}
           />
 
           <Row>
@@ -250,7 +273,10 @@ const CreateEvent = () => {
 
                   {loading ? (
                     <div className="text-center my-4">
-                      <div className="spinner-border text-primary" role="status">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
                         <span className="visually-hidden">Carregando...</span>
                       </div>
                       <p className="mt-2">Carregando dados...</p>
@@ -364,7 +390,9 @@ const CreateEvent = () => {
                                 onChange={handleInputChange}
                               />
                             </InputGroup>
-                            <small className="text-muted">Deixe em branco para eventos gratuitos</small>
+                            <small className="text-muted">
+                              Deixe em branco para eventos gratuitos
+                            </small>
                           </FormGroup>
                         </Col>
                       </Row>
@@ -378,7 +406,9 @@ const CreateEvent = () => {
                               name="classes"
                               id="classes"
                               value={formData.classes}
-                              onChange={(option) => handleSelectChange(option, { name: "classes" })}
+                              onChange={(option) =>
+                                handleSelectChange(option, { name: "classes" })
+                              }
                               options={CLASS_OPTIONS}
                               classNamePrefix="select2-selection"
                               placeholder="Selecione as turmas participantes"
@@ -401,17 +431,23 @@ const CreateEvent = () => {
                               <Dropzone
                                 onDrop={handleFileChange}
                                 accept={{
-                                  'image/*': ['.jpeg', '.jpg', '.png']
+                                  "image/*": [".jpeg", ".jpg", ".png"],
                                 }}
                                 maxFiles={1}
                               >
                                 {({ getRootProps, getInputProps }) => (
-                                  <div className="dz-message needsclick" {...getRootProps()}>
+                                  <div
+                                    className="dz-message needsclick"
+                                    {...getRootProps()}
+                                  >
                                     <input {...getInputProps()} />
                                     <div className="mb-3">
                                       <i className="display-4 text-muted bx bxs-cloud-upload"></i>
                                     </div>
-                                    <h4>Arraste uma imagem ou clique para selecionar</h4>
+                                    <h4>
+                                      Arraste uma imagem ou clique para
+                                      selecionar
+                                    </h4>
                                   </div>
                                 )}
                               </Dropzone>
@@ -444,7 +480,9 @@ const CreateEvent = () => {
                                                 {f.name}
                                               </Link>
                                               <p className="mb-0">
-                                                <strong>{f.formattedSize}</strong>
+                                                <strong>
+                                                  {f.formattedSize}
+                                                </strong>
                                               </p>
                                             </Col>
                                           </Row>
