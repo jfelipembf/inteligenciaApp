@@ -29,6 +29,7 @@ const useSaveEvent = () => {
       // Adicionar o evento ao Firestore
       const eventRef = await eventsRef.add({
         ...eventData,
+        status: "Agendado",
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 

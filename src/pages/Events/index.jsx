@@ -21,6 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import TableContainer from "../../components/Common/TableContainer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useFetchEvents from "../../hooks/useFetchEvents";
 
 // Constantes para status de evento
 const EVENT_STATUS_OPTIONS = [
@@ -44,7 +45,7 @@ const SAMPLE_EVENTS = [
     value: "Gratuito",
     status: "Agendado",
     image: "https://via.placeholder.com/150",
-    notes: "Trazer projetos uma hora antes para montagem"
+    notes: "Trazer projetos uma hora antes para montagem",
   },
   {
     id: "evt002",
@@ -58,7 +59,7 @@ const SAMPLE_EVENTS = [
     value: "R$ 10,00",
     status: "Agendado",
     image: "https://via.placeholder.com/150",
-    notes: "Traje típico é opcional"
+    notes: "Traje típico é opcional",
   },
   {
     id: "evt003",
@@ -72,18 +73,22 @@ const SAMPLE_EVENTS = [
     value: "R$ 25,00",
     status: "Agendado",
     image: "https://via.placeholder.com/150",
-    notes: "Levar autorização dos pais e lanche"
-  }
+    notes: "Levar autorização dos pais e lanche",
+  },
 ];
 
 const Events = () => {
   const navigate = useNavigate();
-  const [events, setEvents] = useState(SAMPLE_EVENTS);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { events, loading, error, refetch } = useFetchEvents();
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleRefresh = () => {
+    refetch();
+    toast.success("Eventos atualizados!");
+  };
 
   // Função para extrair texto de um valor, lidando com objetos
   const getTextValue = (value) => {
@@ -122,7 +127,7 @@ const Events = () => {
       setIsDeleting(true);
       // Simulação de exclusão bem-sucedida
       setTimeout(() => {
-        setEvents(events.filter(event => event.id !== currentEvent.id));
+        setEvents(events.filter((event) => event.id !== currentEvent.id));
         setIsDeleting(false);
         setDeleteModal(false);
         setCurrentEvent(null);
@@ -131,7 +136,9 @@ const Events = () => {
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir o evento:", err);
-      toast.error("Erro ao excluir o evento: " + (err.message || "Erro desconhecido"));
+      toast.error(
+        "Erro ao excluir o evento: " + (err.message || "Erro desconhecido")
+      );
     }
   };
 
@@ -139,7 +146,7 @@ const Events = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR');
+    return date.toLocaleDateString("pt-BR");
   };
 
   // Definir colunas para a tabela
@@ -152,15 +159,15 @@ const Events = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return (
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               onClick={() => handleViewEvent(cellProps.row.original.id)}
               className="text-body fw-bold"
             >
               {cellProps.row.original.name || "N/A"}
             </Link>
           );
-        }
+        },
       },
       {
         header: "Data",
@@ -170,11 +177,11 @@ const Events = () => {
         cell: (cellProps) => {
           const startDate = formatDate(cellProps.row.original.startDate);
           const endDate = formatDate(cellProps.row.original.endDate);
-          
-          return startDate === endDate 
-            ? startDate 
+
+          return startDate === endDate
+            ? startDate
             : `${startDate} a ${endDate}`;
-        }
+        },
       },
       {
         header: "Horário",
@@ -182,8 +189,10 @@ const Events = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          return `${cellProps.row.original.startTime || "N/A"} - ${cellProps.row.original.endTime || "N/A"}`;
-        }
+          return `${cellProps.row.original.startTime || "N/A"} - ${
+            cellProps.row.original.endTime || "N/A"
+          }`;
+        },
       },
       {
         header: "Local",
@@ -192,7 +201,7 @@ const Events = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return cellProps.row.original.location || "N/A";
-        }
+        },
       },
       {
         header: "Valor",
@@ -201,7 +210,7 @@ const Events = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return cellProps.row.original.value || "N/A";
-        }
+        },
       },
       {
         header: "Status",
@@ -210,16 +219,12 @@ const Events = () => {
         enableSorting: true,
         cell: (cellProps) => {
           const status = cellProps.row.original.status;
-          const statusObj = EVENT_STATUS_OPTIONS.find(
-            s => s.value === status
-          ) || EVENT_STATUS_OPTIONS[0]; // Default to first status if not found
-          
-          return (
-            <Badge color={statusObj.color}>
-              {status || "N/A"}
-            </Badge>
-          );
-        }
+          const statusObj =
+            EVENT_STATUS_OPTIONS.find((s) => s.value === status) ||
+            EVENT_STATUS_OPTIONS[0]; // Default to first status if not found
+
+          return <Badge color={statusObj.color}>{status || "N/A"}</Badge>;
+        },
       },
       {
         header: "Ações",
@@ -259,7 +264,7 @@ const Events = () => {
               </li>
             </ul>
           );
-        }
+        },
       },
     ],
     [events, navigate]
@@ -277,7 +282,9 @@ const Events = () => {
               <Card>
                 <CardBody className="border-bottom">
                   <div className="d-flex align-items-center">
-                    <h5 className="mb-0 card-title flex-grow-1">Lista de Eventos</h5>
+                    <h5 className="mb-0 card-title flex-grow-1">
+                      Lista de Eventos
+                    </h5>
                     <div className="flex-shrink-0">
                       <Link
                         to="/events/create"
@@ -285,13 +292,11 @@ const Events = () => {
                       >
                         <i className="bx bx-plus me-1"></i> Novo Evento
                       </Link>
-                      <Button color="light" className="me-1" onClick={() => {
-                        setLoading(true);
-                        setTimeout(() => {
-                          setLoading(false);
-                          toast.success("Eventos atualizados!");
-                        }, 500);
-                      }}>
+                      <Button
+                        color="light"
+                        className="me-1"
+                        onClick={handleRefresh}
+                      >
                         <i className="mdi mdi-refresh"></i>
                       </Button>
                       <UncontrolledDropdown className="dropdown d-inline-block me-1">
@@ -320,7 +325,10 @@ const Events = () => {
                 <CardBody>
                   {loading ? (
                     <div className="text-center my-4">
-                      <div className="spinner-border text-primary" role="status">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
                         <span className="visually-hidden">Carregando...</span>
                       </div>
                       <p className="mt-2">Carregando eventos...</p>
@@ -329,7 +337,11 @@ const Events = () => {
                     <div className="text-center my-4 text-danger">
                       <i className="bx bx-error-circle display-4"></i>
                       <p className="mt-2">Erro ao carregar dados: {error}</p>
-                      <Button color="primary" onClick={() => setError(null)} className="mt-2">
+                      <Button
+                        color="primary"
+                        onClick={() => setError(null)}
+                        className="mt-2"
+                      >
                         <i className="bx bx-refresh me-1"></i> Tentar Novamente
                       </Button>
                     </div>
@@ -353,14 +365,29 @@ const Events = () => {
           </Row>
 
           {/* Modal de Exclusão */}
-          <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)} centered={true} size="sm">
-            <ModalHeader toggle={() => setDeleteModal(false)}>Confirmar Exclusão</ModalHeader>
+          <Modal
+            isOpen={deleteModal}
+            toggle={() => setDeleteModal(false)}
+            centered={true}
+            size="sm"
+          >
+            <ModalHeader toggle={() => setDeleteModal(false)}>
+              Confirmar Exclusão
+            </ModalHeader>
             <ModalBody>
-              <p>Tem certeza que deseja excluir o evento "{currentEvent?.name}"?</p>
-              <p className="text-danger mb-0">Esta ação não pode ser desfeita.</p>
+              <p>
+                Tem certeza que deseja excluir o evento "{currentEvent?.name}"?
+              </p>
+              <p className="text-danger mb-0">
+                Esta ação não pode ser desfeita.
+              </p>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={handleDeleteEvent} disabled={isDeleting}>
+              <Button
+                color="danger"
+                onClick={handleDeleteEvent}
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Excluindo..." : "Sim, Excluir"}
               </Button>
               <Button color="secondary" onClick={() => setDeleteModal(false)}>
