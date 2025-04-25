@@ -284,10 +284,18 @@ const SidebarContent = (props) => {
 
             {/* Eventos */}
             <li>
-              <Link to="/events" className="waves-effect">
+              <Link to="/#" className="has-arrow">
                 <i className="bx bx-calendar-event"></i>
-                <span className="menu-item">{props.t("Eventos")}</span>
+                <span>{props.t("Eventos")}</span>
               </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/events/create">{props.t("Criar Evento")}</Link>
+                </li>
+                <li>
+                  <Link to="/events">{props.t("Visualizar Eventos")}</Link>
+                </li>
+              </ul>
             </li>
 
             {/* Financeiro */}
