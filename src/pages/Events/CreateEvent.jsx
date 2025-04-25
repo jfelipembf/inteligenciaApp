@@ -22,6 +22,7 @@ import Dropzone from "react-dropzone";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useSaveEvent from "../../hooks/useSaveEvent";
+import useFetchClasses from "../../hooks/useFetchClasses";
 
 // Dados de exemplo para turmas
 const CLASS_OPTIONS = [
@@ -80,6 +81,11 @@ const SAMPLE_EVENTS = [
 ];
 
 const CreateEvent = () => {
+  const {
+    classes,
+    loading: loadingClasses,
+    error: classesError,
+  } = useFetchClasses();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = !!id;
@@ -104,18 +110,15 @@ const CreateEvent = () => {
 
   useEffect(() => {
     if (isEditMode) {
-      // Carregar dados do evento para edição
       setLoading(true);
 
-      // Simulação de busca de dados
       setTimeout(() => {
         const eventData = SAMPLE_EVENTS.find((event) => event.id === id);
 
         if (eventData) {
-          // Converter classes para formato do react-select
           const classesOptions = eventData.classes.map(
             (classId) =>
-              CLASS_OPTIONS.find((option) => option.value === classId) || {
+              classes.find((option) => option.value === classId) || {
                 value: classId,
                 label: classId,
               }
@@ -133,7 +136,7 @@ const CreateEvent = () => {
         setLoading(false);
       }, 800);
     }
-  }, [id, isEditMode, navigate]);
+  }, [id, isEditMode, navigate, classes]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -228,7 +231,10 @@ const CreateEvent = () => {
           endDate: formData.endDate,
           startTime: formData.startTime,
           endTime: formData.endTime,
-          classes: formData.classes.map((cls) => cls.value),
+          classes: formData.classes.map((cls) => ({
+            value: cls.value,
+            label: cls.label,
+          })), // Salvar como { value, label }
           location: formData.location,
           value: formData.value || "Gratuito",
           notes: formData.notes,
@@ -409,11 +415,13 @@ const CreateEvent = () => {
                               onChange={(option) =>
                                 handleSelectChange(option, { name: "classes" })
                               }
-                              options={CLASS_OPTIONS}
+                              options={classes}
+                              isLoading={loadingClasses}
                               classNamePrefix="select2-selection"
                               placeholder="Selecione as turmas participantes"
                               invalid={!!errors.classes}
                             />
+                            {console.log(classes)}
                             {errors.classes && (
                               <div className="invalid-feedback d-block">
                                 {errors.classes}

@@ -8,7 +8,10 @@ const MOCK_CLASSES = [
     id: "class1",
     identifier: { value: "A", label: "A" },
     series: { value: "1º ano", label: "1º ano" },
-    educationLevel: { value: "Ensino Fundamental I", label: "Ensino Fundamental I" },
+    educationLevel: {
+      value: "Ensino Fundamental I",
+      label: "Ensino Fundamental I",
+    },
     period: { value: "Manhã", label: "Manhã" },
     status: "Ativo",
     studentCount: 25,
@@ -18,15 +21,18 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
+    schoolId: "escola-modelo",
   },
   {
     id: "class2",
     identifier: { value: "B", label: "B" },
     series: { value: "2º ano", label: "2º ano" },
-    educationLevel: { value: "Ensino Fundamental I", label: "Ensino Fundamental I" },
+    educationLevel: {
+      value: "Ensino Fundamental I",
+      label: "Ensino Fundamental I",
+    },
     period: { value: "Tarde", label: "Tarde" },
     status: "Ativo",
     studentCount: 28,
@@ -36,15 +42,18 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
+    schoolId: "escola-modelo",
   },
   {
     id: "class3",
     identifier: { value: "C", label: "C" },
     series: { value: "3º ano", label: "3º ano" },
-    educationLevel: { value: "Ensino Fundamental I", label: "Ensino Fundamental I" },
+    educationLevel: {
+      value: "Ensino Fundamental I",
+      label: "Ensino Fundamental I",
+    },
     period: { value: "Manhã", label: "Manhã" },
     status: "Ativo",
     studentCount: 30,
@@ -54,9 +63,9 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
+    schoolId: "escola-modelo",
   },
   {
     id: "class4",
@@ -72,9 +81,9 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
+    schoolId: "escola-modelo",
   },
   {
     id: "class5",
@@ -90,9 +99,9 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
+    schoolId: "escola-modelo",
   },
   {
     id: "class6",
@@ -108,10 +117,10 @@ const MOCK_CLASSES = [
     endDate: "",
     metadata: {
       createdAt: new Date().toISOString(),
-      createdBy: "admin123"
+      createdBy: "admin123",
     },
-    schoolId: "escola-modelo"
-  }
+    schoolId: "escola-modelo",
+  },
 ];
 
 export const useFetchClasses = (options = {}) => {
@@ -129,7 +138,7 @@ export const useFetchClasses = (options = {}) => {
       if (!firebase.apps.length) {
         console.log("Firebase não inicializado, usando dados mockados");
         // Simular um pequeno delay para parecer uma chamada real
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise((resolve) => setTimeout(resolve, 800));
         setClasses(MOCK_CLASSES);
         return MOCK_CLASSES;
       }
@@ -137,7 +146,7 @@ export const useFetchClasses = (options = {}) => {
       const currentUser = firebase.auth().currentUser;
       if (!currentUser) {
         console.log("Usuário não autenticado, usando dados mockados");
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise((resolve) => setTimeout(resolve, 800));
         setClasses(MOCK_CLASSES);
         return MOCK_CLASSES;
       }
@@ -151,7 +160,7 @@ export const useFetchClasses = (options = {}) => {
 
       if (!schoolId) {
         console.log("schoolId não encontrado, usando dados mockados");
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise((resolve) => setTimeout(resolve, 800));
         setClasses(MOCK_CLASSES);
         return MOCK_CLASSES;
       }
@@ -178,6 +187,8 @@ export const useFetchClasses = (options = {}) => {
             id: doc.id,
             ...doc.data(),
             studentCount: studentsSnapshot.size,
+            value: doc.id, // ID da turma
+            label: doc.data().className,
           };
         })
       );
@@ -196,7 +207,7 @@ export const useFetchClasses = (options = {}) => {
 
   useEffect(() => {
     if (!skipInitialFetch) {
-      fetchClasses().catch(err => {
+      fetchClasses().catch((err) => {
         // Erro já tratado dentro de fetchClasses
         console.error("Erro no useEffect do useFetchClasses:", err);
       });
