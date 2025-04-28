@@ -3,10 +3,12 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import useUser from "useUser";
 
 export const useTeacherManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   const createTeacher = async ({ email, password, userData, profileImage }) => {
     setLoading(true);
@@ -23,16 +25,11 @@ export const useTeacherManagement = () => {
       }
 
       // Buscar schoolId do admin atual
-      const userDoc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-      console.log("Dados do usuário admin:", userDoc.data());
-      const schoolId = userDoc.data().schoolId;
-      if (!schoolId) {
-        throw new Error("schoolId não encontrado para o usuário admin");
+      if (!userDetails?.schoolId) {
+        throw new Error("schoolId não encontrado no usuário.");
       }
+
+      const schoolId = userDetails.schoolId;
 
       // Criar usuário no Auth
       console.log("Criando professor no Firebase Auth...");

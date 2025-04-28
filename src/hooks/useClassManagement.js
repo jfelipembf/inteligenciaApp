@@ -1,10 +1,12 @@
 import { useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 export const useClassManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   const createClass = async (classData) => {
     setLoading(true);
@@ -20,15 +22,11 @@ export const useClassManagement = () => {
       }
 
       // Buscar schoolId do usuário atual
-      const userDoc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-      const schoolId = userDoc.data().schoolId;
-      if (!schoolId) {
-        throw new Error("schoolId não encontrado para o usuário");
+      if (!userDetails?.schoolId) {
+        throw new Error("schoolId não encontrado no usuário.");
       }
+
+      const schoolId = userDetails.schoolId;
 
       // Extrair valores dos objetos do react-select
       const seriesValue = classData.series?.value || "";
@@ -47,7 +45,7 @@ export const useClassManagement = () => {
         // Valores originais que não são objetos
         startDate: classData.startDate || "",
         endDate: classData.endDate || "",
-        
+
         // Valores extraídos dos objetos do react-select
         series: seriesValue,
         seriesLabel: seriesLabel,
@@ -55,7 +53,7 @@ export const useClassManagement = () => {
         identifierLabel: identifierLabel,
         period: periodValue,
         educationLevel: educationLevelValue,
-        
+
         // Outros valores
         className,
         schoolId,

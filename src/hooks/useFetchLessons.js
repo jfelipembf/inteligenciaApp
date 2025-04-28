@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 const useFetchLessons = (classId) => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -20,17 +22,11 @@ const useFetchLessons = (classId) => {
         }
 
         // Buscar o schoolId do usuário
-        const userDoc = await firebase
-          .firestore()
-          .collection("users")
-          .doc(currentUser.uid)
-          .get();
-
-        const schoolId = userDoc.data().schoolId;
-
-        if (!schoolId) {
-          throw new Error("schoolId não encontrado para o usuário");
+        if (!userDetails?.schoolId) {
+          throw new Error("schoolId não encontrado no usuário.");
         }
+
+        const schoolId = userDetails.schoolId;
 
         // Buscar as aulas da turma
         const lessonsSnapshot = await firebase

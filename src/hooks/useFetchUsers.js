@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 const useFetchUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,17 +21,11 @@ const useFetchUsers = () => {
         }
 
         // Buscar o schoolId do usuário autenticado
-        const userDoc = await firebase
-          .firestore()
-          .collection("users")
-          .doc(currentUser.uid)
-          .get();
-        const schoolId = userDoc.data().schoolId;
-
-        if (!schoolId) {
-          throw new Error("schoolId não encontrado para o usuário");
+        if (!userDetails?.schoolId) {
+          throw new Error("schoolId não encontrado no usuário.");
         }
 
+        const schoolId = userDetails.schoolId;
         // Buscar usuários com o mesmo schoolId
         const usersSnapshot = await firebase
           .firestore()

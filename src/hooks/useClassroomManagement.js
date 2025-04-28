@@ -1,10 +1,12 @@
 import { useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 export const useClassroomManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   const createClass = async (classId, classData) => {
     setLoading(true);
@@ -20,16 +22,11 @@ export const useClassroomManagement = () => {
       }
 
       // Buscar schoolId do usuário atual
-      const userDoc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-      const schoolId = userDoc.data().schoolId;
-      if (!schoolId) {
-        throw new Error("schoolId não encontrado para o usuário");
+      if (!userDetails?.schoolId) {
+        throw new Error("schoolId não encontrado no usuário.");
       }
 
+      const schoolId = userDetails.schoolId;
       // Preparar dados da aula
       const finalClassData = {
         ...classData,

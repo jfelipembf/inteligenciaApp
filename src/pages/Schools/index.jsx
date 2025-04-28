@@ -32,14 +32,14 @@ import axios from "axios";
 
 // Adicione estes estilos CSS no topo do arquivo
 const checkboxStyle = {
-  '.form-check-input:checked': {
-    backgroundColor: '#556ee6',
-    borderColor: '#556ee6'
+  ".form-check-input:checked": {
+    backgroundColor: "#556ee6",
+    borderColor: "#556ee6",
   },
-  '.form-check-input:focus': {
-    borderColor: '#556ee6',
-    boxShadow: '0 0 0 0.15rem rgba(85, 110, 230, 0.25)'
-  }
+  ".form-check-input:focus": {
+    borderColor: "#556ee6",
+    boxShadow: "0 0 0 0.15rem rgba(85, 110, 230, 0.25)",
+  },
 };
 
 const Schools = () => {
@@ -87,9 +87,9 @@ const Schools = () => {
         try {
           const schoolsRef = await getFirebaseBackend().getSchools();
           console.log("Escolas recebidas:", schoolsRef);
-          const schoolsWithIds = schoolsRef.map(school => ({
+          const schoolsWithIds = schoolsRef.map((school) => ({
             ...school,
-            id: school.id || school._id
+            id: school.id || school._id,
           }));
           setSchools(schoolsWithIds);
         } catch (error) {
@@ -156,7 +156,9 @@ const Schools = () => {
   const handleCepSearch = async (cep) => {
     if (cep.length === 8) {
       try {
-        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        const response = await axios.get(
+          `https://viacep.com.br/ws/${cep}/json/`
+        );
         if (!response.data.erro) {
           setNewSchool((prev) => ({
             ...prev,
@@ -173,48 +175,54 @@ const Schools = () => {
   };
 
   const handleSelectSchool = React.useCallback((schoolId) => {
-    console.log('Tentando selecionar escola:', schoolId);
-    console.log('Estado atual das seleções:', selectedSchools);
-    
-    setSelectedSchools(prev => {
+    console.log("Tentando selecionar escola:", schoolId);
+    console.log("Estado atual das seleções:", selectedSchools);
+
+    setSelectedSchools((prev) => {
       const isSelected = prev.includes(schoolId);
-      console.log('Escola já está selecionada?', isSelected);
-      
-      const newSelection = isSelected 
-        ? prev.filter(id => id !== schoolId)
+      console.log("Escola já está selecionada?", isSelected);
+
+      const newSelection = isSelected
+        ? prev.filter((id) => id !== schoolId)
         : [...prev, schoolId];
-      
-      console.log('Nova seleção:', newSelection);
+
+      console.log("Nova seleção:", newSelection);
       return newSelection;
     });
   }, []);
 
-  const handleSelectAll = React.useCallback((checked) => {
-    console.log('Seleção geral alterada:', checked);
-    console.log('Total de escolas:', schools.length);
-    
-    if (checked) {
-      const allIds = schools.map(school => school.id);
-      console.log('IDs de todas as escolas:', allIds);
-      setSelectedSchools(allIds);
-    } else {
-      setSelectedSchools([]);
-    }
-  }, [schools]);
+  const handleSelectAll = React.useCallback(
+    (checked) => {
+      console.log("Seleção geral alterada:", checked);
+      console.log("Total de escolas:", schools.length);
+
+      if (checked) {
+        const allIds = schools.map((school) => school.id);
+        console.log("IDs de todas as escolas:", allIds);
+        setSelectedSchools(allIds);
+      } else {
+        setSelectedSchools([]);
+      }
+    },
+    [schools]
+  );
 
   const columns = useMemo(
     () => [
       {
-        id: 'select',
+        id: "select",
         header: () => {
-          console.log('Renderizando header do checkbox');
+          console.log("Renderizando header do checkbox");
           return (
             <div className="form-check">
               <Input
                 type="checkbox"
                 className="form-check-input"
                 id="checkAll"
-                checked={schools.length > 0 && selectedSchools.length === schools.length}
+                checked={
+                  schools.length > 0 &&
+                  selectedSchools.length === schools.length
+                }
                 onChange={(e) => handleSelectAll(e.target.checked)}
               />
               <Label className="form-check-label" htmlFor="checkAll"></Label>
@@ -223,9 +231,12 @@ const Schools = () => {
         },
         cell: ({ row }) => {
           const schoolId = row.original.id;
-          console.log('Renderizando checkbox para escola:', schoolId);
-          console.log('Estado atual do checkbox:', selectedSchools.includes(schoolId));
-          
+          console.log("Renderizando checkbox para escola:", schoolId);
+          console.log(
+            "Estado atual do checkbox:",
+            selectedSchools.includes(schoolId)
+          );
+
           return (
             <div className="form-check">
               <Input
@@ -235,7 +246,10 @@ const Schools = () => {
                 checked={selectedSchools.includes(schoolId)}
                 onChange={() => handleSelectSchool(schoolId)}
               />
-              <Label className="form-check-label" htmlFor={`check${schoolId}`}></Label>
+              <Label
+                className="form-check-label"
+                htmlFor={`check${schoolId}`}
+              ></Label>
             </div>
           );
         },
@@ -276,7 +290,8 @@ const Schools = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          const schoolName = cellProps.row.original.name || "Nome não disponível";
+          const schoolName =
+            cellProps.row.original.name || "Nome não disponível";
           return (
             <div className="d-flex align-items-center">
               <div className="font-size-14 mb-1">
@@ -343,7 +358,13 @@ const Schools = () => {
         },
       },
     ],
-    [schools.length, selectedSchools, handleSelectAll, handleSelectSchool, navigate]
+    [
+      schools.length,
+      selectedSchools,
+      handleSelectAll,
+      handleSelectSchool,
+      navigate,
+    ]
   );
 
   if (loading) {
@@ -359,7 +380,10 @@ const Schools = () => {
             }}
           >
             <div className="text-center">
-              <Spinner style={{ width: "3rem", height: "3rem" }} color="primary">
+              <Spinner
+                style={{ width: "3rem", height: "3rem" }}
+                color="primary"
+              >
                 Loading...
               </Spinner>
               <div className="mt-3">
@@ -386,35 +410,47 @@ const Schools = () => {
                       <Nav tabs className="nav-tabs-custom">
                         <NavItem>
                           <NavLink
-                            className={classnames({ active: activeTab === "1" })}
+                            className={classnames({
+                              active: activeTab === "1",
+                            })}
                             onClick={() => toggleTab("1")}
                           >
                             <span className="d-block d-sm-none">
                               <i className="fas fa-home"></i>
                             </span>
-                            <span className="d-none d-sm-block">Identificação</span>
+                            <span className="d-none d-sm-block">
+                              Identificação
+                            </span>
                           </NavLink>
                         </NavItem>
                         <NavItem>
                           <NavLink
-                            className={classnames({ active: activeTab === "2" })}
+                            className={classnames({
+                              active: activeTab === "2",
+                            })}
                             onClick={() => toggleTab("2")}
                           >
                             <span className="d-block d-sm-none">
                               <i className="far fa-user"></i>
                             </span>
-                            <span className="d-none d-sm-block">Documentação</span>
+                            <span className="d-none d-sm-block">
+                              Documentação
+                            </span>
                           </NavLink>
                         </NavItem>
                         <NavItem>
                           <NavLink
-                            className={classnames({ active: activeTab === "3" })}
+                            className={classnames({
+                              active: activeTab === "3",
+                            })}
                             onClick={() => toggleTab("3")}
                           >
                             <span className="d-block d-sm-none">
                               <i className="far fa-envelope"></i>
                             </span>
-                            <span className="d-none d-sm-block">Financeiro</span>
+                            <span className="d-none d-sm-block">
+                              Financeiro
+                            </span>
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -546,7 +582,10 @@ const Schools = () => {
                                   name="zipCode"
                                   value={newSchool.zipCode}
                                   onChange={(e) => {
-                                    const cep = e.target.value.replace(/\D/g, "");
+                                    const cep = e.target.value.replace(
+                                      /\D/g,
+                                      ""
+                                    );
                                     handleInputChange({
                                       target: { name: "zipCode", value: cep },
                                     });
@@ -639,7 +678,9 @@ const Schools = () => {
                                   <option value="PE">Pernambuco</option>
                                   <option value="PI">Piauí</option>
                                   <option value="RJ">Rio de Janeiro</option>
-                                  <option value="RN">Rio Grande do Norte</option>
+                                  <option value="RN">
+                                    Rio Grande do Norte
+                                  </option>
                                   <option value="RS">Rio Grande do Sul</option>
                                   <option value="RO">Rondônia</option>
                                   <option value="RR">Roraima</option>
@@ -704,7 +745,9 @@ const Schools = () => {
                           </Row>
                           <div className="border-top pt-4 mb-4">
                             <div className="d-flex justify-content-between align-items-center mb-3">
-                              <h5 className="font-size-14 mb-0">Responsáveis</h5>
+                              <h5 className="font-size-14 mb-0">
+                                Responsáveis
+                              </h5>
                               <Button
                                 type="button"
                                 color="primary"
@@ -713,102 +756,122 @@ const Schools = () => {
                                 onClick={() => {
                                   setNewSchool((prev) => ({
                                     ...prev,
-                                    responsibles: [...prev.responsibles, { name: "", cpf: "", role: "" }],
+                                    responsibles: [
+                                      ...prev.responsibles,
+                                      { name: "", cpf: "", role: "" },
+                                    ],
                                   }));
                                 }}
                               >
-                                <i className="bx bx-plus me-1"></i> Adicionar Responsável
+                                <i className="bx bx-plus me-1"></i> Adicionar
+                                Responsável
                               </Button>
                             </div>
-                            {newSchool.responsibles.map((responsible, index) => (
-                              <Row key={index} className="mb-3">
-                                <Col md={4}>
-                                  <FormGroup className="mb-0">
-                                    <Label>Nome do Responsável {index + 1}</Label>
-                                    <Input
-                                      type="text"
-                                      value={responsible.name}
-                                      onChange={(e) => {
-                                        const newResponsibles = [...newSchool.responsibles];
-                                        newResponsibles[index] = {
-                                          ...newResponsibles[index],
-                                          name: e.target.value,
-                                        };
-                                        setNewSchool((prev) => ({
-                                          ...prev,
-                                          responsibles: newResponsibles,
-                                        }));
-                                      }}
-                                      placeholder="Nome completo"
-                                      required
-                                    />
-                                  </FormGroup>
-                                </Col>
-                                <Col md={4}>
-                                  <FormGroup className="mb-0">
-                                    <Label>CPF</Label>
-                                    <Input
-                                      type="text"
-                                      value={responsible.cpf}
-                                      onChange={(e) => {
-                                        const newResponsibles = [...newSchool.responsibles];
-                                        newResponsibles[index] = {
-                                          ...newResponsibles[index],
-                                          cpf: e.target.value,
-                                        };
-                                        setNewSchool((prev) => ({
-                                          ...prev,
-                                          responsibles: newResponsibles,
-                                        }));
-                                      }}
-                                      placeholder="000.000.000-00"
-                                      required
-                                    />
-                                  </FormGroup>
-                                </Col>
-                                <Col md={3}>
-                                  <FormGroup className="mb-0">
-                                    <Label>Cargo</Label>
-                                    <Input
-                                      type="text"
-                                      value={responsible.role}
-                                      onChange={(e) => {
-                                        const newResponsibles = [...newSchool.responsibles];
-                                        newResponsibles[index] = {
-                                          ...newResponsibles[index],
-                                          role: e.target.value,
-                                        };
-                                        setNewSchool((prev) => ({
-                                          ...prev,
-                                          responsibles: newResponsibles,
-                                        }));
-                                      }}
-                                      placeholder="Ex: Diretor"
-                                      required
-                                    />
-                                  </FormGroup>
-                                </Col>
-                                <Col md={1} className="d-flex align-items-end">
-                                  {index > 0 && (
-                                    <Button
-                                      type="button"
-                                      color="danger"
-                                      outline
-                                      size="sm"
-                                      onClick={() => {
-                                        setNewSchool((prev) => ({
-                                          ...prev,
-                                          responsibles: prev.responsibles.filter((_, i) => i !== index),
-                                        }));
-                                      }}
-                                      className="w-100"
-                                    >
-                                      <i className="bx bx-trash"></i>
-                                    </Button>
-                                  )}
-                                </Col>
-                              </Row>
-                            ))}
+                            {newSchool.responsibles.map(
+                              (responsible, index) => (
+                                <Row key={index} className="mb-3">
+                                  <Col md={4}>
+                                    <FormGroup className="mb-0">
+                                      <Label>
+                                        Nome do Responsável {index + 1}
+                                      </Label>
+                                      <Input
+                                        type="text"
+                                        value={responsible.name}
+                                        onChange={(e) => {
+                                          const newResponsibles = [
+                                            ...newSchool.responsibles,
+                                          ];
+                                          newResponsibles[index] = {
+                                            ...newResponsibles[index],
+                                            name: e.target.value,
+                                          };
+                                          setNewSchool((prev) => ({
+                                            ...prev,
+                                            responsibles: newResponsibles,
+                                          }));
+                                        }}
+                                        placeholder="Nome completo"
+                                        required
+                                      />
+                                    </FormGroup>
+                                  </Col>
+                                  <Col md={4}>
+                                    <FormGroup className="mb-0">
+                                      <Label>CPF</Label>
+                                      <Input
+                                        type="text"
+                                        value={responsible.cpf}
+                                        onChange={(e) => {
+                                          const newResponsibles = [
+                                            ...newSchool.responsibles,
+                                          ];
+                                          newResponsibles[index] = {
+                                            ...newResponsibles[index],
+                                            cpf: e.target.value,
+                                          };
+                                          setNewSchool((prev) => ({
+                                            ...prev,
+                                            responsibles: newResponsibles,
+                                          }));
+                                        }}
+                                        placeholder="000.000.000-00"
+                                        required
+                                      />
+                                    </FormGroup>
+                                  </Col>
+                                  <Col md={3}>
+                                    <FormGroup className="mb-0">
+                                      <Label>Cargo</Label>
+                                      <Input
+                                        type="text"
+                                        value={responsible.role}
+                                        onChange={(e) => {
+                                          const newResponsibles = [
+                                            ...newSchool.responsibles,
+                                          ];
+                                          newResponsibles[index] = {
+                                            ...newResponsibles[index],
+                                            role: e.target.value,
+                                          };
+                                          setNewSchool((prev) => ({
+                                            ...prev,
+                                            responsibles: newResponsibles,
+                                          }));
+                                        }}
+                                        placeholder="Ex: Diretor"
+                                        required
+                                      />
+                                    </FormGroup>
+                                  </Col>
+                                  <Col
+                                    md={1}
+                                    className="d-flex align-items-end"
+                                  >
+                                    {index > 0 && (
+                                      <Button
+                                        type="button"
+                                        color="danger"
+                                        outline
+                                        size="sm"
+                                        onClick={() => {
+                                          setNewSchool((prev) => ({
+                                            ...prev,
+                                            responsibles:
+                                              prev.responsibles.filter(
+                                                (_, i) => i !== index
+                                              ),
+                                          }));
+                                        }}
+                                        className="w-100"
+                                      >
+                                        <i className="bx bx-trash"></i>
+                                      </Button>
+                                    )}
+                                  </Col>
+                                </Row>
+                              )
+                            )}
                           </div>
                         </TabPane>
                         <TabPane tabId="2">
@@ -828,8 +891,13 @@ const Schools = () => {
                                     <Badge color="danger">Sim</Badge>
                                   </td>
                                   <td className="text-end">
-                                    <Button color="secondary" outline className="btn-sm">
-                                      <i className="bx bx-upload me-1"></i> Upload
+                                    <Button
+                                      color="secondary"
+                                      outline
+                                      className="btn-sm"
+                                    >
+                                      <i className="bx bx-upload me-1"></i>{" "}
+                                      Upload
                                       <Input type="file" className="d-none" />
                                     </Button>
                                   </td>
@@ -840,8 +908,13 @@ const Schools = () => {
                                     <Badge color="danger">Sim</Badge>
                                   </td>
                                   <td className="text-end">
-                                    <Button color="secondary" outline className="btn-sm">
-                                      <i className="bx bx-upload me-1"></i> Upload
+                                    <Button
+                                      color="secondary"
+                                      outline
+                                      className="btn-sm"
+                                    >
+                                      <i className="bx bx-upload me-1"></i>{" "}
+                                      Upload
                                       <Input type="file" className="d-none" />
                                     </Button>
                                   </td>
@@ -852,8 +925,13 @@ const Schools = () => {
                                     <Badge color="danger">Sim</Badge>
                                   </td>
                                   <td className="text-end">
-                                    <Button color="secondary" outline className="btn-sm">
-                                      <i className="bx bx-upload me-1"></i> Upload
+                                    <Button
+                                      color="secondary"
+                                      outline
+                                      className="btn-sm"
+                                    >
+                                      <i className="bx bx-upload me-1"></i>{" "}
+                                      Upload
                                       <Input type="file" className="d-none" />
                                     </Button>
                                   </td>
@@ -864,8 +942,13 @@ const Schools = () => {
                                     <Badge color="danger">Sim</Badge>
                                   </td>
                                   <td className="text-end">
-                                    <Button color="secondary" outline className="btn-sm">
-                                      <i className="bx bx-upload me-1"></i> Upload
+                                    <Button
+                                      color="secondary"
+                                      outline
+                                      className="btn-sm"
+                                    >
+                                      <i className="bx bx-upload me-1"></i>{" "}
+                                      Upload
                                       <Input type="file" className="d-none" />
                                     </Button>
                                   </td>
@@ -876,9 +959,18 @@ const Schools = () => {
                                     <Badge color="warning">Não</Badge>
                                   </td>
                                   <td className="text-end">
-                                    <Button color="secondary" outline className="btn-sm">
-                                      <i className="bx bx-upload me-1"></i> Upload
-                                      <Input type="file" className="d-none" multiple />
+                                    <Button
+                                      color="secondary"
+                                      outline
+                                      className="btn-sm"
+                                    >
+                                      <i className="bx bx-upload me-1"></i>{" "}
+                                      Upload
+                                      <Input
+                                        type="file"
+                                        className="d-none"
+                                        multiple
+                                      />
                                     </Button>
                                   </td>
                                 </tr>
@@ -887,24 +979,40 @@ const Schools = () => {
                           </div>
                         </TabPane>
                         <TabPane tabId="3">
-                          <h5 className="font-size-14 mb-4">Formas de Pagamento</h5>
+                          <h5 className="font-size-14 mb-4">
+                            Formas de Pagamento
+                          </h5>
                           <Row>
                             <Col md={4}>
                               <div className="form-check mb-3">
-                                <Input type="checkbox" className="form-check-input" id="pix" />
+                                <Input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  id="pix"
+                                />
                                 <Label className="form-check-label" for="pix">
                                   PIX
                                 </Label>
                               </div>
                               <FormGroup>
                                 <Label>Chave PIX</Label>
-                                <Input type="text" placeholder="Digite a chave PIX" />
+                                <Input
+                                  type="text"
+                                  placeholder="Digite a chave PIX"
+                                />
                               </FormGroup>
                             </Col>
                             <Col md={4}>
                               <div className="form-check mb-3">
-                                <Input type="checkbox" className="form-check-input" id="cartao" />
-                                <Label className="form-check-label" for="cartao">
+                                <Input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  id="cartao"
+                                />
+                                <Label
+                                  className="form-check-label"
+                                  for="cartao"
+                                >
                                   Cartão de Crédito
                                 </Label>
                               </div>
@@ -920,8 +1028,15 @@ const Schools = () => {
                             </Col>
                             <Col md={4}>
                               <div className="form-check mb-3">
-                                <Input type="checkbox" className="form-check-input" id="boleto" />
-                                <Label className="form-check-label" for="boleto">
+                                <Input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  id="boleto"
+                                />
+                                <Label
+                                  className="form-check-label"
+                                  for="boleto"
+                                >
                                   Boleto Bancário
                                 </Label>
                               </div>
@@ -939,18 +1054,29 @@ const Schools = () => {
                           </Row>
                           <Row className="mt-4">
                             <Col md={12}>
-                              <h5 className="font-size-14 mb-3">Configurações de Pagamento</h5>
+                              <h5 className="font-size-14 mb-3">
+                                Configurações de Pagamento
+                              </h5>
                             </Col>
                             <Col md={6}>
                               <FormGroup>
                                 <Label>Dia de Vencimento</Label>
-                                <Input type="number" min="1" max="31" placeholder="Dia do mês" />
+                                <Input
+                                  type="number"
+                                  min="1"
+                                  max="31"
+                                  placeholder="Dia do mês"
+                                />
                               </FormGroup>
                             </Col>
                             <Col md={6}>
                               <FormGroup>
                                 <Label>Multa por Atraso (%)</Label>
-                                <Input type="number" step="0.01" placeholder="Ex: 2.00" />
+                                <Input
+                                  type="number"
+                                  step="0.01"
+                                  placeholder="Ex: 2.00"
+                                />
                               </FormGroup>
                             </Col>
                           </Row>
@@ -963,7 +1089,10 @@ const Schools = () => {
               <Row>
                 <Col>
                   <div className="d-flex justify-content-end gap-2 mt-3 mb-4">
-                    <Button color="secondary" onClick={() => setIsCreating(false)}>
+                    <Button
+                      color="secondary"
+                      onClick={() => setIsCreating(false)}
+                    >
                       <i className="bx bx-x me-1"></i> Cancelar
                     </Button>
                     <Button color="primary" onClick={handleSubmit}>

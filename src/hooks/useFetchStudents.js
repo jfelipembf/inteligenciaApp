@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 const useFetchStudents = (options = {}) => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { skipInitialFetch = false } = options;
+  const { userDetails } = useUser();
 
   const fetchStudents = useCallback(async () => {
     setLoading(true);
@@ -19,16 +21,11 @@ const useFetchStudents = (options = {}) => {
       }
 
       // Buscar schoolId do usuário atual
-      const userDoc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-      const schoolId = userDoc.data().schoolId;
-
-      if (!schoolId) {
-        throw new Error("schoolId não encontrado para o usuário");
+      if (!userDetails?.schoolId) {
+        throw new Error("schoolId não encontrado no usuário.");
       }
+
+      const schoolId = userDetails.schoolId;
 
       // Buscar estudantes com o mesmo schoolId
       const studentsSnapshot = await firebase
@@ -61,7 +58,7 @@ const useFetchStudents = (options = {}) => {
 
   useEffect(() => {
     if (!skipInitialFetch) {
-      fetchStudents().catch(err => {
+      fetchStudents().catch((err) => {
         // Erro já tratado dentro de fetchStudents
       });
     }

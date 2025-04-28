@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 const useClassData = (classId) => {
   const [classData, setClassData] = useState(null);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   useEffect(() => {
     console.log("useClassData executado", { classId });
@@ -26,16 +28,11 @@ const useClassData = (classId) => {
         console.log("Usuário autenticado:", currentUser.uid);
 
         // Buscar schoolId do usuário atual
-        const userDoc = await firebase
-          .firestore()
-          .collection("users")
-          .doc(currentUser.uid)
-          .get();
-        const schoolId = userDoc.data().schoolId;
-        if (!schoolId) {
-          throw new Error("schoolId não encontrado para o usuário");
+        if (!userDetails?.schoolId) {
+          throw new Error("schoolId não encontrado no usuário.");
         }
-        console.log("schoolId encontrado:", schoolId);
+
+        const schoolId = userDetails.schoolId;
 
         // Buscar dados da turma específica
         const classDoc = await firebase

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 // Dados mockados para quando o Firebase não estiver disponível
 const MOCK_CLASSES = [
@@ -128,6 +129,7 @@ export const useFetchClasses = (options = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { skipInitialFetch = false } = options;
+  const { userDetails } = useUser();
 
   const fetchClasses = useCallback(async () => {
     setLoading(true);
@@ -151,12 +153,11 @@ export const useFetchClasses = (options = {}) => {
         return MOCK_CLASSES;
       }
 
-      const userDoc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-      const schoolId = userDoc.data()?.schoolId;
+      if (!userDetails?.schoolId) {
+        throw new Error("schoolId não encontrado no usuário.");
+      }
+
+      const schoolId = userDetails.schoolId;
 
       if (!schoolId) {
         console.log("schoolId não encontrado, usando dados mockados");
