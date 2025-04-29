@@ -19,7 +19,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import TableContainer from "../../../components/Common/TableContainer";
-import useFetchClasses from "../../../hooks/useFetchClasses";
 import { useClassContext } from "../../../contexts/ClassContext";
 import {
   EDUCATION_LEVELS,

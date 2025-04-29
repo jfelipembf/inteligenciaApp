@@ -14,8 +14,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <BrowserRouter>
         <AuthProvider>
-          {" "}
-          {/* AuthProvider deve envolver o ClassProvider */}
           <ClassProvider>
             <App />
           </ClassProvider>

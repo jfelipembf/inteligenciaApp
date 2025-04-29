@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 import { useFetchClasses } from "../../hooks/useFetchClasses";
+import { useClassContext } from "../../contexts/ClassContext";
 import useFetchLessons from "../../hooks/useFetchLessons";
 
 const EditActivity = () => {
@@ -43,7 +44,7 @@ const EditActivity = () => {
   const [classes, setClasses] = useState([]);
   const [isStartDateLocked, setIsStartDateLocked] = useState(false);
 
-  const { classes: fetchedClasses } = useFetchClasses();
+  const { classes: fetchedClasses } = useClassContext();
 
   useEffect(() => {
     setClasses(fetchedClasses);
