@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import useUser from "useUser";
+import useUser from "./useUser";
 
 const useFetchTeachers = () => {
   const [teachers, setTeachers] = useState([]);

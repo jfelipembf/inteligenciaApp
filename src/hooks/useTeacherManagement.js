@@ -3,7 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
-import useUser from "useUser";
+import useUser from "./useUser";
 
 export const useTeacherManagement = () => {
   const [loading, setLoading] = useState(false);

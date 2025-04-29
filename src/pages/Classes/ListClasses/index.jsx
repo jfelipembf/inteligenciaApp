@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import TableContainer from "../../../components/Common/TableContainer";
 import useFetchClasses from "../../../hooks/useFetchClasses";
+import { useClassContext } from "../../../contexts/ClassContext";
 import {
   EDUCATION_LEVELS,
   ALL_SCHOOL_YEARS,
@@ -49,7 +50,7 @@ const ListClasses = () => {
   const { userDetails } = useUser(true); // Obter dados do usuário atual
 
   const navigate = useNavigate();
-  const { classes, loading, error, refetch } = useFetchClasses();
+  const { classes, loading, error, refetch } = useClassContext();
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
