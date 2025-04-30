@@ -20,19 +20,17 @@ export const ClassProvider = ({ children }) => {
   const location = useLocation();
   const schoolId = userDetails?.schoolId;
 
-  // Ignorar o ClassProvider em páginas específicas
-  const excludedRoutes = ["/login", "/register", "/forgot-password"];
+  const excludedRoutes = ["/login"];
   if (excludedRoutes.includes(location.pathname)) {
     return <>{children}</>;
   }
 
-  // Se o usuário não está autenticado ou o schoolId não está disponível
   if (authLoading || !schoolId) {
     const value = {
       classes: [],
       loading: authLoading,
       error: null,
-      refetchClasses: () => {}, // Função vazia para evitar erros
+      refetchClasses: () => {},
     };
 
     return (
@@ -40,7 +38,6 @@ export const ClassProvider = ({ children }) => {
     );
   }
 
-  // Inicializar o hook useFetchClasses somente quando o schoolId estiver disponível
   const {
     classes,
     loading: classesLoading,
