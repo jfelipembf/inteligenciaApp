@@ -10,7 +10,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import useFetchClasses from "../../hooks/useFetchClasses";
+import { useClassContext } from "../../contexts/ClassContext";
 import useFetchLessons from "../../hooks/useFetchLessons";
 import StudentsGrades from "./StudentsGrades";
 import useUser from "../../hooks/useUser";
@@ -20,7 +20,7 @@ const GradesPage = () => {
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
-  const { classes, loading: loadingClasses } = useFetchClasses();
+  const { classes, loading: loadingClasses } = useClassContext();
   console.log(selectedClass?.id);
   const { lessons, loading: loadingLessons } = useFetchLessons(
     selectedClass?.id

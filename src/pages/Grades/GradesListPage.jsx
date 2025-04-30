@@ -15,7 +15,9 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import useFetchClasses from "../../hooks/useFetchClasses";
+
+import { useClassContext } from "../../contexts/ClassContext";
+
 import useFetchLessons from "../../hooks/useFetchLessons";
 import useUser from "../../hooks/useUser";
 import useUpdateGrade from "../../hooks/useUpdateGrade";
@@ -31,7 +33,7 @@ const GradesListPage = () => {
   const [updatedGrades, setUpdatedGrades] = useState({});
   const { updateGrade, loading: updatingGrade } = useUpdateGrade();
 
-  const { classes, loading: loadingClasses } = useFetchClasses();
+  const { classes, loading: loadingClasses } = useClassContext();
   const { lessons, loading: loadingLessons } = useFetchLessons(
     selectedClass?.id
   );

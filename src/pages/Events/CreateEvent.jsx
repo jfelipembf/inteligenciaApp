@@ -22,7 +22,8 @@ import Dropzone from "react-dropzone";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useSaveEvent from "../../hooks/useSaveEvent";
-import useFetchClasses from "../../hooks/useFetchClasses";
+
+import { useClassContext } from "../../contexts/ClassContext";
 
 // Dados de exemplo para turmas
 const CLASS_OPTIONS = [
@@ -85,7 +86,7 @@ const CreateEvent = () => {
     classes,
     loading: loadingClasses,
     error: classesError,
-  } = useFetchClasses();
+  } = useClassContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = !!id;

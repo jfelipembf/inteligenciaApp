@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import Breadcrumbs from "/src/components/Common/Breadcrumb";
-import useFetchClasses from "../../hooks/useFetchClasses";
+
+import { useClassContext } from "../../contexts/ClassContext";
 import useFetchLessons from "../../hooks/useFetchLessons";
 
 const Calendar = () => {
@@ -24,7 +25,7 @@ const Calendar = () => {
   const [horariosTurno, setHorariosTurno] = useState([]);
 
   // Hooks para buscar dados
-  const { classes, loading: loadingClasses } = useFetchClasses();
+  const { classes, loading: loadingClasses } = useClassContext();
   const { lessons, loading: loadingLessons } = useFetchLessons(
     selectedTurma?.id
   );

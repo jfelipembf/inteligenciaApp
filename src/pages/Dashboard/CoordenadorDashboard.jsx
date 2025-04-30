@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { 
-  Container, 
-  Row, 
-  Col, 
-  Card, 
-  CardBody, 
-  CardTitle, 
-  Table, 
-  Progress, 
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardTitle,
+  Table,
+  Progress,
   Badge,
   Button,
   Nav,
@@ -18,7 +18,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
@@ -26,7 +26,7 @@ import classnames from "classnames";
 // Hooks
 import useFetchStudents from "../../hooks/useFetchStudents";
 import useFetchUsers from "../../hooks/useFetchUsers";
-import useFetchClasses from "../../hooks/useFetchClasses";
+import { useClassContext } from "../../contexts/ClassContext";
 
 // Componentes
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -42,12 +42,13 @@ const CoordenadorDashboard = (props) => {
   const [selectedClass, setSelectedClass] = useState(null);
 
   // Dados dos hooks
-  const { students, loading: loadingStudents } = useFetchStudents("coordenador");
+  const { students, loading: loadingStudents } =
+    useFetchStudents("coordenador");
   const { users, loading: loadingUsers } = useFetchUsers();
-  const { classes, loading: loadingClasses } = useFetchClasses();
+  const { classes, loading: loadingClasses } = useClassContext();
 
   // Função para alternar entre as abas
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
@@ -78,19 +79,25 @@ const CoordenadorDashboard = (props) => {
 
   // Calcular estatísticas
   const totalStudents = students.length;
-  const totalTeachers = users.filter(user => user.role === "professor").length;
+  const totalTeachers = users.filter(
+    (user) => user.role === "professor"
+  ).length;
   const totalClasses = classes.length;
-  
+
   // Calcular média geral de todos os alunos
-  const averageGrade = students.reduce((acc, student) => acc + (student.average || 0), 0) / (totalStudents || 1);
-  
+  const averageGrade =
+    students.reduce((acc, student) => acc + (student.average || 0), 0) /
+    (totalStudents || 1);
+
   // Calcular taxa de aprovação
-  const approvedStudents = students.filter(student => (student.average || 0) >= 7).length;
+  const approvedStudents = students.filter(
+    (student) => (student.average || 0) >= 7
+  ).length;
   const approvalRate = (approvedStudents / (totalStudents || 1)) * 100;
 
   // Filtrar alunos por turma selecionada
-  const filteredStudents = selectedClass 
-    ? students.filter(student => student.class === selectedClass) 
+  const filteredStudents = selectedClass
+    ? students.filter((student) => student.class === selectedClass)
     : students;
 
   // Cards principais
@@ -101,7 +108,7 @@ const CoordenadorDashboard = (props) => {
       icon: "bx-user-circle",
       color: "primary",
       change: "+5%",
-      period: "desde o mês passado"
+      period: "desde o mês passado",
     },
     {
       title: "Total de Professores",
@@ -109,7 +116,7 @@ const CoordenadorDashboard = (props) => {
       icon: "bx-user-voice",
       color: "success",
       change: "+2",
-      period: "novos professores"
+      period: "novos professores",
     },
     {
       title: "Média Geral",
@@ -117,8 +124,8 @@ const CoordenadorDashboard = (props) => {
       icon: "bx-bar-chart-alt-2",
       color: "info",
       change: "+0.3",
-      period: "desde o último bimestre"
-    }
+      period: "desde o último bimestre",
+    },
   ];
 
   // Dados para o gráfico de desempenho por turma
@@ -126,54 +133,54 @@ const CoordenadorDashboard = (props) => {
     series: [
       {
         name: "Média",
-        data: classes.map(classItem => classItem.average || 0)
-      }
+        data: classes.map((classItem) => classItem.average || 0),
+      },
     ],
     options: {
       chart: {
         type: "bar",
         height: 350,
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       plotOptions: {
         bar: {
           horizontal: false,
           columnWidth: "45%",
-          endingShape: "rounded"
-        }
+          endingShape: "rounded",
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         show: true,
         width: 2,
-        colors: ["transparent"]
+        colors: ["transparent"],
       },
       colors: ["#34c38f"],
       xaxis: {
-        categories: classes.map(classItem => classItem.className)
+        categories: classes.map((classItem) => classItem.className),
       },
       yaxis: {
         min: 0,
         max: 10,
         title: {
-          text: "Média"
-        }
+          text: "Média",
+        },
       },
       fill: {
-        opacity: 1
+        opacity: 1,
       },
       tooltip: {
         y: {
-          formatter: function(val) {
+          formatter: function (val) {
             return val.toFixed(1);
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   // Configuração do gráfico de desempenho por disciplina
@@ -181,54 +188,62 @@ const CoordenadorDashboard = (props) => {
     series: [
       {
         name: "Média",
-        data: [8.5, 7.8, 7.2, 8.1, 6.9, 7.5, 8.3]
-      }
+        data: [8.5, 7.8, 7.2, 8.1, 6.9, 7.5, 8.3],
+      },
     ],
     options: {
       chart: {
         type: "bar",
         height: 240,
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       plotOptions: {
         bar: {
           horizontal: false,
           columnWidth: "45%",
-          endingShape: "rounded"
-        }
+          endingShape: "rounded",
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         show: true,
         width: 2,
-        colors: ["transparent"]
+        colors: ["transparent"],
       },
       colors: ["#556ee6"],
       xaxis: {
-        categories: ["Português", "Matemática", "Ciências", "História", "Geografia", "Inglês", "Artes"]
+        categories: [
+          "Português",
+          "Matemática",
+          "Ciências",
+          "História",
+          "Geografia",
+          "Inglês",
+          "Artes",
+        ],
       },
       yaxis: {
         min: 0,
         max: 10,
         title: {
-          text: "Média"
-        }
+          text: "Média",
+        },
       },
       fill: {
-        opacity: 1
+        opacity: 1,
       },
       tooltip: {
         y: {
-          formatter: function(val) {
+          formatter: function (val) {
             return val.toFixed(1);
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   // Configuração do gráfico de frequência
@@ -236,42 +251,44 @@ const CoordenadorDashboard = (props) => {
     series: [
       {
         name: "Frequência",
-        data: [95, 92, 88, 96, 90, 93, 97, 94, 91, 89]
-      }
+        data: [95, 92, 88, 96, 90, 93, 97, 94, 91, 89],
+      },
     ],
     options: {
       chart: {
         height: 350,
         type: "line",
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       colors: ["#556ee6"],
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         curve: "straight",
-        width: 3
+        width: 3,
       },
       grid: {
         row: {
           colors: ["#f3f3f3", "transparent"],
-          opacity: 0.5
-        }
+          opacity: 0.5,
+        },
       },
       xaxis: {
-        categories: classes.slice(0, 10).map(classItem => classItem.className)
+        categories: classes
+          .slice(0, 10)
+          .map((classItem) => classItem.className),
       },
       yaxis: {
         min: 80,
-        max: 100
+        max: 100,
       },
       markers: {
-        size: 4
-      }
-    }
+        size: 4,
+      },
+    },
   };
 
   // Dados para a tabela de alunos com melhor desempenho
@@ -281,7 +298,7 @@ const CoordenadorDashboard = (props) => {
 
   // Dados para a tabela de professores
   const teachersList = users
-    .filter(user => user.role === "professor")
+    .filter((user) => user.role === "professor")
     .slice(0, 5);
 
   //meta title
@@ -308,18 +325,22 @@ const CoordenadorDashboard = (props) => {
                         <span className="text-muted mb-3 lh-1 d-block text-truncate">
                           {card.title}
                         </span>
-                        <h4 className="mb-3">
-                          {card.value}
-                        </h4>
+                        <h4 className="mb-3">{card.value}</h4>
                         <div className="text-nowrap">
-                          <span className={`badge bg-soft-${card.color} text-${card.color}`}>
+                          <span
+                            className={`badge bg-soft-${card.color} text-${card.color}`}
+                          >
                             {card.change}
                           </span>
-                          <span className="ms-1 text-muted font-size-13">{card.period}</span>
+                          <span className="ms-1 text-muted font-size-13">
+                            {card.period}
+                          </span>
                         </div>
                       </div>
                       <div className="avatar-sm">
-                        <span className={`avatar-title bg-light text-${card.color} rounded-3`}>
+                        <span
+                          className={`avatar-title bg-light text-${card.color} rounded-3`}
+                        >
                           <i className={`bx ${card.icon} font-size-24`}></i>
                         </span>
                       </div>
@@ -377,7 +398,9 @@ const CoordenadorDashboard = (props) => {
                         <Col xl={8}>
                           <Card>
                             <CardBody>
-                              <CardTitle className="mb-4">Desempenho por Turma</CardTitle>
+                              <CardTitle className="mb-4">
+                                Desempenho por Turma
+                              </CardTitle>
                               <ReactApexChart
                                 options={classPerformanceOptions.options}
                                 series={classPerformanceOptions.series}
@@ -391,7 +414,9 @@ const CoordenadorDashboard = (props) => {
                         <Col xl={4}>
                           <Card>
                             <CardBody>
-                              <CardTitle className="mb-4">Alunos com Melhor Desempenho</CardTitle>
+                              <CardTitle className="mb-4">
+                                Alunos com Melhor Desempenho
+                              </CardTitle>
                               <div className="table-responsive">
                                 <Table className="table-centered table-nowrap mb-0">
                                   <thead className="table-light">
@@ -408,7 +433,9 @@ const CoordenadorDashboard = (props) => {
                                           <div className="d-flex align-items-center">
                                             <div className="avatar-xs me-2">
                                               <span className="avatar-title rounded-circle bg-primary text-white">
-                                                {student.name ? student.name.charAt(0) : "A"}
+                                                {student.name
+                                                  ? student.name.charAt(0)
+                                                  : "A"}
                                               </span>
                                             </div>
                                             {student.name}
@@ -416,8 +443,14 @@ const CoordenadorDashboard = (props) => {
                                         </td>
                                         <td>{student.class}</td>
                                         <td>
-                                          <Badge color={getBadgeColor(student.average)} pill>
-                                            {student.average?.toFixed(1) || "N/A"}
+                                          <Badge
+                                            color={getBadgeColor(
+                                              student.average
+                                            )}
+                                            pill
+                                          >
+                                            {student.average?.toFixed(1) ||
+                                              "N/A"}
                                           </Badge>
                                         </td>
                                       </tr>
@@ -433,7 +466,9 @@ const CoordenadorDashboard = (props) => {
                         <Col xl={6}>
                           <Card>
                             <CardBody>
-                              <CardTitle className="mb-4">Desempenho por Disciplina</CardTitle>
+                              <CardTitle className="mb-4">
+                                Desempenho por Disciplina
+                              </CardTitle>
                               <ReactApexChart
                                 options={subjectPerformanceOptions.options}
                                 series={subjectPerformanceOptions.series}
@@ -447,7 +482,9 @@ const CoordenadorDashboard = (props) => {
                         <Col xl={6}>
                           <Card>
                             <CardBody>
-                              <CardTitle className="mb-4">Frequência por Turma</CardTitle>
+                              <CardTitle className="mb-4">
+                                Frequência por Turma
+                              </CardTitle>
                               <ReactApexChart
                                 options={attendanceChartOptions.options}
                                 series={attendanceChartOptions.series}
@@ -468,7 +505,9 @@ const CoordenadorDashboard = (props) => {
                           <Card>
                             <CardBody>
                               <div className="d-flex justify-content-between align-items-center mb-4">
-                                <CardTitle className="mb-0">Lista de Turmas</CardTitle>
+                                <CardTitle className="mb-0">
+                                  Lista de Turmas
+                                </CardTitle>
                                 <Link to="/classes" className="btn btn-primary">
                                   Ver Todas as Turmas
                                 </Link>
@@ -491,15 +530,27 @@ const CoordenadorDashboard = (props) => {
                                         <td>{classItem.className}</td>
                                         <td>{classItem.studentCount}</td>
                                         <td>
-                                          <Badge color={getBadgeColor(classItem.average)} pill>
-                                            {classItem.average?.toFixed(1) || "N/A"}
+                                          <Badge
+                                            color={getBadgeColor(
+                                              classItem.average
+                                            )}
+                                            pill
+                                          >
+                                            {classItem.average?.toFixed(1) ||
+                                              "N/A"}
                                           </Badge>
                                         </td>
-                                        <td>{Math.floor(85 + Math.random() * 15)}%</td>
+                                        <td>
+                                          {Math.floor(85 + Math.random() * 15)}%
+                                        </td>
                                         <td style={{ width: "15%" }}>
                                           <Progress
-                                            value={getProgressPercentage(classItem.average || 0)}
-                                            color={getProgressColor(classItem.average || 0)}
+                                            value={getProgressPercentage(
+                                              classItem.average || 0
+                                            )}
+                                            color={getProgressColor(
+                                              classItem.average || 0
+                                            )}
                                             style={{ height: "6px" }}
                                           />
                                         </td>
@@ -513,14 +564,19 @@ const CoordenadorDashboard = (props) => {
                                               <i className="mdi mdi-dots-horizontal font-size-18"></i>
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
-                                              <DropdownItem href={`/class-details/${classItem.id}`}>
-                                                <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i> Ver Detalhes
+                                              <DropdownItem
+                                                href={`/class-details/${classItem.id}`}
+                                              >
+                                                <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
+                                                Ver Detalhes
                                               </DropdownItem>
                                               <DropdownItem href="#">
-                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i> Editar
+                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
+                                                Editar
                                               </DropdownItem>
                                               <DropdownItem href="#">
-                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i> Relatório
+                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
+                                                Relatório
                                               </DropdownItem>
                                             </DropdownMenu>
                                           </UncontrolledDropdown>
@@ -538,7 +594,9 @@ const CoordenadorDashboard = (props) => {
                         <Col xl={12}>
                           <Card>
                             <CardBody>
-                              <CardTitle className="mb-4">Desempenho por Turma</CardTitle>
+                              <CardTitle className="mb-4">
+                                Desempenho por Turma
+                              </CardTitle>
                               <ReactApexChart
                                 options={classPerformanceOptions.options}
                                 series={classPerformanceOptions.series}
@@ -559,8 +617,13 @@ const CoordenadorDashboard = (props) => {
                           <Card>
                             <CardBody>
                               <div className="d-flex justify-content-between align-items-center mb-4">
-                                <CardTitle className="mb-0">Lista de Professores</CardTitle>
-                                <Link to="/teachers" className="btn btn-primary">
+                                <CardTitle className="mb-0">
+                                  Lista de Professores
+                                </CardTitle>
+                                <Link
+                                  to="/teachers"
+                                  className="btn btn-primary"
+                                >
                                   Ver Todos os Professores
                                 </Link>
                               </div>
@@ -582,22 +645,33 @@ const CoordenadorDashboard = (props) => {
                                           <div className="d-flex align-items-center">
                                             <div className="avatar-xs me-2">
                                               <span className="avatar-title rounded-circle bg-primary text-white">
-                                                {teacher.name ? teacher.name.charAt(0) : "P"}
+                                                {teacher.name
+                                                  ? teacher.name.charAt(0)
+                                                  : "P"}
                                               </span>
                                             </div>
-                                            {teacher.name || `Professor ${index + 1}`}
+                                            {teacher.name ||
+                                              `Professor ${index + 1}`}
                                           </div>
                                         </td>
-                                        <td>{teacher.subject || "Múltiplas"}</td>
-                                        <td>{Math.floor(1 + Math.random() * 5)}</td>
+                                        <td>
+                                          {teacher.subject || "Múltiplas"}
+                                        </td>
+                                        <td>
+                                          {Math.floor(1 + Math.random() * 5)}
+                                        </td>
                                         <td>
                                           <div className="d-flex align-items-center">
                                             <div className="me-2">
-                                              {(8 + Math.random() * 2).toFixed(1)}
+                                              {(8 + Math.random() * 2).toFixed(
+                                                1
+                                              )}
                                             </div>
                                             <div style={{ width: "80px" }}>
                                               <Progress
-                                                value={(8 + Math.random() * 2) * 10}
+                                                value={
+                                                  (8 + Math.random() * 2) * 10
+                                                }
                                                 color="success"
                                                 style={{ height: "6px" }}
                                               />
@@ -614,14 +688,19 @@ const CoordenadorDashboard = (props) => {
                                               <i className="mdi mdi-dots-horizontal font-size-18"></i>
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
-                                              <DropdownItem href={`/teacher-details/${teacher.id}`}>
-                                                <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i> Ver Perfil
+                                              <DropdownItem
+                                                href={`/teacher-details/${teacher.id}`}
+                                              >
+                                                <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
+                                                Ver Perfil
                                               </DropdownItem>
                                               <DropdownItem href="#">
-                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i> Editar
+                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
+                                                Editar
                                               </DropdownItem>
                                               <DropdownItem href="#">
-                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i> Relatório
+                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
+                                                Relatório
                                               </DropdownItem>
                                             </DropdownMenu>
                                           </UncontrolledDropdown>
@@ -645,24 +724,32 @@ const CoordenadorDashboard = (props) => {
                             <div>
                               <h5 className="mb-0">Lista de Alunos</h5>
                               <p className="text-muted mb-0">
-                                {selectedClass 
-                                  ? `Mostrando alunos da turma ${selectedClass}` 
+                                {selectedClass
+                                  ? `Mostrando alunos da turma ${selectedClass}`
                                   : "Mostrando todos os alunos"}
                               </p>
                             </div>
                             <div className="d-flex align-items-center">
                               <UncontrolledDropdown className="me-2">
-                                <DropdownToggle tag="button" className="btn btn-outline-secondary">
-                                  {selectedClass || "Todas as Turmas"} <i className="mdi mdi-chevron-down ms-1"></i>
+                                <DropdownToggle
+                                  tag="button"
+                                  className="btn btn-outline-secondary"
+                                >
+                                  {selectedClass || "Todas as Turmas"}{" "}
+                                  <i className="mdi mdi-chevron-down ms-1"></i>
                                 </DropdownToggle>
                                 <DropdownMenu>
-                                  <DropdownItem onClick={() => setSelectedClass(null)}>
+                                  <DropdownItem
+                                    onClick={() => setSelectedClass(null)}
+                                  >
                                     Todas as Turmas
                                   </DropdownItem>
                                   {classes.map((classItem, index) => (
-                                    <DropdownItem 
+                                    <DropdownItem
                                       key={index}
-                                      onClick={() => setSelectedClass(classItem.className)}
+                                      onClick={() =>
+                                        setSelectedClass(classItem.className)
+                                      }
                                     >
                                       {classItem.className}
                                     </DropdownItem>
@@ -694,58 +781,91 @@ const CoordenadorDashboard = (props) => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {filteredStudents.slice(0, 10).map((student, index) => (
-                                      <tr key={index}>
-                                        <td>
-                                          <div className="d-flex align-items-center">
-                                            <div className="avatar-xs me-2">
-                                              <span className="avatar-title rounded-circle bg-primary text-white">
-                                                {student.name ? student.name.charAt(0) : "A"}
-                                              </span>
+                                    {filteredStudents
+                                      .slice(0, 10)
+                                      .map((student, index) => (
+                                        <tr key={index}>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <div className="avatar-xs me-2">
+                                                <span className="avatar-title rounded-circle bg-primary text-white">
+                                                  {student.name
+                                                    ? student.name.charAt(0)
+                                                    : "A"}
+                                                </span>
+                                              </div>
+                                              {student.name ||
+                                                `Aluno ${index + 1}`}
                                             </div>
-                                            {student.name || `Aluno ${index + 1}`}
-                                          </div>
-                                        </td>
-                                        <td>{student.id || `${2023}${index + 1}`.padStart(8, '0')}</td>
-                                        <td>{student.class || "1º Ano A"}</td>
-                                        <td>
-                                          <Badge color={getBadgeColor(student.average)} pill>
-                                            {student.average?.toFixed(1) || "N/A"}
-                                          </Badge>
-                                        </td>
-                                        <td>{Math.floor(85 + Math.random() * 15)}%</td>
-                                        <td>
-                                          <Badge 
-                                            color={(student.average || 0) >= 7 ? "success" : "danger"} 
-                                            className="bg-soft-success text-success"
-                                          >
-                                            {(student.average || 0) >= 7 ? "Aprovado" : "Em recuperação"}
-                                          </Badge>
-                                        </td>
-                                        <td>
-                                          <UncontrolledDropdown>
-                                            <DropdownToggle
-                                              href="#"
-                                              className="card-drop"
-                                              tag="a"
+                                          </td>
+                                          <td>
+                                            {student.id ||
+                                              `${2023}${index + 1}`.padStart(
+                                                8,
+                                                "0"
+                                              )}
+                                          </td>
+                                          <td>{student.class || "1º Ano A"}</td>
+                                          <td>
+                                            <Badge
+                                              color={getBadgeColor(
+                                                student.average
+                                              )}
+                                              pill
                                             >
-                                              <i className="mdi mdi-dots-horizontal font-size-18"></i>
-                                            </DropdownToggle>
-                                            <DropdownMenu className="dropdown-menu-end">
-                                              <DropdownItem href={`/student-details/${student.id}`}>
-                                                <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i> Ver Perfil
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i> Editar
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i> Boletim
-                                              </DropdownItem>
-                                            </DropdownMenu>
-                                          </UncontrolledDropdown>
-                                        </td>
-                                      </tr>
-                                    ))}
+                                              {student.average?.toFixed(1) ||
+                                                "N/A"}
+                                            </Badge>
+                                          </td>
+                                          <td>
+                                            {Math.floor(
+                                              85 + Math.random() * 15
+                                            )}
+                                            %
+                                          </td>
+                                          <td>
+                                            <Badge
+                                              color={
+                                                (student.average || 0) >= 7
+                                                  ? "success"
+                                                  : "danger"
+                                              }
+                                              className="bg-soft-success text-success"
+                                            >
+                                              {(student.average || 0) >= 7
+                                                ? "Aprovado"
+                                                : "Em recuperação"}
+                                            </Badge>
+                                          </td>
+                                          <td>
+                                            <UncontrolledDropdown>
+                                              <DropdownToggle
+                                                href="#"
+                                                className="card-drop"
+                                                tag="a"
+                                              >
+                                                <i className="mdi mdi-dots-horizontal font-size-18"></i>
+                                              </DropdownToggle>
+                                              <DropdownMenu className="dropdown-menu-end">
+                                                <DropdownItem
+                                                  href={`/student-details/${student.id}`}
+                                                >
+                                                  <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
+                                                  Ver Perfil
+                                                </DropdownItem>
+                                                <DropdownItem href="#">
+                                                  <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
+                                                  Editar
+                                                </DropdownItem>
+                                                <DropdownItem href="#">
+                                                  <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
+                                                  Boletim
+                                                </DropdownItem>
+                                              </DropdownMenu>
+                                            </UncontrolledDropdown>
+                                          </td>
+                                        </tr>
+                                      ))}
                                   </tbody>
                                 </Table>
                               </div>
