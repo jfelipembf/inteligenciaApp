@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/index.js";
 import { AuthProvider } from "./contexts/AuthContext"; // Certifique-se de importar o AuthProvider
 import { ClassProvider } from "./contexts/ClassContext"; // Importar o ClassProvider
+import { LessonsProvider } from "./contexts/LessonContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <AuthProvider>
           <ClassProvider>
-            <App />
+            <LessonsProvider>
+              <App />
+            </LessonsProvider>
           </ClassProvider>
         </AuthProvider>
       </BrowserRouter>
