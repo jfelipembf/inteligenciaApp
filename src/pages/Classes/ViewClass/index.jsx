@@ -22,7 +22,6 @@ import useClassData from "../../../hooks/useClassData";
 import useManageStudents from "../../../hooks/useManageStudents";
 import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
-import useFetchLessons from "../../../hooks/useFetchLessons";
 import { useLessonsContext } from "../../../contexts/LessonContext";
 import useUpdateLesson from "../../../hooks/useUpdateLesson";
 import useFetchTeachers from "../../../hooks/useFetchTeachers";
@@ -31,14 +30,14 @@ import { label } from "yet-another-react-lightbox";
 
 const ViewClass = () => {
   const { id: classId } = useParams(); // Pega o ID da turma da URL
+
+  const { lessons, loading, error, selectedClassId, setSelectedClassId } =
+    useLessonsContext();
   useEffect(() => {
     if (classId) {
       setSelectedClassId(classId); // Atualiza o contexto com o classId
     }
   }, [classId, setSelectedClassId]);
-  const { lessons, loading, error, selectedClassId, setSelectedClassId } =
-    useLessonsContext();
-
   const navigate = useNavigate(); // Hook para navegação
   const [localLessons, setLocalLessons] = useState([]);
   const [editLessonModal, setEditLessonModal] = useState(false);

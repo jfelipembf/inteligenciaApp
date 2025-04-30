@@ -18,7 +18,7 @@ import {
 
 import { useClassContext } from "../../contexts/ClassContext";
 
-import useFetchLessons from "../../hooks/useFetchLessons";
+import { useLessonsContext } from "../../contexts/LessonContext";
 import useUser from "../../hooks/useUser";
 import useUpdateGrade from "../../hooks/useUpdateGrade";
 import firebase from "firebase/compat/app";
@@ -34,9 +34,20 @@ const GradesListPage = () => {
   const { updateGrade, loading: updatingGrade } = useUpdateGrade();
 
   const { classes, loading: loadingClasses } = useClassContext();
-  const { lessons, loading: loadingLessons } = useFetchLessons(
-    selectedClass?.id
-  );
+
+  const selectedClassId = selectedClass?.id || null;
+  const {
+    lessons,
+    loading: loadingLessons,
+    error: er,
+    setSelectedClassId,
+  } = useLessonsContext();
+
+  useEffect(() => {
+    if (selectedClassId) {
+      setSelectedClassId(selectedClassId);
+    }
+  }, [selectedClassId, setSelectedClassId]);
 
   const handleClassChange = (e) => {
     const classId = e.target.value;

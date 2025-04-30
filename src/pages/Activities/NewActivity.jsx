@@ -17,7 +17,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 
 import { useClassContext } from "../../contexts/ClassContext";
-import useFetchLessons from "../../hooks/useFetchLessons";
+import { useLessonsContext } from "../../contexts/LessonContext";
 
 const NewActivity = () => {
   const navigate = useNavigate();
@@ -45,8 +45,19 @@ const NewActivity = () => {
     setClasses(fetchedClasses);
   }, [fetchedClasses]);
 
-  const selectedClassId = formData.class?.value;
-  const { lessons, loading: loadingLessons } = useFetchLessons(selectedClassId);
+  const selectedClassIdFromForm = formData.class?.value;
+  const {
+    lessons,
+    loading: loadingLessons,
+    error: er,
+    setSelectedClassId,
+  } = useLessonsContext();
+
+  useEffect(() => {
+    if (selectedClassIdFromForm) {
+      setSelectedClassId(selectedClassIdFromForm); // Atualiza o contexto com o classId
+    }
+  }, [selectedClassIdFromForm, setSelectedClassId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

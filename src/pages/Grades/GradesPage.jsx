@@ -11,7 +11,7 @@ import {
   Button,
 } from "reactstrap";
 import { useClassContext } from "../../contexts/ClassContext";
-import useFetchLessons from "../../hooks/useFetchLessons";
+import { useLessonContext } from "../../contexts/LessonContext";
 import StudentsGrades from "./StudentsGrades";
 import useUser from "../../hooks/useUser";
 
@@ -22,9 +22,19 @@ const GradesPage = () => {
 
   const { classes, loading: loadingClasses } = useClassContext();
   console.log(selectedClass?.id);
-  const { lessons, loading: loadingLessons } = useFetchLessons(
-    selectedClass?.id
-  );
+  const selectedClassId = selectedClass?.id || null;
+  const {
+    lessons,
+    loading: loadingLessons,
+    error: er,
+    setSelectedClassId,
+  } = useLessonsContext();
+
+  useEffect(() => {
+    if (selectedClassId) {
+      setSelectedClassId(selectedClassId);
+    }
+  }, [selectedClassId, setSelectedClassId]);
 
   console.log(lessons);
   const handleClassChange = (e) => {

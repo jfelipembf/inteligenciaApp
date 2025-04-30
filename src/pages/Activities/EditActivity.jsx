@@ -17,7 +17,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useActivityManagement } from "../../hooks/useActivityManagement";
 
 import { useClassContext } from "../../contexts/ClassContext";
-import useFetchLessons from "../../hooks/useFetchLessons";
+import { useLessonsContext } from "../../contexts/LessonContext";
 
 const EditActivity = () => {
   const { classId, lessonId, id } = useParams();
@@ -91,8 +91,19 @@ const EditActivity = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const selectedClassId = formData.class?.value;
-  const { lessons, loading: loadingLessons } = useFetchLessons(selectedClassId);
+  const selectedClassIdFromForm = formData.class?.value;
+  const {
+    lessons,
+    loading: loadingLessons,
+    error: er,
+    setSelectedClassId,
+  } = useLessonsContext();
+
+  useEffect(() => {
+    if (selectedClassIdFromForm) {
+      setSelectedClassId(selectedClassIdFromForm);
+    }
+  }, [selectedClassIdFromForm, setSelectedClassId]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
