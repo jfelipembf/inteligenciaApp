@@ -11,7 +11,7 @@ import {
   Button,
 } from "reactstrap";
 import { useClassContext } from "../../contexts/ClassContext";
-import { useLessonContext } from "../../contexts/LessonContext";
+import { useLessonsContext } from "../../contexts/LessonContext";
 import StudentsGrades from "./StudentsGrades";
 import useUser from "../../hooks/useUser";
 

@@ -9,6 +9,7 @@ import store from "./store/index.js";
 import { AuthProvider } from "./contexts/AuthContext"; // Certifique-se de importar o AuthProvider
 import { ClassProvider } from "./contexts/ClassContext"; // Importar o ClassProvider
 import { LessonsProvider } from "./contexts/LessonContext.jsx";
+import { StudentsProvider } from "./contexts/StudentsContext.jsx"; // Importar o StudentsProvider
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <ClassProvider>
             <LessonsProvider>
-              <App />
+              <StudentsProvider>
+                <App />
+              </StudentsProvider>
             </LessonsProvider>
           </ClassProvider>
         </AuthProvider>

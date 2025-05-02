@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
-import useFetchStudents from "../../hooks/useFetchStudents";
+import { useStudentsContext } from "../../contexts/StudentsContext";
 import { useClassContext } from "../../contexts/ClassContext";
 import useUser from "../../hooks/useUser";
 
@@ -56,7 +56,7 @@ const Students = () => {
     loading: studentsLoading,
     error: studentsError,
     fetchStudents,
-  } = useFetchStudents({
+  } = useStudentsContext({
     skipInitialFetch: true, // Não buscar automaticamente no início
   });
 
@@ -68,7 +68,7 @@ const Students = () => {
   } = useClassContext({
     skipInitialFetch: true, // Não buscar automaticamente no início
   });
-
+  console.log(students);
   // Função para buscar dados quando autenticado
   const fetchData = useCallback(async () => {
     if (!isAuthenticated || userLoading) {

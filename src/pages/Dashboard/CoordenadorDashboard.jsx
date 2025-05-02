@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 
 // Hooks
-import useFetchStudents from "../../hooks/useFetchStudents";
+import { useStudentsContext } from "../../contexts/StudentsContext";
 import useFetchUsers from "../../hooks/useFetchUsers";
 import { useClassContext } from "../../contexts/ClassContext";
 
@@ -42,8 +42,7 @@ const CoordenadorDashboard = (props) => {
   const [selectedClass, setSelectedClass] = useState(null);
 
   // Dados dos hooks
-  const { students, loading: loadingStudents } =
-    useFetchStudents("coordenador");
+  const { students, loading: loadingStudents } = useStudentsContext();
   const { users, loading: loadingUsers } = useFetchUsers();
   const { classes, loading: loadingClasses } = useClassContext();
 
