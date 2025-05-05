@@ -6,10 +6,11 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 import { Provider } from "react-redux";
 import store from "./store/index.js";
-import { AuthProvider } from "./contexts/AuthContext"; // Certifique-se de importar o AuthProvider
-import { ClassProvider } from "./contexts/ClassContext"; // Importar o ClassProvider
+import { AuthProvider } from "./contexts/AuthContext";
+import { ClassProvider } from "./contexts/ClassContext";
 import { LessonsProvider } from "./contexts/LessonContext.jsx";
-import { StudentsProvider } from "./contexts/StudentsContext.jsx"; // Importar o StudentsProvider
+import { StudentsProvider } from "./contexts/StudentsContext.jsx";
+import { TeachersProvider } from "./contexts/TeachersContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
@@ -17,11 +18,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <AuthProvider>
           <ClassProvider>
-            <LessonsProvider>
-              <StudentsProvider>
-                <App />
-              </StudentsProvider>
-            </LessonsProvider>
+            <TeachersProvider>
+              <LessonsProvider>
+                <StudentsProvider>
+                  <App />
+                </StudentsProvider>
+              </LessonsProvider>
+            </TeachersProvider>
           </ClassProvider>
         </AuthProvider>
       </BrowserRouter>
