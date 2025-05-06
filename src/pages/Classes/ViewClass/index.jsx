@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import { useLessonsContext } from "../../../contexts/LessonContext";
 import useUpdateLesson from "../../../hooks/useUpdateLesson";
-import useFetchTeachers from "../../../hooks/useFetchTeachers";
+import { useTeachersContext } from "../../../contexts/TeachersContext";
 import CreatableSelect from "react-select/creatable"; // Importar o componente
 import { label } from "yet-another-react-lightbox";
 
@@ -46,7 +46,7 @@ const ViewClass = () => {
     teachers,
     loading: loadingTeachers,
     error: fetchTeachersError,
-  } = useFetchTeachers();
+  } = useTeachersContext();
   const [removeLessonModal, setRemoveLessonModal] = useState(false);
   const [lessonToRemove, setLessonToRemove] = useState(null);
 

@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import useClassroomManagement from "../../../../hooks/useClassroomManagement";
 import { useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
-import useFetchTeachers from "../../../../hooks/useFetchTeachers"; // Importação do hook
+import { useTeachersContext } from "../../../../contexts/TeachersContext";
 import firebase from "firebase/compat/app";
 
 const CreateClassroom = () => {
@@ -35,7 +35,7 @@ const CreateClassroom = () => {
     teachers,
     loading: loadingTeachers,
     error: fetchError,
-  } = useFetchTeachers(); // Uso do hook
+  } = useTeachersContext(); // Uso do hook
 
   const [formData, setFormData] = useState({
     subject: "",

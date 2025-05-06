@@ -22,7 +22,7 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import useFetchTeachers from "../../hooks/useFetchTeachers";
+import { useTeachersContext } from "../../contexts/TeachersContext";
 import TableContainer from "../../components/Common/TableContainer";
 import { STUDENT_STATUS_OPTIONS } from "../../constants";
 import { toast, ToastContainer } from "react-toastify";
@@ -51,7 +51,7 @@ const SPECIALIZATION_OPTIONS = [
 const Teachers = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const { teachers, loading, error, refetch } = useFetchTeachers();
+  const { teachers, loading, error, refetch } = useTeachersContext();
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentTeacher, setCurrentTeacher] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -93,7 +93,7 @@ const Teachers = () => {
       setIsDeleting(true);
       // Implementar a lógica de exclusão de professor aqui
       // await deleteTeacher(currentTeacher.id);
-      
+
       // Simulação de exclusão bem-sucedida
       setTimeout(() => {
         setIsDeleting(false);
@@ -105,7 +105,9 @@ const Teachers = () => {
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir o professor:", err);
-      toast.error("Erro ao excluir o professor: " + (err.message || "Erro desconhecido"));
+      toast.error(
+        "Erro ao excluir o professor: " + (err.message || "Erro desconhecido")
+      );
     }
   };
 
@@ -119,15 +121,15 @@ const Teachers = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return (
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               onClick={() => handleViewTeacher(cellProps.row.original.id)}
               className="text-body fw-bold"
             >
               {getTextValue(cellProps.row.original.personalInfo?.name) || "N/A"}
             </Link>
           );
-        }
+        },
       },
       {
         header: "Registro",
@@ -135,8 +137,12 @@ const Teachers = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          return getTextValue(cellProps.row.original.professionalInfo?.registration) || "N/A";
-        }
+          return (
+            getTextValue(
+              cellProps.row.original.professionalInfo?.registration
+            ) || "N/A"
+          );
+        },
       },
       {
         header: "Especialidade",
@@ -144,13 +150,15 @@ const Teachers = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          const specialization = getTextValue(cellProps.row.original.professionalInfo?.specialization);
+          const specialization = getTextValue(
+            cellProps.row.original.professionalInfo?.specialization
+          );
           return (
             <Badge color="info" className="badge-soft-info">
               {specialization || "N/A"}
             </Badge>
           );
-        }
+        },
       },
       {
         header: "Departamento",
@@ -158,8 +166,11 @@ const Teachers = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps) => {
-          return getTextValue(cellProps.row.original.professionalInfo?.department) || "N/A";
-        }
+          return (
+            getTextValue(cellProps.row.original.professionalInfo?.department) ||
+            "N/A"
+          );
+        },
       },
       {
         header: "Status",
@@ -168,17 +179,18 @@ const Teachers = () => {
         enableSorting: true,
         cell: (cellProps) => {
           // Determinar status do professor (aleatório para demonstração)
-          const id = cellProps.row.original.id || '';
-          const statusIndex = id.length > 0 ? id.charCodeAt(0) % TEACHER_STATUS_OPTIONS.length : 0;
+          const id = cellProps.row.original.id || "";
+          const statusIndex =
+            id.length > 0
+              ? id.charCodeAt(0) % TEACHER_STATUS_OPTIONS.length
+              : 0;
           const status = TEACHER_STATUS_OPTIONS[statusIndex].value;
           const isActive = status === "Ativo";
-          
+
           return (
-            <Badge color={isActive ? "success" : "warning"}>
-              {status}
-            </Badge>
+            <Badge color={isActive ? "success" : "warning"}>{status}</Badge>
           );
-        }
+        },
       },
       {
         header: "Ações",
@@ -218,7 +230,7 @@ const Teachers = () => {
               </li>
             </ul>
           );
-        }
+        },
       },
     ],
     [navigate]
@@ -229,22 +241,28 @@ const Teachers = () => {
       <div className="page-content">
         <Container fluid>
           {/* Breadcrumb */}
-          <Breadcrumbs title="Professores" breadcrumbItem="Visualizar Professores" />
+          <Breadcrumbs
+            title="Professores"
+            breadcrumbItem="Visualizar Professores"
+          />
 
           <Row>
             <Col lg="12">
               <Card>
                 <CardBody className="border-bottom">
                   <div className="d-flex align-items-center">
-                    <h5 className="mb-0 card-title flex-grow-1">Lista de Professores</h5>
+                    <h5 className="mb-0 card-title flex-grow-1">
+                      Lista de Professores
+                    </h5>
                     <div className="flex-shrink-0">
-                      <Link
-                        to="/add-teacher"
-                        className="btn btn-primary me-1"
-                      >
+                      <Link to="/add-teacher" className="btn btn-primary me-1">
                         <i className="bx bx-plus me-1"></i> Novo Professor
                       </Link>
-                      <Link to="#!" onClick={refetch} className="btn btn-light me-1">
+                      <Link
+                        to="#!"
+                        onClick={refetch}
+                        className="btn btn-light me-1"
+                      >
                         <i className="mdi mdi-refresh"></i>
                       </Link>
                       <UncontrolledDropdown className="dropdown d-inline-block me-1">
@@ -273,7 +291,10 @@ const Teachers = () => {
                 <CardBody>
                   {loading ? (
                     <div className="text-center my-4">
-                      <div className="spinner-border text-primary" role="status">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
                         <span className="visually-hidden">Carregando...</span>
                       </div>
                       <p className="mt-2">Carregando professores...</p>
@@ -282,7 +303,11 @@ const Teachers = () => {
                     <div className="text-center my-4 text-danger">
                       <i className="bx bx-error-circle display-4"></i>
                       <p className="mt-2">Erro ao carregar dados: {error}</p>
-                      <Button color="primary" onClick={refetch} className="mt-2">
+                      <Button
+                        color="primary"
+                        onClick={refetch}
+                        className="mt-2"
+                      >
                         <i className="bx bx-refresh me-1"></i> Tentar Novamente
                       </Button>
                     </div>
@@ -306,14 +331,30 @@ const Teachers = () => {
           </Row>
 
           {/* Modal de Exclusão */}
-          <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)} centered={true} size="sm">
-            <ModalHeader toggle={() => setDeleteModal(false)}>Confirmar Exclusão</ModalHeader>
+          <Modal
+            isOpen={deleteModal}
+            toggle={() => setDeleteModal(false)}
+            centered={true}
+            size="sm"
+          >
+            <ModalHeader toggle={() => setDeleteModal(false)}>
+              Confirmar Exclusão
+            </ModalHeader>
             <ModalBody>
-              <p>Tem certeza que deseja excluir o professor "{getTextValue(currentTeacher?.personalInfo?.name)}"?</p>
-              <p className="text-danger mb-0">Esta ação não pode ser desfeita.</p>
+              <p>
+                Tem certeza que deseja excluir o professor "
+                {getTextValue(currentTeacher?.personalInfo?.name)}"?
+              </p>
+              <p className="text-danger mb-0">
+                Esta ação não pode ser desfeita.
+              </p>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={handleDeleteTeacher} disabled={isDeleting}>
+              <Button
+                color="danger"
+                onClick={handleDeleteTeacher}
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Excluindo..." : "Sim, Excluir"}
               </Button>
               <Button color="secondary" onClick={() => setDeleteModal(false)}>

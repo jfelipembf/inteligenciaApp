@@ -35,8 +35,10 @@ const useFetchTeachers = () => {
           .where("role", "==", "professor") // Filtrar pelo role de professor
           .get();
 
+        console.log("Professores encontrados:", professorsSnapshot.docs);
         const fetchedTeachers = professorsSnapshot.docs.map((doc) => {
           const data = doc.data();
+
           return {
             value: doc.id, // ID do professor
             label: data.personalInfo?.name || "Nome não disponível", // Nome do professor
