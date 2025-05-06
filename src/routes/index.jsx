@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
+import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
+
 // Pages Component
 // import Chat from "../pages/Chat/Chat";
 
@@ -236,7 +238,14 @@ const authProtectedRoutes = [
   { path: "/dashboard-crypto", component: <DashboardCrypto /> },
   { path: "/dashboard-gestor", component: <GestorDashboard /> },
   { path: "/dashboard-coordenador", component: <CoordenadorDashboard /> },
-  { path: "/dashboard-professor", component: <ProfessorDashboard /> },
+  {
+    path: "/dashboard-professor",
+    component: (
+      <ProfessorDashboardProvider>
+        <ProfessorDashboard />
+      </ProfessorDashboardProvider>
+    ),
+  },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
 

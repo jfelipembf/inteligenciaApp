@@ -28,6 +28,7 @@ import { useStudentsContext } from "../../contexts/StudentsContext";
 import useFetchUsers from "../../hooks/useFetchUsers";
 
 import { useClassContext } from "../../contexts/ClassContext";
+import { useProfessorDashboardContext } from "../../contexts/ProfessorDashboardContext";
 
 // Componentes
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -39,6 +40,7 @@ import ReactApexChart from "react-apexcharts";
 import { withTranslation } from "react-i18next";
 
 const ProfessorDashboard = (props) => {
+  const { teacherClassCount, loading, error } = useProfessorDashboardContext();
   const [activeTab, setActiveTab] = useState("1");
   const [selectedClass, setSelectedClass] = useState(null);
 
@@ -102,7 +104,7 @@ const ProfessorDashboard = (props) => {
   const mainCards = [
     {
       title: "Minhas Turmas",
-      value: teacherClasses.length,
+      value: teacherClassCount,
       icon: "bx-group",
       color: "primary",
     },
@@ -275,6 +277,21 @@ const ProfessorDashboard = (props) => {
 
   //meta title
   document.title = "Dashboard do Professor | Painel Escolar";
+
+  if (loading) {
+    return (
+      <div className="text-center my-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Carregando...</span>
+        </div>
+        <p>Carregando dados do dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-danger">Erro ao carregar dados: {error}</p>;
+  }
 
   return (
     <React.Fragment>
