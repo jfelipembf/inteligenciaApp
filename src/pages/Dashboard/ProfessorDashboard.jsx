@@ -40,7 +40,8 @@ import ReactApexChart from "react-apexcharts";
 import { withTranslation } from "react-i18next";
 
 const ProfessorDashboard = (props) => {
-  const { teacherClassCount, loading, error } = useProfessorDashboardContext();
+  const { teacherClassCount, studentsLength, loading, error } =
+    useProfessorDashboardContext();
   const [activeTab, setActiveTab] = useState("1");
   const [selectedClass, setSelectedClass] = useState(null);
 
@@ -91,7 +92,7 @@ const ProfessorDashboard = (props) => {
       );
 
   // Calcular estatísticas
-  const totalStudents = filteredStudents.length;
+  const totalStudents = studentsLength;
   const averageGrade =
     filteredStudents.reduce((acc, student) => acc + (student.average || 0), 0) /
     (totalStudents || 1);

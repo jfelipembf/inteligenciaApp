@@ -18,6 +18,7 @@ export const ProfessorDashboardProvider = ({ children }) => {
 
   const value = {
     teacherClassCount: teacherClassCount || 0,
+    studentsLength: studentsLenght || 0,
     loading,
     error,
   };

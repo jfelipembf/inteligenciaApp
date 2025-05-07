@@ -12,6 +12,7 @@ const useProfessorDashboard = () => {
     error: classError,
   } = useClassContext();
   const [teacherClassCount, setTeacherClassCount] = useState(0);
+  const [studentsLength, setStudentsLength] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,6 +25,7 @@ const useProfessorDashboard = () => {
 
       try {
         let count = 0;
+        let totalStudents = 0;
 
         for (const classItem of classes) {
           const lessonsSnapshot = await firebase
@@ -38,10 +40,22 @@ const useProfessorDashboard = () => {
 
           if (!lessonsSnapshot.empty) {
             count++;
+
+            const studentsSnapshot = await firebase
+              .firestore()
+              .collection("schools")
+              .doc(classItem.schoolId)
+              .collection("classes")
+              .collection(classItem.id)
+              .collection("students")
+              .get();
+
+            totalStudents += studentsSnapshot.size;
           }
         }
 
         setTeacherClassCount(count);
+        setStudentsLength(totalStudents);
       } catch (err) {
         console.error("Erro ao buscar turmas do professor:", err);
         setError(err.message);
@@ -53,7 +67,7 @@ const useProfessorDashboard = () => {
     fetchTeacherClasses();
   }, [currentUser, classes, loadingClasses]);
 
-  return { teacherClassCount, loading, error };
+  return { teacherClassCount, studentsLength, loading, error };
 };
 
 export default useProfessorDashboard;
