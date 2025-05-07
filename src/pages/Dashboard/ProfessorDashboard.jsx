@@ -44,7 +44,6 @@ const ProfessorDashboard = (props) => {
     useProfessorDashboardContext();
   const [activeTab, setActiveTab] = useState("1");
   const [selectedClass, setSelectedClass] = useState(null);
-
   // Dados dos hooks
   const { students, loading: loadingStudents } =
     useStudentsContext("professor");

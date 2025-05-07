@@ -46,7 +46,7 @@ const useProfessorDashboard = () => {
               .collection("schools")
               .doc(classItem.schoolId)
               .collection("classes")
-              .collection(classItem.id)
+              .doc(classItem.id)
               .collection("students")
               .get();
 
@@ -56,6 +56,7 @@ const useProfessorDashboard = () => {
 
         setTeacherClassCount(count);
         setStudentsLength(totalStudents);
+        console.log(totalStudents);
       } catch (err) {
         console.error("Erro ao buscar turmas do professor:", err);
         setError(err.message);
