@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 // Criando o contexto
 const AuthContext = createContext();
@@ -10,7 +10,7 @@ const AuthContext = createContext();
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuthContext deve ser usado dentro de um AuthProvider');
+    throw new Error("useAuthContext deve ser usado dentro de um AuthProvider");
   }
   return context;
 };
@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       setLoading(true);
-      const result = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const result = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
       setCurrentUser(result.user);
       await fetchUserDetails(result.user.uid);
       return result.user;
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       await firebase.auth().signOut();
       setCurrentUser(null);
       setUserDetails(null);
-      localStorage.removeItem('authUser');
+      localStorage.removeItem("authUser");
     } catch (err) {
       setError(err.message);
       throw err;
@@ -61,19 +63,22 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       setLoading(true);
-      const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      
+      const result = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
       // Se tiver dados adicionais do usuário, salvar no Firestore
       if (Object.keys(userData).length > 0) {
-        await firebase.firestore()
-          .collection('users')
+        await firebase
+          .firestore()
+          .collection("users")
           .doc(result.user.uid)
           .set({
             ...userData,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
       }
-      
+
       setCurrentUser(result.user);
       await fetchUserDetails(result.user.uid);
       return result.user;
@@ -104,25 +109,25 @@ export const AuthProvider = ({ children }) => {
     if (!uid && !currentUser) {
       return null;
     }
-    
+
     const userId = uid || currentUser.uid;
-    
+
     try {
       const userDoc = await firebase
         .firestore()
-        .collection('users')
+        .collection("users")
         .doc(userId)
         .get();
-      
+
       if (userDoc.exists) {
         const userData = userDoc.data();
         setUserDetails(userData);
         return userData;
       }
-      
+
       return null;
     } catch (err) {
-      console.error('Erro ao buscar detalhes do usuário:', err);
+      console.error("Erro ao buscar detalhes do usuário:", err);
       return null;
     }
   };
@@ -130,30 +135,30 @@ export const AuthProvider = ({ children }) => {
   // Função para atualizar detalhes do usuário
   const updateUserDetails = async (data) => {
     if (!currentUser) {
-      throw new Error('Usuário não autenticado');
+      throw new Error("Usuário não autenticado");
     }
 
     try {
       setLoading(true);
       await firebase
         .firestore()
-        .collection('users')
+        .collection("users")
         .doc(currentUser.uid)
         .update({
           ...data,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
-      
+
       // Atualizar o estado local
-      setUserDetails(prev => ({
+      setUserDetails((prev) => ({
         ...prev,
-        ...data
+        ...data,
       }));
-      
+
       setLoading(false);
       return true;
     } catch (err) {
-      console.error('Erro ao atualizar detalhes do usuário:', err);
+      console.error("Erro ao atualizar detalhes do usuário:", err);
       setLoading(false);
       throw err;
     }
@@ -164,23 +169,23 @@ export const AuthProvider = ({ children }) => {
     if (!schoolId && (!userDetails || !userDetails.schoolId)) {
       return null;
     }
-    
+
     const targetSchoolId = schoolId || userDetails.schoolId;
-    
+
     try {
       const schoolDoc = await firebase
         .firestore()
-        .collection('schools')
+        .collection("schools")
         .doc(targetSchoolId)
         .get();
-      
+
       if (schoolDoc.exists) {
         return schoolDoc.data();
       }
-      
+
       return null;
     } catch (err) {
-      console.error('Erro ao buscar detalhes da escola:', err);
+      console.error("Erro ao buscar detalhes da escola:", err);
       return null;
     }
   };
@@ -189,31 +194,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       setCurrentUser(user);
-      
+
       if (user) {
         // Armazenar o usuário no localStorage
-        localStorage.setItem('authUser', JSON.stringify(user));
-        
+        localStorage.setItem("authUser", JSON.stringify(user));
+
         // Buscar detalhes do usuário
         await fetchUserDetails(user.uid);
       } else {
         // Remover o usuário do localStorage
-        localStorage.removeItem('authUser');
+        localStorage.removeItem("authUser");
         setUserDetails(null);
       }
-      
+
       setLoading(false);
     });
 
     // Verificar se já existe um usuário no localStorage
-    const storedUser = localStorage.getItem('authUser');
+    const storedUser = localStorage.getItem("authUser");
     if (storedUser && !currentUser) {
       try {
         const user = JSON.parse(storedUser);
         setCurrentUser(user);
         fetchUserDetails(user.uid);
       } catch (err) {
-        localStorage.removeItem('authUser');
+        localStorage.removeItem("authUser");
       }
     }
 
@@ -233,14 +238,10 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     fetchUserDetails,
     updateUserDetails,
-    fetchSchoolDetails
+    fetchSchoolDetails,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

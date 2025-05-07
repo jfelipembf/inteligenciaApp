@@ -11,7 +11,16 @@ const Authmiddleware = ({ children }) => {
   const { isAuthenticated, loading } = useAuthContext();
 
   if (loading) {
-    return <div>Carregando...</div>; // Exibir um spinner ou mensagem de carregamento
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Carregando...</span>
+        </div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
