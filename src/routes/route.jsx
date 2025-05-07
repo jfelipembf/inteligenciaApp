@@ -1,28 +1,36 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import useUser from "../hooks/useUser";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+import { ClassProvider } from "../contexts/ClassContext";
+import { LessonsProvider } from "../contexts/LessonContext";
+import { StudentsProvider } from "../contexts/StudentsContext";
+import { TeachersProvider } from "../contexts/TeachersContext";
+import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
 
-const Authmiddleware = (props) => {
-  const { isAuthenticated, loading } = useUser();
+const Authmiddleware = ({ children }) => {
+  const { isAuthenticated, loading } = useAuthContext();
 
-  // Mostrar um indicador de carregamento enquanto verificamos a autenticação
   if (loading) {
-    return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Carregando...</span>
-        </div>
-      </div>
-    );
+    return <div>Carregando...</div>; // Exibir um spinner ou mensagem de carregamento
   }
 
-  // Redirecionar para a página de login se não estiver autenticado
   if (!isAuthenticated) {
-    return <Navigate to={{ pathname: "/login", state: { from: props.location } }} />;
+    return <Navigate to="/login" />;
   }
 
-  // Renderizar os componentes filhos se estiver autenticado
-  return <React.Fragment>{props.children}</React.Fragment>;
+  return (
+    <ClassProvider>
+      <TeachersProvider>
+        <LessonsProvider>
+          <StudentsProvider>
+            <ProfessorDashboardProvider>
+              {children || <Outlet />}
+            </ProfessorDashboardProvider>
+          </StudentsProvider>
+        </LessonsProvider>
+      </TeachersProvider>
+    </ClassProvider>
+  );
 };
 
 export default Authmiddleware;
