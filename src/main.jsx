@@ -11,6 +11,7 @@ import { ClassProvider } from "./contexts/ClassContext";
 import { LessonsProvider } from "./contexts/LessonContext.jsx";
 import { StudentsProvider } from "./contexts/StudentsContext.jsx";
 import { TeachersProvider } from "./contexts/TeachersContext.jsx";
+import { ProfessorDashboardProvider } from "./contexts/ProfessorDashboardContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <TeachersProvider>
               <LessonsProvider>
                 <StudentsProvider>
-                  <App />
+                  <ProfessorDashboardProvider>
+                    <App />
+                  </ProfessorDashboardProvider>
                 </StudentsProvider>
               </LessonsProvider>
             </TeachersProvider>

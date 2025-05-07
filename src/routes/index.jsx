@@ -240,11 +240,7 @@ const authProtectedRoutes = [
   { path: "/dashboard-coordenador", component: <CoordenadorDashboard /> },
   {
     path: "/dashboard-professor",
-    component: (
-      <ProfessorDashboardProvider>
-        <ProfessorDashboard />
-      </ProfessorDashboardProvider>
-    ),
+    component: <ProfessorDashboard />,
   },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
