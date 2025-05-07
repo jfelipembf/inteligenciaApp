@@ -14,20 +14,10 @@ export const useProfessorDashboardContext = () => {
 };
 
 export const ProfessorDashboardProvider = ({ children }) => {
-  // Chamar o hook diretamente no nível superior
   const { teacherClassCount, loading, error } = useProfessorDashboard();
 
-  // Armazenar os dados em cache para evitar chamadas repetidas
-  const [cachedData, setCachedData] = useState(null);
-
-  useEffect(() => {
-    if (!loading && !error && teacherClassCount !== undefined) {
-      setCachedData({ teacherClassCount });
-    }
-  }, [teacherClassCount, loading, error]);
-
   const value = {
-    teacherClassCount: cachedData?.teacherClassCount || 0,
+    teacherClassCount: teacherClassCount || 0,
     loading,
     error,
   };
