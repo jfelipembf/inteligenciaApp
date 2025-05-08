@@ -17,7 +17,8 @@ const useProfessorDashboard = () => {
   const [overallAverage, setOverallAverage] = useState(0);
   const [classAverages, setClassAverages] = useState({});
   const [studentAverages, setStudentAverages] = useState({});
-  const [unitAverages, setUnitAverages] = useState({}); // Novo estado para médias por unidade
+  const [unitAverages, setUnitAverages] = useState({});
+  const [studentsByClass, setStudentsByClass] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -37,7 +38,8 @@ const useProfessorDashboard = () => {
         let totalGradesCount = 0;
         const classAveragesTemp = {};
         const studentAveragesTemp = {};
-        const unitGrades = {}; // Objeto para armazenar as notas por unidade
+        const unitGrades = {};
+        const studentsByClassTemp = {};
 
         for (const classItem of classes) {
           // Verificar se o professor está associado à classe
@@ -67,6 +69,24 @@ const useProfessorDashboard = () => {
 
             studentsPerClass = studentsSnapshot.size;
             totalStudents += studentsPerClass;
+
+            studentsByClassTemp[classItem.className] =
+              studentsSnapshot.docs.map((studentDoc) => {
+                const studentData = studentDoc.data();
+                const studentId = studentDoc.id;
+
+                return {
+                  className: classItem.className,
+                  name: studentData.name,
+                  registration: studentData.registration,
+                  average: studentAveragesTemp[studentId]?.sum
+                    ? (
+                        studentAveragesTemp[studentId].sum /
+                        studentAveragesTemp[studentId].count
+                      ).toFixed(1)
+                    : "N/A", // Média do aluno
+                };
+              });
 
             // Processar as notas
             let classGradesSum = 0;
@@ -179,7 +199,8 @@ const useProfessorDashboard = () => {
         setOverallAverage(overallAvg);
         setClassAverages(classAveragesTemp);
         setStudentAverages(studentAveragesFinal);
-
+        setStudentsByClass(studentsByClassTemp);
+        console.log("studensbyclass", studentsByClassTemp);
         console.log("Média por unidade:", unitAveragesFinal);
       } catch (err) {
         console.error("Erro ao buscar turmas do professor:", err);
@@ -200,6 +221,7 @@ const useProfessorDashboard = () => {
     studentAverages,
     unitAverages, // Retornar as médias por unidade
     teacherClasses,
+    studentsByClass,
     loading,
     error,
   };

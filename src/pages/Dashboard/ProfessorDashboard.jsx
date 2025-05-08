@@ -27,7 +27,6 @@ import classnames from "classnames";
 import { useStudentsContext } from "../../contexts/StudentsContext";
 import useFetchUsers from "../../hooks/useFetchUsers";
 
-import { useClassContext } from "../../contexts/ClassContext";
 import { useProfessorDashboardContext } from "../../contexts/ProfessorDashboardContext";
 
 // Componentes
@@ -48,6 +47,7 @@ const ProfessorDashboard = (props) => {
     studentAverages,
     teacherClasses: classes,
     unitAverages,
+    studentsByClass,
     loading,
     error,
   } = useProfessorDashboardContext();
@@ -57,7 +57,6 @@ const ProfessorDashboard = (props) => {
   const { students, loading: loadingStudents } =
     useStudentsContext("professor");
   const { users, loading: loadingUsers } = useFetchUsers();
-  //const { classes, loading: loadingClasses } = useClassContext();
 
   // Função para alternar entre as abas
   const toggle = (tab) => {
@@ -94,10 +93,8 @@ const ProfessorDashboard = (props) => {
 
   // Filtrar alunos por turma selecionada
   const filteredStudents = selectedClass
-    ? students.filter((student) => student.class === selectedClass)
-    : students.filter((student) =>
-        teacherClasses.some((cls) => cls.className === student.class)
-      );
+    ? studentsByClass[selectedClass] || []
+    : Object.values(studentsByClass).flat();
 
   // Calcular estatísticas
   const totalStudents = studentsLength;
@@ -462,8 +459,7 @@ const ProfessorDashboard = (props) => {
                                             )}
                                             pill
                                           >
-                                            {student.average?.toFixed(1) ||
-                                              "N/A"}
+                                            {student.average || "N/A"}
                                           </Badge>
                                         </td>
                                         <td style={{ width: "30%" }}>
@@ -526,8 +522,7 @@ const ProfessorDashboard = (props) => {
                                               )}
                                               pill
                                             >
-                                              {student.average?.toFixed(1) ||
-                                                "N/A"}
+                                              {student.average || "N/A"}
                                             </Badge>
                                           </td>
                                           <td style={{ width: "30%" }}>
@@ -749,14 +744,8 @@ const ProfessorDashboard = (props) => {
                                                 `Aluno ${index + 1}`}
                                             </div>
                                           </td>
-                                          <td>
-                                            {student.id ||
-                                              `${2023}${index + 1}`.padStart(
-                                                8,
-                                                "0"
-                                              )}
-                                          </td>
-                                          <td>{student.class || "1º Ano A"}</td>
+                                          <td>{student.registration || ""}</td>
+                                          <td>{student.className || ""}</td>
                                           <td>
                                             <Badge
                                               color={getBadgeColor(
@@ -764,8 +753,7 @@ const ProfessorDashboard = (props) => {
                                               )}
                                               pill
                                             >
-                                              {student.average?.toFixed(1) ||
-                                                "N/A"}
+                                              {student.average || "N/A"}
                                             </Badge>
                                           </td>
                                           <td>
