@@ -40,15 +40,23 @@ import ReactApexChart from "react-apexcharts";
 import { withTranslation } from "react-i18next";
 
 const ProfessorDashboard = (props) => {
-  const { teacherClassCount, studentsLength, loading, error } =
-    useProfessorDashboardContext();
+  const {
+    teacherClassCount,
+    studentsLength,
+    overallAverage,
+    classAverages,
+    studentAverages,
+    teacherClasses: classes,
+    loading,
+    error,
+  } = useProfessorDashboardContext();
   const [activeTab, setActiveTab] = useState("1");
   const [selectedClass, setSelectedClass] = useState(null);
   // Dados dos hooks
   const { students, loading: loadingStudents } =
     useStudentsContext("professor");
   const { users, loading: loadingUsers } = useFetchUsers();
-  const { classes, loading: loadingClasses } = useClassContext();
+  //const { classes, loading: loadingClasses } = useClassContext();
 
   // Função para alternar entre as abas
   const toggle = (tab) => {
@@ -116,7 +124,7 @@ const ProfessorDashboard = (props) => {
     },
     {
       title: "Média Geral",
-      value: averageGrade.toFixed(1),
+      value: overallAverage.toFixed(1),
       icon: "bx-bar-chart-alt-2",
       color: "info",
     },
@@ -127,7 +135,7 @@ const ProfessorDashboard = (props) => {
     series: [
       {
         name: "Média",
-        data: teacherClasses.map((classItem) => classItem.average || 0),
+        data: Object.values(classAverages),
       },
     ],
     options: {
@@ -146,7 +154,10 @@ const ProfessorDashboard = (props) => {
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function (val) {
+          return val.toFixed(1);
+        },
       },
       stroke: {
         show: true,
@@ -155,13 +166,26 @@ const ProfessorDashboard = (props) => {
       },
       colors: ["#34c38f"],
       xaxis: {
-        categories: teacherClasses.map((classItem) => classItem.className),
+        categories: Object.keys(classAverages),
+        labels: {
+          style: {
+            fontSize: `${Math.min(
+              Math.max(5, 100 / Object.keys(classAverages).length),
+              9
+            )}px`,
+          },
+        },
       },
       yaxis: {
         min: 0,
         max: 10,
         title: {
           text: "Média",
+        },
+        labels: {
+          formatter: function (val) {
+            return val.toFixed(1);
+          },
         },
       },
       fill: {
@@ -567,7 +591,7 @@ const ProfessorDashboard = (props) => {
                                             )}
                                             pill
                                           >
-                                            {classItem.average?.toFixed(1) ||
+                                            {Object.values(classAverages) ||
                                               "N/A"}
                                           </Badge>
                                         </td>

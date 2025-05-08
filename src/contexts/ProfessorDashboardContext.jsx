@@ -14,12 +14,24 @@ export const useProfessorDashboardContext = () => {
 };
 
 export const ProfessorDashboardProvider = ({ children }) => {
-  const { teacherClassCount, studentsLength, loading, error } =
-    useProfessorDashboard();
+  const {
+    teacherClassCount,
+    studentsLength,
+    overallAverage,
+    classAverages,
+    studentAverages,
+    teacherClasses,
+    loading,
+    error,
+  } = useProfessorDashboard();
 
   const value = {
     teacherClassCount: teacherClassCount || 0,
     studentsLength: studentsLength || 0,
+    overallAverage,
+    classAverages,
+    studentAverages,
+    teacherClasses,
     loading,
     error,
   };
