@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Table, Button, Input, FormGroup, Label } from "reactstrap";
 import useClassData from "../../hooks/useClassData";
 import useSaveGrades from "../../hooks/useSaveGrades";
+import CreatableSelect from "react-select/creatable";
 
 const StudentsGrades = ({ lesson, classId }) => {
   const { students, loading: loadingStudents } = useClassData(classId);
@@ -10,6 +11,13 @@ const StudentsGrades = ({ lesson, classId }) => {
   const [grades, setGrades] = useState({});
   const [unit, setUnit] = useState(""); // Unidade (ex: Unidade 1)
   const [fields, setFields] = useState([{ name: "Prova" }]); // Campos personalizados
+
+  const unitOptions = [
+    { label: "1° Unidade", value: "1° Unidade" },
+    { label: "2° Unidade", value: "2° Unidade" },
+    { label: "3° Unidade", value: "3° Unidade" },
+    { label: "4° Unidade", value: "4° Unidade" },
+  ];
 
   const handleGradeChange = (studentId, fieldName, value) => {
     setGrades((prev) => ({
@@ -34,7 +42,7 @@ const StudentsGrades = ({ lesson, classId }) => {
   const handleSave = async () => {
     try {
       const formattedGrades = {
-        unit,
+        unit: unit.value,
         subject: lesson.subject,
         teacher: lesson.teacher,
         grades: students.reduce((acc, student) => {
@@ -65,12 +73,13 @@ const StudentsGrades = ({ lesson, classId }) => {
       {/* Unidade */}
       <FormGroup>
         <Label for="unit">Unidade</Label>
-        <Input
-          type="text"
+        <CreatableSelect
           id="unit"
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-          placeholder="Digite a unidade (ex: 1° Unidade)"
+          isClearable
+          options={unitOptions} // Opções padrão
+          value={unit} // Unidade selecionada
+          onChange={(newValue) => setUnit(newValue || { label: "", value: "" })} // Atualizar unidade
+          placeholder="Selecione ou adicione uma unidade"
         />
       </FormGroup>
 
