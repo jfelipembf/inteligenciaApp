@@ -587,12 +587,15 @@ const ProfessorDashboard = (props) => {
                                         <td>
                                           <Badge
                                             color={getBadgeColor(
-                                              classItem.average
+                                              classAverages[
+                                                classItem.className
+                                              ] || 0
                                             )}
                                             pill
                                           >
-                                            {Object.values(classAverages) ||
-                                              "N/A"}
+                                            {classAverages[
+                                              classItem.className
+                                            ]?.toFixed(1) || "N/A"}
                                           </Badge>
                                         </td>
                                         <td>
