@@ -47,6 +47,7 @@ const ProfessorDashboard = (props) => {
     classAverages,
     studentAverages,
     teacherClasses: classes,
+    unitAverages,
     loading,
     error,
   } = useProfessorDashboardContext();
@@ -251,8 +252,8 @@ const ProfessorDashboard = (props) => {
   const gradeEvolutionOptions = {
     series: [
       {
-        name: "Média da Turma",
-        data: [6.8, 7.2, 7.5, 7.8],
+        name: "Média por Unidade",
+        data: Object.values(unitAverages),
       },
     ],
     options: {
@@ -275,20 +276,17 @@ const ProfessorDashboard = (props) => {
         size: 4,
       },
       xaxis: {
-        categories: [
-          "1º Bimestre",
-          "2º Bimestre",
-          "3º Bimestre",
-          "4º Bimestre",
-        ],
+        categories: Object.keys(unitAverages),
       },
       yaxis: {
-        min: 5,
+        min: 0,
         max: 10,
+        title: {
+          text: "Média",
+        },
       },
     },
   };
-
   // Dados para a tabela de alunos com melhor desempenho
   const topStudents = [...filteredStudents]
     .sort((a, b) => (b.average || 0) - (a.average || 0))
@@ -609,7 +607,7 @@ const ProfessorDashboard = (props) => {
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
                                               <DropdownItem
-                                                href={`/class-details/${classItem.id}`}
+                                                href={`/classes/${classItem.id}`}
                                               >
                                                 <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
                                                 Ver Detalhes
