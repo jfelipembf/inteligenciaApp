@@ -70,24 +70,6 @@ const useProfessorDashboard = () => {
             studentsPerClass = studentsSnapshot.size;
             totalStudents += studentsPerClass;
 
-            studentsByClassTemp[classItem.className] =
-              studentsSnapshot.docs.map((studentDoc) => {
-                const studentData = studentDoc.data();
-                const studentId = studentDoc.id;
-
-                return {
-                  className: classItem.className,
-                  name: studentData.name,
-                  registration: studentData.registration,
-                  average: studentAveragesTemp[studentId]?.sum
-                    ? (
-                        studentAveragesTemp[studentId].sum /
-                        studentAveragesTemp[studentId].count
-                      ).toFixed(1)
-                    : "N/A", // Média do aluno
-                };
-              });
-
             // Processar as notas
             let classGradesSum = 0;
             let classGradesCount = 0;
@@ -133,8 +115,14 @@ const useProfessorDashboard = () => {
                 if (!studentAveragesTemp[studentId]) {
                   studentAveragesTemp[studentId] = { sum: 0, count: 0 };
                 }
+                console.log("grade sum: ", gradeDoc.studentName, gradeSum);
+                console.log("grade count: ", studentId, gradeCount);
                 studentAveragesTemp[studentId].sum += gradeSum;
-                studentAveragesTemp[studentId].count += gradeCount;
+                studentAveragesTemp[studentId].count += 1;
+                console.log(
+                  "studentAveragesTemp: ",
+                  studentAveragesTemp[studentId]
+                );
 
                 // Agrupar as notas por unidade
                 const unit = gradeData.unit || "Sem Unidade"; // Usar "Sem Unidade" como fallback
@@ -145,6 +133,24 @@ const useProfessorDashboard = () => {
                 unitGrades[unit].count += gradeCount;
               }
             }
+
+            studentsByClassTemp[classItem.className] =
+              studentsSnapshot.docs.map((studentDoc) => {
+                const studentData = studentDoc.data();
+                const studentId = studentDoc.id;
+
+                return {
+                  className: classItem.className,
+                  name: studentData.name,
+                  registration: studentData.registration,
+                  average: studentAveragesTemp[studentId]?.sum
+                    ? (
+                        studentAveragesTemp[studentId].sum /
+                        studentAveragesTemp[studentId].count
+                      ).toFixed(1)
+                    : 0, // Média do aluno
+                };
+              });
 
             // Calcular a média da turma
             classAveragesTemp[classItem.className] = classGradesCount

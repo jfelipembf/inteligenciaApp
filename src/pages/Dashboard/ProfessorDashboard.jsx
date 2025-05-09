@@ -164,7 +164,9 @@ const ProfessorDashboard = (props) => {
       },
       colors: ["#34c38f"],
       xaxis: {
-        categories: Object.keys(classAverages),
+        categories: Object.keys(classAverages).map((className) =>
+          className.length > 20 ? `${className.slice(0, 20)}...` : className
+        ),
         labels: {
           style: {
             fontSize: `${Math.min(
@@ -193,6 +195,10 @@ const ProfessorDashboard = (props) => {
         y: {
           formatter: function (val) {
             return val.toFixed(1);
+          },
+          custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+            const className = Object.keys(classAverages)[dataPointIndex];
+            return `<div class="apexcharts-tooltip-title">${className}</div>`;
           },
         },
       },
@@ -273,7 +279,9 @@ const ProfessorDashboard = (props) => {
         size: 4,
       },
       xaxis: {
-        categories: Object.keys(unitAverages),
+        categories: Object.keys(unitAverages).map((unitName) =>
+          unitName.length > 20 ? `${unitName.slice(0, 20)}...` : unitName
+        ),
       },
       yaxis: {
         min: 0,
@@ -287,12 +295,12 @@ const ProfessorDashboard = (props) => {
   // Dados para a tabela de alunos com melhor desempenho
   const topStudents = [...filteredStudents]
     .sort((a, b) => (b.average || 0) - (a.average || 0))
-    .slice(0, 5);
+    .slice(0, 7);
 
   // Dados para a tabela de alunos com pior desempenho
   const lowPerformingStudents = [...filteredStudents]
     .sort((a, b) => (a.average || 0) - (b.average || 0))
-    .slice(0, 5);
+    .slice(0, 7);
 
   //meta title
   document.title = "Dashboard do Professor | Painel Escolar";
@@ -451,7 +459,14 @@ const ProfessorDashboard = (props) => {
                                               `Aluno ${index + 1}`}
                                           </div>
                                         </td>
-                                        <td>{student.class}</td>
+                                        <td title={student.className}>
+                                          {student.className.length > 15
+                                            ? `${student.className.slice(
+                                                0,
+                                                15
+                                              )}...`
+                                            : student.className}
+                                        </td>
                                         <td>
                                           <Badge
                                             color={getBadgeColor(
@@ -459,7 +474,7 @@ const ProfessorDashboard = (props) => {
                                             )}
                                             pill
                                           >
-                                            {student.average || "N/A"}
+                                            {student.average || 0}
                                           </Badge>
                                         </td>
                                         <td style={{ width: "30%" }}>
@@ -514,7 +529,14 @@ const ProfessorDashboard = (props) => {
                                                 `Aluno ${index + 1}`}
                                             </div>
                                           </td>
-                                          <td>{student.class}</td>
+                                          <td title={student.className}>
+                                            {student.className.length > 15
+                                              ? `${student.className.slice(
+                                                  0,
+                                                  15
+                                                )}...`
+                                              : student.className}
+                                          </td>
                                           <td>
                                             <Badge
                                               color={getBadgeColor(
@@ -522,7 +544,7 @@ const ProfessorDashboard = (props) => {
                                               )}
                                               pill
                                             >
-                                              {student.average || "N/A"}
+                                              {student.average || 0}
                                             </Badge>
                                           </td>
                                           <td style={{ width: "30%" }}>
@@ -588,7 +610,7 @@ const ProfessorDashboard = (props) => {
                                           >
                                             {classAverages[
                                               classItem.className
-                                            ]?.toFixed(1) || "N/A"}
+                                            ]?.toFixed(1) || 0}
                                           </Badge>
                                         </td>
                                         <td>
@@ -753,7 +775,7 @@ const ProfessorDashboard = (props) => {
                                               )}
                                               pill
                                             >
-                                              {student.average || "N/A"}
+                                              {student.average || 0}
                                             </Badge>
                                           </td>
                                           <td>
