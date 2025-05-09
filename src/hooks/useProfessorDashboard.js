@@ -19,6 +19,7 @@ const useProfessorDashboard = () => {
   const [studentAverages, setStudentAverages] = useState({});
   const [unitAverages, setUnitAverages] = useState({});
   const [studentsByClass, setStudentsByClass] = useState({});
+  const [gradeDistribution, setGradeDistribution] = useState([0, 0, 0, 0, 0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -196,6 +197,25 @@ const useProfessorDashboard = () => {
             return acc;
           }, {});
 
+        // Calcular a distribuição cumulativa de alunos por faixas de notas na média
+        const gradeDistributionTemp = [0, 0, 0, 0, 0];
+
+        for (const student of Object.values(studentsByClassTemp).flat()) {
+          const average = student.average || 0;
+
+          if (average >= 0 && average < 2) {
+            gradeDistributionTemp[0]++;
+          } else if (average >= 2 && average < 4) {
+            gradeDistributionTemp[1]++;
+          } else if (average >= 4 && average < 6) {
+            gradeDistributionTemp[2]++;
+          } else if (average >= 6 && average < 8) {
+            gradeDistributionTemp[3]++;
+          } else if (average >= 8 && average <= 10) {
+            gradeDistributionTemp[4]++;
+          }
+        }
+
         // Salvar as médias ordenadas por unidade
         setUnitAverages(sortedUnitAverages);
         console.log("Média por unidade (ordenada):", sortedUnitAverages);
@@ -206,6 +226,7 @@ const useProfessorDashboard = () => {
         setClassAverages(classAveragesTemp);
         setStudentAverages(studentAveragesFinal);
         setStudentsByClass(studentsByClassTemp);
+        setGradeDistribution(gradeDistributionTemp);
         console.log("studensbyclass", studentsByClassTemp);
         console.log("Média por unidade:", unitAveragesFinal);
       } catch (err) {
@@ -228,6 +249,7 @@ const useProfessorDashboard = () => {
     unitAverages, // Retornar as médias por unidade
     teacherClasses,
     studentsByClass,
+    gradeDistribution,
     loading,
     error,
   };

@@ -48,6 +48,7 @@ const ProfessorDashboard = (props) => {
     teacherClasses: classes,
     unitAverages,
     studentsByClass,
+    gradeDistribution,
     loading,
     error,
   } = useProfessorDashboardContext();
@@ -210,7 +211,7 @@ const ProfessorDashboard = (props) => {
     series: [
       {
         name: "Alunos",
-        data: [3, 7, 12, 15, 8, 5],
+        data: gradeDistribution,
       },
     ],
     options: {
@@ -238,7 +239,7 @@ const ProfessorDashboard = (props) => {
       },
       colors: ["#556ee6"],
       xaxis: {
-        categories: ["0-2", "2-4", "4-6", "6-8", "8-9", "9-10"],
+        categories: ["0•-2", "2•-4", "4•-6", "6•-8", "8•-9", "9•-10"],
       },
       yaxis: {
         title: {
@@ -500,7 +501,7 @@ const ProfessorDashboard = (props) => {
                           <Card>
                             <CardBody>
                               <CardTitle className="mb-4">
-                                Alunos com Baixo Desempenho
+                                Alunos com Menor Desempenho
                               </CardTitle>
                               <div className="table-responsive">
                                 <Table className="table-centered table-nowrap mb-0">
@@ -654,7 +655,7 @@ const ProfessorDashboard = (props) => {
                           <Card>
                             <CardBody>
                               <CardTitle className="mb-4">
-                                Distribuição de Notas
+                                Distribuição de Notas por média
                               </CardTitle>
                               <ReactApexChart
                                 options={gradeDistributionOptions.options}
