@@ -50,6 +50,7 @@ const ProfessorDashboard = (props) => {
     studentsByClass,
     gradeDistribution,
     unitAveragesByClass,
+    gradeDistributionByClass,
     loading,
     error,
   } = useProfessorDashboardContext();
@@ -216,7 +217,11 @@ const ProfessorDashboard = (props) => {
     series: [
       {
         name: "Alunos",
-        data: gradeDistribution,
+        data: selectedClassForEvolution
+          ? gradeDistributionByClass[selectedClassForEvolution] || [
+              0, 0, 0, 0, 0,
+            ]
+          : gradeDistribution,
       },
     ],
     options: {

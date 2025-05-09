@@ -25,6 +25,7 @@ export const ProfessorDashboardProvider = ({ children }) => {
     studentsByClass,
     gradeDistribution,
     unitAveragesByClass,
+    gradeDistributionByClass,
     loading,
     error,
   } = useProfessorDashboard();
@@ -40,6 +41,7 @@ export const ProfessorDashboardProvider = ({ children }) => {
     studentsByClass,
     gradeDistribution,
     unitAveragesByClass,
+    gradeDistributionByClass,
     loading,
     error,
   };

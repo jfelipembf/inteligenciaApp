@@ -3,6 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useClassContext } from "../contexts/ClassContext";
+import { set } from "lodash";
 
 const useProfessorDashboard = () => {
   const { currentUser } = useAuthContext();
@@ -21,6 +22,7 @@ const useProfessorDashboard = () => {
   const [studentsByClass, setStudentsByClass] = useState({});
   const [gradeDistribution, setGradeDistribution] = useState([0, 0, 0, 0, 0]);
   const [unitAveragesByClass, setUnitAveragesByClass] = useState({});
+  const [gradeDistributionByClass, setGradeDistributionByClass] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -43,6 +45,7 @@ const useProfessorDashboard = () => {
         const unitGrades = {};
         const studentsByClassTemp = {};
         const unitAveragesByClassTemp = {};
+        const gradeDistributionByClassTemp = {};
 
         for (const classItem of classes) {
           // Verificar se o professor está associado à classe
@@ -202,6 +205,29 @@ const useProfessorDashboard = () => {
                 };
               });
 
+            // Calcular a distribuição cumulativa de alunos por faixas de notas, separada por classe
+            for (const classItem of classes) {
+              const students = studentsByClassTemp[classItem.className] || [];
+
+              // Inicializar o array de distribuição para a classe usando o ID
+              gradeDistributionByClassTemp[classItem.id] = [0, 0, 0, 0, 0];
+
+              for (const student of students) {
+                const average = student.average || 0;
+
+                if (average >= 0 && average < 2) {
+                  gradeDistributionByClassTemp[classItem.id][0]++;
+                } else if (average >= 2 && average < 4) {
+                  gradeDistributionByClassTemp[classItem.id][1]++;
+                } else if (average >= 4 && average < 6) {
+                  gradeDistributionByClassTemp[classItem.id][2]++;
+                } else if (average >= 6 && average < 8) {
+                  gradeDistributionByClassTemp[classItem.id][3]++;
+                } else if (average >= 8 && average <= 10) {
+                  gradeDistributionByClassTemp[classItem.id][4]++;
+                }
+              }
+            }
             // Calcular a média da turma
             classAveragesTemp[classItem.className] = classGradesCount
               ? classGradesSum / (studentsPerClass * exams)
@@ -277,8 +303,14 @@ const useProfessorDashboard = () => {
         setStudentsByClass(studentsByClassTemp);
         setGradeDistribution(gradeDistributionTemp);
         setUnitAveragesByClass(unitAveragesByClassTemp);
+        setGradeDistributionByClass(gradeDistributionByClassTemp);
         console.log("studensbyclass", studentsByClassTemp);
         console.log("Média por unidade:", unitAveragesFinal);
+        console.log("Distribuição de notas:", gradeDistributionTemp);
+        console.log(
+          "Distribuição de notas por turma:",
+          gradeDistributionByClassTemp
+        );
       } catch (err) {
         console.error("Erro ao buscar turmas do professor:", err);
         setError(err.message);
@@ -301,6 +333,7 @@ const useProfessorDashboard = () => {
     studentsByClass,
     gradeDistribution,
     unitAveragesByClass,
+    gradeDistributionByClass,
     loading,
     error,
   };
