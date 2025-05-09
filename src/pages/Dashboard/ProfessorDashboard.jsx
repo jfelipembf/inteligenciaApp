@@ -49,6 +49,7 @@ const ProfessorDashboard = (props) => {
     unitAverages,
     studentsByClass,
     gradeDistribution,
+    unitAveragesByClass,
     loading,
     error,
   } = useProfessorDashboardContext();
@@ -65,6 +66,10 @@ const ProfessorDashboard = (props) => {
       setActiveTab(tab);
     }
   };
+
+  //Seleção para evolution das turmas
+  const [selectedClassForEvolution, setSelectedClassForEvolution] =
+    useState(null);
 
   // Função para determinar a cor da badge com base na média
   const getBadgeColor = (average) => {
@@ -293,6 +298,53 @@ const ProfessorDashboard = (props) => {
       },
     },
   };
+
+  // Configuração do gráfico de evolução das notas por turma
+  const gradeEvolutionByClassOptions = {
+    series: [
+      {
+        name: "Média por Unidade",
+        data: selectedClassForEvolution
+          ? Object.entries(
+              unitAveragesByClass[selectedClassForEvolution] || {}
+            ).map(([unit, { average }]) => (average || 0).toFixed(1))
+          : Object.values(unitAverages).map((value) => value.toFixed(1)),
+      },
+    ],
+    options: {
+      chart: {
+        height: 240,
+        type: "line",
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ["#34c38f"],
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "straight",
+        width: 3,
+      },
+      markers: {
+        size: 4,
+      },
+      xaxis: {
+        categories: selectedClassForEvolution
+          ? Object.keys(unitAveragesByClass[selectedClassForEvolution] || {})
+          : Object.keys(unitAverages),
+      },
+      yaxis: {
+        min: 0,
+        max: 10,
+        title: {
+          text: "Média",
+        },
+      },
+    },
+  };
+
   // Dados para a tabela de alunos com melhor desempenho
   const topStudents = [...filteredStudents]
     .sort((a, b) => (b.average || 0) - (a.average || 0))
@@ -581,10 +633,12 @@ const ProfessorDashboard = (props) => {
                                 <CardTitle className="mb-0">
                                   Minhas Turmas
                                 </CardTitle>
+
                                 <Link to="/classes" className="btn btn-primary">
                                   Gerenciar Turmas
                                 </Link>
                               </div>
+
                               <div className="table-responsive">
                                 <Table className="table-centered table-nowrap mb-0">
                                   <thead className="table-light">
@@ -650,6 +704,26 @@ const ProfessorDashboard = (props) => {
                           </Card>
                         </Col>
                       </Row>
+                      <div className="d-flex justify-content-between align-items-center mb-4">
+                        <select
+                          className="form-select ms-auto"
+                          style={{ width: "200px" }}
+                          value={selectedClassForEvolution || ""}
+                          onChange={(e) =>
+                            setSelectedClassForEvolution(e.target.value || null)
+                          }
+                        >
+                          <option value="">Todas as Turmas</option>
+                          {teacherClasses.map((classItem) => (
+                            <option
+                              key={classItem.className}
+                              value={classItem.id}
+                            >
+                              {classItem.className}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <Row>
                         <Col xl={6}>
                           <Card>
@@ -674,8 +748,8 @@ const ProfessorDashboard = (props) => {
                                 Evolução das Notas
                               </CardTitle>
                               <ReactApexChart
-                                options={gradeEvolutionOptions.options}
-                                series={gradeEvolutionOptions.series}
+                                options={gradeEvolutionByClassOptions.options}
+                                series={gradeEvolutionByClassOptions.series}
                                 type="line"
                                 height={240}
                                 className="apex-charts"

@@ -20,6 +20,7 @@ const useProfessorDashboard = () => {
   const [unitAverages, setUnitAverages] = useState({});
   const [studentsByClass, setStudentsByClass] = useState({});
   const [gradeDistribution, setGradeDistribution] = useState([0, 0, 0, 0, 0]);
+  const [unitAveragesByClass, setUnitAveragesByClass] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -41,6 +42,7 @@ const useProfessorDashboard = () => {
         const studentAveragesTemp = {};
         const unitGrades = {};
         const studentsByClassTemp = {};
+        const unitAveragesByClassTemp = {};
 
         for (const classItem of classes) {
           // Verificar se o professor está associado à classe
@@ -125,14 +127,61 @@ const useProfessorDashboard = () => {
                   studentAveragesTemp[studentId]
                 );
 
-                // Agrupar as notas por unidade
+                // Calcular a média da unidade de uma turma
                 const unit = gradeData.unit || "Sem Unidade"; // Usar "Sem Unidade" como fallback
+
+                if (!unitAveragesByClassTemp[classItem.id]) {
+                  unitAveragesByClassTemp[classItem.id] = {};
+                }
+
+                if (!unitAveragesByClassTemp[classItem.id][unit]) {
+                  unitAveragesByClassTemp[classItem.id][unit] = {
+                    sum: 0,
+                    count: 0,
+                  };
+                }
+
+                unitAveragesByClassTemp[classItem.id][unit].sum += gradeSum;
+                unitAveragesByClassTemp[classItem.id][unit].count =
+                  studentsPerClass;
+
+                // Agrupar as notas por unidade
                 if (!unitGrades[unit]) {
                   unitGrades[unit] = { sum: 0, count: 0 };
                 }
                 unitGrades[unit].sum += gradeSum;
                 unitGrades[unit].count += gradeCount;
               }
+            }
+
+            console.log("unitAveragesByClassTemp: ", unitAveragesByClassTemp);
+            // Calcular a média da unidade para cada turma
+            for (const [classId, units] of Object.entries(
+              unitAveragesByClassTemp
+            )) {
+              for (const [unit, { sum, count }] of Object.entries(units)) {
+                unitAveragesByClassTemp[classId][unit].average =
+                  count > 0 ? sum / count : 0;
+              }
+            }
+
+            // Ordenar as unidades dentro de cada turma
+            for (const [classId, units] of Object.entries(
+              unitAveragesByClassTemp
+            )) {
+              const sortedUnits = Object.keys(units)
+                .sort((a, b) => {
+                  // Tentar ordenar numericamente, caso os nomes das unidades sejam números
+                  const numA = parseInt(a.match(/\d+/)?.[0] || 0, 10);
+                  const numB = parseInt(b.match(/\d+/)?.[0] || 0, 10);
+                  return numA - numB;
+                })
+                .reduce((acc, key) => {
+                  acc[key] = units[key];
+                  return acc;
+                }, {});
+
+              unitAveragesByClassTemp[classId] = sortedUnits;
             }
 
             studentsByClassTemp[classItem.className] =
@@ -227,6 +276,7 @@ const useProfessorDashboard = () => {
         setStudentAverages(studentAveragesFinal);
         setStudentsByClass(studentsByClassTemp);
         setGradeDistribution(gradeDistributionTemp);
+        setUnitAveragesByClass(unitAveragesByClassTemp);
         console.log("studensbyclass", studentsByClassTemp);
         console.log("Média por unidade:", unitAveragesFinal);
       } catch (err) {
@@ -250,6 +300,7 @@ const useProfessorDashboard = () => {
     teacherClasses,
     studentsByClass,
     gradeDistribution,
+    unitAveragesByClass,
     loading,
     error,
   };
