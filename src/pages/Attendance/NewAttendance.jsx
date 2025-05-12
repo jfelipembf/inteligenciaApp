@@ -10,19 +10,26 @@ import {
   Table,
   Input,
 } from "reactstrap";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ptBR } from "date-fns/locale"; // Importa a localidade pt-BR
 import { useClassContext } from "../../contexts/ClassContext";
 import { useLessonsContext } from "../../contexts/LessonContext";
 import { useAuthContext } from "../../contexts/AuthContext";
 import useFetchStudentsByClass from "../../hooks/useFetchStudentsByClass";
+import useSaveAttendance from "../../hooks/useSaveAttendance";
+
+// Registra a localidade pt-BR no React DatePicker
+registerLocale("pt-BR", ptBR);
 
 const NewAttendance = () => {
   const { classes, loading: loadingClasses } = useClassContext();
   const { lessons, setSelectedClassId } = useLessonsContext();
   const { userDetails } = useAuthContext();
+  const { saveAttendance } = useSaveAttendance();
 
   const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedLesson, setSelectedLesson] = useState(null);
   const [attendance, setAttendance] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [filteredLessons, setFilteredLessons] = useState([]);
@@ -66,6 +73,14 @@ const NewAttendance = () => {
       .toLowerCase();
     return !allowedDays.includes(dayOfWeek);
   };
+
+  // Verificar se todos os alunos têm um status definido
+  const allStudentsHaveStatus = () => {
+    return students.every(
+      (student) => attendance[student.id]?.status !== undefined
+    );
+  };
+
   const handleStatusChange = (studentId, status) => {
     setAttendance((prev) => ({
       ...prev,
@@ -76,14 +91,39 @@ const NewAttendance = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    const attendanceData = {
-      classId: selectedClass,
-      date: selectedDate,
-      records: Object.values(attendance),
-    };
-    console.log("Attendance Data:", attendanceData);
-    alert("Frequência criada com sucesso!");
+  const handleSubmit = async () => {
+    if (!selectedClass || !selectedLesson || !selectedDate) {
+      alert("Por favor, selecione a turma, aula e data.");
+      return;
+    }
+
+    // Formatar a data selecionada no calendário
+    const formattedDate = selectedDate.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    // Criar os registros de frequência para os alunos
+    const attendanceRecords = students.map((student) => ({
+      studentId: student.id,
+      studentName: student.name,
+      status: attendance[student.id]?.status || "absent", // Padrão: "absent"
+    }));
+
+    try {
+      // Chamar o hook para salvar a frequência no Firestore
+      await saveAttendance(
+        selectedClass,
+        selectedLesson,
+        formattedDate,
+        attendanceRecords
+      );
+      alert("Frequência salva com sucesso!");
+    } catch (err) {
+      console.error("Erro ao salvar frequência:", err);
+      alert("Erro ao salvar frequência: " + err.message);
+    }
   };
 
   return (
@@ -119,6 +159,7 @@ const NewAttendance = () => {
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Selecione uma data"
                     className="form-control"
+                    locale="pt-BR" // Define a localidade para pt-BR
                   />
                 </Col>
               </Row>
@@ -127,7 +168,11 @@ const NewAttendance = () => {
                   <Row className="mb-3">
                     <Col>
                       <label>Selecione a Aula</label>
-                      <Input type="select">
+                      <Input
+                        type="select"
+                        value={selectedLesson || ""}
+                        onChange={(e) => setSelectedLesson(e.target.value)}
+                      >
                         <option value="">Selecione uma aula</option>
                         {filteredLessons.map((lesson) => (
                           <option key={lesson.id} value={lesson.id}>
@@ -222,7 +267,12 @@ const NewAttendance = () => {
                   <Button
                     color="primary"
                     onClick={handleSubmit}
-                    disabled={!selectedClass || !selectedDate}
+                    disabled={
+                      !selectedClass ||
+                      !selectedDate ||
+                      !selectedLesson ||
+                      !allStudentsHaveStatus()
+                    }
                   >
                     Criar Frequência
                   </Button>
