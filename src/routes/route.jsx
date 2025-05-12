@@ -31,11 +31,7 @@ const Authmiddleware = ({ children }) => {
     <ClassProvider>
       <TeachersProvider>
         <LessonsProvider>
-          <StudentsProvider>
-            <ProfessorDashboardProvider>
-              {children || <Outlet />}
-            </ProfessorDashboardProvider>
-          </StudentsProvider>
+          <StudentsProvider>{children || <Outlet />}</StudentsProvider>
         </LessonsProvider>
       </TeachersProvider>
     </ClassProvider>

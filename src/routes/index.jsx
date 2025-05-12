@@ -12,6 +12,9 @@ import FileManager from "../pages/FileManager/index";
 // // Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
+// // //Attendance
+import NewAttendance from "../pages/Attendance/NewAttendance";
+
 // Pages Calendar
 import Calendar from "../pages/Calendar/index";
 
@@ -240,10 +243,17 @@ const authProtectedRoutes = [
   { path: "/dashboard-coordenador", component: <CoordenadorDashboard /> },
   {
     path: "/dashboard-professor",
-    component: <ProfessorDashboard />,
+    component: (
+      <ProfessorDashboardProvider>
+        <ProfessorDashboard />
+      </ProfessorDashboardProvider>
+    ),
   },
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
+
+  // Attendance
+  { path: "/create-attendance", component: <NewAttendance /> },
 
   // Grades
   { path: "/grades", component: <GradesPage /> },
