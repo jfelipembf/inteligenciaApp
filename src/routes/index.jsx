@@ -14,6 +14,7 @@ import UserProfile from "../pages/Authentication/user-profile";
 
 // // //Attendance
 import NewAttendance from "../pages/Attendance/NewAttendance";
+import Attendances from "../pages/Attendance/Attendances";
 
 // Pages Calendar
 import Calendar from "../pages/Calendar/index";
@@ -254,6 +255,7 @@ const authProtectedRoutes = [
 
   // Attendance
   { path: "/create-attendance", component: <NewAttendance /> },
+  { path: "/attendances", component: <Attendances /> },
 
   // Grades
   { path: "/grades", component: <GradesPage /> },

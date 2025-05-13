@@ -132,7 +132,7 @@ const NewAttendance = () => {
         <Col>
           <Card>
             <CardBody>
-              <CardTitle className="mb-4">Criar Frequência</CardTitle>
+              <CardTitle className="mb-4">Registrar Frequência</CardTitle>
               <Row className="mb-3">
                 <Col md={6}>
                   <label>Selecione a Turma</label>

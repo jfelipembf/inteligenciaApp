@@ -238,6 +238,26 @@ const SidebarContent = (props) => {
               </Link>
             </li>
 
+            {/* Frequências */}
+            <li>
+              <Link to="/#" className="has-arrow">
+                <i className="bx bx-clipboard font-size-18"></i>
+                <span>{props.t("Frequências")}</span>
+              </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/create-attendance">
+                    {props.t("Registrar Frequência")}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/attendances">
+                    {props.t("Visualizar Frequências")}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
             {/* Atividades */}
             <li>
               <Link to="/#" className="has-arrow">
@@ -246,13 +266,13 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu" aria-expanded="false">
                 <li>
-                  <Link to="/activities">
-                    {props.t("Visualizar atividades")}
+                  <Link to="/activities/add-activity">
+                    {props.t("Criar Atividade")}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/activities/add-activity">
-                    {props.t("Criar Atividade")}
+                  <Link to="/activities">
+                    {props.t("Visualizar atividades")}
                   </Link>
                 </li>
               </ul>
