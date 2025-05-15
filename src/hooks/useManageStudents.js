@@ -48,6 +48,10 @@ const useManageStudents = (classId, schoolId) => {
         .collection("classes")
         .doc(classId);
 
+      const classDoc = await classRef.get();
+      const classData = classDoc.data();
+      const className = classData.className;
+
       selectedStudents.forEach((student) => {
         // Adicionar o estudante à subcoleção "students" da turma
         if (student.academicInfo.classId !== null) {
@@ -78,6 +82,7 @@ const useManageStudents = (classId, schoolId) => {
           .doc(student.id);
         batch.update(userRef, {
           "academicInfo.classId": classId,
+          "academicInfo.className": className,
         });
       });
 
@@ -97,7 +102,7 @@ const useManageStudents = (classId, schoolId) => {
 
     try {
       const batch = firebase.firestore().batch();
-      
+
       // Remover o aluno da subcoleção "students" da turma
       const studentRef = firebase
         .firestore()
@@ -107,17 +112,15 @@ const useManageStudents = (classId, schoolId) => {
         .doc(classId)
         .collection("students")
         .doc(studentId);
-      
+
       batch.delete(studentRef);
 
       // Atualizar o campo "classId" no documento do estudante na coleção "users"
-      const userRef = firebase
-        .firestore()
-        .collection("users")
-        .doc(studentId);
-      
+      const userRef = firebase.firestore().collection("users").doc(studentId);
+
       batch.update(userRef, {
         "academicInfo.classId": null,
+        "academicInfo.className": null,
       });
 
       await batch.commit();

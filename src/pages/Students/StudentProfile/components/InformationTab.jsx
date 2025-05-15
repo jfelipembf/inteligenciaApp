@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Badge } from "reactstrap";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Badge,
+} from "reactstrap";
 
 const InformationTab = ({ studentData }) => {
   const [formData, setFormData] = useState({
@@ -11,12 +22,12 @@ const InformationTab = ({ studentData }) => {
     registration: "",
     grade: "",
     class: "",
-    parentName: "Maria Silva",
-    parentPhone: "(79) 99999-2222",
-    parentEmail: "maria.silva@email.com",
-    parentCpf: "987.654.321-00",
-    address: "Rua das Flores, 123, Aracaju - SE",
-    cep: "49000-000"
+    parentName: "",
+    parentPhone: "",
+    parentEmail: "",
+
+    address: "",
+    cep: "",
   });
 
   // Atualizar o formulário quando os dados do aluno mudarem
@@ -28,10 +39,12 @@ const InformationTab = ({ studentData }) => {
         email: studentData.personalInfo?.email || "",
         phone: studentData.personalInfo?.phone || "",
         birthDate: studentData.personalInfo?.birthDate || "",
-        cpf: studentData.personalInfo?.cpf || "",
         registration: studentData.academicInfo?.registration || "",
         grade: studentData.academicInfo?.grade || "",
-        class: studentData.academicInfo?.classId || "",
+        class: studentData.academicInfo?.className || "",
+        parentName: studentData.guardian?.name || "",
+        parentPhone: studentData.guardian?.phone || "",
+        parentEmail: studentData.guardian?.email || "",
       });
     }
   }, [studentData]);
@@ -40,7 +53,7 @@ const InformationTab = ({ studentData }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -52,22 +65,22 @@ const InformationTab = ({ studentData }) => {
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    
+
     // Se já estiver no formato dd/mm/aaaa, retornar como está
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
       return dateString;
     }
-    
+
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return dateString;
-      
+
       return date.toLocaleString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       });
     } catch (error) {
       return dateString;
@@ -75,11 +88,15 @@ const InformationTab = ({ studentData }) => {
   };
 
   // Determinar se o aluno está ativo (baseado no ID para demonstração)
-  const isActive = studentData?.id ? studentData.id.charCodeAt(0) % 2 === 0 : true;
-  
+  const isActive = studentData?.id
+    ? studentData.id.charCodeAt(0) % 2 === 0
+    : true;
+
   // Determinar se o aluno tem o app instalado (aleatório para demonstração)
-  const hasApp = studentData?.id ? studentData.id.charCodeAt(0) % 3 !== 0 : false;
-  
+  const hasApp = studentData?.id
+    ? studentData.id.charCodeAt(0) % 3 !== 0
+    : false;
+
   // Último acesso (data atual para demonstração)
   const lastAccess = new Date().toISOString();
 
@@ -98,11 +115,17 @@ const InformationTab = ({ studentData }) => {
                         <i className="mdi mdi-cellphone-android font-size-24 text-primary me-3"></i>
                       </div>
                       <div className="flex-grow-1">
-                        <h5 className="font-size-15 mb-1">Aplicativo Instalado</h5>
+                        <h5 className="font-size-15 mb-1">
+                          Aplicativo Instalado
+                        </h5>
                         {hasApp ? (
-                          <Badge color="success" className="px-2 py-1">Sim</Badge>
+                          <Badge color="success" className="px-2 py-1">
+                            Sim
+                          </Badge>
                         ) : (
-                          <Badge color="danger" className="px-2 py-1">Não</Badge>
+                          <Badge color="danger" className="px-2 py-1">
+                            Não
+                          </Badge>
                         )}
                       </div>
                     </div>
@@ -116,7 +139,9 @@ const InformationTab = ({ studentData }) => {
                       </div>
                       <div className="flex-grow-1">
                         <h5 className="font-size-15 mb-1">Último Acesso</h5>
-                        <p className="text-muted mb-0">{formatDate(lastAccess)}</p>
+                        <p className="text-muted mb-0">
+                          {formatDate(lastAccess)}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -173,16 +198,6 @@ const InformationTab = ({ studentData }) => {
                     onChange={handleChange}
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label for="cpf">CPF</Label>
-                  <Input
-                    type="text"
-                    id="cpf"
-                    name="cpf"
-                    value={formData.cpf}
-                    onChange={handleChange}
-                  />
-                </FormGroup>
               </CardBody>
             </Card>
           </Col>
@@ -200,16 +215,7 @@ const InformationTab = ({ studentData }) => {
                     onChange={handleChange}
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label for="grade">Série</Label>
-                  <Input
-                    type="text"
-                    id="grade"
-                    name="grade"
-                    value={formData.grade}
-                    onChange={handleChange}
-                  />
-                </FormGroup>
+
                 <FormGroup>
                   <Label for="class">Turma</Label>
                   <Input
@@ -223,7 +229,10 @@ const InformationTab = ({ studentData }) => {
                 <FormGroup>
                   <Label for="status">Status</Label>
                   <div>
-                    <Badge color={isActive ? "success" : "danger"} className="px-3 py-2">
+                    <Badge
+                      color={isActive ? "success" : "danger"}
+                      className="px-3 py-2"
+                    >
                       {isActive ? "Ativo" : "Inativo"}
                     </Badge>
                   </div>
@@ -273,18 +282,6 @@ const InformationTab = ({ studentData }) => {
                         id="parentEmail"
                         name="parentEmail"
                         value={formData.parentEmail}
-                        onChange={handleChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for="parentCpf">CPF do Responsável</Label>
-                      <Input
-                        type="text"
-                        id="parentCpf"
-                        name="parentCpf"
-                        value={formData.parentCpf}
                         onChange={handleChange}
                       />
                     </FormGroup>

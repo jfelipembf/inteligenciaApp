@@ -1,6 +1,9 @@
 import React from "react";
 import { Card, CardBody, Row, Col, Badge } from "reactstrap";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useStudentsContext } from "../../../../contexts/StudentsContext";
+import { useClassContext } from "../../../../contexts/ClassContext";
 
 // Import images
 import profileImg from "../../../../assets/images/profile-img.png";
@@ -13,7 +16,15 @@ import avatar6 from "../../../../assets/images/users/avatar-6.jpg";
 import avatar7 from "../../../../assets/images/users/avatar-7.jpg";
 import avatar8 from "../../../../assets/images/users/avatar-8.jpg";
 
-const WelcomeCard = ({ studentData }) => {
+const WelcomeCard = () => {
+  const { id } = useParams();
+  const { students, loading } = useStudentsContext();
+  const { classes } = useClassContext();
+
+  const studentData = students.find((s) => s.id === id);
+
+  console.log("classes card", classes);
+
   // Função para obter o avatar com base no ID do aluno
   const getAvatarByStudentId = (studentId) => {
     if (!studentId) return avatar1;
