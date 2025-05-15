@@ -22,8 +22,10 @@ import Dropzone from "react-dropzone";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useSaveEvent from "../../hooks/useSaveEvent";
-
+import uploadToFirebase from "../../utils/uploadToFirebase";
 import { useClassContext } from "../../contexts/ClassContext";
+import useUser from "../../hooks/useUser";
+import { v4 as uuidv4 } from "uuid";
 
 // Dados de exemplo para turmas
 const CLASS_OPTIONS = [
@@ -91,7 +93,8 @@ const CreateEvent = () => {
   const { id } = useParams();
   const isEditMode = !!id;
   const { saveEvent, loading: savingEvent } = useSaveEvent();
-
+  const { userDetails } = useUser();
+  const schoolId = userDetails?.schoolId;
   const [formData, setFormData] = useState({
     name: "",
     startDate: "",
@@ -226,6 +229,16 @@ const CreateEvent = () => {
       setLoading(true);
 
       try {
+        const pathId = `${uuidv4()}`;
+
+        if (selectedFiles.length > 0) {
+          await uploadToFirebase(
+            selectedFiles[0],
+            `events/${pathId}`,
+            schoolId
+          );
+        }
+
         const eventData = {
           name: formData.name,
           startDate: formData.startDate,
@@ -239,7 +252,7 @@ const CreateEvent = () => {
           location: formData.location,
           value: formData.value || "Gratuito",
           notes: formData.notes,
-          image: selectedFiles.length > 0 ? selectedFiles[0].name : null,
+          gallery: pathId,
         };
 
         await saveEvent(eventData);

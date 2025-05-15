@@ -21,7 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import TableContainer from "../../components/Common/TableContainer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useFetchEvents from "../../hooks/useFetchEvents";
+import { useEventsContext } from "../../contexts/EventsContext";
 import useUpdateEventStatuses from "../../hooks/useUpdateEventStatuses";
 
 // Constantes para status de evento
@@ -80,7 +80,7 @@ const SAMPLE_EVENTS = [
 
 const Events = () => {
   const navigate = useNavigate();
-  const { events, loading, error, refetch } = useFetchEvents();
+  const { events, loading, error, refetch } = useEventsContext();
   const { updateEventStatuses, loading: updatingStatuses } =
     useUpdateEventStatuses();
   const [deleteModal, setDeleteModal] = useState(false);

@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
+import { EventsProvider } from "../contexts/EventsContext";
 
 // Pages Component
 // import Chat from "../pages/Chat/Chat";
@@ -236,6 +237,10 @@ import GradesPage from "../pages/Grades/GradesPage";
 
 import GradesListPage from "../pages/Grades/GradesListPage";
 
+const EventsRoutes = ({ children }) => (
+  <EventsProvider>{children}</EventsProvider>
+);
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
@@ -450,9 +455,24 @@ const authProtectedRoutes = [
   { path: "/financeiro/caixa", component: <Caixa /> },
 
   // Rotas de Eventos
-  { path: "/events", component: <Events /> },
+  {
+    path: "/events",
+    component: (
+      <EventsRoutes>
+        {" "}
+        <Events />
+      </EventsRoutes>
+    ),
+  },
   { path: "/events/create", component: <CreateEvent /> },
-  { path: "/events/:id", component: <ViewEvent /> },
+  {
+    path: "/events/:id",
+    component: (
+      <EventsRoutes>
+        <ViewEvent />
+      </EventsRoutes>
+    ),
+  },
   { path: "/events/:id/edit", component: <CreateEvent /> },
 
   // Rotas de Notificações
