@@ -40,9 +40,31 @@ const ViewEvent = () => {
   const [gallery, setGallery] = useState([]);
   const [uploading, setUploading] = useState(false);
 
+  const CACHE_EXPIRATION = 1000 * 60 * 60; // expirar o cache após uma hora
+
   useEffect(() => {
     const fetchGalleryImages = async () => {
       if (event && event.gallery && schoolId) {
+        const cacheKey = `gallery_${schoolId}_${event.gallery}`;
+        const cacheRaw = localStorage.getItem(cacheKey);
+        let cache;
+        if (cacheRaw) {
+          try {
+            cache = JSON.parse(cacheRaw);
+          } catch {
+            cache = null;
+          }
+        }
+        const now = Date.now();
+        if (
+          cache &&
+          cache.urls &&
+          cache.timestamp &&
+          now - cache.timestamp < CACHE_EXPIRATION
+        ) {
+          setGallery(cache.urls);
+          return;
+        }
         try {
           const storageRef = firebase
             .storage()
@@ -52,6 +74,10 @@ const ViewEvent = () => {
             result.items.map((itemRef) => itemRef.getDownloadURL())
           );
           setGallery(urls);
+          localStorage.setItem(
+            cacheKey,
+            JSON.stringify({ urls, timestamp: now })
+          );
         } catch (err) {
           toast.error("Erro ao buscar imagens da galeria: " + err.message);
           setGallery([]);
@@ -72,11 +98,10 @@ const ViewEvent = () => {
     setUploading(true);
     try {
       for (const file of files) {
-        // Salva na pasta correta
         await uploadToFirebase(file, `events/${event.gallery}`, schoolId);
       }
       toast.success("Imagens adicionadas com sucesso!");
-      // Atualiza a galeria após upload
+      // Atualiza a galeria e o cache após upload
       const storageRef = firebase
         .storage()
         .ref(`${schoolId}/events/${event.gallery}`);
@@ -85,12 +110,15 @@ const ViewEvent = () => {
         result.items.map((itemRef) => itemRef.getDownloadURL())
       );
       setGallery(urls);
+      localStorage.setItem(
+        `gallery_${schoolId}_${event.gallery}`,
+        JSON.stringify({ urls, timestamp: Date.now() })
+      );
     } catch (err) {
       toast.error("Erro ao adicionar imagens: " + err.message);
     }
     setUploading(false);
   };
-
   if (loading) return <p>Carregando evento...</p>;
   if (error) return <p>Erro ao carregar evento: {error}</p>;
   if (!event) return <p>Evento não encontrado.</p>;
