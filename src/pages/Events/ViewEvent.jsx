@@ -40,7 +40,7 @@ const ViewEvent = () => {
   const [gallery, setGallery] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const CACHE_EXPIRATION = 1000 * 60 * 60; // expirar o cache após uma hora
+  const CACHE_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 
   useEffect(() => {
     const fetchGalleryImages = async () => {
