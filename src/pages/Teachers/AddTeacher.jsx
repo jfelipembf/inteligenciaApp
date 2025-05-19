@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Spinner } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Spinner,
+} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask";
@@ -37,23 +49,25 @@ const AddTeacher = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const searchCep = async (cep) => {
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
+      const response = await fetch(
+        `https://viacep.com.br/ws/${cep.replace(/\D/g, "")}/json/`
+      );
       const data = await response.json();
       if (!data.erro) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           street: data.logradouro,
           neighborhood: data.bairro,
           city: data.localidade,
-          state: data.uf
+          state: data.uf,
         }));
       }
     } catch (error) {
@@ -62,7 +76,7 @@ const AddTeacher = () => {
   };
 
   const handleCepBlur = (e) => {
-    const cep = e.target.value.replace(/\D/g, '');
+    const cep = e.target.value.replace(/\D/g, "");
     if (cep.length === 8) {
       searchCep(cep);
     }
@@ -89,7 +103,9 @@ const AddTeacher = () => {
         professionalInfo: {
           registration: formData.registration,
           specialization: formData.specialization,
-          subjects: formData.subjects.split(',').map(subject => subject.trim()),
+          subjects: formData.subjects
+            .split(",")
+            .map((subject) => subject.trim()),
         },
         address: {
           cep: formData.cep,
@@ -98,15 +114,15 @@ const AddTeacher = () => {
           complement: formData.complement,
           neighborhood: formData.neighborhood,
           city: formData.city,
-          state: formData.state
-        }
+          state: formData.state,
+        },
       };
 
       await createTeacher({
         email: formData.email,
         password: formData.password,
         userData,
-        profileImage: formData.profileImage
+        profileImage: formData.profileImage,
       });
 
       alert("Professor cadastrado com sucesso!");
@@ -125,7 +141,9 @@ const AddTeacher = () => {
             <Col lg={12}>
               <Card>
                 <CardBody>
-                  <h4 className="card-title mb-4">Cadastro de Novo Professor</h4>
+                  <h4 className="card-title mb-4">
+                    Cadastro de Novo Professor
+                  </h4>
                   <Form onSubmit={handleSubmit}>
                     {/* Foto de Perfil */}
                     <FormGroup className="mb-4">
@@ -136,9 +154,9 @@ const AddTeacher = () => {
                           onImageChange={(e) => {
                             const file = e.target.files[0];
                             if (file) {
-                              setFormData(prev => ({
+                              setFormData((prev) => ({
                                 ...prev,
-                                profileImage: file
+                                profileImage: file,
                               }));
                             }
                           }}
@@ -260,7 +278,9 @@ const AddTeacher = () => {
                       </Col>
                     </Row>
 
-                    <h5 className="font-size-14 mb-3 mt-4">Dados Profissionais</h5>
+                    <h5 className="font-size-14 mb-3 mt-4">
+                      Dados Profissionais
+                    </h5>
                     <Row>
                       <Col md={4}>
                         <FormGroup className="mb-3">
@@ -435,9 +455,9 @@ const AddTeacher = () => {
                           "Salvar"
                         )}
                       </Button>
-                      <Button 
-                        type="button" 
-                        color="secondary" 
+                      <Button
+                        type="button"
+                        color="secondary"
                         onClick={() => navigate("/teachers")}
                         disabled={loading}
                       >
@@ -446,9 +466,7 @@ const AddTeacher = () => {
                     </div>
 
                     {error && (
-                      <div className="alert alert-danger mt-3">
-                        {error}
-                      </div>
+                      <div className="alert alert-danger mt-3">{error}</div>
                     )}
                   </Form>
                 </CardBody>

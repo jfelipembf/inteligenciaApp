@@ -8,13 +8,14 @@ import "firebase/compat/storage";
  * @param {string} schoolId - O ID da escola para organizar os arquivos no Storage.
  * @returns {Promise<string>} - Retorna a URL de download do arquivo.
  */
-const uploadToFirebase = async (file, path, schoolId) => {
+const uploadToFirebase = async (file, path, schoolId, customFileName) => {
   if (!file) throw new Error("Nenhum arquivo fornecido para upload.");
   if (!schoolId) throw new Error("schoolId não fornecido.");
 
   const storageRef = firebase.storage().ref();
+  const fileName = customFileName || file.name;
 
-  const fileRef = storageRef.child(`${schoolId}/${path}/${file.name}`); // Define o caminho no Storage
+  const fileRef = storageRef.child(`${schoolId}/${path}/${fileName}`); // Define o caminho no Storage
   await fileRef.put(file); // Faz o upload do arquivo
 };
 

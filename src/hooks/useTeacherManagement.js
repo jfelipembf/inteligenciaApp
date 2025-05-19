@@ -4,6 +4,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import useUser from "./useUser";
+import uploadToFirebase from "../utils/uploadToFirebase";
 
 export const useTeacherManagement = () => {
   const [loading, setLoading] = useState(false);
@@ -40,14 +41,17 @@ export const useTeacherManagement = () => {
       const newUserUid = userCredential.user.uid;
 
       // Upload da foto de perfil se existir
-      let profileImageUrl = null;
+      let avatarImage = null;
       if (profileImage) {
-        console.log("Fazendo upload da imagem de perfil...");
-        const storageRef = firebase.storage().ref();
-        const imageRef = storageRef.child(`profile_images/${newUserUid}`);
-        await imageRef.put(profileImage);
-        profileImageUrl = await imageRef.getDownloadURL();
-        console.log("Imagem de perfil carregada com sucesso:", profileImageUrl);
+        const ext = profileImage.name.split(".").pop();
+        const fileName = `${newUserUid}.${ext}`;
+        await uploadToFirebase(
+          profileImage,
+          `profileImages`,
+          schoolId,
+          fileName
+        );
+        avatarImage = fileName;
       }
 
       // Preparar dados do usuário para o Firestore
@@ -59,7 +63,7 @@ export const useTeacherManagement = () => {
         personalInfo: {
           ...userData.personalInfo,
           email,
-          profileImage: profileImageUrl,
+          avatar: avatarImage,
         },
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
