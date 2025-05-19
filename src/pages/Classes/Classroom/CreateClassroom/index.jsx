@@ -47,6 +47,8 @@ const CreateClassroom = () => {
     room: "",
   });
 
+  console.log("professores", teachers);
+
   useEffect(() => {
     const fetchClass = async () => {
       try {
@@ -202,6 +204,7 @@ const CreateClassroom = () => {
         teacher: {
           value: formData.teacher?.value, // ID do professor
           label: formData.teacher?.label, // Nome do professor
+          avatar: formData.teacher?.avatar ?? null, // Avatar do professor
         },
       };
 
