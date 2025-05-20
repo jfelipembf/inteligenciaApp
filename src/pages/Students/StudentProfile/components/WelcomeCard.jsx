@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useStudentsContext } from "../../../../contexts/StudentsContext";
 import { useClassContext } from "../../../../contexts/ClassContext";
+import useUser from "../../../../hooks/useUser";
 
 // Import images
 import profileImg from "../../../../assets/images/profile-img.png";
@@ -20,6 +21,13 @@ const WelcomeCard = () => {
   const { id } = useParams();
   const { students, loading } = useStudentsContext();
   const { classes } = useClassContext();
+  const { userDetails } = useUser();
+
+  if (!userDetails?.schoolId) {
+    throw new Error("schoolId não encontrado no usuário.");
+  }
+
+  const schoolId = userDetails.schoolId;
 
   const studentData = students.find((s) => s.id === id);
 
@@ -81,6 +89,18 @@ const WelcomeCard = () => {
   const className = studentData?.academicInfo?.className || "N/A";
   const birthDate = formatDate(studentData?.personalInfo?.birthDate);
 
+  const avatar_cacheKey = `avatar_${schoolId}_${studentData?.personalInfo?.avatar}`;
+  const avatar_cached = localStorage.getItem(avatar_cacheKey);
+
+  let avatarUrl = null;
+  if (avatar_cached) {
+    try {
+      avatarUrl = JSON.parse(avatar_cached).url;
+    } catch {
+      avatarUrl = null;
+    }
+  }
+
   return (
     <React.Fragment>
       <Card className="overflow-hidden">
@@ -102,7 +122,7 @@ const WelcomeCard = () => {
             <Col sm="4">
               <div className="avatar-md profile-user-wid mb-4">
                 <img
-                  src={getAvatarByStudentId(studentData?.id)}
+                  src={avatarUrl || getAvatarByStudentId(studentData?.id)}
                   alt=""
                   className="img-thumbnail rounded-circle"
                 />
