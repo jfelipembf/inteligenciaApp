@@ -85,8 +85,8 @@ const WelcomeCard = () => {
 
   // Extrair informações do aluno
   const studentName = studentData?.personalInfo?.name || "Nome do Aluno";
-  const registration = studentData?.academicInfo?.registration || "N/A";
-  const className = studentData?.academicInfo?.className || "N/A";
+  const registration = studentData?.academicInfo?.registration || "Não possui";
+  const className = studentData?.academicInfo?.className || "Não possui";
   const birthDate = formatDate(studentData?.personalInfo?.birthDate);
 
   const avatar_cacheKey = `avatar_${schoolId}_${studentData?.personalInfo?.avatar}`;
@@ -139,9 +139,11 @@ const WelcomeCard = () => {
                     <h5 className="font-size-15">Data de Nascimento</h5>
                     <p className="text-muted mb-0">{birthDate}</p>
                     <h5 className="font-size-15 mt-3">Turma</h5>
-                    <p className="text-muted mb-0">{className}</p>
+                    <p className="text-muted mb-0">
+                      {className || "Não possui"}
+                    </p>
                   </Col>
-                  <Col xs="6">
+                  {/*<Col xs="6">
                     <div className="d-flex align-items-start justify-content-between">
                       <div className="text-center" style={{ minWidth: "80px" }}>
                         <Badge
@@ -185,7 +187,7 @@ const WelcomeCard = () => {
                         </Link>
                       </div>
                     </div>
-                  </Col>
+                  </Col>*/}
                 </Row>
               </div>
             </Col>

@@ -41,7 +41,7 @@ const InformationTab = ({ studentData }) => {
         birthDate: studentData.personalInfo?.birthDate || "",
         registration: studentData.academicInfo?.registration || "",
         grade: studentData.academicInfo?.grade || "",
-        class: studentData.academicInfo?.className || "",
+        class: studentData.academicInfo?.className || "Não possui",
         parentName: studentData.guardian?.name || "",
         parentPhone: studentData.guardian?.phone || "",
         parentEmail: studentData.guardian?.email || "",
@@ -166,6 +166,7 @@ const InformationTab = ({ studentData }) => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
                 <FormGroup>
@@ -176,6 +177,7 @@ const InformationTab = ({ studentData }) => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
                 <FormGroup>
@@ -186,6 +188,7 @@ const InformationTab = ({ studentData }) => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
                 <FormGroup>
@@ -196,6 +199,7 @@ const InformationTab = ({ studentData }) => {
                     name="birthDate"
                     value={formData.birthDate}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
               </CardBody>
@@ -213,6 +217,7 @@ const InformationTab = ({ studentData }) => {
                     name="registration"
                     value={formData.registration}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
 
@@ -224,9 +229,10 @@ const InformationTab = ({ studentData }) => {
                     name="class"
                     value={formData.class}
                     onChange={handleChange}
+                    disabled
                   />
                 </FormGroup>
-                <FormGroup>
+                {/*<FormGroup>
                   <Label for="status">Status</Label>
                   <div>
                     <Badge
@@ -236,7 +242,7 @@ const InformationTab = ({ studentData }) => {
                       {isActive ? "Ativo" : "Inativo"}
                     </Badge>
                   </div>
-                </FormGroup>
+                </FormGroup>*/}
               </CardBody>
             </Card>
           </Col>
@@ -257,6 +263,7 @@ const InformationTab = ({ studentData }) => {
                         name="parentName"
                         value={formData.parentName}
                         onChange={handleChange}
+                        disabled
                       />
                     </FormGroup>
                   </Col>
@@ -269,6 +276,7 @@ const InformationTab = ({ studentData }) => {
                         name="parentPhone"
                         value={formData.parentPhone}
                         onChange={handleChange}
+                        disabled
                       />
                     </FormGroup>
                   </Col>
@@ -283,6 +291,7 @@ const InformationTab = ({ studentData }) => {
                         name="parentEmail"
                         value={formData.parentEmail}
                         onChange={handleChange}
+                        disabled
                       />
                     </FormGroup>
                   </Col>
@@ -292,13 +301,13 @@ const InformationTab = ({ studentData }) => {
           </Col>
         </Row>
 
-        <Row className="mt-4">
+        {/*<Row className="mt-4">
           <Col className="text-end">
             <Button color="primary" type="submit">
               Salvar Alterações
             </Button>
           </Col>
-        </Row>
+        </Row>*/}
       </Form>
     </React.Fragment>
   );
