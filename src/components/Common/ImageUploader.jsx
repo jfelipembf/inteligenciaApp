@@ -9,7 +9,10 @@ const ImageUploader = ({ image, onImageChange }) => {
   };
 
   return (
-    <div className="position-relative" style={{ width: "150px", height: "150px" }}>
+    <div
+      className="position-relative"
+      style={{ width: "150px", height: "150px" }}
+    >
       <div
         className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
         style={{
@@ -17,7 +20,7 @@ const ImageUploader = ({ image, onImageChange }) => {
           height: "150px",
           border: "2px dashed #ccc",
           cursor: "pointer",
-          backgroundColor: "#f8f9fa"
+          backgroundColor: "#f8f9fa",
         }}
         onClick={handleClick}
       >
@@ -28,11 +31,14 @@ const ImageUploader = ({ image, onImageChange }) => {
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "cover"
+              objectFit: "cover",
             }}
           />
         ) : (
-          <i className="bx bx-user-circle text-muted" style={{ fontSize: "64px" }}></i>
+          <i
+            className="bx bx-user-circle text-muted"
+            style={{ fontSize: "64px" }}
+          ></i>
         )}
       </div>
       <div
@@ -43,13 +49,13 @@ const ImageUploader = ({ image, onImageChange }) => {
           backgroundColor: "#556ee6",
           bottom: "10px",
           right: "10px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         onClick={handleClick}
       >
         <i className="bx bx-pencil text-white" style={{ fontSize: "18px" }}></i>
       </div>
-      <Input
+      <input
         type="file"
         ref={inputRef}
         className="d-none"

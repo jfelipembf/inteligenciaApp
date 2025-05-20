@@ -18,6 +18,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import { useStudentsContext } from "../../contexts/StudentsContext";
 import { useClassContext } from "../../contexts/ClassContext";
 import useUser from "../../hooks/useUser";
+import useStudentAvatars from "../../hooks/useStudentAvatars";
 
 // Importar imagens de avatar
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
@@ -43,12 +44,17 @@ const Students = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState("");
   const [pageLoading, setPageLoading] = useState(true);
+  const { userDetails } = useUser();
+  const schoolId = userDetails?.schoolId;
 
   // Estado local para dados
   const [studentsData, setStudentsData] = useState([]);
   const [classesData, setClassesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  // Busca avatars
+  const avatarUrls = useStudentAvatars(studentsData, schoolId);
 
   // Uso dos hooks para buscar dados com tratamento de erros
   const {
@@ -520,7 +526,10 @@ const Students = () => {
                               <div className="text-center mb-3">
                                 <div className="avatar-sm mx-auto mb-3">
                                   <img
-                                    src={getAvatarByStudentId(student.id)}
+                                    src={
+                                      avatarUrls[student.id] ||
+                                      getAvatarByStudentId(student.id) // fallback para avatar padrão
+                                    }
                                     alt={student.personalInfo?.name || "Aluno"}
                                     className="img-thumbnail rounded-circle"
                                   />
