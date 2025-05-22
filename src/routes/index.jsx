@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
 import { EventsProvider } from "../contexts/EventsContext";
+import RoleProtectedRoute from "./roleProtectedRoutes";
 
 // Pages Component
 // import Chat from "../pages/Chat/Chat";
@@ -263,7 +264,14 @@ const authProtectedRoutes = [
   { path: "/attendances", component: <Attendances /> },
 
   // Grades
-  { path: "/grades", component: <GradesPage /> },
+  {
+    path: "/grades",
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <GradesPage />
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/grades-list", component: <GradesListPage /> },
 
   // Classes
