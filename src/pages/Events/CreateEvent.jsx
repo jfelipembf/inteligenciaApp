@@ -253,6 +253,7 @@ const CreateEvent = () => {
           value: formData.value || "Gratuito",
           notes: formData.notes,
           gallery: pathId,
+          cover: selectedFiles.length > 0 ? selectedFiles[0].name : null,
         };
 
         await saveEvent(eventData);

@@ -128,9 +128,67 @@ const ViewEvent = () => {
       <Button color="light" onClick={() => navigate("/events")}>
         ← Voltar para eventos
       </Button>
+
       <Card className="mt-3">
         <CardBody>
-          <CardTitle tag="h2">{event.name}</CardTitle>
+          {event.cover && (
+            <div
+              style={{
+                width: "100%",
+                height: 280,
+                borderRadius: 16,
+                overflow: "hidden",
+                boxShadow: "0 4px 24px #007bff22",
+                marginBottom: 24,
+                border: "2.5px solid #007bff",
+                background: "#eaf4ff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              <img
+                src={gallery.find((img) => img.includes(event.cover))}
+                alt=""
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "brightness(0.7)",
+                  display: "block",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                  background: "linear-gradient(0deg, #222b 70%, #2220 100%)",
+                  padding: "24px 0 16px 0",
+                  textAlign: "center",
+                }}
+              >
+                <h1
+                  style={{
+                    color: "#fff",
+                    fontWeight: 800,
+                    fontSize: "2.1rem",
+                    textShadow:
+                      "0 2px 16px #000b, 0 1px 0 #007bff99, 0 0 8px #0008",
+                    letterSpacing: 1,
+                    margin: 0,
+                    padding: "0 16px",
+                    lineHeight: "1.2",
+                  }}
+                >
+                  {event.name}
+                </h1>
+              </div>
+            </div>
+          )}
+
           <Row>
             <Col md={8}>
               <p>
