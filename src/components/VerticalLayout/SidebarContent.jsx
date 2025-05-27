@@ -154,7 +154,7 @@ const SidebarContent = (props) => {
             {/* Dashboards */}
             <li>
               <Link to="/#" className="has-arrow">
-                <i className="bx bx-home-circle"></i>
+                <i className="bx bx-line-chart"></i>
                 <span>{props.t("Dashboards")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">

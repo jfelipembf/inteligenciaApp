@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const quickLinks = [
-  { to: "/dashboard", icon: "bx bx-home-circle", label: "Dashboard" },
+  { to: "/dashboard", icon: "bx bx-line-chart", label: "Dashboard" },
   { to: "/students", icon: "bx bx-user-circle", label: "Alunos" },
   { to: "/teachers", icon: "bx bx-user-pin", label: "Professores" },
   { to: "/classes", icon: "bx bx-group", label: "Turmas" },
