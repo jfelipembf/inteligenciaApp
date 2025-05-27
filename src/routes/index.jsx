@@ -8,6 +8,12 @@ import RoleProtectedRoute from "./roleProtectedRoutes";
 // Pages Component
 // import Chat from "../pages/Chat/Chat";
 
+//  // Home
+import Home from "../pages/Home/Home";
+
+// // Unauthorized
+import Unauthorized from "../pages/Unauthorized/Unauthorized";
+
 // // File Manager
 import FileManager from "../pages/FileManager/index";
 
@@ -259,6 +265,9 @@ const authProtectedRoutes = [
   { path: "/blog", component: <Blog /> },
   { path: "/dashboard-job", component: <DashboardJob /> },
 
+  // Home
+  { path: "/home", component: <Home /> },
+
   // Attendance
   { path: "/create-attendance", component: <NewAttendance /> },
   { path: "/attendances", component: <Attendances /> },
@@ -382,6 +391,9 @@ const authProtectedRoutes = [
   { path: "/charts-knob", component: <ChartsKnob /> },
   { path: "/re-charts", component: <ReCharts /> },
 
+  //    // Unauthorized
+  { path: "/unauthorized", component: <Unauthorized /> },
+
   //   // Icons
   { path: "/icons-boxicons", component: <IconBoxicons /> },
   { path: "/icons-dripicons", component: <IconDripicons /> },
@@ -503,7 +515,7 @@ const authProtectedRoutes = [
 
   //   // this route should be at the end of all other routes
   //   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: <Navigate to="/dashboard-gestor" /> },
+  { path: "/", exact: true, component: <Navigate to="/home" /> },
 ];
 
 const publicRoutes = [
