@@ -21,6 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TableContainer from "../../components/Common/TableContainer";
+import { useNotificationsContext } from "../../contexts/NotificationsContext";
 
 // Função utilitária para extrair texto de valores que podem ser objetos
 const getTextValue = (value) => {
@@ -44,91 +45,102 @@ const SAMPLE_NOTIFICATIONS = [
   {
     id: "not001",
     title: "Reunião de Pais e Mestres",
-    message: "Informamos que a reunião de pais e mestres ocorrerá no próximo sábado às 9h.",
+    message:
+      "Informamos que a reunião de pais e mestres ocorrerá no próximo sábado às 9h.",
     target: { type: "Turmas", value: ["1º Ano A", "1º Ano B"] },
     sentBy: "Maria Silva",
     sentDate: "2025-04-10T14:30:00",
-    status: "Enviada"
+    status: "Enviada",
   },
   {
     id: "not002",
     title: "Alteração no Calendário Escolar",
-    message: "Informamos que o dia 20/05 será feriado escolar devido ao dia do professor.",
+    message:
+      "Informamos que o dia 20/05 será feriado escolar devido ao dia do professor.",
     target: { type: "Escola", value: "Todos" },
     sentBy: "João Diretor",
     sentDate: "2025-04-05T10:15:00",
-    status: "Enviada"
+    status: "Enviada",
   },
   {
     id: "not003",
     title: "Aula de Reforço de Matemática",
-    message: "Haverá aula de reforço de matemática na próxima terça-feira às 14h.",
+    message:
+      "Haverá aula de reforço de matemática na próxima terça-feira às 14h.",
     target: { type: "Série", value: "3º Ano" },
     sentBy: "Carlos Matemática",
     sentDate: "2025-04-12T08:45:00",
-    status: "Enviada"
+    status: "Enviada",
   },
   {
     id: "not004",
     title: "Aviso sobre Uniforme",
-    message: "Lembramos que o uso do uniforme completo é obrigatório a partir de segunda-feira.",
+    message:
+      "Lembramos que o uso do uniforme completo é obrigatório a partir de segunda-feira.",
     target: { type: "Turno", value: "Matutino" },
     sentBy: "Ana Coordenadora",
     sentDate: "2025-04-08T16:20:00",
-    status: "Enviada"
+    status: "Enviada",
   },
   {
     id: "not005",
     title: "Entrega de Boletins",
-    message: "Os boletins do primeiro bimestre estarão disponíveis na secretaria a partir de amanhã.",
+    message:
+      "Os boletins do primeiro bimestre estarão disponíveis na secretaria a partir de amanhã.",
     target: { type: "Pessoa", value: "Maria Aluna" },
     sentBy: "Pedro Secretário",
     sentDate: "2025-04-13T11:30:00",
-    status: "Agendada"
-  }
+    status: "Agendada",
+  },
 ];
 
 const NotificationsList = () => {
   const navigate = useNavigate();
-  const [notificationList, setNotificationList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    receivedNotifications: notifications,
+    loading,
+    error,
+
+    fetchReceivedNotifications: fetchNotifications,
+    resetReceivedNotifications: resetNotifications,
+    sentNotifications,
+
+    hasMoreSent,
+    hasMoreReceived,
+    fetchSentNotifications,
+
+    resetSentNotifications,
+
+    fetchNotificationById,
+  } = useNotificationsContext();
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [notificationToDelete, setNotificationToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    // Carregar dados de notificações
-    setLoading(true);
-    
-    // Simulação de busca de dados
-    setTimeout(() => {
-      try {
-        setNotificationList(SAMPLE_NOTIFICATIONS);
-        setLoading(false);
-      } catch (err) {
-        setError("Erro ao carregar notificações: " + (err.message || "Erro desconhecido"));
-        setLoading(false);
-      }
-    }, 800);
+    resetNotifications();
+    fetchNotifications(true);
   }, []);
 
   // Função para formatar data
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleString('pt-BR');
+    return date.toLocaleString("pt-BR");
   };
 
   // Função para obter a descrição do público-alvo
   const getTargetDescription = (target) => {
     if (!target) return "N/A";
-    
+
     switch (target.type) {
       case "Pessoa":
         return `Pessoa: ${target.value}`;
       case "Turmas":
-        return `Turmas: ${Array.isArray(target.value) ? target.value.join(", ") : target.value}`;
+        return `Turmas: ${
+          Array.isArray(target.value) ? target.value.join(", ") : target.value
+        }`;
       case "Turno":
         return `Turno: ${target.value}`;
       case "Série":
@@ -142,7 +154,9 @@ const NotificationsList = () => {
 
   // Função para obter a cor do badge de status
   const getStatusBadgeColor = (status) => {
-    const statusOption = NOTIFICATION_STATUS_OPTIONS.find(option => option.value === status);
+    const statusOption = NOTIFICATION_STATUS_OPTIONS.find(
+      (option) => option.value === status
+    );
     return statusOption ? statusOption.color : "secondary";
   };
 
@@ -165,10 +179,12 @@ const NotificationsList = () => {
 
     try {
       setIsDeleting(true);
-      
+
       // Simulação de exclusão
       setTimeout(() => {
-        setNotificationList(notificationList.filter(item => item.id !== notificationToDelete.id));
+        setNotificationList(
+          notifications.filter((item) => item.id !== notificationToDelete.id)
+        );
         setDeleteModal(false);
         setNotificationToDelete(null);
         setIsDeleting(false);
@@ -177,7 +193,9 @@ const NotificationsList = () => {
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir a notificação:", err);
-      toast.error("Erro ao excluir a notificação: " + (err.message || "Erro desconhecido"));
+      toast.error(
+        "Erro ao excluir a notificação: " + (err.message || "Erro desconhecido")
+      );
     }
   };
 
@@ -191,11 +209,14 @@ const NotificationsList = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return (
-            <Link to={`/notifications/${cellProps.row.original.id}`} className="text-body fw-bold">
+            <Link
+              to={`/notifications/${cellProps.row.original.id}`}
+              className="text-body fw-bold"
+            >
               {getTextValue(cellProps.row.original.title) || "N/A"}
             </Link>
           );
-        }
+        },
       },
       {
         header: "Destinatários",
@@ -204,7 +225,7 @@ const NotificationsList = () => {
         enableSorting: false,
         cell: (cellProps) => {
           return getTargetDescription(cellProps.row.original.target);
-        }
+        },
       },
       {
         header: "Enviada por",
@@ -213,7 +234,7 @@ const NotificationsList = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return getTextValue(cellProps.row.original.sentBy) || "N/A";
-        }
+        },
       },
       {
         header: "Data de Envio",
@@ -222,7 +243,7 @@ const NotificationsList = () => {
         enableSorting: true,
         cell: (cellProps) => {
           return formatDate(cellProps.row.original.sentDate);
-        }
+        },
       },
       {
         header: "Status",
@@ -234,12 +255,14 @@ const NotificationsList = () => {
           return (
             <Badge
               color={getStatusBadgeColor(status)}
-              className={`badge-soft-${getStatusBadgeColor(status)} font-size-12`}
+              className={`badge-soft-${getStatusBadgeColor(
+                status
+              )} font-size-12`}
             >
               {status || "N/A"}
             </Badge>
           );
-        }
+        },
       },
       {
         header: "Ações",
@@ -252,7 +275,9 @@ const NotificationsList = () => {
                 <Button
                   color="soft-primary"
                   className="btn btn-sm btn-soft-primary"
-                  onClick={() => handleViewNotification(cellProps.row.original.id)}
+                  onClick={() =>
+                    handleViewNotification(cellProps.row.original.id)
+                  }
                 >
                   <i className="mdi mdi-eye-outline" />
                 </Button>
@@ -268,8 +293,8 @@ const NotificationsList = () => {
               </li>
             </ul>
           );
-        }
-      }
+        },
+      },
     ],
     []
   );
@@ -286,7 +311,9 @@ const NotificationsList = () => {
               <Card>
                 <CardBody className="border-bottom">
                   <div className="d-flex align-items-center">
-                    <h5 className="mb-0 card-title flex-grow-1">Lista de Notificações</h5>
+                    <h5 className="mb-0 card-title flex-grow-1">
+                      Lista de Notificações
+                    </h5>
                     <div className="flex-shrink-0">
                       <Button
                         color="primary"
@@ -295,9 +322,9 @@ const NotificationsList = () => {
                       >
                         <i className="bx bx-plus me-1"></i> Nova Notificação
                       </Button>
-                      <Button 
-                        color="light" 
-                        className="me-1" 
+                      <Button
+                        color="light"
+                        className="me-1"
                         onClick={() => {
                           setLoading(true);
                           setTimeout(() => {
@@ -334,7 +361,10 @@ const NotificationsList = () => {
                 <CardBody>
                   {loading ? (
                     <div className="text-center my-5">
-                      <div className="spinner-border text-primary" role="status">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
                         <span className="visually-hidden">Carregando...</span>
                       </div>
                       <p className="mt-2">Carregando notificações...</p>
@@ -343,14 +373,18 @@ const NotificationsList = () => {
                     <div className="text-center my-4 text-danger">
                       <i className="bx bx-error-circle display-4"></i>
                       <p className="mt-2">Erro ao carregar dados: {error}</p>
-                      <Button color="primary" onClick={() => setError(null)} className="mt-2">
+                      <Button
+                        color="primary"
+                        onClick={() => setError(null)}
+                        className="mt-2"
+                      >
                         <i className="bx bx-refresh me-1"></i> Tentar Novamente
                       </Button>
                     </div>
                   ) : (
                     <TableContainer
                       columns={columns}
-                      data={notificationList}
+                      data={notifications}
                       isCustomPageSize={true}
                       isGlobalFilter={true}
                       isJobListGlobalFilter={false}
@@ -367,16 +401,30 @@ const NotificationsList = () => {
           </Row>
 
           {/* Modal de confirmação de exclusão */}
-          <Modal isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)} centered={true} size="sm">
+          <Modal
+            isOpen={deleteModal}
+            toggle={() => setDeleteModal(!deleteModal)}
+            centered={true}
+            size="sm"
+          >
             <ModalHeader toggle={() => setDeleteModal(!deleteModal)}>
               Confirmar Exclusão
             </ModalHeader>
             <ModalBody>
-              <p>Tem certeza que deseja excluir a notificação "{notificationToDelete?.title}"?</p>
-              <p className="text-danger mb-0">Esta ação não pode ser desfeita.</p>
+              <p>
+                Tem certeza que deseja excluir a notificação "
+                {notificationToDelete?.title}"?
+              </p>
+              <p className="text-danger mb-0">
+                Esta ação não pode ser desfeita.
+              </p>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={handleDeleteNotification} disabled={isDeleting}>
+              <Button
+                color="danger"
+                onClick={handleDeleteNotification}
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Excluindo..." : "Sim, Excluir"}
               </Button>
               <Button color="secondary" onClick={() => setDeleteModal(false)}>

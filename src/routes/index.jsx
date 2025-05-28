@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
+import { UsersProvider } from "../contexts/UsersContext";
+import { NotificationsProvider } from "../contexts/NotificationsContext";
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
 import { EventsProvider } from "../contexts/EventsContext";
 import RoleProtectedRoute from "./roleProtectedRoutes";
@@ -598,8 +600,23 @@ const authProtectedRoutes = [
   { path: "/events/:id/edit", component: <CreateEvent /> },
 
   // Rotas de Notificações
-  { path: "/notifications", component: <Notifications /> },
-  { path: "/notifications/create", component: <CreateNotification /> },
+  {
+    path: "/notifications",
+    component: (
+      <NotificationsProvider>
+        {" "}
+        <Notifications />
+      </NotificationsProvider>
+    ),
+  },
+  {
+    path: "/notifications/create",
+    component: (
+      <UsersProvider>
+        <CreateNotification />
+      </UsersProvider>
+    ),
+  },
   { path: "/notifications/:id", component: <ViewNotification /> },
 
   // Rota de Configurações

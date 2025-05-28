@@ -17,7 +17,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { toast } from "react-toastify";
 import useUser from "../../hooks/useUser";
 import { useClassContext } from "../../contexts/ClassContext";
-import { useStudentsContext } from "../../contexts/StudentsContext";
+import { useUsersContext } from "../../contexts/UsersContext";
 import { useLessonsContext } from "../../contexts/LessonContext";
 import useCreateNotification from "../../hooks/useCreateNotification";
 
@@ -38,9 +38,25 @@ const CreateNotification = () => {
   const navigate = useNavigate();
   const { userDetails } = useUser();
   const { classes } = useClassContext();
-  const { students } = useStudentsContext();
+  const { users } = useUsersContext();
   const { lessons, setSelectedClassId } = useLessonsContext();
   const { sendNotification, loading } = useCreateNotification();
+
+  const groupedUsers = React.useMemo(() => {
+    const groups = {
+      aluno: [],
+      professor: [],
+      coordinator: [],
+      ceo: [],
+      // Adicione outros roles se necessário
+    };
+    users.forEach((user) => {
+      if (groups[user.role]) {
+        groups[user.role].push(user);
+      }
+    });
+    return groups;
+  }, [users]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -107,13 +123,13 @@ const CreateNotification = () => {
           : null;
       }
     } else if (formData.targetType === "individual") {
-      const selectedStudent = students.find(
-        (student) => student.id === formData.targetValue
+      const selectedUser = users.find(
+        (user) => user.id === formData.targetValue
       );
-      notificationData.individual = selectedStudent
+      notificationData.individual = selectedUser
         ? {
-            label: selectedStudent.personalInfo?.name,
-            value: selectedStudent.id,
+            label: selectedUser.personalInfo?.name,
+            value: selectedUser.id,
           }
         : null;
     } else if (formData.targetType === "turn") {
@@ -223,12 +239,31 @@ const CreateNotification = () => {
         onChange={handleInputChange}
         required
       >
-        <option value="">Selecione o aluno</option>
-        {students.map((student) => (
-          <option key={student.id} value={student.id}>
-            {student.personalInfo?.name || student.label}
-          </option>
-        ))}
+        <option value="">Selecione o destinatário</option>
+        {Object.entries(groupedUsers).map(([role, usersArr]) =>
+          usersArr.length > 0 ? (
+            <optgroup
+              key={role}
+              label={
+                role === "aluno"
+                  ? "Alunos"
+                  : role === "professor"
+                  ? "Professores"
+                  : role === "coordinator"
+                  ? "Coordenadores"
+                  : role === "ceo"
+                  ? "Direção"
+                  : role
+              }
+            >
+              {usersArr.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.personalInfo?.name || user.label}
+                </option>
+              ))}
+            </optgroup>
+          ) : null
+        )}
       </Input>
     );
   } else if (formData.targetType === "turn") {
@@ -315,7 +350,7 @@ const CreateNotification = () => {
                             : formData.targetType === "turn"
                             ? "Turno"
                             : formData.targetType === "individual"
-                            ? "Aluno"
+                            ? "Destinatário"
                             : "Destino"}
                         </Label>
                         {targetSelect}
