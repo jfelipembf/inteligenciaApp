@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
+import useUser from "../../hooks/useUser";
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
@@ -16,6 +17,8 @@ import { useCallback } from "react";
 const SidebarContent = (props) => {
   const ref = useRef();
   const path = useLocation();
+  const { userDetails } = useUser();
+  const role = userDetails?.role;
 
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active");
@@ -158,45 +161,57 @@ const SidebarContent = (props) => {
                 <span>{props.t("Dashboards")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
-                <li>
-                  <Link to="/dashboard-gestor">
-                    {props.t("Dashboard Gestor")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/dashboard-coordenador">
-                    {props.t("Dashboard Coordenador")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/dashboard-professor">
-                    {props.t("Dashboard Professor")}
-                  </Link>
-                </li>
+                {role === "ceo" && (
+                  <li>
+                    <Link to="/dashboard-gestor">
+                      {props.t("Dashboard Gestor")}
+                    </Link>
+                  </li>
+                )}
+                {role === "coordinator" && (
+                  <li>
+                    <Link to="/dashboard-coordenador">
+                      {props.t("Dashboard Coordenador")}
+                    </Link>
+                  </li>
+                )}
+                {role === "professor" && (
+                  <li>
+                    <Link to="/dashboard-professor">
+                      {props.t("Dashboard Professor")}
+                    </Link>
+                  </li>
+                )}
               </ul>
             </li>
 
             {/* Colaboradores */}
-            <li>
-              <Link to="/#" className="has-arrow">
-                <i className="bx bx-user-pin"></i>
-                <span>{props.t("Colaboradores")}</span>
-              </Link>
-              <ul className="sub-menu" aria-expanded="false">
-                <li>
-                  <Link to="/teachers">{props.t("Professores")}</Link>
-                </li>
-                <li>
-                  <Link to="/coordinators">{props.t("Coordenadores")}</Link>
-                </li>
-                <li>
-                  <Link to="/administrators">{props.t("Administradores")}</Link>
-                </li>
-                <li>
-                  <Link to="/staff">{props.t("Funcionários")}</Link>
-                </li>
-              </ul>
-            </li>
+            {(role === "ceo" || role === "coordinator") && (
+              <li>
+                <Link to="/#" className="has-arrow">
+                  <i className="bx bx-user-pin"></i>
+                  <span>{props.t("Colaboradores")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                  <li>
+                    <Link to="/teachers">{props.t("Professores")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/coordinators">{props.t("Coordenadores")}</Link>
+                  </li>
+                  {role === "ceo" && (
+                    <li>
+                      <Link to="/administrators">
+                        {props.t("Administradores")}
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <Link to="/staff">{props.t("Funcionários")}</Link>
+                  </li>
+                </ul>
+              </li>
+            )}
 
             {/* Comunicação */}
             <li>
@@ -245,11 +260,13 @@ const SidebarContent = (props) => {
                 <span>{props.t("Frequências")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
-                <li>
-                  <Link to="/create-attendance">
-                    {props.t("Registrar Frequência")}
-                  </Link>
-                </li>
+                {role === "professor" && (
+                  <li>
+                    <Link to="/create-attendance">
+                      {props.t("Registrar Frequência")}
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/attendances">
                     {props.t("Visualizar Frequências")}
@@ -259,24 +276,26 @@ const SidebarContent = (props) => {
             </li>
 
             {/* Atividades */}
-            <li>
-              <Link to="/#" className="has-arrow">
-                <i className="bx bx-clipboard font-size-18"></i>
-                <span>{props.t("Atividades")}</span>
-              </Link>
-              <ul className="sub-menu" aria-expanded="false">
-                <li>
-                  <Link to="/activities/add-activity">
-                    {props.t("Criar Atividade")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/activities">
-                    {props.t("Visualizar atividades")}
-                  </Link>
-                </li>
-              </ul>
-            </li>
+            {role === "professor" && (
+              <li>
+                <Link to="/#" className="has-arrow">
+                  <i className="bx bx-clipboard font-size-18"></i>
+                  <span>{props.t("Atividades")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                  <li>
+                    <Link to="/activities/add-activity">
+                      {props.t("Criar Atividade")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/activities">
+                      {props.t("Visualizar atividades")}
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
 
             {/* Notas */}
             <li>
@@ -285,9 +304,11 @@ const SidebarContent = (props) => {
                 <span>{props.t("Notas")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
-                <li>
-                  <Link to="/grades">{props.t("Adicionar Notas")}</Link>
-                </li>
+                {role === "professor" && (
+                  <li>
+                    <Link to="/grades">{props.t("Adicionar Notas")}</Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/grades-list">{props.t("Visualizar Notas")}</Link>
                 </li>

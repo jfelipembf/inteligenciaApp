@@ -252,14 +252,32 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
   { path: "/dashboard-crypto", component: <DashboardCrypto /> },
-  { path: "/dashboard-gestor", component: <GestorDashboard /> },
-  { path: "/dashboard-coordenador", component: <CoordenadorDashboard /> },
+  {
+    path: "/dashboard-gestor",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo"]}>
+        {" "}
+        <GestorDashboard />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/dashboard-coordenador",
+    component: (
+      <RoleProtectedRoute allowedRoles={["coordinator"]}>
+        <CoordenadorDashboard />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
   {
     path: "/dashboard-professor",
     component: (
-      <ProfessorDashboardProvider>
-        <ProfessorDashboard />
-      </ProfessorDashboardProvider>
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <ProfessorDashboardProvider>
+          <ProfessorDashboard />
+        </ProfessorDashboardProvider>
+      </RoleProtectedRoute>
     ),
   },
   { path: "/blog", component: <Blog /> },
@@ -269,7 +287,15 @@ const authProtectedRoutes = [
   { path: "/home", component: <Home /> },
 
   // Attendance
-  { path: "/create-attendance", component: <NewAttendance /> },
+  {
+    path: "/create-attendance",
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        {" "}
+        <NewAttendance />
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/attendances", component: <Attendances /> },
 
   // Grades
@@ -297,19 +323,72 @@ const authProtectedRoutes = [
   { path: "/students/:id", component: <StudentProfile /> },
 
   // Teachers
-  { path: "/teachers", component: <Teachers /> },
-  { path: "/add-teacher", component: <AddTeacher /> },
-  { path: "/teachers/:id", component: <TeacherProfile /> },
+  {
+    path: "/teachers",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <Teachers />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/add-teacher",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <AddTeacher />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/teachers/:id",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <TeacherProfile />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/teachers/:id/activities", component: <TeacherActivities /> },
   { path: "/teachers/:id/messages", component: <TeacherMessages /> },
 
   // Administrators
-  { path: "/administrators", component: <Administrators /> },
-  { path: "/add-administrator", component: <AddAdministrator /> },
+  {
+    path: "/administrators",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo"]}>
+        <Administrators />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/add-administrator",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo"]}>
+        <AddAdministrator />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
 
   //Coordinator
-  { path: "/add-coordinator", component: <AddCoordinator /> },
-  { path: "/coordinators", component: <Coordinators /> },
+  {
+    path: "/add-coordinator",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <AddCoordinator />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/coordinators",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        <Coordinators />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },
@@ -460,15 +539,38 @@ const authProtectedRoutes = [
   { path: "/schools/:id/*", component: <SchoolProfile /> },
 
   //Rotas de Atividades
-  { path: "/activities", component: <Activities /> },
-  { path: "/activities/add-activity", component: <NewActivity /> },
+  {
+    path: "/activities",
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <Activities />
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/activities/add-activity",
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        {" "}
+        <NewActivity />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
   {
     path: "/activities/edit-activity/:id/:classId/:lessonId",
-    component: <EditActivity />,
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <EditActivity />
+      </RoleProtectedRoute>
+    ),
   },
   {
     path: "/activities/activity/:id/:classId/:lessonId",
-    component: <Activity />,
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <Activity />
+      </RoleProtectedRoute>
+    ),
   },
 
   // Rotas Financeiro
