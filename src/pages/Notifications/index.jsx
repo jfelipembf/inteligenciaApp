@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   Button,
+  ButtonGroup,
   Badge,
   Modal,
   ModalHeader,
@@ -97,59 +98,89 @@ const SAMPLE_NOTIFICATIONS = [
 const NotificationsList = () => {
   const navigate = useNavigate();
   const {
-    receivedNotifications: notifications,
+    receivedNotifications,
+    sentNotifications,
     loading,
     error,
-
-    fetchReceivedNotifications: fetchNotifications,
-    resetReceivedNotifications: resetNotifications,
-    sentNotifications,
-
+    fetchReceivedNotifications,
+    fetchSentNotifications,
+    resetReceivedNotifications,
+    resetSentNotifications,
     hasMoreSent,
     hasMoreReceived,
-    fetchSentNotifications,
-
-    resetSentNotifications,
-
     fetchNotificationById,
   } = useNotificationsContext();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [notificationToDelete, setNotificationToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [view, setView] = useState("sent"); // "sent" ou "received"
 
   useEffect(() => {
-    resetNotifications();
-    fetchNotifications(true);
-  }, []);
-
-  // Função para formatar data
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleString("pt-BR");
-  };
-
-  // Função para obter a descrição do público-alvo
-  const getTargetDescription = (target) => {
-    if (!target) return "N/A";
-
-    switch (target.type) {
-      case "Pessoa":
-        return `Pessoa: ${target.value}`;
-      case "Turmas":
-        return `Turmas: ${
-          Array.isArray(target.value) ? target.value.join(", ") : target.value
-        }`;
-      case "Turno":
-        return `Turno: ${target.value}`;
-      case "Série":
-        return `Série: ${target.value}`;
-      case "Escola":
-        return "Toda a Escola";
-      default:
-        return target.value || "N/A";
+    if (view === "sent") {
+      resetSentNotifications();
+      fetchSentNotifications(true);
+    } else {
+      resetReceivedNotifications();
+      fetchReceivedNotifications(true);
     }
+    // eslint-disable-next-line
+  }, [view]);
+
+  // Função para formatar data no padrão BR (dd/mm/yyyy)
+  const formatDate = (notification) => {
+    // Se schedule existe e tem date, use schedule.date
+    if (notification.schedule && notification.schedule.date) {
+      const [year, month, day] = notification.schedule.date.split("-");
+      return `${day}/${month}/${year}`;
+    }
+
+    // Se não, use createdAt (pode ser Firestore Timestamp, Date ou string)
+    let dateObj = null;
+    if (notification.createdAt) {
+      if (typeof notification.createdAt.toDate === "function") {
+        // Firestore Timestamp
+        dateObj = notification.createdAt.toDate();
+      } else if (notification.createdAt instanceof Date) {
+        dateObj = notification.createdAt;
+      } else if (typeof notification.createdAt === "string") {
+        // Tenta converter string para Date
+        dateObj = new Date(notification.createdAt);
+        if (isNaN(dateObj.getTime())) {
+          // Extrai apenas a parte da data do formato "23 de maio de 2025 às 18:03:00 UTC-3"
+          const match = notification.createdAt.match(
+            /(\d{1,2}) de (\w+) de (\d{4})/
+          );
+          if (match) {
+            const [, day, monthName, year] = match;
+            const months = {
+              janeiro: "01",
+              fevereiro: "02",
+              março: "03",
+              abril: "04",
+              maio: "05",
+              junho: "06",
+              julho: "07",
+              agosto: "08",
+              setembro: "09",
+              outubro: "10",
+              novembro: "11",
+              dezembro: "12",
+            };
+            const month = months[monthName.toLowerCase()] || "01";
+            return `${day.padStart(2, "0")}/${month}/${year}`;
+          }
+          return "N/A";
+        }
+      }
+    }
+    if (dateObj) {
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const year = dateObj.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    return "N/A";
   };
 
   // Função para obter a cor do badge de status
@@ -199,51 +230,71 @@ const NotificationsList = () => {
     }
   };
 
+  // Função para obter a descrição do destinatário
+  const getRecipientDescription = (notification) => {
+    if (!notification) return "N/A";
+    switch (notification.type) {
+      case "class":
+        return notification.class?.label || "Turma não informada";
+      case "turn":
+        if (notification.turn === "morning" || notification.turn === "Manhã")
+          return "Turno da Manhã";
+        if (notification.turn === "afternoon" || notification.turn === "Tarde")
+          return "Turno da Tarde";
+        if (notification.turn === "night" || notification.turn === "Noite")
+          return "Turno da Noite";
+        // Capitaliza se vier como "manha", "tarde", "noite"
+        if (
+          ["manha", "tarde", "noite"].includes(
+            (notification.turn || "").toLowerCase()
+          )
+        ) {
+          const capitalized =
+            notification.turn.charAt(0).toUpperCase() +
+            notification.turn.slice(1).toLowerCase();
+          return `Turno da ${capitalized}`;
+        }
+        return `Turno: ${notification.turn || "não informado"}`;
+      case "school":
+        return "Toda a escola";
+      case "individual":
+        return notification.individual?.label || "Destinatário individual";
+      default:
+        return "N/A";
+    }
+  };
+
   // Configuração das colunas da tabela
-  const columns = useMemo(
+  const sentColumns = useMemo(
     () => [
       {
         header: "Título",
         accessorKey: "title",
         enableColumnFilter: false,
         enableSorting: true,
-        cell: (cellProps) => {
-          return (
-            <Link
-              to={`/notifications/${cellProps.row.original.id}`}
-              className="text-body fw-bold"
-            >
-              {getTextValue(cellProps.row.original.title) || "N/A"}
-            </Link>
-          );
-        },
+        cell: (cellProps) => (
+          <Link
+            to={`/notifications/${cellProps.row.original.id}`}
+            className="text-body fw-bold"
+          >
+            {getTextValue(cellProps.row.original.title) || "N/A"}
+          </Link>
+        ),
       },
       {
         header: "Destinatários",
         accessorKey: "target",
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (cellProps) => {
-          return getTargetDescription(cellProps.row.original.target);
-        },
+        cell: (cellProps) => getRecipientDescription(cellProps.row.original),
       },
-      {
-        header: "Enviada por",
-        accessorKey: "sentBy",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          return getTextValue(cellProps.row.original.sentBy) || "N/A";
-        },
-      },
+
       {
         header: "Data de Envio",
         accessorKey: "sentDate",
         enableColumnFilter: false,
         enableSorting: true,
-        cell: (cellProps) => {
-          return formatDate(cellProps.row.original.sentDate);
-        },
+        cell: (cellProps) => formatDate(cellProps.row.original),
       },
       {
         header: "Status",
@@ -268,32 +319,93 @@ const NotificationsList = () => {
         header: "Ações",
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (cellProps) => {
-          return (
-            <ul className="list-unstyled hstack gap-1 mb-0">
-              <li>
-                <Button
-                  color="soft-primary"
-                  className="btn btn-sm btn-soft-primary"
-                  onClick={() =>
-                    handleViewNotification(cellProps.row.original.id)
-                  }
-                >
-                  <i className="mdi mdi-eye-outline" />
-                </Button>
-              </li>
-              <li>
-                <Button
-                  color="soft-danger"
-                  className="btn btn-sm btn-soft-danger"
-                  onClick={() => onClickDelete(cellProps.row.original)}
-                >
-                  <i className="mdi mdi-delete-outline" />
-                </Button>
-              </li>
-            </ul>
-          );
-        },
+        cell: (cellProps) => (
+          <ul className="list-unstyled hstack gap-1 mb-0">
+            <li>
+              <Button
+                color="soft-primary"
+                className="btn btn-sm btn-soft-primary"
+                onClick={() =>
+                  handleViewNotification(cellProps.row.original.id)
+                }
+              >
+                <i className="mdi mdi-eye-outline" />
+              </Button>
+            </li>
+            <li>
+              <Button
+                color="soft-danger"
+                className="btn btn-sm btn-soft-danger"
+                onClick={() => onClickDelete(cellProps.row.original)}
+              >
+                <i className="mdi mdi-delete-outline" />
+              </Button>
+            </li>
+          </ul>
+        ),
+      },
+    ],
+    []
+  );
+
+  // Colunas para recebidas (sem destinatário nem status)
+  const receivedColumns = useMemo(
+    () => [
+      {
+        header: "Título",
+        accessorKey: "title",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cellProps) => (
+          <Link
+            to={`/notifications/${cellProps.row.original.id}`}
+            className="text-body fw-bold"
+          >
+            {getTextValue(cellProps.row.original.title) || "N/A"}
+          </Link>
+        ),
+      },
+      {
+        header: "Mensagem",
+        accessorKey: "message",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cellProps) => getTextValue(cellProps.row.original.message),
+      },
+      {
+        header: "Enviada por",
+        accessorKey: "sentBy",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cellProps) =>
+          getTextValue(cellProps.row.original.sentBy) || "N/A",
+      },
+      {
+        header: "Data de Envio",
+        accessorKey: "sentDate",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cellProps) => formatDate(cellProps.row.original),
+      },
+      {
+        header: "Ações",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cellProps) => (
+          <ul className="list-unstyled hstack gap-1 mb-0">
+            <li>
+              <Button
+                color="soft-primary"
+                className="btn btn-sm btn-soft-primary"
+                onClick={() =>
+                  handleViewNotification(cellProps.row.original.id)
+                }
+              >
+                <i className="mdi mdi-eye-outline" />
+              </Button>
+            </li>
+          </ul>
+        ),
       },
     ],
     []
@@ -303,7 +415,6 @@ const NotificationsList = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Breadcrumb */}
           <Breadcrumbs title="Comunicação" breadcrumbItem="Notificações" />
 
           <Row>
@@ -315,6 +426,20 @@ const NotificationsList = () => {
                       Lista de Notificações
                     </h5>
                     <div className="flex-shrink-0">
+                      <ButtonGroup className="me-2">
+                        <Button
+                          color={view === "sent" ? "primary" : "light"}
+                          onClick={() => setView("sent")}
+                        >
+                          Ver Enviadas
+                        </Button>
+                        <Button
+                          color={view === "received" ? "primary" : "light"}
+                          onClick={() => setView("received")}
+                        >
+                          Ver Recebidas
+                        </Button>
+                      </ButtonGroup>
                       <Button
                         color="primary"
                         className="btn btn-primary me-1"
@@ -326,11 +451,14 @@ const NotificationsList = () => {
                         color="light"
                         className="me-1"
                         onClick={() => {
-                          setLoading(true);
-                          setTimeout(() => {
-                            setLoading(false);
-                            toast.success("Notificações atualizadas!");
-                          }, 500);
+                          if (view === "sent") {
+                            resetSentNotifications();
+                            fetchSentNotifications(true);
+                          } else {
+                            resetReceivedNotifications();
+                            fetchReceivedNotifications(true);
+                          }
+                          toast.success("Notificações atualizadas!");
                         }}
                       >
                         <i className="mdi mdi-refresh"></i>
@@ -383,8 +511,12 @@ const NotificationsList = () => {
                     </div>
                   ) : (
                     <TableContainer
-                      columns={columns}
-                      data={notifications}
+                      columns={view === "sent" ? sentColumns : receivedColumns}
+                      data={
+                        view === "sent"
+                          ? sentNotifications
+                          : receivedNotifications
+                      }
                       isCustomPageSize={true}
                       isGlobalFilter={true}
                       isJobListGlobalFilter={false}
