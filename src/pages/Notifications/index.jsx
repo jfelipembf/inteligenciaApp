@@ -100,6 +100,7 @@ const NotificationsList = () => {
   const {
     receivedNotifications,
     sentNotifications,
+    deleteNotificationById,
     loading,
     error,
     fetchReceivedNotifications,
@@ -202,7 +203,7 @@ const NotificationsList = () => {
   };
 
   // Função para excluir notificação
-  const handleDeleteNotification = () => {
+  const handleDeleteNotification = async () => {
     if (!notificationToDelete || !notificationToDelete.id) {
       setDeleteModal(false);
       return;
@@ -210,20 +211,25 @@ const NotificationsList = () => {
 
     try {
       setIsDeleting(true);
-
-      // Simulação de exclusão
-      setTimeout(() => {
-        setNotificationList(
-          notifications.filter((item) => item.id !== notificationToDelete.id)
-        );
-        setDeleteModal(false);
-        setNotificationToDelete(null);
-        setIsDeleting(false);
+      const success = await deleteNotificationById(notificationToDelete.id);
+      setDeleteModal(false);
+      setNotificationToDelete(null);
+      setIsDeleting(false);
+      if (success) {
         toast.success("Notificação excluída com sucesso!");
-      }, 800);
+        // Atualize a lista após exclusão
+        if (view === "sent") {
+          resetSentNotifications();
+          fetchSentNotifications(true);
+        } else {
+          resetReceivedNotifications();
+          fetchReceivedNotifications(true);
+        }
+      } else {
+        toast.error("Erro ao excluir a notificação.");
+      }
     } catch (err) {
       setIsDeleting(false);
-      console.error("Erro ao excluir a notificação:", err);
       toast.error(
         "Erro ao excluir a notificação: " + (err.message || "Erro desconhecido")
       );
@@ -264,6 +270,12 @@ const NotificationsList = () => {
     }
   };
 
+  // Função para limitar o tamanho da mensagem exibida
+  const truncateText = (text, maxLength = 40) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
+
   // Configuração das colunas da tabela
   const sentColumns = useMemo(
     () => [
@@ -277,7 +289,9 @@ const NotificationsList = () => {
             to={`/notifications/${cellProps.row.original.id}`}
             className="text-body fw-bold"
           >
-            {getTextValue(cellProps.row.original.title) || "N/A"}
+            <span title={cellProps.row.original.message}>
+              {truncateText(getTextValue(cellProps.row.original.title), 60)}
+            </span>
           </Link>
         ),
       },
@@ -361,7 +375,9 @@ const NotificationsList = () => {
             to={`/notifications/${cellProps.row.original.id}`}
             className="text-body fw-bold"
           >
-            {getTextValue(cellProps.row.original.title) || "N/A"}
+            <span title={cellProps.row.original.message}>
+              {truncateText(getTextValue(cellProps.row.original.title), 60)}
+            </span>
           </Link>
         ),
       },
@@ -370,7 +386,11 @@ const NotificationsList = () => {
         accessorKey: "message",
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (cellProps) => getTextValue(cellProps.row.original.message),
+        cell: (cellProps) => (
+          <span title={cellProps.row.original.message}>
+            {truncateText(getTextValue(cellProps.row.original.message), 60)}
+          </span>
+        ),
       },
       {
         header: "Enviada por",

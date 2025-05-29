@@ -122,6 +122,30 @@ const useNotifications = () => {
     [userDetails?.schoolId]
   );
 
+  const deleteNotificationById = useCallback(
+    async (id) => {
+      if (!userDetails?.schoolId || !id) return false;
+      setLoading(true);
+      setError(null);
+      try {
+        await firebase
+          .firestore()
+          .collection("schools")
+          .doc(userDetails.schoolId)
+          .collection("notifications")
+          .doc(id)
+          .delete();
+        setLoading(false);
+        return true;
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        return false;
+      }
+    },
+    [userDetails?.schoolId]
+  );
+
   const resetSentNotifications = useCallback(() => {
     setSentNotifications([]);
     setLastSentDoc(null);
@@ -137,6 +161,7 @@ const useNotifications = () => {
   return {
     sentNotifications,
     receivedNotifications,
+    deleteNotificationById,
     loading,
     error,
     hasMoreSent,
