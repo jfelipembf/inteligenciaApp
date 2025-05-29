@@ -617,7 +617,15 @@ const authProtectedRoutes = [
       </UsersProvider>
     ),
   },
-  { path: "/notifications/:id", component: <ViewNotification /> },
+  {
+    path: "/notifications/:id",
+    component: (
+      <NotificationsProvider>
+        {" "}
+        <ViewNotification />
+      </NotificationsProvider>
+    ),
+  },
 
   // Rota de Configurações
   { path: "/settings", component: <Settings /> },

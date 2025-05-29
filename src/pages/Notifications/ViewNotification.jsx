@@ -14,7 +14,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useNotifications from "../../hooks/useNotifications"; // 1. Importe o hook
+import { useNotificationsContext } from "../../contexts/NotificationsContext";
 
 // Dados de exemplo para notificações
 const SAMPLE_NOTIFICATIONS = [
@@ -85,7 +85,7 @@ const ViewNotification = () => {
   const { id } = useParams();
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { fetchNotificationById, error } = useNotifications(); // 2. Use o método do hook
+  const { fetchNotificationById, error } = useNotificationsContext(); // 2. Use o método do hook
 
   useEffect(() => {
     let isMounted = true;
@@ -106,13 +106,6 @@ const ViewNotification = () => {
       isMounted = false;
     };
   }, [id, navigate, fetchNotificationById]);
-
-  // Função para formatar data
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleString("pt-BR");
-  };
 
   // Função para obter a descrição do público-alvo
   const getTargetDescription = (target) => {
@@ -150,16 +143,93 @@ const ViewNotification = () => {
     }
   };
 
-  const handleDelete = () => {
-    // Aqui você pode adicionar uma confirmação antes de excluir
-    if (window.confirm("Tem certeza que deseja excluir esta notificação?")) {
-      setLoading(true);
+  // Função para formatar data no padrão BR (dd/mm/yyyy)
+  const formatDate = (notification) => {
+    // Se schedule existe e tem date, use schedule.date
+    if (notification.schedule && notification.schedule.date) {
+      const [year, month, day] = notification.schedule.date.split("-");
+      return `${day}/${month}/${year}`;
+    }
 
-      // Simulação de exclusão
-      setTimeout(() => {
-        toast.success("Notificação excluída com sucesso!");
-        navigate("/notifications");
-      }, 800);
+    // Se não, use createdAt (pode ser Firestore Timestamp, Date ou string)
+    let dateObj = null;
+    if (notification.createdAt) {
+      if (typeof notification.createdAt.toDate === "function") {
+        // Firestore Timestamp
+        dateObj = notification.createdAt.toDate();
+      } else if (notification.createdAt instanceof Date) {
+        dateObj = notification.createdAt;
+      } else if (typeof notification.createdAt === "string") {
+        // Tenta converter string para Date
+        dateObj = new Date(notification.createdAt);
+        if (isNaN(dateObj.getTime())) {
+          // Extrai apenas a parte da data do formato "23 de maio de 2025 às 18:03:00 UTC-3"
+          const match = notification.createdAt.match(
+            /(\d{1,2}) de (\w+) de (\d{4})/
+          );
+          if (match) {
+            const [, day, monthName, year] = match;
+            const months = {
+              janeiro: "01",
+              fevereiro: "02",
+              março: "03",
+              abril: "04",
+              maio: "05",
+              junho: "06",
+              julho: "07",
+              agosto: "08",
+              setembro: "09",
+              outubro: "10",
+              novembro: "11",
+              dezembro: "12",
+            };
+            const month = months[monthName.toLowerCase()] || "01";
+            return `${day.padStart(2, "0")}/${month}/${year}`;
+          }
+          return "N/A";
+        }
+      }
+    }
+    if (dateObj) {
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const year = dateObj.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    return "N/A";
+  };
+
+  // Função para obter a descrição do destinatário
+  const getRecipientDescription = (notification) => {
+    if (!notification) return "N/A";
+    switch (notification.type) {
+      case "class":
+        return notification.class?.label || "Turma não informada";
+      case "turn":
+        if (notification.turn === "morning" || notification.turn === "Manhã")
+          return "Turno da Manhã";
+        if (notification.turn === "afternoon" || notification.turn === "Tarde")
+          return "Turno da Tarde";
+        if (notification.turn === "night" || notification.turn === "Noite")
+          return "Turno da Noite";
+        // Capitaliza se vier como "manha", "tarde", "noite"
+        if (
+          ["manha", "tarde", "noite"].includes(
+            (notification.turn || "").toLowerCase()
+          )
+        ) {
+          const capitalized =
+            notification.turn.charAt(0).toUpperCase() +
+            notification.turn.slice(1).toLowerCase();
+          return `Turno da ${capitalized}`;
+        }
+        return `Turno: ${notification.turn || "não informado"}`;
+      case "school":
+        return "Toda a escola";
+      case "individual":
+        return notification.individual?.label || "Destinatário individual";
+      default:
+        return "N/A";
     }
   };
 
@@ -189,29 +259,33 @@ const ViewNotification = () => {
                       <div className="d-flex align-items-center mb-4">
                         <div className="flex-grow-1">
                           <CardTitle tag="h4">{notification.title}</CardTitle>
+
+                          <div className="text-muted small mt-1">
+                            <div>
+                              <strong>Enviado por:</strong>{" "}
+                              {notification.sentBy.label}
+                            </div>
+                            <div>
+                              <strong>Destinatário:</strong>{" "}
+                              {getRecipientDescription(notification)}
+                            </div>
+                            <div>
+                              <strong>Data:</strong> {formatDate(notification)}
+                            </div>
+                          </div>
                           <Badge
                             color={getStatusBadgeColor(notification.status)}
-                            className="font-size-12 ms-0"
+                            className="font-size-12 ms-0 mt-2"
                           >
                             {notification.status}
                           </Badge>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <Button
-                            color="danger"
-                            className="btn-sm"
-                            onClick={handleDelete}
-                          >
-                            <i className="bx bx-trash-alt align-middle me-1"></i>{" "}
-                            Excluir
-                          </Button>
                         </div>
                       </div>
 
                       <Row>
                         <Col md={8}>
                           <div className="table-responsive">
-                            <Table className="table-borderless mb-0">
+                            {/*<Table className="table-borderless mb-0">
                               <tbody>
                                 <tr>
                                   <th scope="row" style={{ width: "20%" }}>
@@ -221,12 +295,12 @@ const ViewNotification = () => {
                                 </tr>
                                 <tr>
                                   <th scope="row">Data de Envio</th>
-                                  <td>{formatDate(notification.sentDate)}</td>
+                                   <td>{formatDate(notification.sentDate)}</td> 
                                 </tr>
                                 <tr>
                                   <th scope="row">Destinatários</th>
                                   <td>
-                                    {getTargetDescription(notification.target)}
+                                     {getTargetDescription(notification.target)} 
                                   </td>
                                 </tr>
                                 <tr>
@@ -273,10 +347,10 @@ const ViewNotification = () => {
                                   </td>
                                 </tr>
                               </tbody>
-                            </Table>
+                            </Table>*/}
                           </div>
                         </Col>
-                        <Col md={4}>
+                        {/*<Col md={4}>
                           <Card className="bg-light border">
                             <CardBody>
                               <h5 className="card-title mb-3">Estatísticas</h5>
@@ -301,7 +375,7 @@ const ViewNotification = () => {
                               </div>
                             </CardBody>
                           </Card>
-                        </Col>
+                        </Col>*/}
                       </Row>
 
                       <Row className="mt-3">
@@ -323,24 +397,13 @@ const ViewNotification = () => {
 
               <Row>
                 <Col lg={12}>
-                  <div className="d-flex flex-wrap gap-2">
+                  <div className="d-flex justify-content-end flex-wrap gap-2 pb-4">
                     <Button
                       color="primary"
                       onClick={() => navigate("/notifications")}
                     >
                       <i className="bx bx-arrow-left align-middle me-1"></i>{" "}
                       Voltar para Lista
-                    </Button>
-                    <Button
-                      color="success"
-                      onClick={() => navigate("/notifications/create")}
-                    >
-                      <i className="bx bx-plus align-middle me-1"></i> Nova
-                      Notificação
-                    </Button>
-                    <Button color="info" onClick={() => window.print()}>
-                      <i className="bx bx-printer align-middle me-1"></i>{" "}
-                      Imprimir
                     </Button>
                   </div>
                 </Col>
