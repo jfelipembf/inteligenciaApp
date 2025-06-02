@@ -16,8 +16,10 @@ import inteliLogo from "../../assets/images/inteliLogo.png";
 
 const Sidebar = (props) => {
   // Estado para controlar se o menu está colapsado
-  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(document.body.classList.contains("vertical-collpsed"));
-  
+  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(
+    document.body.classList.contains("vertical-collpsed")
+  );
+
   // Atualizar o estado quando a classe mudar
   React.useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -29,20 +31,37 @@ const Sidebar = (props) => {
         }
       }
     });
-    
+
     observer.observe(document.body, { attributes: true });
-    
+
     return () => observer.disconnect();
   }, [isMenuCollapsed]);
-  
+
+  {
+    /*React.useEffect(() => {
+    document.body.setAttribute("data-sidebar-image", "img5");
+    return () => {
+      document.body.removeAttribute("data-sidebar-image");
+    };
+  }, []);*/
+  }
+
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div className="navbar-brand-box" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 0' }}>
+        <div
+          className="navbar-brand-box"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px 0",
+          }}
+        >
           {isMenuCollapsed ? (
             // Quando o menu estiver fechado (colapsado)
             <Link to="/" className="logo">
-              <span style={{ display: 'flex', justifyContent: 'center' }}>
+              <span style={{ display: "flex", justifyContent: "center" }}>
                 <img src={inteliIcon} alt="Inteli" height="24" />
               </span>
             </Link>
