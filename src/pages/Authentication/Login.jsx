@@ -43,7 +43,7 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@themesbrand.com" || "",
+      email: "professor@inteligenciaapp.com" || "",
       password: "123456" || "",
     },
     validationSchema: Yup.object({
@@ -58,20 +58,18 @@ const Login = (props) => {
   const LoginProperties = createSelector(
     (state) => state.Login,
     (login) => ({
-      error: login.error
+      error: login.error,
     })
   );
 
-  const {
-    error
-  } = useSelector(LoginProperties);
+  const { error } = useSelector(LoginProperties);
 
-  const signIn = type => {
+  const signIn = (type) => {
     dispatch(socialLogin(type, props.router.navigate));
   };
 
   //for facebook and google authentication
-  const socialResponse = type => {
+  const socialResponse = (type) => {
     signIn(type);
   };
 
@@ -105,22 +103,14 @@ const Login = (props) => {
                     <Link to="/" className="auth-logo-light">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={lightlogo}
-                            alt="Inteli Logo"
-                            height="34"
-                          />
+                          <img src={lightlogo} alt="Inteli Logo" height="34" />
                         </span>
                       </div>
                     </Link>
                     <Link to="/" className="auth-logo-dark">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt="Inteli Logo"
-                            height="34"
-                          />
+                          <img src={logo} alt="Inteli Logo" height="34" />
                         </span>
                       </div>
                     </Link>
@@ -171,13 +161,13 @@ const Login = (props) => {
                           onBlur={validation.handleBlur}
                           invalid={
                             validation.touched.password &&
-                              validation.errors.password
+                            validation.errors.password
                               ? true
                               : false
                           }
                         />
                         {validation.touched.password &&
-                          validation.errors.password ? (
+                        validation.errors.password ? (
                           <FormFeedback type="invalid">
                             {validation.errors.password}
                           </FormFeedback>

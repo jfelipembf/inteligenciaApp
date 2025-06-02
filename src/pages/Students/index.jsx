@@ -556,14 +556,14 @@ const Students = () => {
                                 </div>
                               </div>
                               <div className="text-center mb-3">
-                                <Badge
+                                {/* <Badge
                                   color={isActive ? "success" : "danger"}
                                   className={`badge-soft-${
                                     isActive ? "success" : "danger"
                                   }`}
                                 >
                                   {isActive ? "Ativo" : "Inativo"}
-                                </Badge>
+                                </Badge> */}
                               </div>
                               <div className="mt-4 pt-1">
                                 <Link

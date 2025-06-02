@@ -339,13 +339,13 @@ const SidebarContent = (props) => {
               </ul>
             </li>
 
-            {/* Financeiro */}
+            {/* Financeiro 
             <li>
               <Link to="/financeiro/caixa" className="waves-effect">
                 <i className="bx bx-money"></i>
                 <span className="menu-item">{props.t("Financeiro")}</span>
               </Link>
-            </li>
+            </li>*/}
 
             {/* Configurações */}
             <li>

@@ -475,6 +475,9 @@ const CreateEvent = () => {
                                 )}
                               </Dropzone>
                             </div>
+                            <small className="text-muted">
+                              Tamanho recomendado: <strong>1200x400px</strong>{" "}
+                            </small>
                             {selectedFiles.length > 0 && (
                               <div className="dropzone-previews mt-3">
                                 <div className="mt-1 mb-0 p-2 rounded">
