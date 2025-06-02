@@ -34,10 +34,15 @@ const Attendances = () => {
   useEffect(() => {
     if (lessons && userDetails?.uid) {
       // Filtrar apenas as aulas do professor logado
-      const teacherLessons = lessons.filter(
-        (lesson) => lesson.teacher?.value === userDetails.uid
-      );
-      setFilteredLessons(teacherLessons);
+
+      if (userDetails.role === "teacher") {
+        const teacherLessons = lessons.filter(
+          (lesson) => lesson.teacher?.value === userDetails.uid
+        );
+        setFilteredLessons(teacherLessons);
+      } else {
+        setFilteredLessons(lessons);
+      }
     }
   }, [lessons, userDetails?.uid]);
 

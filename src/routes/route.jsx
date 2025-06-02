@@ -8,7 +8,7 @@ import { TeachersProvider } from "../contexts/TeachersContext";
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
 
 const Authmiddleware = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthContext();
+  const { isAuthenticated, loading, userDetails } = useAuthContext();
 
   if (loading) {
     return (
@@ -25,6 +25,10 @@ const Authmiddleware = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
+  }
+
+  if (userDetails.role === "aluno") {
+    return <Navigate to="/unauthorized" />;
   }
 
   return (

@@ -171,7 +171,9 @@ const GradesListPage = () => {
                     <option value="">Selecione uma aula</option>
                     {lessons
                       .filter(
-                        (lesson) => lesson.teacher?.value === userDetails?.uid
+                        (lesson) =>
+                          userDetails?.role !== "professor" ||
+                          lesson.teacher?.value === userDetails?.uid
                       )
                       .map((lesson) => (
                         <option key={lesson.id} value={lesson.id}>
