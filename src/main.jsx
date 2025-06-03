@@ -20,4 +20,17 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.Fragment>
 );
 
-serviceWorker.unregister();
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .then((registration) => {
+        console.log("Service Worker registrado para FCM:", registration);
+      })
+      .catch((err) => {
+        console.error("Erro ao registrar o Service Worker do FCM:", err);
+      });
+  });
+}
+
+//serviceWorker.unregister();

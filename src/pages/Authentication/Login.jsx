@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
@@ -37,6 +37,9 @@ const Login = (props) => {
   //meta title
   document.title = "Login | Inteligência";
   const dispatch = useDispatch();
+
+  // Pega o usuário autenticado do Redux (ajuste conforme seu reducer)
+  const user = useSelector((state) => state.Auth?.user);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed

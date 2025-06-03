@@ -1,15 +1,35 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 
 // Add the Firebase products that you want to use
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/messaging";
+
+async function saveFcmToken(userId) {
+  try {
+    const messaging = firebase.messaging();
+    console.log(messaging);
+    const token = await messaging.getToken({
+      vapidKey: import.meta.env.VITE_APP_FCM_VAPID_KEY,
+    });
+    console.log(token);
+    if (token) {
+      await firebase.firestore().collection("users").doc(userId).update({
+        fcmToken: token,
+        fcmTokenUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (err) {
+    console.error("Erro ao obter/salvar token FCM:", err);
+  }
+}
 
 class FirebaseAuthBackend {
   constructor(firebaseConfig) {
     if (firebaseConfig) {
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           localStorage.setItem("authUser", JSON.stringify(user));
         } else {
@@ -28,10 +48,10 @@ class FirebaseAuthBackend {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(
-          user => {
+          (user) => {
             resolve(firebase.auth().currentUser);
           },
-          error => {
+          (error) => {
             reject(this._handleError(error));
           }
         );
@@ -44,12 +64,12 @@ class FirebaseAuthBackend {
   editProfileAPI = (data) => {
     return new Promise((resolve, reject) => {
       const user = firebase.auth().currentUser;
-      
+
       if (user) {
         try {
-          const updateData = typeof data === 'string' ? JSON.parse(data) : data;
+          const updateData = typeof data === "string" ? JSON.parse(data) : data;
 
-          if (!updateData || typeof updateData !== 'object') {
+          if (!updateData || typeof updateData !== "object") {
             reject("Dados inválidos para atualização: não é um objeto");
             return;
           }
@@ -59,26 +79,31 @@ class FirebaseAuthBackend {
             return;
           }
 
-          firebase.firestore()
-            .collection('users')
+          firebase
+            .firestore()
+            .collection("users")
             .doc(user.uid)
             .get()
             .then((doc) => {
               if (doc.exists) {
                 const currentData = doc.data();
-                
-                return user.updateProfile({
-                  displayName: updateData.username
-                }).then(() => {
-                  return firebase.firestore()
-                    .collection('users')
-                    .doc(user.uid)
-                    .update({
-                      'personalInfo.name': updateData.username,
-                      'personalInfo.displayName': updateData.username,
-                      'metadata.updatedAt': firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                });
+
+                return user
+                  .updateProfile({
+                    displayName: updateData.username,
+                  })
+                  .then(() => {
+                    return firebase
+                      .firestore()
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                        "personalInfo.name": updateData.username,
+                        "personalInfo.displayName": updateData.username,
+                        "metadata.updatedAt":
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                      });
+                  });
               } else {
                 throw new Error("Documento do usuário não encontrado");
               }
@@ -105,10 +130,7 @@ class FirebaseAuthBackend {
    */
   getUserData = async (uid) => {
     try {
-      const doc = await firebase.firestore()
-        .collection('users')
-        .doc(uid)
-        .get();
+      const doc = await firebase.firestore().collection("users").doc(uid).get();
 
       if (doc.exists) {
         const userData = doc.data();
@@ -133,10 +155,13 @@ class FirebaseAuthBackend {
         .then(async (userCredential) => {
           const user = userCredential.user;
           // Busca os dados do Firestore
+
+          await saveFcmToken(user.uid);
+
           const userData = await this.getUserData(user.uid);
           resolve(user);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(this._handleError(error));
         });
     });
@@ -145,7 +170,7 @@ class FirebaseAuthBackend {
   /**
    * forget Password user with given details
    */
-  forgetPassword = email => {
+  forgetPassword = (email) => {
     return new Promise((resolve, reject) => {
       firebase
         .auth()
@@ -156,7 +181,7 @@ class FirebaseAuthBackend {
         .then(() => {
           resolve(true);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(this._handleError(error));
         });
     });
@@ -173,7 +198,7 @@ class FirebaseAuthBackend {
         .then(() => {
           resolve(true);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(this._handleError(error));
         });
     });
@@ -186,19 +211,18 @@ class FirebaseAuthBackend {
   socialLoginUser = async (type) => {
     let provider;
     if (type === "google") {
-        provider = new firebase.auth.GoogleAuthProvider();
+      provider = new firebase.auth.GoogleAuthProvider();
     } else if (type === "facebook") {
-        provider = new firebase.auth.FacebookAuthProvider();
+      provider = new firebase.auth.FacebookAuthProvider();
     }
     try {
-        const result = await firebase.auth().signInWithPopup(provider);
-        const user = result.user;
-        return user;
+      const result = await firebase.auth().signInWithPopup(provider);
+      const user = result.user;
+      return user;
     } catch (error) {
-        throw this._handleError(error);
+      throw this._handleError(error);
     }
-};
-
+  };
 
   addNewUserToFirestore = (user) => {
     const collection = firebase.firestore().collection("users");
@@ -210,13 +234,13 @@ class FirebaseAuthBackend {
       email: profile.email,
       picture: profile.picture,
       createdDtm: firebase.firestore.FieldValue.serverTimestamp(),
-      lastLoginTime: firebase.firestore.FieldValue.serverTimestamp()
+      lastLoginTime: firebase.firestore.FieldValue.serverTimestamp(),
     };
     collection.doc(firebase.auth().currentUser.uid).set(details);
     return { user, details };
   };
 
-  setLoggeedInUser = user => {
+  setLoggeedInUser = (user) => {
     localStorage.setItem("authUser", JSON.stringify(user));
   };
 
@@ -240,14 +264,15 @@ class FirebaseAuthBackend {
 
   updateUserData = async (uid, data) => {
     try {
-      await firebase.firestore()
-        .collection('users')
+      await firebase
+        .firestore()
+        .collection("users")
         .doc(uid)
         .update({
           ...data,
-          'metadata.updatedAt': firebase.firestore.FieldValue.serverTimestamp()
+          "metadata.updatedAt": firebase.firestore.FieldValue.serverTimestamp(),
         });
-      
+
       return true;
     } catch (error) {
       console.error("Erro ao atualizar dados do usuário:", error);
@@ -257,13 +282,11 @@ class FirebaseAuthBackend {
 
   getSchools = async () => {
     try {
-      const snapshot = await firebase.firestore()
-        .collection('schools')
-        .get();
+      const snapshot = await firebase.firestore().collection("schools").get();
 
-      return snapshot.docs.map(doc => ({
+      return snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
     } catch (error) {
       console.error("Erro ao buscar escolas:", error);
@@ -278,7 +301,7 @@ let _fireBaseBackend = null;
  * Initilize the backend
  * @param {*} config
  */
-const initFirebaseBackend = config => {
+const initFirebaseBackend = (config) => {
   if (!_fireBaseBackend) {
     _fireBaseBackend = new FirebaseAuthBackend(config);
   }

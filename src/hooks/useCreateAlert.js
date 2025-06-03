@@ -103,6 +103,19 @@ const useCreateAlert = () => {
         }
       }
 
+      let scheduleTimestamp = null;
+      if (
+        notificationData.schedule &&
+        notificationData.schedule.date &&
+        notificationData.schedule.time
+      ) {
+        const isoString = `${notificationData.schedule.date}T${notificationData.schedule.time}:00-03:00`; // UTC-3
+
+        scheduleTimestamp = firebase.firestore.Timestamp.fromDate(
+          new Date(isoString)
+        );
+      }
+
       const alert = {
         title: notificationData.title,
         message: notificationData.message
@@ -120,7 +133,7 @@ const useCreateAlert = () => {
         referenceId,
         createdAt: brTime,
         recipients: recipients || [],
-        schedule: notificationData.schedule || null,
+        schedule: scheduleTimestamp || null,
       };
 
       await firebase
