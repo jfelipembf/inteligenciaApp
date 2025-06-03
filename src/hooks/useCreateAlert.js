@@ -68,7 +68,38 @@ const useCreateAlert = () => {
           recipients = [userDetails.schoolId];
           description = `${userDetails.personalInfo?.name} enviou uma notificação para toda a escola`;
         } else if (notificationData.type === "turn") {
-          description = `${userDetails.personalInfo?.name} enviou uma notificação para as turmas do turna da ${notificationData.turn}`;
+          let turn = "";
+          if (notificationData.turn === "manha") {
+            turn = "Manhã";
+          } else if (notificationData.turn === "tarde") {
+            turn = "Tarde";
+          } else if (notificationData.turn === "noite") {
+            turn = "Noite";
+          }
+
+          const classesSnapshot = await firebase
+            .firestore()
+            .collection("schools")
+            .doc(schoolId)
+            .collection("classes")
+            .where("period", "==", turn)
+            .get();
+
+          let allStudentIds = [];
+          for (const classDoc of classesSnapshot.docs) {
+            const studentsSnapshot = await firebase
+              .firestore()
+              .collection("schools")
+              .doc(schoolId)
+              .collection("classes")
+              .doc(classDoc.id)
+              .collection("students")
+              .get();
+            const studentIds = studentsSnapshot.docs.map((doc) => doc.id);
+            allStudentIds = allStudentIds.concat(studentIds);
+          }
+          recipients = Array.from(new Set(allStudentIds));
+          description = `${userDetails.personalInfo?.name} enviou uma notificação para as turmas do turno da ${notificationData.turn}`;
         }
       }
 
