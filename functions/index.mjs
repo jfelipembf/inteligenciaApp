@@ -1,12 +1,12 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
+import admin from "firebase-admin";
+import * as functions from "firebase-functions";
 admin.initializeApp();
 
-exports.sendAlertNotification = functions.firestore
-  .document("schools/{schoolId}/alerts/{alertId}")
-  .onCreate(async (snap, context) => {
+export const sendAlertNotification = functions.firestore.onDocumentCreated(
+  "schools/{schoolId}/alerts/{alertId}",
+  async (event) => {
+    const snap = event.data;
     const alert = snap.data();
-
     // Se existe schedule e ainda não chegou o horário, não envia agora
     if (alert.schedule && alert.schedule.toDate) {
       const scheduleDate = alert.schedule.toDate();
@@ -79,4 +79,5 @@ exports.sendAlertNotification = functions.firestore
     }
 
     return null;
-  });
+  }
+);

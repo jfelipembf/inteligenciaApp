@@ -8,11 +8,11 @@ import "firebase/compat/messaging";
 async function saveFcmToken(userId) {
   try {
     const messaging = firebase.messaging();
-    console.log(messaging);
+
     const token = await messaging.getToken({
       vapidKey: import.meta.env.VITE_APP_FCM_VAPID_KEY,
     });
-    console.log(token);
+
     if (token) {
       await firebase.firestore().collection("users").doc(userId).update({
         fcmToken: token,
