@@ -7,6 +7,10 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
   async (event) => {
     const snap = event.data;
     const alert = snap.data();
+    const schoolId = event.params.schoolId;
+    const alertId = event.params.alertId;
+
+    console.log("Nova notificação criada:", { schoolId, alertId, alert });
     // Se existe schedule e ainda não chegou o horário, não envia agora
     if (alert.schedule && alert.schedule.toDate) {
       const scheduleDate = alert.schedule.toDate();
@@ -38,6 +42,8 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
         .map((doc) => doc.get("fcmToken"))
         .filter(Boolean);
 
+      console.log("Tokens encontrados:", tokens);
+
       if (tokens.length > 0) {
         const message = {
           notification: {
@@ -46,7 +52,8 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
           },
           tokens, // multicast
         };
-        await admin.messaging().sendMulticast(message);
+        const result = await admin.messaging().sendMulticast(message);
+        console.log("Resultado do envio FCM (primeiro lote):", result);
       }
 
       // Se houver mais de 10 recipients, envie em lotes
