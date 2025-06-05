@@ -52,7 +52,8 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
           },
           tokens, // multicast
         };
-        const result = await admin.messaging().sendMulticast(message);
+        // Usando o método recomendado (não depreciado)
+        const result = await admin.messaging().sendEachForMulticast(message);
         console.log("Resultado do envio FCM (primeiro lote):", result);
       }
 
@@ -71,7 +72,7 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
             .filter(Boolean);
           if (batchTokens.length > 0) {
             batches.push(
-              admin.messaging().sendMulticast({
+              admin.messaging().sendEachForMulticast({
                 notification: {
                   title: alert.title || "Notificação",
                   body: alert.message || alert.description || "",
