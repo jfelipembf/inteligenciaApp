@@ -134,6 +134,7 @@ const useCreateAlert = () => {
         createdAt: brTime,
         recipients: recipients || [],
         schedule: scheduleTimestamp || null,
+        sent: null,
       };
 
       await firebase
