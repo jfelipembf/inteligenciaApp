@@ -116,6 +116,11 @@ const useCreateAlert = () => {
         );
       }
 
+      const readBy = {};
+      (recipients || []).forEach((uid) => {
+        readBy[uid] = false;
+      });
+
       const alert = {
         title: notificationData.title,
         message: notificationData.message
@@ -135,6 +140,7 @@ const useCreateAlert = () => {
         recipients: recipients || [],
         schedule: scheduleTimestamp || null,
         sent: null,
+        readBy,
       };
 
       await firebase

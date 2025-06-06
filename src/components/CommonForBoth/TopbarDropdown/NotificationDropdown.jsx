@@ -1,19 +1,27 @@
-import React, { useState } from "react"
-import PropTypes from 'prop-types'
-import { Link } from "react-router-dom"
-import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap"
-import SimpleBar from "simplebar-react"
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
+import SimpleBar from "simplebar-react";
+import { withTranslation } from "react-i18next";
+import useUserUnreadAlerts from "../../../hooks/useUnreadAlerts";
 
-//Import images
-import avatar3 from "../../../assets/images/users/avatar-3.jpg"
-import avatar4 from "../../../assets/images/users/avatar-4.jpg"
+const NotificationDropdown = (props) => {
+  const [menu, setMenu] = useState(false);
+  const { alerts, loading, markAlertAsRead } = useUserUnreadAlerts();
 
-//i18n
-import { withTranslation } from "react-i18next"
-
-const NotificationDropdown = props => {
-  // Declare a new state variable, which we'll call "menu"
-  const [menu, setMenu] = useState(false)
+  // Remove alert da lista ao marcar como lido
+  const handleMarkAsRead = async (alertId) => {
+    await markAlertAsRead(alertId);
+    // O hook deve atualizar a lista automaticamente após marcar como lido
+  };
 
   return (
     <React.Fragment>
@@ -28,8 +36,16 @@ const NotificationDropdown = props => {
           tag="button"
           id="page-header-notifications-dropdown"
         >
-          <i className="bx bx-bell bx-tada" />
-          <span className="badge bg-danger rounded-pill">3</span>
+          <i
+            className={`bx bx-bell${
+              alerts && alerts.length > 0 ? " bx-tada" : ""
+            }`}
+          />
+          {alerts && alerts.length > 0 && (
+            <span className="badge bg-danger rounded-pill">
+              {alerts.length}
+            </span>
+          )}
         </DropdownToggle>
 
         <DropdownMenu className="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end">
@@ -39,125 +55,62 @@ const NotificationDropdown = props => {
                 <h6 className="m-0"> {props.t("Notifications")} </h6>
               </Col>
               <div className="col-auto">
-                <a href="#!" className="small">
-                  {" "}
-                  View All
-                </a>
+                <Link to="/notifications" className="small">
+                  {props.t("View All")}
+                </Link>
               </div>
             </Row>
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-primary rounded-circle font-size-16">
-                    <i className="bx bx-cart" />
-                  </span>
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">
-                    {props.t("Your order is placed")}
-                  </h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t("If several languages coalesce the grammar")}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />{" "}
-                      {props.t("3 min ago")}{" "}
-                    </p>
+            {loading ? (
+              <div className="text-center py-4">Carregando...</div>
+            ) : alerts && alerts.length > 0 ? (
+              alerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className="text-reset notification-item d-flex align-items-start justify-content-between px-3 py-2"
+                >
+                  <div className="flex-grow-1">
+                    <h6 className="mt-0 mb-1">
+                      {alert.title || "Notificação"}
+                    </h6>
+                    <div className="font-size-12 text-muted">
+                      <p className="mb-1">{alert.message}</p>
+                      {/* Exiba data/hora se desejar */}
+                    </div>
                   </div>
+                  <Button
+                    close
+                    aria-label="Fechar"
+                    onClick={() => handleMarkAsRead(alert.id)}
+                    style={{ fontSize: 16, marginLeft: 8 }}
+                  />
                 </div>
+              ))
+            ) : (
+              <div className="text-center py-4 text-muted">
+                Sem novas notificações
               </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <img
-                  src={avatar3}
-                  className="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">James Lemire</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t("It will seem like simplified English") + "."}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />
-                      {props.t("1 hours ago")}{" "}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-success rounded-circle font-size-16">
-                    <i className="bx bx-badge-check" />
-                  </span>
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">
-                    {props.t("Your item is shipped")}
-                  </h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t("If several languages coalesce the grammar")}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />{" "}
-                      {props.t("3 min ago")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <img
-                  src={avatar4}
-                  className="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">Salena Layfield</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t(
-                        "As a skeptical Cambridge friend of mine occidental"
-                      ) + "."}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />
-                      {props.t("1 hours ago")}{" "}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            )}
           </SimpleBar>
           <div className="p-2 border-top d-grid">
             <Link
               className="btn btn-sm btn-link font-size-14 btn-block text-center"
-              to="#"
+              to="/notifications"
             >
               <i className="mdi mdi-arrow-right-circle me-1"></i>
-              {" "}
-              {props.t("View all")}{" "}
+              {props.t("View all")}
             </Link>
           </div>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default withTranslation()(NotificationDropdown)
+export default withTranslation()(NotificationDropdown);
 
 NotificationDropdown.propTypes = {
-  t: PropTypes.any
-}
+  t: PropTypes.any,
+};
