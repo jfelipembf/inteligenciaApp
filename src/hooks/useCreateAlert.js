@@ -116,11 +116,17 @@ const useCreateAlert = () => {
         );
       }
 
+      if (notificationData.type === "grade") {
+        description = notificationData.description;
+        recipients = notificationData.recipients;
+      }
+
       const readBy = {};
       (recipients || []).forEach((uid) => {
         readBy[uid] = false;
       });
 
+      console.log(recipients, "recipients");
       const alert = {
         title: notificationData.title,
         message: notificationData.message
