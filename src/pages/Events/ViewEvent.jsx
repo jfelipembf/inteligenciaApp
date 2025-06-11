@@ -194,8 +194,12 @@ const ViewEvent = () => {
               <p>
                 <strong>Data:</strong>{" "}
                 {event.startDate === event.endDate
-                  ? event.startDate
-                  : `${event.startDate} até ${event.endDate}`}
+                  ? new Date(event.startDate).toLocaleDateString("pt-BR")
+                  : `${new Date(event.startDate).toLocaleDateString(
+                      "pt-BR"
+                    )} até ${new Date(event.endDate).toLocaleDateString(
+                      "pt-BR"
+                    )}`}
               </p>
               <p>
                 <strong>Horário:</strong> {event.startTime} - {event.endTime}

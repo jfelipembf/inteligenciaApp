@@ -109,6 +109,7 @@ const useCreateAlert = () => {
         notificationData.schedule.date &&
         notificationData.schedule.time
       ) {
+        console.log("notificationData.schedule", notificationData.schedule);
         const isoString = `${notificationData.schedule.date}T${notificationData.schedule.time}:00-03:00`; // UTC-3
 
         scheduleTimestamp = firebase.firestore.Timestamp.fromDate(
