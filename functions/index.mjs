@@ -22,15 +22,28 @@ async function sendAlert(alert, alertRef) {
       .filter(Boolean);
 
     if (tokens.length > 0) {
-      const message = {
-        notification: {
-          title: alert.description || alert.title || "Notificação", // description como title
-          body: `${alert.title ? alert.title + ": " : ""}${
-            alert.message || ""
-          }`, // title + message como body
-        },
-        tokens,
-      };
+      let message;
+      if (alert.type === "notification") {
+        message = {
+          notification: {
+            title: alert.description || alert.title || "Notificação",
+            body: `${alert.title ? alert.title + ": " : ""}${
+              alert.message || ""
+            }`,
+          },
+          tokens,
+        };
+      } else {
+        message = {
+          notification: {
+            title: alert.title || "Notificação",
+            body: `${alert.message || ""}${
+              alert.description ? " - " + alert.description : ""
+            }`,
+          },
+          tokens,
+        };
+      }
       await admin.messaging().sendEachForMulticast(message);
     }
 
