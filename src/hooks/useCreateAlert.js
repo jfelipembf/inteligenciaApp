@@ -119,7 +119,8 @@ const useCreateAlert = () => {
 
       if (
         notificationData.type === "grade" ||
-        notificationData.type === "event"
+        notificationData.type === "event" ||
+        notificationData.type === "activity"
       ) {
         description = notificationData.description;
         recipients = notificationData.recipients;

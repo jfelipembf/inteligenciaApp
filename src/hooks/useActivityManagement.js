@@ -3,10 +3,12 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import useUser from "./useUser";
 import { use } from "react";
+import useCreateAlert from "./useCreateAlert";
 
 export const useActivityManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { sendAlert } = useCreateAlert();
 
   const { userDetails } = useUser(true);
 
@@ -34,6 +36,38 @@ export const useActivityManagement = () => {
         .doc(activityData.subject.id)
         .collection("activities")
         .add(activityWithFlag);
+
+      // Buscar alunos da turma
+      const studentsSnapshot = await firebase
+        .firestore()
+        .collection("schools")
+        .doc(schoolId)
+        .collection("classes")
+        .doc(activityData.class.id)
+        .collection("students")
+        .get();
+
+      const recipients = [];
+      studentsSnapshot.docs.forEach((doc) => {
+        if (doc.exists) {
+          recipients.push(doc.id);
+        }
+      });
+
+      console.log(recipients, "recipients");
+      // Enviar alerta para os alunos da turma
+      await sendAlert({
+        notificationData: {
+          title: `Nova atividade: ${activityData.name}`,
+          message: `Uma nova atividade foi criada para a turma ${activityData.class.name} em ${activityData.subject.name}.`,
+          description: activityData.description || "",
+          recipients,
+          type: "activity",
+        },
+        userDetails,
+        referenceId: docRef.id,
+        type: "activity",
+      });
 
       return { id: docRef.id, ...activityWithFlag };
     } catch (err) {
