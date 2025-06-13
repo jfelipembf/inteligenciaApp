@@ -24,9 +24,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 
 // Hooks
-import { useStudentsContext } from "../../contexts/StudentsContext";
-import useFetchUsers from "../../hooks/useFetchUsers";
-import { useClassContext } from "../../contexts/ClassContext";
+import useCoordinatorDashboard from "../../hooks/useCoordinatorDashboard";
 
 // Componentes
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -42,9 +40,20 @@ const CoordenadorDashboard = (props) => {
   const [selectedClass, setSelectedClass] = useState(null);
 
   // Dados dos hooks
-  const { students, loading: loadingStudents } = useStudentsContext();
-  const { users, loading: loadingUsers } = useFetchUsers();
-  const { classes, loading: loadingClasses } = useClassContext();
+  const {
+    students,
+    classes,
+    teachers,
+    loading,
+    totalStudents,
+    totalTeachers,
+    totalClasses,
+    averageGrade,
+    approvalRate,
+    getStudentsByClass,
+    topStudents,
+    topTeachers,
+  } = useCoordinatorDashboard();
 
   // Função para alternar entre as abas
   const toggle = (tab) => {
@@ -77,22 +86,22 @@ const CoordenadorDashboard = (props) => {
   };
 
   // Calcular estatísticas
-  const totalStudents = students.length;
-  const totalTeachers = users.filter(
-    (user) => user.role === "professor"
-  ).length;
-  const totalClasses = classes.length;
+  //const totalStudents = students.length;
+  //const totalTeachers = users.filter(
+  //(user) => user.role === "professor"
+  //).length;
+  //const totalClasses = classes.length;
 
   // Calcular média geral de todos os alunos
-  const averageGrade =
-    students.reduce((acc, student) => acc + (student.average || 0), 0) /
-    (totalStudents || 1);
+  //const averageGrade =
+  //students.reduce((acc, student) => acc + (student.average || 0), 0) /
+  //(totalStudents || 1);
 
   // Calcular taxa de aprovação
   const approvedStudents = students.filter(
     (student) => (student.average || 0) >= 7
   ).length;
-  const approvalRate = (approvedStudents / (totalStudents || 1)) * 100;
+  //const approvalRate = (approvedStudents / (totalStudents || 1)) * 100;
 
   // Filtrar alunos por turma selecionada
   const filteredStudents = selectedClass
@@ -291,14 +300,14 @@ const CoordenadorDashboard = (props) => {
   };
 
   // Dados para a tabela de alunos com melhor desempenho
-  const topStudents = [...students]
-    .sort((a, b) => (b.average || 0) - (a.average || 0))
-    .slice(0, 5);
+  //const topStudents = [...students]
+  //.sort((a, b) => (b.average || 0) - (a.average || 0))
+  //.slice(0, 5);
 
   // Dados para a tabela de professores
-  const teachersList = users
-    .filter((user) => user.role === "professor")
-    .slice(0, 5);
+  const teachersList = teachers;
+  //.filter((user) => user.role === "professor")
+  //.slice(0, 5);
 
   //meta title
   document.title = "Dashboard do Coordenador | Painel Escolar";
