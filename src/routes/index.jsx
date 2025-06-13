@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { UsersProvider } from "../contexts/UsersContext";
 import { NotificationsProvider } from "../contexts/NotificationsContext";
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
+import { CoordinatorDashboardProvider } from "../contexts/CoordinatorDashboardContext";
 import { EventsProvider } from "../contexts/EventsContext";
 import RoleProtectedRoute from "./roleProtectedRoutes";
 
@@ -268,7 +269,9 @@ const authProtectedRoutes = [
     path: "/dashboard-coordenador",
     component: (
       <RoleProtectedRoute allowedRoles={["coordinator"]}>
-        <CoordenadorDashboard />{" "}
+        <CoordinatorDashboardProvider>
+          <CoordenadorDashboard />
+        </CoordinatorDashboardProvider>
       </RoleProtectedRoute>
     ),
   },

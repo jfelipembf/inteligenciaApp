@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 
 // Hooks
-import useCoordinatorDashboard from "../../hooks/useCoordinatorDashboard";
+import { useCoordinatorContext } from "../../contexts/CoordinatorDashboardContext";
 
 // Componentes
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -53,7 +53,7 @@ const CoordenadorDashboard = (props) => {
     getStudentsByClass,
     topStudents,
     topTeachers,
-  } = useCoordinatorDashboard();
+  } = useCoordinatorContext();
 
   // Função para alternar entre as abas
   const toggle = (tab) => {
