@@ -37,6 +37,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
   const [gradeDistributionByClass, setGradeDistributionByClass] = useState({});
   const [loadingExtra, setLoadingExtra] = useState(true);
   const [error, setError] = useState(null);
+  const [attendencesPerClass, setAttendencesPerClass] = useState([]);
 
   // Professores
   const teachers = useMemo(
@@ -91,8 +92,11 @@ export const CoordinatorDashboardProvider = ({ children }) => {
         let gradeDistributionTemp = [0, 0, 0, 0, 0];
         let gradeDistributionByClassTemp = {};
         let exams = 0;
+        let attendencesPerClassTemp = [];
 
         for (const classItem of classes) {
+          let totalPresentes = 0;
+
           // Buscar alunos da turma
           const studentsSnapshot = await db
             .collection("schools")
@@ -127,6 +131,26 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
           for (const lessonDoc of lessonsSnapshot.docs) {
             const lessonId = lessonDoc.id;
+
+            const attendanceSnapshot = await db
+              .collection("schools")
+              .doc(classItem.schoolId)
+              .collection("classes")
+              .doc(classItem.id)
+              .collection("lessons")
+              .doc(lessonDoc.id)
+              .collection("attendance")
+              .get();
+
+            for (const attendanceDoc of attendanceSnapshot.docs) {
+              const attendanceData = attendanceDoc.data();
+              if (Array.isArray(attendanceData.records)) {
+                totalPresentes += attendanceData.records.filter(
+                  (rec) => rec.status === "present"
+                ).length;
+              }
+            }
+
             // Buscar grades da lesson
             const gradesSnapshot = await db
               .collection("schools")
@@ -216,6 +240,12 @@ export const CoordinatorDashboardProvider = ({ children }) => {
             unitAveragesByClassTemp[classItem.id][unit] =
               count > 0 ? sum / count : 0;
           }
+
+          // Presenças por turma
+          attendencesPerClassTemp.push({
+            label: classItem.className,
+            value: totalPresentes,
+          });
         }
 
         // Média por unidade geral
@@ -226,19 +256,20 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
         // Média por aluno
         const studentAveragesFinal = {};
-        for (const [studentId, { sum, count }] of Object.entries(
+        for (const [studentId, { sum, exams }] of Object.entries(
           studentAveragesTemp
         )) {
-          studentAveragesFinal[studentId] = count > 0 ? sum / count : 0;
+          studentAveragesFinal[studentId] = exams > 0 ? sum / exams : 0;
         }
 
         setClassAverages(classAveragesTemp);
         setUnitAverages(unitAveragesFinal);
-        setStudentAverages(studentAveragesFinal);
+        setStudentAverages();
         setStudentsByClass(studentsByClassTemp);
         setGradeDistribution(gradeDistributionTemp);
         setUnitAveragesByClass(unitAveragesByClassTemp);
         setGradeDistributionByClass(gradeDistributionByClassTemp);
+        setAttendencesPerClass(attendencesPerClassTemp);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -272,6 +303,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
     gradeDistribution,
     unitAveragesByClass,
     gradeDistributionByClass,
+    attendencesPerClass,
     topStudents,
     topTeachers,
     error,

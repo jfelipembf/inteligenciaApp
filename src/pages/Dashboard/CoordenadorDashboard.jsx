@@ -57,7 +57,9 @@ const CoordenadorDashboard = (props) => {
     gradeDistribution,
     unitAveragesByClass,
     gradeDistributionByClass,
+
     topStudents,
+    attendencesPerClass,
     topTeachers,
     error,
   } = useCoordinatorContext();
@@ -284,50 +286,59 @@ const CoordenadorDashboard = (props) => {
   };
 
   // Configuração do gráfico de frequência
+  const attendanceLabels = attendencesPerClass.map((item) => item.label);
+  const attendanceValues = attendencesPerClass.map((item) => item.value);
+
   const attendanceChartOptions = {
     series: [
       {
-        name: "Frequência",
-        data: [95, 92, 88, 96, 90, 93, 97, 94, 91, 89],
+        name: "Presenças",
+        data: attendanceValues,
       },
     ],
     options: {
       chart: {
+        type: "bar",
         height: 350,
-        type: "line",
-        toolbar: {
-          show: false,
+        toolbar: { show: false },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: false,
+          columnWidth: "50%",
         },
       },
-      colors: ["#556ee6"],
       dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "straight",
-        width: 3,
-      },
-      grid: {
-        row: {
-          colors: ["#f3f3f3", "transparent"],
-          opacity: 0.5,
+        enabled: true,
+        style: {
+          colors: ["#fff"], // cor do número dentro da barra
+          fontSize: "14px",
+          fontWeight: "bold",
         },
       },
       xaxis: {
-        categories: classes
-          .slice(0, 10)
-          .map((classItem) => classItem.className),
+        categories: attendanceLabels,
+        title: { text: "Turma" },
+        labels: {
+          rotate: -45, // Rotaciona os nomes das turmas em 45 graus
+          style: {
+            fontSize: "13px",
+          },
+        },
       },
       yaxis: {
-        min: 80,
-        max: 100,
+        min: 0,
+        title: { text: "Total de Presenças" },
       },
-      markers: {
-        size: 4,
+      colors: ["#34c38f"],
+      tooltip: {
+        y: {
+          formatter: (val) => `${val} presenças`,
+        },
       },
     },
   };
-
   // Dados para a tabela de alunos com melhor desempenho
   //const topStudents = [...students]
   //.sort((a, b) => (b.average || 0) - (a.average || 0))
