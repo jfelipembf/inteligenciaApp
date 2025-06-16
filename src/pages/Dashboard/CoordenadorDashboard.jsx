@@ -50,9 +50,16 @@ const CoordenadorDashboard = (props) => {
     totalClasses,
     averageGrade,
     approvalRate,
-    getStudentsByClass,
+    classAverages,
+    unitAverages,
+    studentAverages,
+    studentsByClass,
+    gradeDistribution,
+    unitAveragesByClass,
+    gradeDistributionByClass,
     topStudents,
     topTeachers,
+    error,
   } = useCoordinatorContext();
 
   // Função para alternar entre as abas
@@ -141,7 +148,7 @@ const CoordenadorDashboard = (props) => {
     series: [
       {
         name: "Média",
-        data: classes.map((classItem) => classItem.average || 0),
+        data: Object.values(classAverages),
       },
     ],
     options: {
@@ -160,7 +167,10 @@ const CoordenadorDashboard = (props) => {
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function (val) {
+          return val.toFixed(1);
+        },
       },
       stroke: {
         show: true,
@@ -169,13 +179,28 @@ const CoordenadorDashboard = (props) => {
       },
       colors: ["#34c38f"],
       xaxis: {
-        categories: classes.map((classItem) => classItem.className),
+        categories: Object.keys(classAverages).map((className) =>
+          className.length > 20 ? `${className.slice(0, 20)}...` : className
+        ),
+        labels: {
+          style: {
+            fontSize: `${Math.min(
+              Math.max(5, 100 / Object.keys(classAverages).length),
+              9
+            )}px`,
+          },
+        },
       },
       yaxis: {
         min: 0,
         max: 10,
         title: {
           text: "Média",
+        },
+        labels: {
+          formatter: function (val) {
+            return val.toFixed(1);
+          },
         },
       },
       fill: {
@@ -185,6 +210,10 @@ const CoordenadorDashboard = (props) => {
         y: {
           formatter: function (val) {
             return val.toFixed(1);
+          },
+          custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+            const className = Object.keys(classAverages)[dataPointIndex];
+            return `<div class="apexcharts-tooltip-title">${className}</div>`;
           },
         },
       },
@@ -441,15 +470,23 @@ const CoordenadorDashboard = (props) => {
                                           <div className="d-flex align-items-center">
                                             <div className="avatar-xs me-2">
                                               <span className="avatar-title rounded-circle bg-primary text-white">
-                                                {student.name
-                                                  ? student.name.charAt(0)
+                                                {student.personalInfo.name
+                                                  ? student.personalInfo.name.charAt(
+                                                      0
+                                                    )
                                                   : "A"}
                                               </span>
                                             </div>
-                                            {student.name}
+                                            {student.personalInfo.name}
                                           </div>
                                         </td>
-                                        <td>{student.class}</td>
+                                        <td>
+                                          {classes.find(
+                                            (c) =>
+                                              c.id ===
+                                              student.academicInfo.classId
+                                          )?.className || "sem turma"}
+                                        </td>
                                         <td>
                                           <Badge
                                             color={getBadgeColor(
