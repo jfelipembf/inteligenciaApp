@@ -59,6 +59,7 @@ const CoordenadorDashboard = (props) => {
     gradeDistributionByClass,
     attendencesPerClass,
     topStudents,
+    lessonGeralAverage,
     topTeachers,
     error,
   } = useCoordinatorContext();
@@ -222,11 +223,20 @@ const CoordenadorDashboard = (props) => {
   };
 
   // Configuração do gráfico de desempenho por disciplina
+
+  const subjectLabels = Object.keys(lessonGeralAverage).map(
+    (subject) =>
+      subject.charAt(0).toUpperCase() + subject.slice(1).toLowerCase()
+  );
+  const subjectAverages = Object.values(lessonGeralAverage).map((val) =>
+    Number(Number(val).toFixed(1))
+  );
+
   const subjectPerformanceOptions = {
     series: [
       {
         name: "Média",
-        data: [8.5, 7.8, 7.2, 8.1, 6.9, 7.5, 8.3],
+        data: subjectAverages,
       },
     ],
     options: {
@@ -254,15 +264,7 @@ const CoordenadorDashboard = (props) => {
       },
       colors: ["#556ee6"],
       xaxis: {
-        categories: [
-          "Português",
-          "Matemática",
-          "Ciências",
-          "História",
-          "Geografia",
-          "Inglês",
-          "Artes",
-        ],
+        categories: subjectLabels,
       },
       yaxis: {
         min: 0,

@@ -28,6 +28,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
   const { classes, loading: loadingClasses } = useClassContext();
   const { users, loading: loadingUsers } = useFetchUsers();
 
+  const [lessonGeralAverage, setLessonGeralAverage] = useState({});
   const [topStudents, setTopStudents] = useState([]);
   const [classAverages, setClassAverages] = useState({});
   const [unitAverages, setUnitAverages] = useState({});
@@ -87,6 +88,10 @@ export const CoordinatorDashboardProvider = ({ children }) => {
         let exams = 0;
         let attendencesPerClassTemp = [];
 
+        let lessonAverage = {};
+        let lessonCount = {};
+        let lessonAverageFinal = {};
+
         for (const classItem of classes) {
           let totalPresentes = 0;
 
@@ -124,6 +129,24 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
           for (const lessonDoc of lessonsSnapshot.docs) {
             const lessonId = lessonDoc.id;
+
+            const lessonData = lessonDoc.data();
+
+            const subjectKey = lessonData.subject.toLowerCase();
+            if (!lessonAverage[subjectKey]) {
+              lessonAverage[subjectKey] = {};
+            }
+
+            console.log("lesson Average", lessonAverage);
+
+            if (!lessonCount[subjectKey]) {
+              lessonCount[subjectKey] = 0;
+            }
+            lessonCount[subjectKey]++;
+
+            console.log("lesson Count", lessonCount);
+
+            let lessonGradeSum = 0;
 
             const attendanceSnapshot = await db
               .collection("schools")
@@ -174,6 +197,8 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
               classGradesSum += gradeSum;
               classGradesCount += gradeCount;
+
+              lessonGradeSum += gradeSum;
 
               const gradeUnitSum = Object.values(gradeValues)
                 .filter((val) => !isNaN(val))
@@ -237,6 +262,11 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
               studentAverages[studentId] = unitSize > 0 ? total / unitSize : 0;
             });
+
+            // Média da lição
+            if (gradesSnapshot.size > 0) {
+              lessonAverage[subjectKey] = lessonGradeSum / gradesSnapshot.size;
+            }
           }
 
           // Média da turma
@@ -269,6 +299,13 @@ export const CoordinatorDashboardProvider = ({ children }) => {
           });
         }
 
+        // Média geral por lição
+        for (const [subject, total] of Object.entries(lessonAverage)) {
+          lessonAverageFinal[subject] = total / (lessonCount[subject] || 1);
+        }
+
+        console.log("lessonAverageFinal", lessonAverageFinal);
+
         // Média por unidade geral
         const unitAveragesFinal = {};
         for (const [unit, { sum, count }] of Object.entries(unitAveragesTemp)) {
@@ -292,6 +329,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
           .sort((a, b) => b.average - a.average)
           .slice(0, 5);
 
+        setLessonGeralAverage(lessonAverageFinal);
         setTopStudents(topStudents);
         setClassAverages(classAveragesTemp);
         setUnitAverages(unitAveragesFinal);
@@ -335,6 +373,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
     unitAveragesByClass,
     gradeDistributionByClass,
     attendencesPerClass,
+    lessonGeralAverage,
     topStudents,
     topTeachers,
     error,
