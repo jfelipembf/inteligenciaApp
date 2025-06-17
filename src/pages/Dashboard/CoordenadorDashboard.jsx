@@ -57,9 +57,8 @@ const CoordenadorDashboard = (props) => {
     gradeDistribution,
     unitAveragesByClass,
     gradeDistributionByClass,
-
-    topStudents,
     attendencesPerClass,
+    topStudents,
     topTeachers,
     error,
   } = useCoordinatorContext();
@@ -481,7 +480,7 @@ const CoordenadorDashboard = (props) => {
                                           <div className="d-flex align-items-center">
                                             <div className="avatar-xs me-2">
                                               <span className="avatar-title rounded-circle bg-primary text-white">
-                                                {student.personalInfo.name
+                                                {student?.personalInfo?.name
                                                   ? student.personalInfo.name.charAt(
                                                       0
                                                     )
@@ -502,6 +501,8 @@ const CoordenadorDashboard = (props) => {
                                           <Badge
                                             color={getBadgeColor(
                                               student.average
+                                                ? student.average
+                                                : 0
                                             )}
                                             pill
                                           >
@@ -845,32 +846,37 @@ const CoordenadorDashboard = (props) => {
                                             <div className="d-flex align-items-center">
                                               <div className="avatar-xs me-2">
                                                 <span className="avatar-title rounded-circle bg-primary text-white">
-                                                  {student.name
-                                                    ? student.name.charAt(0)
+                                                  {student?.personalInfo?.name
+                                                    ? student.personalInfo.name.charAt(
+                                                        0
+                                                      )
                                                     : "A"}
                                                 </span>
                                               </div>
-                                              {student.name ||
+                                              {student.personalInfo.name ||
                                                 `Aluno ${index + 1}`}
                                             </div>
                                           </td>
                                           <td>
-                                            {student.id ||
-                                              `${2023}${index + 1}`.padStart(
-                                                8,
-                                                "0"
-                                              )}
+                                            {student.academicInfo
+                                              .registration || "Sem matrícula"}
                                           </td>
-                                          <td>{student.class || "1º Ano A"}</td>
+                                          <td>
+                                            {student.academicInfo.className ||
+                                              "Sem turma"}
+                                          </td>
                                           <td>
                                             <Badge
                                               color={getBadgeColor(
-                                                student.average
+                                                studentAverages[student.id]
+                                                  ? studentAverages[student.id]
+                                                  : 0
                                               )}
                                               pill
                                             >
-                                              {student.average?.toFixed(1) ||
-                                                "N/A"}
+                                              {studentAverages[
+                                                student.id
+                                              ]?.toFixed(1) || "N/A"}
                                             </Badge>
                                           </td>
                                           <td>

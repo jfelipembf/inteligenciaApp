@@ -28,6 +28,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
   const { classes, loading: loadingClasses } = useClassContext();
   const { users, loading: loadingUsers } = useFetchUsers();
 
+  const [topStudents, setTopStudents] = useState([]);
   const [classAverages, setClassAverages] = useState({});
   const [unitAverages, setUnitAverages] = useState({});
   const [studentAverages, setStudentAverages] = useState({});
@@ -49,6 +50,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
   const totalTeachers = teachers.length;
   const totalClasses = classes.length;
   let studentsPerClass = 0;
+  let gradesByStudent = [];
 
   // Média geral dos alunos
   const averageGrade = useMemo(
@@ -63,15 +65,6 @@ export const CoordinatorDashboardProvider = ({ children }) => {
     (student) => (student.average || 0) >= 7
   ).length;
   const approvalRate = (approvedStudents / (totalStudents || 1)) * 100;
-
-  // Top alunos
-  const topStudents = useMemo(
-    () =>
-      [...students]
-        .sort((a, b) => (b.average || 0) - (a.average || 0))
-        .slice(0, 5),
-    [students]
-  );
 
   // Top professores
   const topTeachers = useMemo(() => teachers.slice(0, 5), [teachers]);
@@ -162,7 +155,11 @@ export const CoordinatorDashboardProvider = ({ children }) => {
               .collection("grades")
               .get();
 
-            exams = gradesSnapshot.size / studentsPerClass;
+            exams =
+              studentsPerClass > 0 ? gradesSnapshot.size / studentsPerClass : 0;
+
+            const gradesByStudent = {};
+            const unitsSet = new Set();
 
             for (const gradeDoc of gradesSnapshot.docs) {
               const gradeData = gradeDoc.data();
@@ -172,11 +169,25 @@ export const CoordinatorDashboardProvider = ({ children }) => {
               const gradeSum = gradeValues.reduce((acc, val) => acc + val, 0);
               const gradeCount = gradeValues.length;
 
+              const lessonStudentId = gradeData.studentId;
+              const unit = gradeData.unit || "Sem Unidade";
+
               classGradesSum += gradeSum;
               classGradesCount += gradeCount;
 
+              const gradeUnitSum = Object.values(gradeValues)
+                .filter((val) => !isNaN(val))
+                .reduce((acc, val) => acc + val, 0);
+
+              unitsSet.add(unit);
+
+              if (!gradesByStudent[lessonStudentId]) {
+                gradesByStudent[lessonStudentId] = {};
+              }
+              gradesByStudent[lessonStudentId][unit] = gradeSum;
+
               // Média por unidade
-              const unit = gradeData.unit || "Sem Unidade";
+
               if (!unitGrades[unit]) unitGrades[unit] = { sum: 0, count: 0 };
               unitGrades[unit].sum += gradeSum;
               unitGrades[unit].count += gradeCount;
@@ -216,6 +227,16 @@ export const CoordinatorDashboardProvider = ({ children }) => {
               else if (avg >= 8 && avg <= 10)
                 gradeDistributionByClassTemp[classItem.id][4]++;
             }
+
+            const unitSize = unitsSet.size;
+            Object.entries(gradesByStudent).forEach(([studentId, unitsObj]) => {
+              const total = Object.values(unitsObj).reduce(
+                (acc, val) => acc + val,
+                0
+              );
+
+              studentAverages[studentId] = unitSize > 0 ? total / unitSize : 0;
+            });
           }
 
           // Média da turma
@@ -262,9 +283,19 @@ export const CoordinatorDashboardProvider = ({ children }) => {
           studentAveragesFinal[studentId] = exams > 0 ? sum / exams : 0;
         }
 
+        // Média de alunos ordenada
+        const topStudents = students
+          .map((student) => ({
+            ...student,
+            average: studentAverages[student.id] || 0,
+          }))
+          .sort((a, b) => b.average - a.average)
+          .slice(0, 5);
+
+        setTopStudents(topStudents);
         setClassAverages(classAveragesTemp);
         setUnitAverages(unitAveragesFinal);
-        setStudentAverages();
+        setStudentAverages(studentAverages);
         setStudentsByClass(studentsByClassTemp);
         setGradeDistribution(gradeDistributionTemp);
         setUnitAveragesByClass(unitAveragesByClassTemp);
