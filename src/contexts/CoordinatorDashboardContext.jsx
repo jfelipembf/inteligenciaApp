@@ -94,6 +94,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
 
         for (const classItem of classes) {
           let totalPresentes = 0;
+          let totalEsperado = 0;
 
           // Buscar alunos da turma
           const studentsSnapshot = await db
@@ -164,6 +165,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
                 totalPresentes += attendanceData.records.filter(
                   (rec) => rec.status === "present"
                 ).length;
+                totalEsperado += attendanceData.records.length;
               }
             }
 
@@ -293,9 +295,13 @@ export const CoordinatorDashboardProvider = ({ children }) => {
           }
 
           // Presenças por turma
+          const frequencia =
+            totalEsperado > 0 ? (totalPresentes / totalEsperado) * 100 : 0;
+
           attendencesPerClassTemp.push({
             label: classItem.className,
             value: totalPresentes,
+            frequencia: frequencia,
           });
         }
 

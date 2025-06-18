@@ -288,13 +288,15 @@ const CoordenadorDashboard = (props) => {
 
   // Configuração do gráfico de frequência
   const attendanceLabels = attendencesPerClass.map((item) => item.label);
-  const attendanceValues = attendencesPerClass.map((item) => item.value);
+  const attendanceFrequency = attendencesPerClass.map(
+    (item) => `${item.frequencia.toFixed(1)}`
+  );
 
   const attendanceChartOptions = {
     series: [
       {
         name: "Presenças",
-        data: attendanceValues,
+        data: attendanceFrequency,
       },
     ],
     options: {
@@ -335,7 +337,7 @@ const CoordenadorDashboard = (props) => {
       colors: ["#34c38f"],
       tooltip: {
         y: {
-          formatter: (val) => `${val} presenças`,
+          formatter: (val) => `${val}%`,
         },
       },
     },
@@ -591,24 +593,36 @@ const CoordenadorDashboard = (props) => {
                                         <td>
                                           <Badge
                                             color={getBadgeColor(
-                                              classItem.average
+                                              classAverages[classItem.className]
                                             )}
                                             pill
                                           >
-                                            {classItem.average?.toFixed(1) ||
-                                              "N/A"}
+                                            {classAverages[
+                                              classItem.className
+                                            ]?.toFixed(1) || "N/A"}
                                           </Badge>
                                         </td>
                                         <td>
-                                          {Math.floor(85 + Math.random() * 15)}%
+                                          {(
+                                            attendencesPerClass.find(
+                                              (item) =>
+                                                item.label ===
+                                                classItem.className
+                                            )?.frequencia ?? 0
+                                          ).toFixed(1)}
+                                          %
                                         </td>
                                         <td style={{ width: "15%" }}>
                                           <Progress
                                             value={getProgressPercentage(
-                                              classItem.average || 0
+                                              classAverages[
+                                                classItem.className
+                                              ] || 0
                                             )}
                                             color={getProgressColor(
-                                              classItem.average || 0
+                                              classAverages[
+                                                classItem.className
+                                              ] || 0
                                             )}
                                             style={{ height: "6px" }}
                                           />
