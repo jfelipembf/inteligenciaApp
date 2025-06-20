@@ -638,18 +638,10 @@ const CoordenadorDashboard = (props) => {
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
                                               <DropdownItem
-                                                href={`/class-details/${classItem.id}`}
+                                                href={`/classes/${classItem.id}`}
                                               >
                                                 <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
                                                 Ver Detalhes
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
-                                                Editar
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
-                                                Relatório
                                               </DropdownItem>
                                             </DropdownMenu>
                                           </UncontrolledDropdown>
@@ -762,18 +754,10 @@ const CoordenadorDashboard = (props) => {
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
                                               <DropdownItem
-                                                href={`/teacher-details/${teacher.id}`}
+                                                href={`/teachers/${teacher.id}`}
                                               >
                                                 <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
                                                 Ver Perfil
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
-                                                Editar
-                                              </DropdownItem>
-                                              <DropdownItem href="#">
-                                                <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
-                                                Relatório
                                               </DropdownItem>
                                             </DropdownMenu>
                                           </UncontrolledDropdown>
@@ -849,7 +833,7 @@ const CoordenadorDashboard = (props) => {
                                       <th>Turma</th>
                                       <th>Média</th>
                                       <th>Frequência</th>
-                                      <th>Status</th>
+
                                       <th>Ações</th>
                                     </tr>
                                   </thead>
@@ -901,20 +885,7 @@ const CoordenadorDashboard = (props) => {
                                             )}
                                             %
                                           </td>
-                                          <td>
-                                            <Badge
-                                              color={
-                                                (student.average || 0) >= 7
-                                                  ? "success"
-                                                  : "danger"
-                                              }
-                                              className="bg-soft-success text-success"
-                                            >
-                                              {(student.average || 0) >= 7
-                                                ? "Aprovado"
-                                                : "Em recuperação"}
-                                            </Badge>
-                                          </td>
+
                                           <td>
                                             <UncontrolledDropdown>
                                               <DropdownToggle
@@ -926,15 +897,12 @@ const CoordenadorDashboard = (props) => {
                                               </DropdownToggle>
                                               <DropdownMenu className="dropdown-menu-end">
                                                 <DropdownItem
-                                                  href={`/student-details/${student.id}`}
+                                                  href={`/students/${student.id}`}
                                                 >
                                                   <i className="mdi mdi-eye-outline font-size-16 text-primary me-1"></i>{" "}
                                                   Ver Perfil
                                                 </DropdownItem>
-                                                <DropdownItem href="#">
-                                                  <i className="mdi mdi-pencil-outline font-size-16 text-success me-1"></i>{" "}
-                                                  Editar
-                                                </DropdownItem>
+
                                                 <DropdownItem href="#">
                                                   <i className="mdi mdi-file-document-outline font-size-16 text-info me-1"></i>{" "}
                                                   Boletim
