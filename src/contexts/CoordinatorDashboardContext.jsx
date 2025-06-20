@@ -40,6 +40,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
   const [loadingExtra, setLoadingExtra] = useState(true);
   const [error, setError] = useState(null);
   const [attendencesPerClass, setAttendencesPerClass] = useState([]);
+  const [geralAverage, setGeralAverage] = useState(0);
 
   // Professores
   const teachers = useMemo(
@@ -91,6 +92,8 @@ export const CoordinatorDashboardProvider = ({ children }) => {
         let lessonAverage = {};
         let lessonCount = {};
         let lessonAverageFinal = {};
+
+        const classesLength = classes.length;
 
         for (const classItem of classes) {
           let totalPresentes = 0;
@@ -326,6 +329,13 @@ export const CoordinatorDashboardProvider = ({ children }) => {
           studentAveragesFinal[studentId] = exams > 0 ? sum / exams : 0;
         }
 
+        const geralAverageTemp = classAveragesTemp
+          ? Object.values(classAveragesTemp).reduce(
+              (acc, val) => acc + val,
+              0
+            ) / classesLength
+          : 0;
+
         // Média de alunos ordenada
         const topStudents = students
           .map((student) => ({
@@ -345,6 +355,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
         setUnitAveragesByClass(unitAveragesByClassTemp);
         setGradeDistributionByClass(gradeDistributionByClassTemp);
         setAttendencesPerClass(attendencesPerClassTemp);
+        setGeralAverage(geralAverageTemp);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -382,6 +393,7 @@ export const CoordinatorDashboardProvider = ({ children }) => {
     lessonGeralAverage,
     topStudents,
     topTeachers,
+    geralAverage,
     error,
   };
 

@@ -60,6 +60,7 @@ const CoordenadorDashboard = (props) => {
     attendencesPerClass,
     topStudents,
     lessonGeralAverage,
+    geralAverage,
     topTeachers,
     error,
   } = useCoordinatorContext();
@@ -70,6 +71,32 @@ const CoordenadorDashboard = (props) => {
       setActiveTab(tab);
     }
   };
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Quantidade de novos alunos no mês atual
+  const alunosNovosNoMes = students.filter((student) => {
+    if (!student.metadata?.createdAt) return false;
+    const createdAt = student.metadata.createdAt.toDate();
+
+    return (
+      createdAt.getMonth() === currentMonth &&
+      createdAt.getFullYear() === currentYear
+    );
+  }).length;
+
+  // Quantidade de professores novos no mês atual
+  const professoresNovosNoMes = teachers.filter((student) => {
+    if (!teachers.metadata?.createdAt) return false;
+    const createdAt = teachers.metadata.createdAt.toDate();
+
+    return (
+      createdAt.getMonth() === currentMonth &&
+      createdAt.getFullYear() === currentYear
+    );
+  }).length;
 
   // Função para determinar a cor da badge com base na média
   const getBadgeColor = (average) => {
@@ -124,24 +151,24 @@ const CoordenadorDashboard = (props) => {
       value: totalStudents,
       icon: "bx-user-circle",
       color: "primary",
-      change: "+5%",
-      period: "desde o mês passado",
+      change: `+${alunosNovosNoMes}`,
+      period: " novos alunos esse mês",
     },
     {
       title: "Total de Professores",
       value: totalTeachers,
       icon: "bx-user-voice",
       color: "success",
-      change: "+2",
-      period: "novos professores",
+      change: `+${professoresNovosNoMes}`,
+      period: "novos professores esse mês",
     },
     {
       title: "Média Geral",
-      value: averageGrade.toFixed(1),
+      value: geralAverage.toFixed(1),
       icon: "bx-bar-chart-alt-2",
       color: "info",
-      change: "+0.3",
-      period: "desde o último bimestre",
+      change: "",
+      period: "",
     },
   ];
 
