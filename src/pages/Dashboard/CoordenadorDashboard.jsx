@@ -424,14 +424,14 @@ const CoordenadorDashboard = (props) => {
                         <span className="d-none d-sm-block">Turmas</span>
                       </NavLink>
                     </NavItem>
-                    <NavItem>
+                    {/*<NavItem>
                       <NavLink
                         className={classnames({ active: activeTab === "3" })}
                         onClick={() => toggle("3")}
                       >
                         <span className="d-none d-sm-block">Professores</span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem>*/}
                     <NavItem>
                       <NavLink
                         className={classnames({ active: activeTab === "4" })}
@@ -676,6 +676,7 @@ const CoordenadorDashboard = (props) => {
                     </TabPane>
 
                     {/* Aba de Professores */}
+                    {/* ##### Por enquanto, está fora do escopo ######
                     <TabPane tabId="3">
                       <Row>
                         <Col xl={12}>
@@ -772,6 +773,7 @@ const CoordenadorDashboard = (props) => {
                         </Col>
                       </Row>
                     </TabPane>
+*/}
 
                     {/* Aba de Alunos */}
                     <TabPane tabId="4">
