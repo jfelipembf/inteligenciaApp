@@ -141,7 +141,9 @@ const CoordenadorDashboard = (props) => {
 
   // Filtrar alunos por turma selecionada
   const filteredStudents = selectedClass
-    ? students.filter((student) => student.class === selectedClass)
+    ? students.filter(
+        (student) => student.academicInfo.classId === selectedClass
+      )
     : students;
 
   // Cards principais
@@ -821,7 +823,11 @@ const CoordenadorDashboard = (props) => {
                                   tag="button"
                                   className="btn btn-outline-secondary"
                                 >
-                                  {selectedClass || "Todas as Turmas"}{" "}
+                                  {selectedClass
+                                    ? classes.find(
+                                        (c) => c.id === selectedClass
+                                      )?.className || selectedClass
+                                    : "Todas as Turmas"}{" "}
                                   <i className="mdi mdi-chevron-down ms-1"></i>
                                 </DropdownToggle>
                                 <DropdownMenu>
@@ -834,7 +840,7 @@ const CoordenadorDashboard = (props) => {
                                     <DropdownItem
                                       key={index}
                                       onClick={() =>
-                                        setSelectedClass(classItem.className)
+                                        setSelectedClass(classItem.id)
                                       }
                                     >
                                       {classItem.className}
