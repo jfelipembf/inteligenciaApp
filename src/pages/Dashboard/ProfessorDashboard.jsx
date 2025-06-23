@@ -365,11 +365,24 @@ const ProfessorDashboard = (props) => {
 
   if (loading) {
     return (
-      <div className="text-center my-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Carregando...</span>
-        </div>
-        <p>Carregando dados do dashboard...</p>
+      <div className="page-content">
+        <Container fluid>
+          <div
+            className="d-flex flex-column align-items-center justify-content-center"
+            style={{ minHeight: "60vh" }}
+          >
+            <div className="text-center">
+              <div
+                className="spinner-border text-primary"
+                role="status"
+                style={{ width: "3rem", height: "3rem" }}
+              >
+                <span className="visually-hidden">Carregando...</span>
+              </div>
+              <h4 className="mt-3">Carregando dados do dashboard...</h4>
+            </div>
+          </div>
+        </Container>
       </div>
     );
   }

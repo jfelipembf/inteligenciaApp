@@ -47,21 +47,12 @@ const CoordenadorDashboard = (props) => {
     loading,
     totalStudents,
     totalTeachers,
-    totalClasses,
-    averageGrade,
-    approvalRate,
     classAverages,
-    unitAverages,
     studentAverages,
-    studentsByClass,
-    gradeDistribution,
-    unitAveragesByClass,
-    gradeDistributionByClass,
     attendencesPerClass,
     topStudents,
     lessonGeralAverage,
     geralAverage,
-    topTeachers,
     error,
   } = useCoordinatorContext();
 
@@ -71,6 +62,30 @@ const CoordenadorDashboard = (props) => {
       setActiveTab(tab);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="page-content">
+        <Container fluid>
+          <div
+            className="d-flex flex-column align-items-center justify-content-center"
+            style={{ minHeight: "60vh" }}
+          >
+            <div className="text-center">
+              <div
+                className="spinner-border text-primary"
+                role="status"
+                style={{ width: "3rem", height: "3rem" }}
+              >
+                <span className="visually-hidden">Carregando...</span>
+              </div>
+              <h4 className="mt-3">Carregando dados do dashboard...</h4>
+            </div>
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   const now = new Date();
   const currentMonth = now.getMonth();
