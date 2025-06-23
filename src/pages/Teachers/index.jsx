@@ -161,18 +161,6 @@ const Teachers = () => {
         },
       },
       {
-        header: "Departamento",
-        accessorKey: "professionalInfo.department",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          return (
-            getTextValue(cellProps.row.original.professionalInfo?.department) ||
-            "N/A"
-          );
-        },
-      },
-      {
         header: "Status",
         accessorKey: "status",
         enableColumnFilter: false,
@@ -203,7 +191,7 @@ const Teachers = () => {
                 <Button
                   color="soft-primary"
                   className="btn btn-sm btn-soft-primary"
-                  onClick={() => handleViewTeacher(cellProps.row.original.id)}
+                  onClick={() => handleViewTeacher(cellProps.row.original.uid)}
                 >
                   <i className="mdi mdi-eye-outline" />
                 </Button>
