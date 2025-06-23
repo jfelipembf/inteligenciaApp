@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import PersonCircle from "react-bootstrap-icons/dist/icons/person-circle";
 import {
   Container,
   Row,
@@ -19,16 +20,6 @@ import { useStudentsContext } from "../../contexts/StudentsContext";
 import { useClassContext } from "../../contexts/ClassContext";
 import useUser from "../../hooks/useUser";
 import useStudentAvatars from "../../hooks/useStudentAvatars";
-
-// Importar imagens de avatar
-import avatar1 from "../../assets/images/users/avatar-1.jpg";
-import avatar2 from "../../assets/images/users/avatar-2.jpg";
-import avatar3 from "../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../assets/images/users/avatar-4.jpg";
-import avatar5 from "../../assets/images/users/avatar-5.jpg";
-import avatar6 from "../../assets/images/users/avatar-6.jpg";
-import avatar7 from "../../assets/images/users/avatar-7.jpg";
-import avatar8 from "../../assets/images/users/avatar-8.jpg";
 
 // Cores para os níveis de ensino
 const EDUCATION_LEVEL_COLORS = {
@@ -160,27 +151,6 @@ const Students = () => {
         student.academicInfo?.registration?.includes(searchTerm)) &&
       (selectedClass === "" || student.academicInfo?.classId === selectedClass)
   );
-
-  // Função para obter o avatar com base no ID do aluno
-  const getAvatarByStudentId = (studentId) => {
-    if (!studentId) return avatar1;
-
-    const avatars = [
-      avatar1,
-      avatar2,
-      avatar3,
-      avatar4,
-      avatar5,
-      avatar6,
-      avatar7,
-      avatar8,
-    ];
-    const lastChar = studentId.slice(-1);
-    const index = isNaN(parseInt(lastChar, 10))
-      ? 0
-      : parseInt(lastChar, 10) % avatars.length;
-    return avatars[index];
-  };
 
   // Função para formatar a data no formato dd/mm/aaaa
   const formatDate = (dateString) => {
@@ -524,15 +494,34 @@ const Students = () => {
                                 </Button>
                               </div>
                               <div className="text-center mb-3">
-                                <div className="avatar-sm mx-auto mb-3">
-                                  <img
-                                    src={
-                                      avatarUrls[student.id] ||
-                                      getAvatarByStudentId(student.id) // fallback para avatar padrão
-                                    }
-                                    alt={student.personalInfo?.name || "Aluno"}
-                                    className="img-thumbnail rounded-circle"
-                                  />
+                                <div
+                                  className="avatar-md profile-user-wid mx-auto mt-1 mb-4 bg-primary-subtle"
+                                  style={{
+                                    width: "55px",
+                                    height: "55px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+
+                                    borderRadius: "50%",
+                                    border: "1px solid #dee2e6",
+                                  }}
+                                >
+                                  {avatarUrls[student.id] ? (
+                                    <img
+                                      src={avatarUrls[student.id]}
+                                      alt=""
+                                      className="img-thumbnail rounded-circle"
+                                      style={{
+                                        width: "55px",
+                                        height: "55px",
+                                        objectFit: "cover",
+                                      }}
+                                    />
+                                  ) : (
+                                    // Ícone padrão de avatar
+                                    <PersonCircle size={55} color="#f7f7fa" />
+                                  )}
                                 </div>
                                 <h6 className="font-size-15 mb-1">
                                   <Link

@@ -5,17 +5,10 @@ import { useParams } from "react-router-dom";
 import { useStudentsContext } from "../../../../contexts/StudentsContext";
 import { useClassContext } from "../../../../contexts/ClassContext";
 import useUser from "../../../../hooks/useUser";
+import { PersonCircle } from "react-bootstrap-icons"; // se usar react-bootstrap-icons
 
 // Import images
 import profileImg from "../../../../assets/images/profile-img.png";
-import avatar1 from "../../../../assets/images/users/avatar-1.jpg";
-import avatar2 from "../../../../assets/images/users/avatar-2.jpg";
-import avatar3 from "../../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../../assets/images/users/avatar-4.jpg";
-import avatar5 from "../../../../assets/images/users/avatar-5.jpg";
-import avatar6 from "../../../../assets/images/users/avatar-6.jpg";
-import avatar7 from "../../../../assets/images/users/avatar-7.jpg";
-import avatar8 from "../../../../assets/images/users/avatar-8.jpg";
 
 const WelcomeCard = () => {
   const { id } = useParams();
@@ -32,27 +25,6 @@ const WelcomeCard = () => {
   const studentData = students.find((s) => s.id === id);
 
   console.log("classes card", classes);
-
-  // Função para obter o avatar com base no ID do aluno
-  const getAvatarByStudentId = (studentId) => {
-    if (!studentId) return avatar1;
-
-    const avatars = [
-      avatar1,
-      avatar2,
-      avatar3,
-      avatar4,
-      avatar5,
-      avatar6,
-      avatar7,
-      avatar8,
-    ];
-    const lastChar = studentId.slice(-1);
-    const index = isNaN(parseInt(lastChar, 10))
-      ? 0
-      : parseInt(lastChar, 10) % avatars.length;
-    return avatars[index];
-  };
 
   // Formatar a data no formato dd/mm/aaaa
   const formatDate = (dateString) => {
@@ -120,12 +92,34 @@ const WelcomeCard = () => {
         <CardBody className="pt-0">
           <Row>
             <Col sm="4">
-              <div className="avatar-md profile-user-wid mb-4">
-                <img
-                  src={avatarUrl || getAvatarByStudentId(studentData?.id)}
-                  alt=""
-                  className="img-thumbnail rounded-circle"
-                />
+              <div
+                className="avatar-md profile-user-wid mb-4 bg-primary-subtle"
+                style={{
+                  width: "75px",
+                  height: "75px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  borderRadius: "50%",
+                  border: "1px solid #dee2e6",
+                }}
+              >
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt=""
+                    className="img-thumbnail rounded-circle"
+                    style={{
+                      width: "75px",
+                      height: "75px",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  // Ícone padrão de avatar
+                  <PersonCircle size={75} color="#f7f7fa" />
+                )}
               </div>
               <h5 className="font-size-15 text-truncate">{studentName}</h5>
               <p className="text-muted mb-0 text-truncate">
