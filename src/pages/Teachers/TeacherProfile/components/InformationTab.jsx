@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button, Badge } from "reactstrap";
-import { teacherData } from "./data";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Badge,
+} from "reactstrap";
+import { useTeachersContext } from "../../../../contexts/TeachersContext";
+import { useParams } from "react-router-dom";
 
 const InformationTab = () => {
-  const [formData, setFormData] = useState({
-    name: teacherData.name || "",
-    email: teacherData.email || "",
-    phone: teacherData.phone || "",
-    birthDate: teacherData.birthDate ? new Date(teacherData.birthDate).toISOString().split('T')[0] : "",
-    cpf: teacherData.cpf || "",
-    registration: teacherData.registration || "",
-    specialty: teacherData.specialty || "",
-    education: teacherData.education || "",
-    startDate: teacherData.startDate ? new Date(teacherData.startDate).toISOString().split('T')[0] : "",
-    department: teacherData.department || "",
-    status: teacherData.status || "active",
-    address: "Rua dos Professores, 456, Aracaju - SE",
-    cep: "49000-000"
-  });
+  const { id } = useParams();
+  const { teachers } = useTeachersContext();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+  const teacherData = teachers.find((t) => t.uid === id);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,12 +34,13 @@ const InformationTab = () => {
       month: "2-digit",
       year: "numeric",
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
     });
   };
 
   return (
     <React.Fragment>
+      {/*
       <Row className="mb-4">
         <Col lg={12}>
           <Card>
@@ -88,6 +82,7 @@ const InformationTab = () => {
           </Card>
         </Col>
       </Row>
+      */}
 
       <Form onSubmit={handleSubmit}>
         <Row>
@@ -101,8 +96,8 @@ const InformationTab = () => {
                     type="text"
                     id="name"
                     name="name"
-                    value={formData.name}
-                    onChange={handleChange}
+                    value={teacherData.personalInfo.name || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
                 <FormGroup>
@@ -111,8 +106,8 @@ const InformationTab = () => {
                     type="email"
                     id="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={teacherData.personalInfo.email || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
                 <FormGroup>
@@ -121,8 +116,8 @@ const InformationTab = () => {
                     type="text"
                     id="phone"
                     name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
+                    value={teacherData.personalInfo.phone || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
                 <FormGroup>
@@ -131,8 +126,8 @@ const InformationTab = () => {
                     type="date"
                     id="birthDate"
                     name="birthDate"
-                    value={formData.birthDate}
-                    onChange={handleChange}
+                    value={teacherData.personalInfo.birthDate || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
                 <FormGroup>
@@ -141,8 +136,8 @@ const InformationTab = () => {
                     type="text"
                     id="cpf"
                     name="cpf"
-                    value={formData.cpf}
-                    onChange={handleChange}
+                    value={teacherData.personalInfo.cpf || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
               </CardBody>
@@ -159,18 +154,8 @@ const InformationTab = () => {
                     type="text"
                     id="registration"
                     name="registration"
-                    value={formData.registration}
-                    onChange={handleChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="specialty">Especialidade</Label>
-                  <Input
-                    type="text"
-                    id="specialty"
-                    name="specialty"
-                    value={formData.specialty}
-                    onChange={handleChange}
+                    value={teacherData.professionalInfo.registration || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
                 <FormGroup>
@@ -179,28 +164,8 @@ const InformationTab = () => {
                     type="text"
                     id="education"
                     name="education"
-                    value={formData.education}
-                    onChange={handleChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="startDate">Data de Admissão</Label>
-                  <Input
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    value={formData.startDate}
-                    onChange={handleChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="department">Departamento</Label>
-                  <Input
-                    type="text"
-                    id="department"
-                    name="department"
-                    value={formData.department}
-                    onChange={handleChange}
+                    value={teacherData.professionalInfo.specialization || "N/A"}
+                    readOnly
                   />
                 </FormGroup>
               </CardBody>
@@ -216,39 +181,71 @@ const InformationTab = () => {
                 <Row>
                   <Col md={8}>
                     <FormGroup>
-                      <Label for="address">Endereço Completo</Label>
+                      <Label for="address">Cidade</Label>
                       <Input
                         type="text"
-                        id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
+                        id="city"
+                        name="city"
+                        value={teacherData.address.city || "N/A"}
+                        readOnly
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="address">Bairro</Label>
+                      <Input
+                        type="text"
+                        id="neighborhood"
+                        name="neighborhood"
+                        value={teacherData.address.neighborhood || "N/A"}
+                        readOnly
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="address">Rua</Label>
+                      <Input
+                        type="text"
+                        id="street"
+                        name="street"
+                        value={teacherData.address.street || "N/A"}
+                        readOnly
                       />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
+                    <FormGroup>
+                      <Label for="cep">Estado</Label>
+                      <Input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={teacherData.address.state || "N/A"}
+                        readOnly
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="cep">Número</Label>
+                      <Input
+                        type="text"
+                        id="number"
+                        name="number"
+                        value={teacherData.address.number || "N/A"}
+                        readOnly
+                      />
+                    </FormGroup>
                     <FormGroup>
                       <Label for="cep">CEP</Label>
                       <Input
                         type="text"
                         id="cep"
                         name="cep"
-                        value={formData.cep}
-                        onChange={handleChange}
+                        value={teacherData.address.cep || "N/A"}
+                        readOnly
                       />
                     </FormGroup>
                   </Col>
                 </Row>
               </CardBody>
             </Card>
-          </Col>
-        </Row>
-
-        <Row className="mt-4">
-          <Col className="text-end">
-            <Button color="primary" type="submit">
-              Salvar Alterações
-            </Button>
           </Col>
         </Row>
       </Form>

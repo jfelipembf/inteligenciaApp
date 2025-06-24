@@ -17,13 +17,9 @@ const WelcomeCard = () => {
   const { id } = useParams();
   const { teachers } = useTeachersContext();
 
-  console.log(teachers, "teachers");
   const teacherData = teachers.find((t) => t.uid === id);
 
-  console.log(teacherData, "teacherData");
-
   const avatarUrl = useTeacherAvatar(teacherData, schoolId);
-  console.log(avatarUrl, "avatarUrl");
 
   return (
     <React.Fragment>
@@ -80,15 +76,11 @@ const WelcomeCard = () => {
                 Registro: {teacherData.professionalInfo?.registration || "N/A"}
               </p>
             </Col>
-            <Col sm="8">
-              <div className="pt-4">
-                <Row>
-                  <Col xs="6">
-                    <h5 className="font-size-15">
-                      {teacherData.specialty || "N/A"}
-                    </h5>
-                  </Col>
-                  <Col xs="6">
+
+            {
+              // Fora do escopo por enquanto}
+            }
+            {/* <Col xs="6">
                     <div className="d-flex align-items-start justify-content-between">
                       <div className="text-center" style={{ minWidth: "80px" }}>
                         <Badge
@@ -143,10 +135,7 @@ const WelcomeCard = () => {
                         </Link>
                       </div>
                     </div>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+                  </Col> */}
           </Row>
         </CardBody>
       </Card>
