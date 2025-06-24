@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+} from "reactstrap";
 import { useParams, Link } from "react-router-dom";
 import classnames from "classnames";
 import Breadcrumb from "../../../components/Common/Breadcrumb";
 
 // Import Chart.js
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 // Import Components
@@ -22,7 +33,7 @@ const TeacherProfile = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("1");
 
-  const toggleTab = tab => {
+  const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
@@ -33,7 +44,7 @@ const TeacherProfile = () => {
       <div className="page-content">
         <Container fluid>
           <Breadcrumb title="Professores" breadcrumbItem={teacherData.name} />
-          
+
           {/* Card de boas-vindas com dados do professor */}
           <Row>
             <Col lg={12}>
@@ -95,6 +106,8 @@ const TeacherProfile = () => {
                         <span className="d-none d-sm-block">Desempenho</span>
                       </NavLink>
                     </NavItem>
+                    {/* 
+                        Fora do escopo por enquanto
                     <NavItem>
                       <NavLink
                         style={{ cursor: "pointer" }}
@@ -105,12 +118,16 @@ const TeacherProfile = () => {
                           toggleTab("4");
                         }}
                       >
+                        
                         <span className="d-block d-sm-none">
                           <i className="fas fa-bell"></i>
                         </span>
                         <span className="d-none d-sm-block">Notificações</span>
+                        *
                       </NavLink>
+
                     </NavItem>
+                    */}
                   </Nav>
 
                   <TabContent activeTab={activeTab} className="p-3">
@@ -123,9 +140,10 @@ const TeacherProfile = () => {
                     <TabPane tabId="3">
                       <PerformanceTab />
                     </TabPane>
+                    {/* //fora do escopo por enquanto
                     <TabPane tabId="4">
                       <NotificationsTab />
-                    </TabPane>
+                    </TabPane>*/}
                   </TabContent>
                 </CardBody>
               </Card>
