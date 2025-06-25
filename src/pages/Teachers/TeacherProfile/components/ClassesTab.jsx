@@ -1,17 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, CardBody, Table, Badge, Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Alert, InputGroup } from "reactstrap";
-import { teacherData } from "./data";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Table,
+  Badge,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Alert,
+  InputGroup,
+} from "reactstrap";
 import { leftSideBarThemeTypes } from "../../../../constants/layout";
+import useClassesByTeacher from "../../../../hooks/useClassesByTeacher";
+import { useParams } from "react-router-dom";
 
 const ClassesTab = () => {
   const [notificationModal, setNotificationModal] = useState(false);
   const [gradesModal, setGradesModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [notificationForm, setNotificationForm] = useState({
-    title: '',
-    message: ''
+    title: "",
+    message: "",
   });
-  
+  const { id } = useParams();
+  const { lessons, loading, error } = useClassesByTeacher(id);
+
   // Estado para armazenar a lista de alunos
   const [alunos, setAlunos] = useState([]);
   // Estado para armazenar as notas
@@ -19,20 +40,33 @@ const ClassesTab = () => {
   // Estado para mensagem de sucesso
   const [showSuccess, setShowSuccess] = useState(false);
   // Estado para ano letivo
-  const [anoLetivo, setAnoLetivo] = useState(new Date().getFullYear().toString());
+  const [anoLetivo, setAnoLetivo] = useState(
+    new Date().getFullYear().toString()
+  );
 
-  const toggleNotificationModal = () => setNotificationModal(!notificationModal);
+  const daysOfWeekMap = {
+    segunda: "Segunda-feira",
+    terca: "Terça-feira",
+    quarta: "Quarta-feira",
+    quinta: "Quinta-feira",
+    sexta: "Sexta-feira",
+    sabado: "Sábado",
+    domingo: "Domingo",
+  };
+
+  const toggleNotificationModal = () =>
+    setNotificationModal(!notificationModal);
   const toggleGradesModal = () => setGradesModal(!gradesModal);
 
   const handleOpenNotificationModal = (classItem) => {
     setSelectedClass(classItem);
     setNotificationModal(true);
   };
-  
+
   const handleOpenGradesModal = (classItem) => {
     setSelectedClass(classItem);
     setGradesModal(true);
-    
+
     // Carregar alunos fictícios para a turma
     const alunosFicticios = [
       { id: 1, nome: "Ana Silva", matricula: "2023001" },
@@ -41,18 +75,18 @@ const ClassesTab = () => {
       { id: 4, nome: "Daniel Pereira", matricula: "2023004" },
       { id: 5, nome: "Eduarda Costa", matricula: "2023005" },
     ];
-    
+
     setAlunos(alunosFicticios);
-    
+
     // Inicializa o estado de notas
     const notasIniciais = {};
-    alunosFicticios.forEach(aluno => {
-      notasIniciais[aluno.id] = { 
-        unidade1: "", 
-        unidade2: "", 
-        unidade3: "", 
-        unidade4: "", 
-        observacao: "" 
+    alunosFicticios.forEach((aluno) => {
+      notasIniciais[aluno.id] = {
+        unidade1: "",
+        unidade2: "",
+        unidade3: "",
+        unidade4: "",
+        observacao: "",
       };
     });
     setNotas(notasIniciais);
@@ -62,21 +96,23 @@ const ClassesTab = () => {
     const { name, value } = e.target;
     setNotificationForm({
       ...notificationForm,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSendNotification = () => {
     // Aqui seria implementada a lógica para enviar a notificação
-    alert(`Notificação "${notificationForm.title}" enviada para a turma ${selectedClass.class}`);
+    alert(
+      `Notificação "${notificationForm.title}" enviada para a turma ${selectedClass.class}`
+    );
     setNotificationModal(false);
     // Resetar o formulário
     setNotificationForm({
-      title: '',
-      message: ''
+      title: "",
+      message: "",
     });
   };
-  
+
   // Função para atualizar nota de uma unidade
   const handleNotaChange = (alunoId, unidade, valor) => {
     // Validar se o valor é um número entre 0 e 10
@@ -90,17 +126,17 @@ const ClassesTab = () => {
       notaValor = Math.round(num * 10) / 10;
     }
 
-    setNotas(prev => ({
+    setNotas((prev) => ({
       ...prev,
-      [alunoId]: { ...prev[alunoId], [unidade]: notaValor }
+      [alunoId]: { ...prev[alunoId], [unidade]: notaValor },
     }));
   };
 
   // Função para adicionar observação
   const handleObservacaoChange = (alunoId, observacao) => {
-    setNotas(prev => ({
+    setNotas((prev) => ({
       ...prev,
-      [alunoId]: { ...prev[alunoId], observacao }
+      [alunoId]: { ...prev[alunoId], observacao },
     }));
   };
 
@@ -108,18 +144,18 @@ const ClassesTab = () => {
   const calcularMedia = (alunoId) => {
     const notasAluno = notas[alunoId];
     if (!notasAluno) return "-";
-    
+
     const valores = [
       parseFloat(notasAluno.unidade1) || 0,
       parseFloat(notasAluno.unidade2) || 0,
       parseFloat(notasAluno.unidade3) || 0,
-      parseFloat(notasAluno.unidade4) || 0
+      parseFloat(notasAluno.unidade4) || 0,
     ];
-    
+
     // Contar quantas notas foram preenchidas
-    const notasPreenchidas = valores.filter(nota => nota > 0).length;
+    const notasPreenchidas = valores.filter((nota) => nota > 0).length;
     if (notasPreenchidas === 0) return "-";
-    
+
     // Calcular a média
     const soma = valores.reduce((acc, curr) => acc + curr, 0);
     return (soma / notasPreenchidas).toFixed(1);
@@ -138,7 +174,7 @@ const ClassesTab = () => {
   const salvarNotas = () => {
     // Aqui seria implementada a lógica para salvar as notas no backend
     setShowSuccess(true);
-    
+
     // Esconde a mensagem após 3 segundos
     setTimeout(() => {
       setShowSuccess(false);
@@ -151,39 +187,45 @@ const ClassesTab = () => {
           <Card>
             <CardBody>
               <h4 className="card-title mb-4">Horário de Aulas</h4>
-              
+
               <div className="table-responsive">
                 <Table className="table-centered table-nowrap mb-0">
                   <thead className="table-light">
                     <tr>
-                      <th>Dia</th>
+                      <th>Dias</th>
                       <th>Horário</th>
                       <th>Turma</th>
                       <th>Disciplina</th>
-                      <th>Ações</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {teacherData.schedule.map((item, index) => (
+                    {lessons.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.day}</td>
-                        <td>{item.time}</td>
+                        <td>
+                          {Array.isArray(item.daysOfWeek) &&
+                          item.daysOfWeek.length > 0
+                            ? item.daysOfWeek.map((d, idx) => (
+                                <Badge
+                                  key={idx}
+                                  color="secondary"
+                                  className="font-size-11 me-1"
+                                >
+                                  {d.label}
+                                </Badge>
+                              ))
+                            : "N/A"}
+                        </td>
+                        <td>
+                          {item.startTime && item.endTime
+                            ? `${item.startTime} - ${item.endTime}`
+                            : "N/A"}
+                        </td>
                         <td>
                           <Badge color="primary" className="font-size-12">
-                            {item.class}
+                            {item.className || "N/A"}
                           </Badge>
                         </td>
-                        <td>{item.subject}</td>
-                        <td>
-                          <div className="d-flex gap-3">
-                            <a href="#" className="text-primary" onClick={(e) => { e.preventDefault(); handleOpenGradesModal(item); }}>
-                              <i className="mdi mdi-book-education font-size-18"></i>
-                            </a>
-                            <a href="#" className="text-warning" onClick={(e) => { e.preventDefault(); handleOpenNotificationModal(item); }}>
-                              <i className="mdi mdi-bell font-size-18"></i>
-                            </a>
-                          </div>
-                        </td>
+                        <td>{item.subject || "N/A"}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -192,12 +234,18 @@ const ClassesTab = () => {
             </CardBody>
           </Card>
         </Col>
-
-
       </Row>
       {/* Modal de Notificação */}
-      <Modal isOpen={notificationModal} toggle={toggleNotificationModal} centered={true} size="lg">
-        <ModalHeader toggle={toggleNotificationModal} className="bg-white text-black">
+      <Modal
+        isOpen={notificationModal}
+        toggle={toggleNotificationModal}
+        centered={true}
+        size="lg"
+      >
+        <ModalHeader
+          toggle={toggleNotificationModal}
+          className="bg-white text-black"
+        >
           <i className="mdi mdi-bell-outline me-2"></i>
           Enviar Notificação para a Turma
         </ModalHeader>
@@ -206,16 +254,24 @@ const ClassesTab = () => {
             <h5>Detalhes da Turma</h5>
             <div className="row">
               <div className="col-md-6">
-                <p><strong>Turma:</strong> {selectedClass?.class}</p>
-                <p><strong>Disciplina:</strong> {selectedClass?.subject}</p>
+                <p>
+                  <strong>Turma:</strong> {selectedClass?.class}
+                </p>
+                <p>
+                  <strong>Disciplina:</strong> {selectedClass?.subject}
+                </p>
               </div>
               <div className="col-md-6">
-                <p><strong>Dia:</strong> {selectedClass?.day}</p>
-                <p><strong>Horário:</strong> {selectedClass?.time}</p>
+                <p>
+                  <strong>Dia:</strong> {selectedClass?.day}
+                </p>
+                <p>
+                  <strong>Horário:</strong> {selectedClass?.time}
+                </p>
               </div>
             </div>
           </div>
-          
+
           <h5>Detalhes da Notificação</h5>
           <Form>
             <FormGroup>
@@ -245,11 +301,15 @@ const ClassesTab = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={toggleNotificationModal}>Cancelar</Button>
-          <Button color="primary" onClick={handleSendNotification}>Enviar Notificação</Button>
+          <Button color="secondary" onClick={toggleNotificationModal}>
+            Cancelar
+          </Button>
+          <Button color="primary" onClick={handleSendNotification}>
+            Enviar Notificação
+          </Button>
         </ModalFooter>
       </Modal>
-      
+
       {/* Modal de Lançamento de Notas */}
       <Modal isOpen={gradesModal} toggle={toggleGradesModal} size="xl">
         <ModalHeader toggle={toggleGradesModal} className="bg-white text-black">
@@ -262,17 +322,25 @@ const ClassesTab = () => {
               Notas registradas com sucesso!
             </Alert>
           )}
-          
+
           <div className="mb-4 p-3 bg-light rounded">
             <h5>Detalhes da Disciplina</h5>
             <div className="row">
               <div className="col-md-6">
-                <p><strong>Turma:</strong> {selectedClass?.class}</p>
-                <p><strong>Disciplina:</strong> {selectedClass?.subject}</p>
+                <p>
+                  <strong>Turma:</strong> {selectedClass?.class}
+                </p>
+                <p>
+                  <strong>Disciplina:</strong> {selectedClass?.subject}
+                </p>
               </div>
               <div className="col-md-6">
-                <p><strong>Dia:</strong> {selectedClass?.day}</p>
-                <p><strong>Horário:</strong> {selectedClass?.time}</p>
+                <p>
+                  <strong>Dia:</strong> {selectedClass?.day}
+                </p>
+                <p>
+                  <strong>Horário:</strong> {selectedClass?.time}
+                </p>
                 <FormGroup>
                   <Label for="anoLetivo">Ano Letivo</Label>
                   <Input
@@ -289,7 +357,7 @@ const ClassesTab = () => {
               </div>
             </div>
           </div>
-          
+
           <h5>Registro de Notas</h5>
           <Table responsive bordered hover>
             <thead className="table-light">
@@ -310,7 +378,7 @@ const ClassesTab = () => {
               {alunos.map((aluno, index) => {
                 const media = calcularMedia(aluno.id);
                 const status = getStatusAluno(media);
-                
+
                 return (
                   <tr key={aluno.id}>
                     <td>{index + 1}</td>
@@ -321,7 +389,9 @@ const ClassesTab = () => {
                         type="text"
                         placeholder="0-10"
                         value={notas[aluno.id]?.unidade1 || ""}
-                        onChange={(e) => handleNotaChange(aluno.id, "unidade1", e.target.value)}
+                        onChange={(e) =>
+                          handleNotaChange(aluno.id, "unidade1", e.target.value)
+                        }
                         className="text-center"
                         maxLength="4"
                       />
@@ -331,7 +401,9 @@ const ClassesTab = () => {
                         type="text"
                         placeholder="0-10"
                         value={notas[aluno.id]?.unidade2 || ""}
-                        onChange={(e) => handleNotaChange(aluno.id, "unidade2", e.target.value)}
+                        onChange={(e) =>
+                          handleNotaChange(aluno.id, "unidade2", e.target.value)
+                        }
                         className="text-center"
                         maxLength="4"
                       />
@@ -341,7 +413,9 @@ const ClassesTab = () => {
                         type="text"
                         placeholder="0-10"
                         value={notas[aluno.id]?.unidade3 || ""}
-                        onChange={(e) => handleNotaChange(aluno.id, "unidade3", e.target.value)}
+                        onChange={(e) =>
+                          handleNotaChange(aluno.id, "unidade3", e.target.value)
+                        }
                         className="text-center"
                         maxLength="4"
                       />
@@ -351,7 +425,9 @@ const ClassesTab = () => {
                         type="text"
                         placeholder="0-10"
                         value={notas[aluno.id]?.unidade4 || ""}
-                        onChange={(e) => handleNotaChange(aluno.id, "unidade4", e.target.value)}
+                        onChange={(e) =>
+                          handleNotaChange(aluno.id, "unidade4", e.target.value)
+                        }
                         className="text-center"
                         maxLength="4"
                       />
@@ -367,7 +443,9 @@ const ClassesTab = () => {
                         type="text"
                         placeholder="Observação"
                         value={notas[aluno.id]?.observacao || ""}
-                        onChange={(e) => handleObservacaoChange(aluno.id, e.target.value)}
+                        onChange={(e) =>
+                          handleObservacaoChange(aluno.id, e.target.value)
+                        }
                       />
                     </td>
                   </tr>
@@ -390,4 +468,3 @@ const ClassesTab = () => {
 };
 
 export default ClassesTab;
-                           

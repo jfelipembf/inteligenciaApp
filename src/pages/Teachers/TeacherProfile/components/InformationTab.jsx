@@ -179,7 +179,7 @@ const InformationTab = () => {
               <CardBody>
                 <h4 className="card-title mb-4">Endereço</h4>
                 <Row>
-                  <Col md={8}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="address">Cidade</Label>
                       <Input
@@ -211,7 +211,7 @@ const InformationTab = () => {
                       />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="cep">Estado</Label>
                       <Input
