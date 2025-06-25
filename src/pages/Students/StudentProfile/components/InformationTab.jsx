@@ -102,7 +102,8 @@ const InformationTab = ({ studentData }) => {
 
   return (
     <React.Fragment>
-      <Row className="mb-4">
+      {/* Fora do escopo por enqaunto
+       <Row className="mb-4">
         <Col lg={12}>
           <Card>
             <CardBody className="p-4">
@@ -150,7 +151,7 @@ const InformationTab = ({ studentData }) => {
             </CardBody>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
 
       <Form onSubmit={handleSubmit}>
         <Row>
