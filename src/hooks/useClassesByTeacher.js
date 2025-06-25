@@ -5,6 +5,7 @@ import useUser from "./useUser";
 
 const useClassesByTeacher = (teacherId) => {
   const [lessons, setLessons] = useState([]);
+  const [classes, setClasses] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userDetails } = useUser();
@@ -12,6 +13,7 @@ const useClassesByTeacher = (teacherId) => {
   useEffect(() => {
     if (!teacherId || !userDetails?.schoolId) {
       setLessons([]);
+      setClasses({});
       setLoading(false);
       return;
     }
@@ -30,6 +32,7 @@ const useClassesByTeacher = (teacherId) => {
           .get();
 
         let allLessons = [];
+        let classesObj = {};
 
         for (const classDoc of classesSnapshot.docs) {
           const classData = classDoc.data();
@@ -45,6 +48,10 @@ const useClassesByTeacher = (teacherId) => {
             .where("teacher.value", "==", teacherId)
             .get();
 
+          if (!lessonsSnapshot.empty) {
+            classesObj[classId] = { classId, className, ...classData };
+          }
+
           lessonsSnapshot.forEach((lessonDoc) => {
             allLessons.push({
               id: lessonDoc.id,
@@ -56,6 +63,7 @@ const useClassesByTeacher = (teacherId) => {
         }
 
         setLessons(allLessons);
+        setClasses(classesObj);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -66,7 +74,7 @@ const useClassesByTeacher = (teacherId) => {
     fetchLessons();
   }, [teacherId, userDetails?.schoolId]);
 
-  return { lessons, loading, error };
+  return { lessons, classes, loading, error };
 };
 
 export default useClassesByTeacher;
