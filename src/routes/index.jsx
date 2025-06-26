@@ -252,7 +252,14 @@ const EventsRoutes = ({ children }) => (
 );
 
 const authProtectedRoutes = [
-  { path: "/dashboard", component: <Dashboard /> },
+  {
+    path: "/dashboard",
+    component: (
+      <RoleProtectedRoute allowedRoles={["administrator"]}>
+        <Dashboard />
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/dashboard-saas", component: <DashboardSaas /> },
   { path: "/dashboard-crypto", component: <DashboardCrypto /> },
   {

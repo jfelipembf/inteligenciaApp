@@ -4,86 +4,85 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/actions";
 import logo from "../assets/images/lgo.png";
 import "../assets/scss/pink-sidebar.scss";
-
-const menuItems = [
-  { icon: "bx bx-home", label: "Home", to: "/home" },
-  {
-    icon: "bx bx-line-chart",
-    label: "Dashboards",
-    children: [
-      { label: "Dashboard Gestor", to: "/dashboard-gestor" },
-      { label: "Dashboard Coordenador", to: "/dashboard-coordenador" },
-      { label: "Dashboard Professor", to: "/dashboard-professor" },
-    ],
-  },
-  {
-    icon: "bx bx-user-pin",
-    label: "Colaboradores",
-    children: [
-      { label: "Professores", to: "/teachers" },
-      { label: "Coordenadores", to: "/coordinators" },
-      { label: "Administradores", to: "/administrators" },
-    ],
-  },
-  {
-    icon: "bx bx-message-square-dots",
-    label: "Comunicação",
-    children: [
-      { label: "Mensagens", to: "/messages" },
-      { label: "Notificações", to: "/notifications" },
-    ],
-  },
-  {
-    icon: "bx bx-group",
-    label: "Turmas",
-    children: [
-      { label: "Criar Turma", to: "/create-class" },
-      { label: "Visualizar Turmas", to: "/classes" },
-    ],
-  },
-  { icon: "bx bx-user-circle", label: "Alunos", to: "/students" },
-  {
-    icon: "bx bx-clipboard",
-    label: "Frequências",
-    children: [
-      { label: "Registrar Frequência", to: "/create-attendance" },
-      { label: "Visualizar Frequências", to: "/attendances" },
-    ],
-  },
-  {
-    icon: "bx bx-clipboard",
-    label: "Atividades",
-    children: [
-      { label: "Criar Atividade", to: "/activities/add-activity" },
-      { label: "Visualizar Atividades", to: "/activities" },
-    ],
-  },
-  {
-    icon: "bx bx-clipboard",
-    label: "Notas",
-    children: [
-      { label: "Adicionar Notas", to: "/grades" },
-      { label: "Visualizar Notas", to: "/grades-list" },
-    ],
-  },
-  { icon: "bx bx-calendar", label: "Calendário", to: "/calendar" },
-  {
-    icon: "bx bx-calendar-event",
-    label: "Eventos",
-    children: [
-      { label: "Criar Evento", to: "/events/create" },
-      { label: "Visualizar Eventos", to: "/events" },
-    ],
-  },
-  { icon: "bx bx-cog", label: "Configurações", to: "/settings" },
-  // { icon: "bx bx-money", label: "Financeiro", to: "/financeiro/caixa" },
-];
+import useUser from "../hooks/useUser";
 
 const PinkSidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true); // novo estado
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { userDetails } = useUser();
+
+  let dashboardTo = "/dashboard";
+  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
+  else if (userDetails?.role === "coordinator")
+    dashboardTo = "/dashboard-coordenador";
+  const menuItems = [
+    { icon: "bx bx-home", label: "Home", to: "/home" },
+    { icon: "bx bx-line-chart", label: "Dashboard", to: dashboardTo },
+    {
+      icon: "bx bx-user-pin",
+      label: "Colaboradores",
+      children: [
+        { label: "Professores", to: "/teachers" },
+        { label: "Coordenadores", to: "/coordinators" },
+        { label: "Administradores", to: "/administrators" },
+      ],
+    },
+    {
+      icon: "bx bx-message-square-dots",
+      label: "Comunicação",
+      children: [
+        { label: "Mensagens", to: "/messages" },
+        { label: "Notificações", to: "/notifications" },
+      ],
+    },
+    {
+      icon: "bx bx-group",
+      label: "Turmas",
+      children: [
+        { label: "Criar Turma", to: "/create-class" },
+        { label: "Visualizar Turmas", to: "/classes" },
+      ],
+    },
+    { icon: "bx bx-user-circle", label: "Alunos", to: "/students" },
+    {
+      icon: "bx bx-clipboard",
+      label: "Frequências",
+      children: [
+        { label: "Registrar Frequência", to: "/create-attendance" },
+        { label: "Visualizar Frequências", to: "/attendances" },
+      ],
+    },
+    {
+      icon: "bx bx-clipboard",
+      label: "Atividades",
+      children: [
+        { label: "Criar Atividade", to: "/activities/add-activity" },
+        { label: "Visualizar Atividades", to: "/activities" },
+      ],
+    },
+    {
+      icon: "bx bx-clipboard",
+      label: "Notas",
+      children: [
+        { label: "Adicionar Notas", to: "/grades" },
+        { label: "Visualizar Notas", to: "/grades-list" },
+      ],
+    },
+    { icon: "bx bx-calendar", label: "Calendário", to: "/calendar" },
+    {
+      icon: "bx bx-calendar-event",
+      label: "Eventos",
+      children: [
+        { label: "Criar Evento", to: "/events/create" },
+        { label: "Visualizar Eventos", to: "/events" },
+      ],
+    },
+    { icon: "bx bx-cog", label: "Configurações", to: "/settings" },
+    // { icon: "bx bx-money", label: "Financeiro", to: "/financeiro/caixa" },
+  ];
 
   const toggleMenu = (idx) => {
     setOpenMenu((prev) => (prev === idx ? null : idx));
