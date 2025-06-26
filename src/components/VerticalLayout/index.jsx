@@ -16,6 +16,7 @@ import useUser from "../../hooks/useUser";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
 import useUserAvatar from "../../hooks/useUserAvatar";
 import PersonCircle from "react-bootstrap-icons/dist/icons/person-circle";
+import { useNavigate } from "react-router-dom";
 
 // import { FiBell } from "react-icons/fi";
 
@@ -34,6 +35,17 @@ const Layout = (props) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const isHome = location.pathname === "/home";
+  const navigate = useNavigate();
+
+  const isLoginPage = location.pathname === "/login";
+
+  // Funções para navegação segura
+  const handleBack = () => {
+    if (!isLoginPage) navigate(-1);
+  };
+  const handleForward = () => {
+    if (!isLoginPage) navigate(1);
+  };
 
   const { userDetails } = useUser();
   const avatarUrl = useUserAvatar(userDetails, userDetails?.schoolId);
@@ -173,27 +185,61 @@ const Layout = (props) => {
           <div className="main-content-wrapper">
             <div className="main-content">
               <div className="welcome-bar">
-                <div className="welcome-badge">Bem vindo, ao Inteligência!</div>
-                <div className="welcome-user-info">
-                  <NotificationDropdown> </NotificationDropdown>
-                  <div className="welcome-avatar">
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt="Avatar do usuário"
-                        className="welcome-avatar"
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <PersonCircle size={55} color="#f7f7fa" />
-                    )}
+                <div className="welcome-bar-top">
+                  <div className="welcome-badge">
+                    Bem vindo, ao Inteligência!
                   </div>
-                  <span className="welcome-email">{userEmail}</span>
+                  <div className="welcome-user-info">
+                    <NotificationDropdown />
+                    <div className="welcome-avatar">
+                      {avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt="Avatar do usuário"
+                          className="welcome-avatar"
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <PersonCircle size={55} color="#f7f7fa" />
+                      )}
+                    </div>
+                    <span className="welcome-email">{userEmail}</span>
+                  </div>
+                </div>
+                {/* Botões de navegação abaixo, alinhados à esquerda */}
+                <div
+                  className="welcome-nav-btns d-flex flex-row align-items-center"
+                  style={{ gap: 8, marginTop: 0 }}
+                >
+                  <button
+                    onClick={handleBack}
+                    className="btn btn-light"
+                    title="Voltar"
+                    disabled={isLoginPage}
+                    style={{
+                      color: isLoginPage ? "#ccc" : "#a18cd1",
+                      cursor: isLoginPage ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    <i className="bx bx-chevron-left"></i>
+                  </button>
+                  <button
+                    onClick={handleForward}
+                    className="btn btn-light"
+                    title="Avançar"
+                    disabled={isLoginPage}
+                    style={{
+                      color: isLoginPage ? "#ccc" : "#a18cd1",
+                      cursor: isLoginPage ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    <i className="bx bx-chevron-right"></i>
+                  </button>
                 </div>
               </div>
               <div className="main-content-scrollable">{props.children}</div>

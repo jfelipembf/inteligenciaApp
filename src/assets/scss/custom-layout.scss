@@ -52,13 +52,44 @@ html {
   border-radius: 28px 28px 0 0;
   padding: 18px 32px 18px 32px;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   margin-bottom: 0;
   flex-shrink: 0;
+  flex-direction: column;
   position: sticky;
   top: 0;
   z-index: 10;
+
+  .welcome-bar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .welcome-nav-btns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: 16px;
+    justify-content: flex-start;
+  }
+
+  .welcome-nav-btns button {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #a18cd1;
+    font-size: 1.6rem;
+    padding: 0;
+    transition: color 0.2s;
+  }
+
+  .welcome-nav-btns button:hover {
+    color: #7c4bc0;
+    background: none !important;
+  }
 }
 
 .main-content-scrollable {
