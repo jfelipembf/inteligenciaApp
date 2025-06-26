@@ -42,8 +42,9 @@
   cursor: pointer;
 }
 
-.sidebar-btn:hover, .sidebar-btn:focus {
-  background: rgba(255,255,255,0.18);
+.sidebar-btn:hover,
+.sidebar-btn:focus {
+  background: rgba(255, 255, 255, 0.18);
   color: #6c3483;
 }
 
@@ -136,7 +137,8 @@
   background: none;
 }
 
-.sidebar-btn-no-bg:hover, .sidebar-btn-no-bg:focus {
+.sidebar-btn-no-bg:hover,
+.sidebar-btn-no-bg:focus {
   color: #ffd180;
   background: none;
 }
@@ -246,7 +248,19 @@
   font-weight: 400;
 }
 
-.sidebar-btn-sub:hover, .sidebar-btn-sub:focus {
+.sidebar-btn-sub:hover,
+.sidebar-btn-sub:focus {
   color: #ffd180;
   background: none;
-} 
+}
+
+.sidebar-menu-no-bg.closed {
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.2s, opacity 0.2s;
+}
