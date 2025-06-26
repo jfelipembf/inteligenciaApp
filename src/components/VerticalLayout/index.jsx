@@ -11,19 +11,24 @@ import {
   changeLayoutWidth,
   showRightSidebarAction,
 } from "/src/store/actions";
+import { useLocation } from "react-router-dom";
+// import { FiBell } from "react-icons/fi";
 
 // Layout Related Components
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+// import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import RightSidebar from "../CommonForBoth/RightSidebar";
+// import MenuLateralRosa from "../MenuLateralRosa";
+import PinkSidebar from "../PinkSidebar";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 const Layout = (props) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isHome = location.pathname === "/home";
 
   const selectLayoutProperties = createSelector(
     (state) => state.Layout,
@@ -36,7 +41,8 @@ const Layout = (props) => {
       topbarTheme: layout.topbarTheme,
       showRightSidebar: layout.showRightSidebar,
       leftSideBarTheme: layout.leftSideBarTheme,
-    }));
+    })
+  );
 
   const {
     isPreloader,
@@ -46,7 +52,7 @@ const Layout = (props) => {
     topbarTheme,
     showRightSidebar,
     leftSideBarTheme,
-    layoutModeType
+    layoutModeType,
   } = useSelector(selectLayoutProperties);
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -153,14 +159,23 @@ const Layout = (props) => {
       </div>
 
       <div id="layout-wrapper">
-        <Header toggleMenuCallback={toggleMenuCallback} />
-        <Sidebar
-          theme={leftSideBarTheme}
-          type={leftSideBarType}
-          isMobile={isMobile}
-        />
-        <div className="main-content">{props.children}</div>
-        <Footer />
+        <div className="main-flex-wrapper">
+          <PinkSidebar />
+          <div className="main-content-wrapper">
+            <div className="main-content">
+              <div className="welcome-bar">
+                <div className="welcome-badge">Bem vindo, ao Inteligência!</div>
+                <div className="welcome-user-info">
+                  <i className="bx bx-bell welcome-bell"></i>
+                  <div className="welcome-avatar"></div>
+                  <span className="welcome-email">email@gmail.com</span>
+                </div>
+              </div>
+              <div className="main-content-scrollable">{props.children}</div>
+            </div>
+          </div>
+        </div>
+        {/* <Footer /> */}
       </div>
       {showRightSidebar ? <RightSidebar /> : null}
     </React.Fragment>

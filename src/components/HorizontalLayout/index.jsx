@@ -17,7 +17,6 @@ import { createSelector } from "reselect";
 
 //components
 import Navbar from "./Navbar";
-import Header from "./Header";
 import Footer from "./Footer";
 import RightSidebar from "../CommonForBoth/RightSidebar";
 import { useLocation } from "react-router-dom";
@@ -40,7 +39,7 @@ const Layout = (props) => {
     layoutModeType,
     layoutWidth,
     isPreloader,
-    showRightSidebar
+    showRightSidebar,
   } = useSelector(selectLayoutProperties);
 
   /*
@@ -138,11 +137,6 @@ const Layout = (props) => {
       </div>
 
       <div id="layout-wrapper">
-        <Header
-          theme={topbarTheme}
-          isMenuOpened={isMenuOpened}
-          openLeftMenuCallBack={openMenu}
-        />
         <Navbar menuOpen={isMenuOpened} />
         <div className="main-content">{props.children}</div>
         <Footer />

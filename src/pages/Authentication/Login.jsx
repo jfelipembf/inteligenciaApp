@@ -2,52 +2,32 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
-
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-
-// Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
 import {
-  Row,
-  Col,
-  CardBody,
-  Card,
-  Alert,
   Container,
   Form,
   Input,
   FormFeedback,
   Label,
+  Alert,
+  Spinner,
 } from "reactstrap";
-
-// actions
-import { loginUser, socialLogin } from "/src/store/actions";
-
-// import images
-import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/iconBlack.png";
-import lightlogo from "../../assets/images/iconBlack.png";
-import inteliLogo from "../../assets/images/inteliLogo.png";
+import { loginUser } from "/src/store/actions";
+import logo from "../../assets/images/lgo.png";
 
 const Login = (props) => {
-  //meta title
   document.title = "Login | Inteligência";
   const dispatch = useDispatch();
-
-  // Pega o usuário autenticado do Redux (ajuste conforme seu reducer)
   const user = useSelector((state) => state.Auth?.user);
 
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
     initialValues: {
-      email: "professor@inteligenciaapp.com" || "",
-      password: "123456" || "",
+      email: "" || "",
+      password: "" || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Por favor, informe o seu e-mail"),
@@ -62,173 +42,142 @@ const Login = (props) => {
     (state) => state.Login,
     (login) => ({
       error: login.error,
+      loading: login.loading,
     })
   );
-
-  const { error } = useSelector(LoginProperties);
-
-  const signIn = (type) => {
-    dispatch(socialLogin(type, props.router.navigate));
-  };
-
-  //for facebook and google authentication
-  const socialResponse = (type) => {
-    signIn(type);
-  };
+  const { error, loading } = useSelector(LoginProperties);
 
   return (
-    <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark">
-          <i className="bx bx-home h2" />
-        </Link>
-      </div>
-      <div className="account-pages my-5 pt-sm-5">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={5}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary-subtle">
-                  <Row>
-                    <Col xs={7}>
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Bem-vindo!</h5>
-                        <p>Entre para continuar no Inteligência.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col>
-                  </Row>
-                </div>
-                <CardBody className="pt-0">
-                  <div className="auth-logo">
-                    <Link to="/" className="auth-logo-light">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img src={lightlogo} alt="Inteli Logo" height="34" />
-                        </span>
-                      </div>
-                    </Link>
-                    <Link to="/" className="auth-logo-dark">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img src={logo} alt="Inteli Logo" height="34" />
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="p-2">
-                    <Form
-                      className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                    >
-                      {error ? <Alert color="danger">{error}</Alert> : null}
-
-                      <div className="mb-3">
-                        <Label className="form-label">Email</Label>
-                        <Input
-                          name="email"
-                          className="form-control"
-                          placeholder="Digite seu email"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.email}
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-
-                      <div className="mb-3">
-                        <Label className="form-label">Senha</Label>
-                        <Input
-                          name="password"
-                          autoComplete="off"
-                          value={validation.values.password || ""}
-                          type="password"
-                          placeholder="Digite sua senha"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          invalid={
-                            validation.touched.password &&
-                            validation.errors.password
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.password &&
-                        validation.errors.password ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.password}
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-
-                      <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="customControlInline"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customControlInline"
-                        >
-                          Lembrar-me
-                        </label>
-                      </div>
-
-                      <div className="mt-3 d-grid">
-                        <button
-                          className="btn btn-primary btn-block"
-                          type="submit"
-                        >
-                          Entrar
-                        </button>
-                      </div>
-
-                      <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
-                          <i className="mdi mdi-lock me-1" />
-                          Esqueceu sua senha?
-                        </Link>
-                      </div>
-                    </Form>
-                  </div>
-                </CardBody>
-              </Card>
-              <div className="mt-5 text-center">
-                <p>
-                  {new Date().getFullYear()} InteligênciaApp. Desenvolvido com{" "}
-                  <i className="mdi mdi-heart text-danger" /> por InteliTec
-                </p>
-                <div className="mt-2">
-                  <img src={inteliLogo} alt="Inteli Logo" height="30" />
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
+    <div className="login-page-custom-bg">
+      <Container className="d-flex flex-column justify-content-center align-items-center min-vh-100">
+        <div className="text-center mb-2">
+          <img
+            src={logo}
+            alt="Inteligência"
+            style={{
+              width: 250,
+              marginBottom: 12,
+              filter: "brightness(0) invert(1)",
+            }}
+          />
+        </div>
+        <div className="text-center mb-2">
+          <span
+            className="fw-bold"
+            style={{ fontSize: "1.6rem", color: "#f3e6fa", letterSpacing: 1 }}
+          >
+            LOGIN
+          </span>
+        </div>
+        <Form
+          className="login-form-custom"
+          onSubmit={(e) => {
+            e.preventDefault();
+            validation.handleSubmit();
+            return false;
+          }}
+          style={{ width: 320, maxWidth: "90vw" }}
+        >
+          {error ? <Alert color="danger">{error}</Alert> : null}
+          <div className="mb-3 position-relative">
+            <Label
+              className="form-label text-white fw-bold"
+              style={{ fontSize: "1.1rem", marginBottom: 4 }}
+            >
+              E-mail
+            </Label>
+            <Input
+              name="email"
+              className="form-control login-input-custom"
+              placeholder="Digite seu e-mail"
+              type="email"
+              onChange={validation.handleChange}
+              onBlur={validation.handleBlur}
+              value={validation.values.email || ""}
+              invalid={
+                validation.touched.email && validation.errors.email
+                  ? true
+                  : false
+              }
+              autoComplete="username"
+              disabled={loading}
+            />
+            <i className="bx bx-envelope login-input-icon" />
+            {validation.touched.email && validation.errors.email ? (
+              <FormFeedback type="invalid">
+                {validation.errors.email}
+              </FormFeedback>
+            ) : null}
+          </div>
+          <div className="mb-3 position-relative">
+            <Label
+              className="form-label text-white fw-bold"
+              style={{ fontSize: "1.1rem", marginBottom: 4 }}
+            >
+              Senha
+            </Label>
+            <Input
+              name="password"
+              autoComplete="current-password"
+              value={validation.values.password || ""}
+              type="password"
+              placeholder="Digite sua senha"
+              onChange={validation.handleChange}
+              onBlur={validation.handleBlur}
+              invalid={
+                validation.touched.password && validation.errors.password
+                  ? true
+                  : false
+              }
+              className="form-control login-input-custom"
+              disabled={loading}
+            />
+            <i className="bx bx-lock login-input-icon" />
+            {validation.touched.password && validation.errors.password ? (
+              <FormFeedback type="invalid">
+                {validation.errors.password}
+              </FormFeedback>
+            ) : null}
+          </div>
+          <button
+            className="btn btn-primary w-100 py-2 fw-bold login-btn-custom"
+            type="submit"
+            style={{
+              background: "#7c4bc0",
+              border: "none",
+              fontSize: "1.1rem",
+              letterSpacing: 0.5,
+            }}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Spinner size="sm" className="me-2" style={{ color: "#fff" }}>
+                  Carregando...
+                </Spinner>
+                Entrando...
+              </>
+            ) : (
+              "Entrar"
+            )}
+          </button>
+          <div className="text-center mt-3">
+            <Link
+              to="/forgot-password"
+              className="text-white-50"
+              style={{ fontSize: "0.98rem" }}
+            >
+              Esqueceu a senha?
+            </Link>
+          </div>
+        </Form>
+      </Container>
+    </div>
   );
 };
-
-export default withRouter(Login);
 
 Login.propTypes = {
   history: PropTypes.object,
 };
+
+export default withRouter(Login);
