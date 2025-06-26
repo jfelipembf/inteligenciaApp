@@ -14,6 +14,8 @@ import {
 import { useLocation } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
+import useUserAvatar from "../../hooks/useUserAvatar";
+import PersonCircle from "react-bootstrap-icons/dist/icons/person-circle";
 
 // import { FiBell } from "react-icons/fi";
 
@@ -34,6 +36,7 @@ const Layout = (props) => {
   const isHome = location.pathname === "/home";
 
   const { userDetails } = useUser();
+  const avatarUrl = useUserAvatar(userDetails, userDetails?.schoolId);
   const userEmail = userDetails?.personalInfo.email || "";
 
   const selectLayoutProperties = createSelector(
@@ -173,7 +176,23 @@ const Layout = (props) => {
                 <div className="welcome-badge">Bem vindo, ao Inteligência!</div>
                 <div className="welcome-user-info">
                   <NotificationDropdown> </NotificationDropdown>
-                  <div className="welcome-avatar"></div>
+                  <div className="welcome-avatar">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt="Avatar do usuário"
+                        className="welcome-avatar"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <PersonCircle size={55} color="#f7f7fa" />
+                    )}
+                  </div>
                   <span className="welcome-email">{userEmail}</span>
                 </div>
               </div>
