@@ -39,7 +39,7 @@ const NotificationDropdown = (props) => {
           <i
             className={`bx bx-bell${
               alerts && alerts.length > 0 ? " bx-tada" : ""
-            }`}
+            } text-primary`}
           />
           {alerts && alerts.length > 0 && (
             <span className="badge bg-danger rounded-pill">

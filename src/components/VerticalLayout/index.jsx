@@ -12,6 +12,9 @@ import {
   showRightSidebarAction,
 } from "/src/store/actions";
 import { useLocation } from "react-router-dom";
+import useUser from "../../hooks/useUser";
+import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
+
 // import { FiBell } from "react-icons/fi";
 
 // Layout Related Components
@@ -29,6 +32,9 @@ const Layout = (props) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const isHome = location.pathname === "/home";
+
+  const { userDetails } = useUser();
+  const userEmail = userDetails?.personalInfo.email || "";
 
   const selectLayoutProperties = createSelector(
     (state) => state.Layout,
@@ -166,9 +172,9 @@ const Layout = (props) => {
               <div className="welcome-bar">
                 <div className="welcome-badge">Bem vindo, ao Inteligência!</div>
                 <div className="welcome-user-info">
-                  <i className="bx bx-bell welcome-bell"></i>
+                  <NotificationDropdown> </NotificationDropdown>
                   <div className="welcome-avatar"></div>
-                  <span className="welcome-email">email@gmail.com</span>
+                  <span className="welcome-email">{userEmail}</span>
                 </div>
               </div>
               <div className="main-content-scrollable">{props.children}</div>
