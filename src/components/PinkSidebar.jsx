@@ -6,83 +6,14 @@ import logo from "../assets/images/lgo.png";
 import "../assets/scss/pink-sidebar.scss";
 import useUser from "../hooks/useUser";
 
-const PinkSidebar = () => {
+const PinkSidebar = (props) => {
   const [openMenu, setOpenMenu] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true); // novo estado
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { userDetails } = useUser();
-
-  let dashboardTo = "/dashboard";
-  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
-  else if (userDetails?.role === "coordinator")
-    dashboardTo = "/dashboard-coordenador";
-  const menuItems = [
-    { icon: "bx bx-home", label: "Home", to: "/home" },
-    { icon: "bx bx-line-chart", label: "Dashboard", to: dashboardTo },
-    {
-      icon: "bx bx-user-pin",
-      label: "Colaboradores",
-      children: [
-        { label: "Professores", to: "/teachers" },
-        { label: "Coordenadores", to: "/coordinators" },
-        { label: "Administradores", to: "/administrators" },
-      ],
-    },
-    {
-      icon: "bx bx-message-square-dots",
-      label: "Comunicação",
-      children: [
-        { label: "Mensagens", to: "/messages" },
-        { label: "Notificações", to: "/notifications" },
-      ],
-    },
-    {
-      icon: "bx bx-group",
-      label: "Turmas",
-      children: [
-        { label: "Criar Turma", to: "/create-class" },
-        { label: "Visualizar Turmas", to: "/classes" },
-      ],
-    },
-    { icon: "bx bx-user-circle", label: "Alunos", to: "/students" },
-    {
-      icon: "bx bx-clipboard",
-      label: "Frequências",
-      children: [
-        { label: "Registrar Frequência", to: "/create-attendance" },
-        { label: "Visualizar Frequências", to: "/attendances" },
-      ],
-    },
-    {
-      icon: "bx bx-clipboard",
-      label: "Atividades",
-      children: [
-        { label: "Criar Atividade", to: "/activities/add-activity" },
-        { label: "Visualizar Atividades", to: "/activities" },
-      ],
-    },
-    {
-      icon: "bx bx-clipboard",
-      label: "Notas",
-      children: [
-        { label: "Adicionar Notas", to: "/grades" },
-        { label: "Visualizar Notas", to: "/grades-list" },
-      ],
-    },
-    { icon: "bx bx-calendar", label: "Calendário", to: "/calendar" },
-    {
-      icon: "bx bx-calendar-event",
-      label: "Eventos",
-      children: [
-        { label: "Criar Evento", to: "/events/create" },
-        { label: "Visualizar Eventos", to: "/events" },
-      ],
-    },
-    { icon: "bx bx-cog", label: "Configurações", to: "/settings" },
-    // { icon: "bx bx-money", label: "Financeiro", to: "/financeiro/caixa" },
-  ];
+  const role = userDetails?.role;
 
   const toggleMenu = (idx) => {
     setOpenMenu((prev) => (prev === idx ? null : idx));
@@ -96,9 +27,13 @@ const PinkSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
+  let dashboardTo = "/dashboard";
+  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
+  else if (userDetails?.role === "coordinator")
+    dashboardTo = "/dashboard-coordenador";
+
   return (
     <>
-      {/* Botão para abrir/fechar a sidebar */}
       <button
         className="sidebar-toggle-btn"
         onClick={handleSidebarToggle}
@@ -115,7 +50,6 @@ const PinkSidebar = () => {
           <i className="bx bx-menu"></i>
         )}
       </button>
-      {/* Sidebar */}
       <nav className={`sidebar-menu-no-bg${sidebarOpen ? "" : " closed"}`}>
         <div className="sidebar-logo-no-bg">
           <img
@@ -125,44 +59,300 @@ const PinkSidebar = () => {
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
-        {menuItems.map((item, idx) =>
-          item.children ? (
-            <div key={idx} className="sidebar-menu-group">
-              <button
-                className="sidebar-btn-no-bg sidebar-btn-parent"
-                onClick={() => toggleMenu(idx)}
-                type="button"
-              >
-                <i className={item.icon}></i>
-                <span>{item.label}</span>
-                <i
-                  className={`bx bx-chevron-${
-                    openMenu === idx ? "up" : "down"
-                  } ms-auto`}
-                ></i>
-              </button>
-              {openMenu === idx && (
-                <div className="sidebar-submenu">
-                  {item.children.map((sub, subIdx) => (
-                    <NavLink
-                      to={sub.to}
-                      className="sidebar-btn-no-bg sidebar-btn-sub"
-                      key={subIdx}
-                      end
-                    >
-                      <span>{sub.label}</span>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <NavLink to={item.to} className="sidebar-btn-no-bg" key={idx} end>
-              <i className={item.icon}></i>
-              <span>{item.label}</span>
-            </NavLink>
-          )
+
+        {/* Home */}
+        <NavLink to="/home" className="sidebar-btn-no-bg" end>
+          <i className="bx bx-home"></i>
+          <span>Home</span>
+        </NavLink>
+
+        {/* Dashboards */}
+        <NavLink to={dashboardTo} className="sidebar-btn-no-bg" end>
+          <i className="bx bx-line-chart"></i>
+          <span>Dashboard</span>
+        </NavLink>
+
+        {/* Colaboradores */}
+        {(role === "ceo" || role === "coordinator") && (
+          <div className="sidebar-menu-group">
+            <button
+              className="sidebar-btn-no-bg sidebar-btn-parent"
+              onClick={() => toggleMenu("colaboradores")}
+              type="button"
+            >
+              <i className="bx bx-user-pin"></i>
+              <span>Colaboradores</span>
+              <i
+                className={`bx bx-chevron-${
+                  openMenu === "colaboradores" ? "up" : "down"
+                } ms-auto`}
+              ></i>
+            </button>
+            {openMenu === "colaboradores" && (
+              <div className="sidebar-submenu">
+                <NavLink
+                  to="/teachers"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Professores</span>
+                </NavLink>
+                <NavLink
+                  to="/coordinators"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Coordenadores</span>
+                </NavLink>
+                {role === "ceo" && (
+                  <NavLink
+                    to="/administrators"
+                    className="sidebar-btn-no-bg sidebar-btn-sub"
+                    end
+                  >
+                    <span>Administradores</span>
+                  </NavLink>
+                )}
+              </div>
+            )}
+          </div>
         )}
+
+        {/* Comunicação */}
+        <div className="sidebar-menu-group">
+          <button
+            className="sidebar-btn-no-bg sidebar-btn-parent"
+            onClick={() => toggleMenu("comunicacao")}
+            type="button"
+          >
+            <i className="bx bx-message-square-dots"></i>
+            <span>Comunicação</span>
+            <i
+              className={`bx bx-chevron-${
+                openMenu === "comunicacao" ? "up" : "down"
+              } ms-auto`}
+            ></i>
+          </button>
+          {openMenu === "comunicacao" && (
+            <div className="sidebar-submenu">
+              <NavLink
+                to="/messages"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Mensagens</span>
+              </NavLink>
+              <NavLink
+                to="/notifications"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Notificações</span>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
+        {/* Turmas */}
+        <div className="sidebar-menu-group">
+          <button
+            className="sidebar-btn-no-bg sidebar-btn-parent"
+            onClick={() => toggleMenu("turmas")}
+            type="button"
+          >
+            <i className="bx bx-group"></i>
+            <span>Turmas</span>
+            <i
+              className={`bx bx-chevron-${
+                openMenu === "turmas" ? "up" : "down"
+              } ms-auto`}
+            ></i>
+          </button>
+          {openMenu === "turmas" && (
+            <div className="sidebar-submenu">
+              <NavLink
+                to="/create-class"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Criar Turma</span>
+              </NavLink>
+              <NavLink
+                to="/classes"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Visualizar Turmas</span>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
+        {/* Alunos */}
+        <NavLink to="/students" className="sidebar-btn-no-bg" end>
+          <i className="bx bx-user-circle"></i>
+          <span>Alunos</span>
+        </NavLink>
+
+        {/* Frequências */}
+        <div className="sidebar-menu-group">
+          <button
+            className="sidebar-btn-no-bg sidebar-btn-parent"
+            onClick={() => toggleMenu("frequencias")}
+            type="button"
+          >
+            <i className="bx bx-clipboard"></i>
+            <span>Frequências</span>
+            <i
+              className={`bx bx-chevron-${
+                openMenu === "frequencias" ? "up" : "down"
+              } ms-auto`}
+            ></i>
+          </button>
+          {openMenu === "frequencias" && (
+            <div className="sidebar-submenu">
+              {role === "professor" && (
+                <NavLink
+                  to="/create-attendance"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Registrar Frequência</span>
+                </NavLink>
+              )}
+              <NavLink
+                to="/attendances"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Visualizar Frequências</span>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
+        {/* Atividades */}
+        {role === "professor" && (
+          <div className="sidebar-menu-group">
+            <button
+              className="sidebar-btn-no-bg sidebar-btn-parent"
+              onClick={() => toggleMenu("atividades")}
+              type="button"
+            >
+              <i className="bx bx-clipboard"></i>
+              <span>Atividades</span>
+              <i
+                className={`bx bx-chevron-${
+                  openMenu === "atividades" ? "up" : "down"
+                } ms-auto`}
+              ></i>
+            </button>
+            {openMenu === "atividades" && (
+              <div className="sidebar-submenu">
+                <NavLink
+                  to="/activities/add-activity"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Criar Atividade</span>
+                </NavLink>
+                <NavLink
+                  to="/activities"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Visualizar Atividades</span>
+                </NavLink>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Notas */}
+        <div className="sidebar-menu-group">
+          <button
+            className="sidebar-btn-no-bg sidebar-btn-parent"
+            onClick={() => toggleMenu("notas")}
+            type="button"
+          >
+            <i className="bx bx-clipboard"></i>
+            <span>Notas</span>
+            <i
+              className={`bx bx-chevron-${
+                openMenu === "notas" ? "up" : "down"
+              } ms-auto`}
+            ></i>
+          </button>
+          {openMenu === "notas" && (
+            <div className="sidebar-submenu">
+              {role === "professor" && (
+                <NavLink
+                  to="/grades"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Adicionar Notas</span>
+                </NavLink>
+              )}
+              <NavLink
+                to="/grades-list"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Visualizar Notas</span>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
+        {/* Calendário */}
+        <NavLink to="/calendar" className="sidebar-btn-no-bg" end>
+          <i className="bx bx-calendar"></i>
+          <span>Calendário</span>
+        </NavLink>
+
+        {/* Eventos */}
+        <div className="sidebar-menu-group">
+          <button
+            className="sidebar-btn-no-bg sidebar-btn-parent"
+            onClick={() => toggleMenu("eventos")}
+            type="button"
+          >
+            <i className="bx bx-calendar-event"></i>
+            <span>Eventos</span>
+            <i
+              className={`bx bx-chevron-${
+                openMenu === "eventos" ? "up" : "down"
+              } ms-auto`}
+            ></i>
+          </button>
+          {openMenu === "eventos" && (
+            <div className="sidebar-submenu">
+              <NavLink
+                to="/events/create"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Criar Evento</span>
+              </NavLink>
+              <NavLink
+                to="/events"
+                className="sidebar-btn-no-bg sidebar-btn-sub"
+                end
+              >
+                <span>Visualizar Eventos</span>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
+        {/* Configurações */}
+        <NavLink to="/settings" className="sidebar-btn-no-bg" end>
+          <i className="bx bx-cog"></i>
+          <span>Configurações</span>
+        </NavLink>
+
+        {/* Logout */}
         <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
           <i className="bx bx-power-off"></i>
           <span>Sair</span>

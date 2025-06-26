@@ -212,6 +212,8 @@ const Layout = (props) => {
                   </div>
                 </div>
                 {/* Botões de navegação abaixo, alinhados à esquerda */}
+                {/* Fora do escopo por enquanto */}
+                {/*
                 <div
                   className="welcome-nav-btns d-flex flex-row align-items-center"
                   style={{ gap: 8, marginTop: 0 }}
@@ -241,6 +243,7 @@ const Layout = (props) => {
                     <i className="bx bx-chevron-right"></i>
                   </button>
                 </div>
+                */}
               </div>
               <div className="main-content-scrollable">{props.children}</div>
             </div>
