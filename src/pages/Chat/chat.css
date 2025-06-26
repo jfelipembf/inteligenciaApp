@@ -1,0 +1,122 @@
+/* Estilos para o chat */
+
+/* Estilos para a lista de contatos */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.user-status {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  bottom: 0;
+  right: 0;
+}
+
+.user-status.online {
+  background-color: #34c38f;
+}
+
+.avatar-xs {
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-title {
+  align-items: center;
+  background-color: #556ee6;
+  color: #fff;
+  display: flex;
+  font-weight: 500;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Estilos para a área de conversação */
+.chat-conversation {
+  height: 100%;
+  margin-top: 10px;
+}
+
+.chat-day-title {
+  position: relative;
+  text-align: center;
+  margin-bottom: 24px;
+  margin-top: 12px;
+}
+
+.chat-day-title .title {
+  background-color: #f8f9fa;
+  position: relative;
+  z-index: 1;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+}
+
+.chat-day-title:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  right: 0;
+  background-color: #f8f9fa;
+  top: 10px;
+}
+
+.chat-send {
+  max-width: 70%;
+  margin-left: auto;
+}
+
+.chat-receive {
+  max-width: 70%;
+}
+
+.chat-time {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.chat-user-name {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Estilos para os filtros */
+.nav-pills-custom {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-pills-custom .nav-link {
+  padding: 5px 10px;
+  border-radius: 30px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.nav-pills-custom .nav-link.active {
+  background-color: #556ee6;
+  color: #fff;
+}
+
+/* Estilos para a caixa de pesquisa */
+.search-box {
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #74788d;
+}

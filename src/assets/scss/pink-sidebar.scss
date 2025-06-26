@@ -1,0 +1,252 @@
+.pink-sidebar {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  border-radius: 28px;
+  box-shadow: 0 8px 32px 0 rgba(161, 140, 209, 0.15);
+  padding: 32px 16px 24px 16px;
+  min-width: 180px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 24px 0 0;
+  height: fit-content;
+}
+
+.sidebar-logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.sidebar-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 12px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.sidebar-btn:hover, .sidebar-btn:focus {
+  background: rgba(255,255,255,0.18);
+  color: #6c3483;
+}
+
+.sidebar-btn span {
+  flex: 1;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.sidebar-btn.logout {
+  margin-top: 32px;
+  background: #fff;
+  color: #a18cd1;
+  font-weight: bold;
+}
+
+.sidebar-btn.logout:hover {
+  background: #fbc2eb;
+  color: #6c3483;
+}
+
+@media (max-width: 991px) {
+  .pink-sidebar {
+    min-width: 120px;
+    padding: 16px 4px 12px 4px;
+    margin: 0 8px 0 0;
+  }
+  .sidebar-logo {
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+  .sidebar-btn span {
+    font-size: 0.95rem;
+  }
+}
+
+.sidebar-logo-no-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 32px;
+  padding-left: 0;
+}
+
+.sidebar-logo-img {
+  max-width: 150px;
+  max-height: 150px;
+  display: block;
+}
+
+.sidebar-menu-no-bg {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 160px;
+  margin: 0 24px 0 0;
+  padding-top: 32px;
+  height: 100vh;
+  position: relative;
+}
+
+.sidebar-bottom-spacer {
+  flex: 1 1 auto;
+}
+
+.sidebar-btn-no-bg {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 8px;
+  border-radius: 8px;
+  width: 100%;
+  transition: color 0.2s;
+  cursor: pointer;
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sidebar-btn-no-bg.active,
+.sidebar-btn-no-bg[aria-current="page"] {
+  color: #ffd180;
+  background: none;
+}
+
+.sidebar-btn-no-bg:hover, .sidebar-btn-no-bg:focus {
+  color: #ffd180;
+  background: none;
+}
+
+.sidebar-btn-no-bg span {
+  flex: 1;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.sidebar-btn-no-bg.logout {
+  margin-bottom: 0;
+  margin-top: 8px;
+  color: #fbc2eb;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.sidebar-btn-no-bg.logout:hover {
+  color: #fff;
+  background: none;
+}
+
+@media (max-width: 991px) {
+  .sidebar-menu-no-bg {
+    min-width: 100px;
+    margin: 0 8px 0 0;
+    padding-top: 12px;
+    height: auto;
+  }
+  .sidebar-logo-no-bg {
+    margin-bottom: 12px;
+  }
+  .sidebar-logo-img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+  .sidebar-btn-no-bg span {
+    font-size: 0.95rem;
+  }
+}
+
+.sidebar-menu-group {
+  width: 100%;
+}
+
+.sidebar-btn-parent {
+  font-weight: 300;
+  color: #fff;
+  background: none;
+  border: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: color 0.2s;
+  text-align: left;
+}
+
+.sidebar-btn-parent .bx-chevron-up,
+.sidebar-btn-parent .bx-chevron-down {
+  margin-left: auto;
+  font-size: 1.1em;
+  color: #ffd180;
+}
+
+.sidebar-btn-parent.active,
+.sidebar-btn-parent:focus,
+.sidebar-btn-parent:hover {
+  color: #ffd180;
+  background: none;
+}
+
+.sidebar-submenu {
+  display: flex;
+  flex-direction: column;
+  margin-left: 18px;
+  border-left: 2px solid #a18cd1;
+  padding-left: 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  gap: 0;
+}
+
+.sidebar-btn-sub {
+  color: #e0d7f7;
+  font-size: 0.97rem;
+  font-weight: 300;
+  padding: 4px 8px 4px 8px;
+  border-radius: 6px;
+  margin: 0;
+  background: none;
+  transition: color 0.2s;
+  text-align: left;
+}
+
+.sidebar-btn-sub.active,
+.sidebar-btn-sub[aria-current="page"] {
+  color: #ffd180;
+  background: none;
+  font-weight: 400;
+}
+
+.sidebar-btn-sub:hover, .sidebar-btn-sub:focus {
+  color: #ffd180;
+  background: none;
+} 

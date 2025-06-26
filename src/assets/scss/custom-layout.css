@@ -1,0 +1,39 @@
+body {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  min-height: 100vh;
+}
+
+#layout-wrapper {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.main-content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 0;
+  background: transparent;
+}
+
+.main-content {
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 600px;
+  margin: 0 24px;
+}
+
+@media (max-width: 991px) {
+  .main-content {
+    padding: 24px 8px;
+    min-height: 400px;
+  }
+  .main-content-wrapper {
+    padding: 16px 0;
+  }
+} 
