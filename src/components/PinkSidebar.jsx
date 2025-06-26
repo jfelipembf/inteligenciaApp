@@ -111,9 +111,9 @@ const PinkSidebar = () => {
         }}
       >
         {sidebarOpen ? (
-          <i className="bx bx-chevron-left"></i>
+          <i className="bx bx-menu-alt-left"></i>
         ) : (
-          <i className="bx bx-chevron-right"></i>
+          <i className="bx bx-menu"></i>
         )}
       </button>
       {/* Sidebar */}
