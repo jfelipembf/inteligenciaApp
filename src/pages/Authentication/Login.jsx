@@ -20,6 +20,8 @@ import logo from "../../assets/images/lgo.png";
 
 const Login = (props) => {
   document.title = "Login | Inteligência";
+
+  const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth?.user);
 
@@ -102,7 +104,7 @@ const Login = (props) => {
               autoComplete="username"
               disabled={loading}
             />
-            <i className="bx bx-envelope login-input-icon" />
+
             {validation.touched.email && validation.errors.email ? (
               <FormFeedback type="invalid">
                 {validation.errors.email}
@@ -120,7 +122,7 @@ const Login = (props) => {
               name="password"
               autoComplete="current-password"
               value={validation.values.password || ""}
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Digite sua senha"
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
@@ -132,7 +134,20 @@ const Login = (props) => {
               className="form-control login-input-custom"
               disabled={loading}
             />
-            <i className="bx bx-lock login-input-icon" />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: 12,
+                top: "70%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                color: "white",
+                fontSize: "1.2rem",
+              }}
+            >
+              <i className={showPassword ? "bx bx-show" : "bx bx-hide"} />
+            </span>
             {validation.touched.password && validation.errors.password ? (
               <FormFeedback type="invalid">
                 {validation.errors.password}
