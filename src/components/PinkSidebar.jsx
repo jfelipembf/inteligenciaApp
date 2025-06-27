@@ -154,39 +154,46 @@ const PinkSidebar = (props) => {
         </div>
 
         {/* Turmas */}
-        <div className="sidebar-menu-group">
-          <button
-            className="sidebar-btn-no-bg sidebar-btn-parent"
-            onClick={() => toggleMenu("turmas")}
-            type="button"
-          >
+        {role === "professor" ? (
+          <NavLink to="/classes" className="sidebar-btn-no-bg" end>
             <i className="bx bx-group"></i>
             <span>Turmas</span>
-            <i
-              className={`bx bx-chevron-${
-                openMenu === "turmas" ? "up" : "down"
-              } ms-auto`}
-            ></i>
-          </button>
-          {openMenu === "turmas" && (
-            <div className="sidebar-submenu">
-              <NavLink
-                to="/create-class"
-                className="sidebar-btn-no-bg sidebar-btn-sub"
-                end
-              >
-                <span>Criar Turma</span>
-              </NavLink>
-              <NavLink
-                to="/classes"
-                className="sidebar-btn-no-bg sidebar-btn-sub"
-                end
-              >
-                <span>Visualizar Turmas</span>
-              </NavLink>
-            </div>
-          )}
-        </div>
+          </NavLink>
+        ) : (
+          <div className="sidebar-menu-group">
+            <button
+              className="sidebar-btn-no-bg sidebar-btn-parent"
+              onClick={() => toggleMenu("turmas")}
+              type="button"
+            >
+              <i className="bx bx-group"></i>
+              <span>Turmas</span>
+              <i
+                className={`bx bx-chevron-${
+                  openMenu === "turmas" ? "up" : "down"
+                } ms-auto`}
+              ></i>
+            </button>
+            {openMenu === "turmas" && (
+              <div className="sidebar-submenu">
+                <NavLink
+                  to="/create-class"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Criar Turma</span>
+                </NavLink>
+                <NavLink
+                  to="/classes"
+                  className="sidebar-btn-no-bg sidebar-btn-sub"
+                  end
+                >
+                  <span>Visualizar Turmas</span>
+                </NavLink>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Alunos */}
         <NavLink to="/students" className="sidebar-btn-no-bg" end>

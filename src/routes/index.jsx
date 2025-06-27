@@ -322,7 +322,14 @@ const authProtectedRoutes = [
   { path: "/grades-list", component: <GradesListPage /> },
 
   // Classes
-  { path: "/create-class", component: <CreateClass /> },
+  {
+    path: "/create-class",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        <CreateClass />
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/classes", component: <ListClasses /> },
   { path: "/classes/:id", component: <ViewClass /> },
 
@@ -542,7 +549,15 @@ const authProtectedRoutes = [
   { path: "/pages-pricing", component: <PagesPricing /> },
 
   // Rotas de Classes
-  { path: "/create-class", component: <CreateClass /> },
+  {
+    path: "/create-class",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <CreateClass />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/classes", component: <ListClasses /> },
 
   // Rotas de Escolas
