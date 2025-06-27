@@ -14,23 +14,57 @@ const Home = () => {
     dashboardLink = "/dashboard-coordenador";
 
   const quickLinks = [
-    { to: dashboardLink, icon: "bx bx-grid-alt", label: "Dashboard" },
-    { to: "/coordinators", icon: "bx bx-share-alt", label: "Colaboradores" },
+    { to: dashboardLink, icon: "bx bx-line-chart", label: "Dashboard" },
+    { to: "/coordinators", icon: "bx bx-user", label: "Coordenadores" },
+    { to: "/teachers", icon: "bx bx-user-voice", label: "Professores" },
     {
       to: "/messages",
       icon: "bx bx-message-square-dots",
-      label: "Comunicação",
+      label: "Mensagens",
     },
+    { to: "/notifications", icon: "bx bx-bell", label: "Notificações" },
     { to: "/classes", icon: "bx bx-group", label: "Turmas" },
-    { to: "/students", icon: "bx bx-user-plus", label: "Alunos" },
+    { to: "/students", icon: "bx bx-user-circle", label: "Alunos" },
     { to: "/attendances", icon: "bx bx-bar-chart-alt-2", label: "Frequências" },
     { to: "/grades-list", icon: "bx bx-calculator", label: "Notas" },
     { to: "/calendar", icon: "bx bx-calendar", label: "Calendário" },
-    { to: "/events", icon: "bx bx-star", label: "Eventos" },
-    { to: "/financeiro/caixa", icon: "bx bx-diamond", label: "Financeiro" },
-    { to: "/settings", icon: "bx bx-cog", label: "Configurações" },
+    { to: "/events", icon: "bx bx-calendar-event", label: "Eventos" },
+    //{ to: "/financeiro/caixa", icon: "bx bx-diamond", label: "Financeiro" },
+    //{ to: "/settings", icon: "bx bx-cog", label: "Configurações" },
     { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
   ];
+
+  const filteredLinks =
+    userDetails?.role === "professor"
+      ? (() => {
+          // Remove "Coordenadores" e "Professores"
+          const base = quickLinks.filter(
+            (item) => item.to !== "/coordinators" && item.to !== "/teachers"
+          );
+
+          // Encontrar índices para inserir os novos atalhos
+          const attIdx = base.findIndex((item) => item.to === "/attendances");
+          const notasIdx = base.findIndex((item) => item.to === "/grades-list");
+
+          // Inserir "Registrar Frequência" após "Frequências"
+          if (attIdx !== -1) {
+            base.splice(attIdx + 1, 0, {
+              to: "/create-attendance",
+              icon: "bx bx-plus-circle",
+              label: "Registrar Frequência",
+            });
+          }
+          // Inserir "Registrar Notas" após "Notas"
+          if (notasIdx !== -1) {
+            base.splice(notasIdx + 2, 0, {
+              to: "/grades",
+              icon: "bx bx-plus-circle",
+              label: "Registrar Notas",
+            });
+          }
+          return base;
+        })()
+      : quickLinks;
 
   return (
     <>
@@ -53,7 +87,7 @@ const Home = () => {
         </div>
       </div>
       <div className="home-atalhos-grid">
-        {quickLinks.map((item, idx) => (
+        {filteredLinks.map((item, idx) => (
           <Link
             to={item.to}
             key={item.to}

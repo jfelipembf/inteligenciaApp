@@ -638,7 +638,14 @@ const authProtectedRoutes = [
   },
 
   // Rota de Configurações
-  { path: "/settings", component: <Settings /> },
+  {
+    path: "/settings",
+    component: (
+      <RoleProtectedRoute allowedRoles={["administrator"]}>
+        <Settings />
+      </RoleProtectedRoute>
+    ),
+  },
 
   // Rotas de Mensagens
   { path: "/messages", component: <Messages /> },

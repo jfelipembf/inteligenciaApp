@@ -201,7 +201,7 @@ const PinkSidebar = (props) => {
             onClick={() => toggleMenu("frequencias")}
             type="button"
           >
-            <i className="bx bx-clipboard"></i>
+            <i className="bx bx-bar-chart-alt-2"></i>
             <span>Frequências</span>
             <i
               className={`bx bx-chevron-${
@@ -275,7 +275,7 @@ const PinkSidebar = (props) => {
             onClick={() => toggleMenu("notas")}
             type="button"
           >
-            <i className="bx bx-clipboard"></i>
+            <i className="bx bx-calculator"></i>
             <span>Notas</span>
             <i
               className={`bx bx-chevron-${
@@ -347,10 +347,12 @@ const PinkSidebar = (props) => {
         </div>
 
         {/* Configurações */}
+        {/* Apenas quando tiver certeza do proximo tipo de user
         <NavLink to="/settings" className="sidebar-btn-no-bg" end>
           <i className="bx bx-cog"></i>
           <span>Configurações</span>
         </NavLink>
+        */}
 
         {/* Logout */}
         <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
