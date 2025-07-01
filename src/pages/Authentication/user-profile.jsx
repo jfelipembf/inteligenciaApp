@@ -34,6 +34,8 @@ import "firebase/compat/storage";
 import useUserAvatar from "../../hooks/useUserAvatar";
 import PersonCircle from "react-bootstrap-icons/dist/icons/person-circle";
 import useUser from "../../hooks/useUser";
+import { format, parseISO } from "date-fns";
+import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const UserProfile = () => {
   document.title = "Perfil";
@@ -48,9 +50,10 @@ const UserProfile = () => {
     name: "",
     cpf: "",
     rg: "",
-    dateOfBirth: "",
+    birthDate: "",
+    specialization: "",
     gender: "",
-    address: "",
+    street: "",
     number: "",
     complement: "",
     neighborhood: "",
@@ -60,6 +63,11 @@ const UserProfile = () => {
     country: "",
   });
 
+  const {
+    updateUserProfile,
+    loading: updating,
+    error: updateError,
+  } = useUpdateUserProfile();
   const { userDetails } = useUser();
   const avatarUrl = useUserAvatar(userDetails, userDetails?.schoolId);
   const userEmail = userDetails?.personalInfo.email || "";
@@ -120,9 +128,10 @@ const UserProfile = () => {
         name: userData.personalInfo?.name || "",
         cpf: userData.personalInfo?.cpf || "",
         rg: userData.personalInfo?.rg || "",
-        dateOfBirth: userData.personalInfo?.dateOfBirth || "",
+        birthDate: userData.personalInfo?.birthDate || "",
+        specialization: userData.professionalInfo?.specialization || "",
         gender: userData.personalInfo?.gender || "",
-        address: userData.address?.street || "",
+        street: userData.address?.street || "",
         number: userData.address?.number || "",
         complement: userData.address?.complement || "",
         neighborhood: userData.address?.neighborhood || "",
@@ -144,50 +153,81 @@ const UserProfile = () => {
 
   const handleSubmit = async () => {
     try {
+      let birthDateISO = editForm.birthDate;
+      if (birthDateISO && birthDateISO.includes("/")) {
+        const [day, month, year] = birthDateISO.split("/");
+        birthDateISO = `${year}-${month.padStart(2, "0")}-${day.padStart(
+          2,
+          "0"
+        )}`;
+      }
+
+      const requiredFields = [
+        "name",
+        "cpf",
+        "rg",
+        "birthDate",
+        "gender",
+        "street",
+        "number",
+        "neighborhood",
+        "city",
+        "state",
+        "cep",
+      ];
+      for (const field of requiredFields) {
+        if (!editForm[field]) {
+          setAlertMessage("Preencha todos os campos obrigatórios.");
+          return;
+        }
+      }
+
       const updateData = {
         personalInfo: {
           ...userData.personalInfo,
           name: editForm.name,
           cpf: editForm.cpf,
           rg: editForm.rg,
-          dateOfBirth: editForm.dateOfBirth,
+          birthDate: birthDateISO,
           gender: editForm.gender,
         },
-        addressInfo: {
-          address: editForm.address,
+        address: {
+          ...userData.address,
+          street: editForm.street,
           number: editForm.number,
           complement: editForm.complement,
           neighborhood: editForm.neighborhood,
           city: editForm.city,
           state: editForm.state,
           cep: editForm.cep,
-          country: editForm.country,
+        },
+        professionalInfo: {
+          ...userData.professionalInfo,
+          specialization: editForm.specialization,
         },
       };
 
-      await getFirebaseBackend().updateUserData(idx, updateData);
-      setIsEditing(false);
-
-      // Recarrega os dados do usuário
-      const updatedUser = await getFirebaseBackend().getUserData(idx);
-      setUserData(updatedUser);
-
-      // Mostra mensagem de sucesso
-      setAlertMessage("Perfil atualizado com sucesso!");
-
-      // Remove a mensagem após 3 segundos
-      setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
+      const success = await updateUserProfile(updateData);
+      if (success) {
+        setIsEditing(false);
+        setUserData((prev) => ({
+          ...prev,
+          personalInfo: { ...prev.personalInfo, ...updateData.personalInfo },
+          address: { ...prev.address, ...updateData.address },
+          professionalInfo: {
+            ...prev.professionalInfo,
+            ...updateData.professionalInfo,
+          },
+        }));
+        setAlertMessage("Perfil atualizado com sucesso!");
+        setTimeout(() => setAlertMessage(""), 3000);
+      } else {
+        setAlertMessage("Erro ao atualizar perfil. Tente novamente.");
+        setTimeout(() => setAlertMessage(""), 3000);
+      }
     } catch (error) {
-      console.error("Erro ao atualizar dados:", error);
-      // Mostra mensagem de erro
       setAlertMessage("Erro ao atualizar perfil. Tente novamente.");
-
-      // Remove a mensagem após 3 segundos
-      setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
+      setTimeout(() => setAlertMessage(""), 3000);
     }
   };
 
@@ -347,8 +387,7 @@ const UserProfile = () => {
                                   ? editForm.cpf
                                   : userData.personalInfo?.cpf || ""
                               }
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
+                              disabled={true}
                             />
                           </div>
                         </Col>
@@ -363,41 +402,66 @@ const UserProfile = () => {
                                   ? editForm.rg
                                   : userData.personalInfo?.rg || ""
                               }
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
+                              disabled={true}
                             />
                           </div>
                         </Col>
                         <Col md={6}>
                           <div className="mb-3">
                             <Label>Data de Nascimento</Label>
-                            <Input
-                              type="text"
-                              name="dateOfBirth"
-                              value={
-                                isEditing
-                                  ? editForm.dateOfBirth
-                                  : userData.personalInfo?.birthDate || ""
-                              }
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
-                            />
+                            {isEditing ? (
+                              <Input
+                                type="date"
+                                name="birthDate"
+                                value={editForm.birthDate}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            ) : (
+                              <Input
+                                type="text"
+                                name="birthDate"
+                                value={
+                                  userData.personalInfo?.birthDate
+                                    ? format(
+                                        parseISO(
+                                          userData.personalInfo.birthDate
+                                        ),
+                                        "dd/MM/yyyy"
+                                      )
+                                    : ""
+                                }
+                                disabled
+                                readOnly
+                              />
+                            )}
                           </div>
                         </Col>
                         <Col md={6}>
                           <div className="mb-3">
-                            <Label>Genero</Label>
-                            <Input
-                              type="text"
-                              name="gender"
-                              value={
-                                isEditing
-                                  ? editForm.gender
-                                  : userData.personalInfo?.gender || ""
-                              }
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
-                            />
+                            <Label>Gênero</Label>
+                            {isEditing ? (
+                              <Input
+                                type="select"
+                                name="gender"
+                                value={editForm.gender}
+                                onChange={handleInputChange}
+                                required
+                              >
+                                <option value="">Selecione...</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="feminino">Feminino</option>
+                                <option value="outro">Outro</option>
+                              </Input>
+                            ) : (
+                              <Input
+                                type="text"
+                                name="gender"
+                                value={userData.personalInfo?.gender || ""}
+                                disabled
+                                readOnly
+                              />
+                            )}
                           </div>
                         </Col>
                         <Col md={6}></Col>
@@ -423,8 +487,10 @@ const UserProfile = () => {
                                   type="text"
                                   name="specialization"
                                   value={
-                                    userData.professionalInfo?.specialization ||
-                                    ""
+                                    isEditing
+                                      ? editForm.specialization
+                                      : userData.professionalInfo
+                                          ?.specialization || ""
                                   }
                                   onChange={handleInputChange}
                                   disabled={!isEditing}
@@ -443,8 +509,7 @@ const UserProfile = () => {
                                       : userData.professionalInfo
                                           ?.registration || ""
                                   }
-                                  onChange={handleInputChange}
-                                  disabled={!isEditing}
+                                  disabled={true}
                                 />
                               </div>
                             </Col>
@@ -471,7 +536,7 @@ const UserProfile = () => {
                               name="address"
                               value={
                                 isEditing
-                                  ? editForm.address
+                                  ? editForm.street
                                   : userData.address?.street || ""
                               }
                               onChange={handleInputChange}
