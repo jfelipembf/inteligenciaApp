@@ -27,10 +27,11 @@ import useUpdateLesson from "../../../hooks/useUpdateLesson";
 import { useTeachersContext } from "../../../contexts/TeachersContext";
 import CreatableSelect from "react-select/creatable"; // Importar o componente
 import { label } from "yet-another-react-lightbox";
+import useUser from "../../../hooks/useUser";
 
 const ViewClass = () => {
   const { id: classId } = useParams(); // Pega o ID da turma da URL
-
+  const { userDetails } = useUser();
   const { lessons, loading, error, selectedClassId, setSelectedClassId } =
     useLessonsContext();
   useEffect(() => {
@@ -296,9 +297,11 @@ const ViewClass = () => {
 
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="card-title mb-0">Alunos Matriculados </h4>
-                    <Button color="primary" onClick={toggleAddStudentModal}>
-                      Adicionar Alunos
-                    </Button>
+                    {userDetails?.role !== "professor" && (
+                      <Button color="primary" onClick={toggleAddStudentModal}>
+                        Adicionar Alunos
+                      </Button>
+                    )}
                   </div>
 
                   <div className="table-responsive mb-4">
@@ -331,20 +334,22 @@ const ViewClass = () => {
                                   size="sm"
                                   className="me-1"
                                   onClick={() =>
-                                    (window.location.href = `/student-profile/${student.id}`)
+                                    (window.location.href = `/students/${student.id}`)
                                   }
                                 >
                                   Ver Perfil
                                 </Button>
-                                <Button
-                                  color="danger"
-                                  size="sm"
-                                  onClick={() =>
-                                    toggleRemoveStudentModal(student)
-                                  }
-                                >
-                                  Remover
-                                </Button>
+                                {userDetails?.role !== "professor" && (
+                                  <Button
+                                    color="danger"
+                                    size="sm"
+                                    onClick={() =>
+                                      toggleRemoveStudentModal(student)
+                                    }
+                                  >
+                                    Remover
+                                  </Button>
+                                )}
                               </div>
                             </td>
                           </tr>
@@ -355,14 +360,16 @@ const ViewClass = () => {
                   {/**********************************************/}
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="card-title mb-0">Aulas</h4>
-                    <Button
-                      color="primary"
-                      onClick={() =>
-                        navigate(`/classes/${classId}/create-classroom`)
-                      }
-                    >
-                      Adicionar Aula
-                    </Button>
+                    {userDetails?.role !== "professor" && (
+                      <Button
+                        color="primary"
+                        onClick={() =>
+                          navigate(`/classes/${classId}/create-classroom`)
+                        }
+                      >
+                        Adicionar Aula
+                      </Button>
+                    )}
                   </div>
 
                   <div className="table-responsive">
@@ -372,14 +379,16 @@ const ViewClass = () => {
                           {/*<th>ID</th>*/}
                           <th style={{ width: "40%" }}>Disciplina</th>
                           <th style={{ width: "30%" }}>Professor</th>
-                          <th style={{ width: "30%" }}>
-                            <div
-                              className="d-flex justify-content-end"
-                              style={{ marginRight: "5rem" }}
-                            >
-                              Ações
-                            </div>
-                          </th>
+                          {userDetails?.role !== "professor" && (
+                            <th style={{ width: "30%" }}>
+                              <div
+                                className="d-flex justify-content-end"
+                                style={{ marginRight: "5rem" }}
+                              >
+                                Ações
+                              </div>
+                            </th>
+                          )}
                         </tr>
                       </thead>
                       <tbody>
@@ -388,27 +397,31 @@ const ViewClass = () => {
                             {/*<td>{student.id}</td>*/}
                             <td>{lesson.subject}</td>
                             <td>{lesson.teacher.label}</td>
-                            <td>
-                              <div className="d-flex justify-content-end">
-                                <Button
-                                  color="info"
-                                  size="sm"
-                                  className="me-1"
-                                  onClick={() => toggleEditLessonModal(lesson)}
-                                >
-                                  Editar
-                                </Button>
-                                <Button
-                                  color="danger"
-                                  size="sm"
-                                  onClick={() =>
-                                    toggleRemoveLessonModal(lesson)
-                                  }
-                                >
-                                  Remover
-                                </Button>
-                              </div>
-                            </td>
+                            {userDetails?.role !== "professor" && (
+                              <td>
+                                <div className="d-flex justify-content-end">
+                                  <Button
+                                    color="info"
+                                    size="sm"
+                                    className="me-1"
+                                    onClick={() =>
+                                      toggleEditLessonModal(lesson)
+                                    }
+                                  >
+                                    Editar
+                                  </Button>
+                                  <Button
+                                    color="danger"
+                                    size="sm"
+                                    onClick={() =>
+                                      toggleRemoveLessonModal(lesson)
+                                    }
+                                  >
+                                    Remover
+                                  </Button>
+                                </div>
+                              </td>
+                            )}
                           </tr>
                         ))}
                       </tbody>

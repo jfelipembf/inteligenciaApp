@@ -11,6 +11,7 @@ import {
   FormFeedback,
 } from "reactstrap";
 import { toast } from "react-toastify";
+import useUser from "../../../hooks/useUser";
 
 const StudentsList = ({
   students,
@@ -35,20 +36,20 @@ const StudentsList = ({
   // Validação de campos
   const validateField = (name, value) => {
     let error = "";
-    
+
     if (name === "search" && !value) {
       error = "O termo de pesquisa é obrigatório";
     }
-    
+
     return error;
   };
 
   // Manipulador de mudança de input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     setSearchTerm(value);
-    
+
     // Validar o campo
     const error = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: error }));
@@ -64,9 +65,11 @@ const StudentsList = ({
   const filteredStudents = availableStudents.filter((student) => {
     const searchTermLower = searchTerm.toLowerCase();
     const studentName = student.personalInfo?.name?.toLowerCase() || "";
-    const studentRegistration = student.academicInfo?.registration?.toLowerCase() || "";
+    const studentRegistration =
+      student.academicInfo?.registration?.toLowerCase() || "";
     return (
-      studentName.includes(searchTermLower) || studentRegistration.includes(searchTermLower)
+      studentName.includes(searchTermLower) ||
+      studentRegistration.includes(searchTermLower)
     );
   });
 
@@ -95,7 +98,7 @@ const StudentsList = ({
 
     try {
       await removeStudentFromClass(studentToRemove.id);
-      
+
       // Atualizar a lista local de alunos
       setStudents((prev) =>
         prev.filter((student) => student.id !== studentToRemove.id)
@@ -109,6 +112,8 @@ const StudentsList = ({
     }
   };
 
+  const { userDetails } = useUser();
+
   return (
     <Card className="mb-4">
       <CardHeader className="bg-light d-flex justify-content-between align-items-center">
@@ -116,15 +121,20 @@ const StudentsList = ({
           <i className="bx bx-user-circle me-2"></i>
           Alunos
         </h5>
-        <Button color="primary" size="sm" onClick={toggleAddStudentModal}>
-          <i className="bx bx-plus me-1"></i>
-          Adicionar Alunos
-        </Button>
+        {userDetails?.role !== "professor" && (
+          <Button color="primary" size="sm" onClick={toggleAddStudentModal}>
+            <i className="bx bx-plus me-1"></i>
+            Adicionar Alunos
+          </Button>
+        )}
       </CardHeader>
       <CardBody>
         {students.length === 0 ? (
           <div className="text-center p-4">
-            <i className="bx bx-user-x text-muted" style={{ fontSize: "3rem" }}></i>
+            <i
+              className="bx bx-user-x text-muted"
+              style={{ fontSize: "3rem" }}
+            ></i>
             <p className="mt-2">Nenhum aluno matriculado nesta turma.</p>
             <Button color="primary" size="sm" onClick={toggleAddStudentModal}>
               Adicionar Alunos

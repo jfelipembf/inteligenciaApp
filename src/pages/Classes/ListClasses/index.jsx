@@ -244,25 +244,29 @@ const ListClasses = () => {
                 </Button>
               </li>
 
-              <li>
-                <Button
-                  color="soft-info"
-                  className="btn btn-sm btn-soft-info"
-                  onClick={() => handleEditClass(cellProps.row.original.id)}
-                >
-                  <i className="mdi mdi-pencil-outline" />
-                </Button>
-              </li>
+              {userDetails?.role !== "professor" && (
+                <>
+                  <li>
+                    <Button
+                      color="soft-info"
+                      className="btn btn-sm btn-soft-info"
+                      onClick={() => handleEditClass(cellProps.row.original.id)}
+                    >
+                      <i className="mdi mdi-pencil-outline" />
+                    </Button>
+                  </li>
 
-              <li>
-                <Button
-                  color="soft-danger"
-                  className="btn btn-sm btn-soft-danger"
-                  onClick={() => onClickDelete(cellProps.row.original)}
-                >
-                  <i className="mdi mdi-delete-outline" />
-                </Button>
-              </li>
+                  <li>
+                    <Button
+                      color="soft-danger"
+                      className="btn btn-sm btn-soft-danger"
+                      onClick={() => onClickDelete(cellProps.row.original)}
+                    >
+                      <i className="mdi mdi-delete-outline" />
+                    </Button>
+                  </li>
+                </>
+              )}
             </ul>
           );
         },
@@ -287,9 +291,14 @@ const ListClasses = () => {
                       Lista de Turmas
                     </h5>
                     <div className="flex-shrink-0">
-                      <Link to="/create-class" className="btn btn-primary me-1">
-                        <i className="bx bx-plus me-1"></i> Nova Turma
-                      </Link>
+                      {userDetails?.role !== "professor" && (
+                        <Link
+                          to="/create-class"
+                          className="btn btn-primary me-1"
+                        >
+                          <i className="bx bx-plus me-1"></i> Nova Turma
+                        </Link>
+                      )}
                       <Link
                         to="#!"
                         onClick={refetch}
