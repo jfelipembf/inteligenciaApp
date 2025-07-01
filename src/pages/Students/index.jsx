@@ -295,15 +295,17 @@ const Students = () => {
 
                           <Col xxl={2} lg={4}>
                             <div className="position-relative">
-                              <Button
-                                color="primary"
-                                className="w-100"
-                                tag={Link}
-                                to="/add-student"
-                              >
-                                <i className="bx bx-plus me-1"></i> Novo
-                                Estudante
-                              </Button>
+                              {userDetails?.role !== "professor" && (
+                                <Button
+                                  color="primary"
+                                  className="w-100"
+                                  tag={Link}
+                                  to="/add-student"
+                                >
+                                  <i className="bx bx-plus me-1"></i> Novo
+                                  Estudante
+                                </Button>
+                              )}
                             </div>
                           </Col>
 

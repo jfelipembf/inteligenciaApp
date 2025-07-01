@@ -334,11 +334,26 @@ const authProtectedRoutes = [
   { path: "/classes/:id", component: <ViewClass /> },
 
   // Classrooms
-  { path: "classes/:classId/create-classroom", component: <CreateClassroom /> },
+  {
+    path: "classes/:classId/create-classroom",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        <CreateClassroom />
+      </RoleProtectedRoute>
+    ),
+  },
 
   // Students
   { path: "/students", component: <Students /> },
-  { path: "/add-student", component: <AddStudent /> },
+  {
+    path: "/add-student",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <AddStudent />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
   { path: "/students/:id", component: <StudentProfile /> },
 
   // Teachers
@@ -711,7 +726,15 @@ const publicRoutes = [
   },
 
   // Students
-  { path: "/add-student", component: <AddStudent /> },
+  {
+    path: "/add-student",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+        {" "}
+        <AddStudent />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
 ];
 
 // export { authProtectedRoutes, publicRoutes };
