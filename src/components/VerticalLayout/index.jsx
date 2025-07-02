@@ -191,24 +191,35 @@ const Layout = (props) => {
                   </div>
                   <div className="welcome-user-info">
                     <NotificationDropdown />
-                    <div className="welcome-avatar">
-                      {avatarUrl ? (
-                        <img
-                          src={avatarUrl}
-                          alt="Avatar do usuário"
-                          className="welcome-avatar"
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: "50%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <PersonCircle size={55} color="#f7f7fa" />
-                      )}
-                    </div>
-                    <span className="welcome-email">{userEmail}</span>
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        gap: 8,
+                      }}
+                      onClick={() => navigate("/profile")}
+                      title="Ir para o perfil"
+                    >
+                      <div className="welcome-avatar">
+                        {avatarUrl ? (
+                          <img
+                            src={avatarUrl}
+                            alt="Avatar do usuário"
+                            className="welcome-avatar"
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <PersonCircle size={55} color="#f7f7fa" />
+                        )}
+                      </div>
+                      <span className="welcome-email">{userEmail}</span>
+                    </span>
                   </div>
                 </div>
                 {/* Botões de navegação abaixo, alinhados à esquerda */}
