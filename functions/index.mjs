@@ -128,3 +128,49 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
     return null;
   }
 );
+
+export const cleanOldAlerts = onSchedule("every day 00:00", async () => {
+  const now = new Date();
+  const oneMonthAgo = new Date(now);
+  oneMonthAgo.setMonth(now.getMonth() - 1);
+
+  const alertsSnap = await admin
+    .firestore()
+    .collectionGroup("alerts")
+    .where("sent", "==", true)
+    .where("createdAt", "<=", admin.firestore.Timestamp.fromDate(oneMonthAgo))
+    .get();
+
+  const batch = admin.firestore().batch();
+
+  for (const doc of alertsSnap.docs) {
+    const alert = doc.data();
+
+    // Se for notification, tenta apagar a notification referenciada
+    if (
+      alert.type === "notification" &&
+      alert.referenceId &&
+      doc.ref.parent &&
+      doc.ref.parent.parent
+    ) {
+      const schoolRef = doc.ref.parent.parent;
+      const notificationRef = schoolRef
+        .collection("notifications")
+        .doc(alert.referenceId);
+      batch.delete(notificationRef);
+    }
+
+    // Apaga o alert
+    batch.delete(doc.ref);
+  }
+
+  if (!alertsSnap.empty) {
+    await batch.commit();
+    console.log(
+      `Apagados ${alertsSnap.size} alerts antigos e notificações relacionadas.`
+    );
+  } else {
+    console.log("Nenhum alert antigo para apagar.");
+  }
+  return null;
+});
