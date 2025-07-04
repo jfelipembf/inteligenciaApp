@@ -49,32 +49,31 @@ const Sidebar = (props) => {
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div
-          className="navbar-brand-box"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px 0",
-          }}
-        >
-          {isMenuCollapsed ? (
-            // Quando o menu estiver fechado (colapsado)
-            <Link to="/" className="logo">
-              <span style={{ display: "flex", justifyContent: "center" }}>
-                <img src={inteliIcon} alt="Inteli" height="24" />
-              </span>
-            </Link>
-          ) : (
-            // Quando o menu estiver aberto
-            <Link to="/" className="logo">
-              <span>
-                <img src={logoWhite} alt="Inteli" height="40" />
-              </span>
-            </Link>
-          )}
-        </div>
         <div data-simplebar className="h-100">
+          <div
+            className="navbar-brand-box"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px 0",
+            }}
+          >
+            {isMenuCollapsed ? (
+              <Link to="/" className="logo">
+                <span style={{ display: "flex", justifyContent: "center" }}>
+                  <img src={inteliIcon} alt="Inteli" height="24" />
+                </span>
+              </Link>
+            ) : (
+              // Quando o menu estiver aberto
+              <Link to="/" className="logo">
+                <span>
+                  <img src={logoWhite} alt="Inteli" height="40" />
+                </span>
+              </Link>
+            )}
+          </div>
           {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />}
         </div>
 

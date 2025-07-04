@@ -33,6 +33,8 @@
 }
 
 .vertical-menu {
+  background: sidebar-dark-bg;
+  border-radius: 28px;
   width: $sidebar-width;
   z-index: 1001;
   background: $sidebar-bg;
@@ -384,7 +386,8 @@
 
 body[data-sidebar="dark"] {
   .vertical-menu {
-    background: $sidebar-dark-bg;
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    border-radius: 28px;
   }
 
   #sidebar-menu {
@@ -428,7 +431,10 @@ body[data-sidebar="dark"] {
     // Side menu
     .vertical-menu {
       .navbar-brand-box {
-        background: $sidebar-dark-bg;
+        background: transparent;
+        border-bottom: none;
+        margin-bottom: 0;
+        box-shadow: none;
       }
 
       // Sidebar Menu
@@ -437,7 +443,8 @@ body[data-sidebar="dark"] {
           > li {
             &:hover {
               > a {
-                background: lighten($sidebar-dark-bg, 2%);
+                background: sidebar-dark-bg;
+
                 color: $sidebar-dark-menu-item-hover-color;
 
                 i {
@@ -458,7 +465,7 @@ body[data-sidebar="dark"] {
           }
 
           ul {
-            background-color: $sidebar-dark-bg;
+            background-color: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
           }
         }
 
@@ -995,7 +1002,7 @@ body[data-sidebar="greatwhale"] {
 
   &[data-sidebar-size="small"] {
     .menu-title {
-      background-image: linear-gradient(to right, #556ee6, #50a5f1);
+      background-image: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
     }
   }
 }
