@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 // import { FiBell } from "react-icons/fi";
 
 // Layout Related Components
-// import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import RightSidebar from "../CommonForBoth/RightSidebar";
 // import MenuLateralRosa from "../MenuLateralRosa";
@@ -182,6 +182,7 @@ const Layout = (props) => {
       <div id="layout-wrapper">
         <div className="main-flex-wrapper">
           <PinkSidebar />
+          <Sidebar />
           <div className="main-content-wrapper">
             <div className="main-content">
               <div className="welcome-bar">

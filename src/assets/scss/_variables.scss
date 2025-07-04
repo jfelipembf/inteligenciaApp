@@ -16,12 +16,12 @@ $sidebar-collapsed-width: 70px;
 $sidebar-width-sm: 160px;
 
 // Vertical Sidebar - Dark
-$sidebar-dark-bg: #3c2a52; //#3c2a52
-$sidebar-dark-menu-item-color: #a6b0cf;
-$sidebar-dark-menu-sub-item-color: #79829c;
-$sidebar-dark-menu-item-icon-color: #6a7187;
-$sidebar-dark-menu-item-hover-color: #ffffff;
-$sidebar-dark-menu-item-active-color: #ffffff;
+$sidebar-dark-bg: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); //#3c2a52
+$sidebar-dark-menu-item-color: #fff;
+$sidebar-dark-menu-sub-item-color: #e0d7f7;
+$sidebar-dark-menu-item-icon-color: #fff;
+$sidebar-dark-menu-item-hover-color: #ffd180;
+$sidebar-dark-menu-item-active-color: #ffd180;
 
 // Topbar - Default Light
 $header-height: 70px;
