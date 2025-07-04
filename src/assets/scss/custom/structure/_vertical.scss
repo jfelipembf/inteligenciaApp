@@ -95,6 +95,14 @@
 
   ul {
     li {
+      .logout {
+        margin-bottom: 0;
+        margin-top: 8px;
+        color: #fbc2eb;
+        font-weight: bold;
+        align-self: flex-start;
+      }
+
       a {
         display: block;
         padding: 0.625rem 1.5rem;
@@ -1126,4 +1134,29 @@ body[data-sidebar-image="img5"] {
 
 .gradient-strong-great-whale {
   background-image: linear-gradient(to right, darken($primary, 10%), #50a5f1);
+}
+
+.sidebar-menu-item-bottom.logout .logout-link {
+  margin-bottom: 0 !important;
+  margin-top: 8px !important;
+
+  color: #fbc2eb !important;
+
+  align-self: flex-start !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.sidebar-menu-item-bottom.logout .logout-link i {
+  color: #fbc2eb !important;
+}
+
+.sidebar-menu-item-bottom.logout .logout-link:hover,
+.sidebar-menu-item-bottom.logout .logout-link:focus {
+  color: #fff !important;
+  background: none !important;
+}
+.sidebar-menu-item-bottom.logout .logout-link:hover i,
+.sidebar-menu-item-bottom.logout .logout-link:focus i {
+  color: #fff !important;
 }

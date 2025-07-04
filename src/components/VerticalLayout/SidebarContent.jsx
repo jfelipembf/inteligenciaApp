@@ -353,8 +353,8 @@ const SidebarContent = (props) => {
             </li>
 
             {/* Logout - positioned at bottom */}
-            <li className="sidebar-menu-item-bottom">
-              <Link to="/logout" className="waves-effect text-danger">
+            <li className="sidebar-menu-item-bottom logout">
+              <Link to="/logout" className="waves-effect logout-link">
                 <i className="bx bx-power-off"></i>
                 <span className="menu-item">{props.t("Sair")}</span>
               </Link>
