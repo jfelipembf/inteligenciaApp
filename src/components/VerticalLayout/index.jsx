@@ -181,8 +181,11 @@ const Layout = (props) => {
 
       <div id="layout-wrapper">
         <div className="main-flex-wrapper">
-          <PinkSidebar />
-          <Sidebar />
+          <Sidebar
+            theme={leftSideBarTheme}
+            type={leftSideBarType}
+            isMobile={isMobile}
+          />
           <div className="main-content-wrapper">
             <div className="main-content">
               <div className="welcome-bar">

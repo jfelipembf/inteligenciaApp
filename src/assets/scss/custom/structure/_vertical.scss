@@ -90,6 +90,8 @@
       float: right;
       transition: transform 0.2s;
       font-size: 1rem;
+      font-weight: 300;
+      color: $sidebar-dark-menu-item-hover-color;
     }
   }
 
@@ -120,7 +122,7 @@
           display: inline-block;
           min-width: 1.75rem;
           padding-bottom: 0.125em;
-          font-size: 1.25rem;
+          font-size: 0.95rem;
           line-height: 1.40625rem;
           vertical-align: middle;
           color: $sidebar-menu-item-icon-color;
@@ -146,7 +148,8 @@
         li {
           a {
             padding: 0.4rem 1.5rem 0.4rem 3.5rem;
-            font-size: 13px;
+            font-size: 1rem;
+            font-weight: 300;
             color: $sidebar-menu-sub-item-color;
 
             &:hover {
@@ -1159,4 +1162,8 @@ body[data-sidebar-image="img5"] {
 .sidebar-menu-item-bottom.logout .logout-link:hover i,
 .sidebar-menu-item-bottom.logout .logout-link:focus i {
   color: #fff !important;
+}
+
+body[data-sidebar="dark"] .vertical-menu {
+  background: transparent !important;
 }

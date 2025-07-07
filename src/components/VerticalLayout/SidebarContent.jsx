@@ -147,6 +147,11 @@ const SidebarContent = (props) => {
     }
   }
 
+  let dashboardTo = "/dashboard";
+  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
+  else if (userDetails?.role === "coordinator")
+    dashboardTo = "/dashboard-coordenador";
+
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
@@ -154,35 +159,20 @@ const SidebarContent = (props) => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
 
+            {/* Home */}
+            <li>
+              <Link to="/home" className="waves-effect">
+                <i className="bx bx-home"></i>
+                <span className="menu-item">{props.t("Home")}</span>
+              </Link>
+            </li>
+
             {/* Dashboards */}
             <li>
-              <Link to="/#" className="has-arrow">
-                <i className="bx bx-line-chart"></i>
-                <span>{props.t("Dashboards")}</span>
+              <Link to={dashboardTo} className="waves-effect">
+                <i className="bx bx-home"></i>
+                <span className="menu-item">{props.t("Dashboard")}</span>
               </Link>
-              <ul className="sub-menu" aria-expanded="false">
-                {role === "ceo" && (
-                  <li>
-                    <Link to="/dashboard-gestor">
-                      {props.t("Dashboard Gestor")}
-                    </Link>
-                  </li>
-                )}
-                {role === "coordinator" && (
-                  <li>
-                    <Link to="/dashboard-coordenador">
-                      {props.t("Dashboard Coordenador")}
-                    </Link>
-                  </li>
-                )}
-                {role === "professor" && (
-                  <li>
-                    <Link to="/dashboard-professor">
-                      {props.t("Dashboard Professor")}
-                    </Link>
-                  </li>
-                )}
-              </ul>
             </li>
 
             {/* Colaboradores */}
@@ -253,7 +243,7 @@ const SidebarContent = (props) => {
             {/* Frequências */}
             <li>
               <Link to="/#" className="has-arrow">
-                <i className="bx bx-clipboard font-size-18"></i>
+                <i className="bx bx-bar-chart-alt-2"></i>
                 <span>{props.t("Frequências")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
@@ -297,7 +287,7 @@ const SidebarContent = (props) => {
             {/* Notas */}
             <li>
               <Link to="/#" className="has-arrow">
-                <i className="bx bx-clipboard font-size-18"></i>
+                <i className="bx bx-calculator"></i>
                 <span>{props.t("Notas")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
@@ -343,14 +333,6 @@ const SidebarContent = (props) => {
                 <span className="menu-item">{props.t("Financeiro")}</span>
               </Link>
             </li>*/}
-
-            {/* Configurações */}
-            <li>
-              <Link to="/settings" className="waves-effect">
-                <i className="bx bx-cog"></i>
-                <span className="menu-item">{props.t("Configurações")}</span>
-              </Link>
-            </li>
 
             {/* Logout - positioned at bottom */}
             <li className="sidebar-menu-item-bottom logout">
