@@ -48,8 +48,11 @@ const TeacherClasses = () => {
               <p className="mb-1">
                 <strong>Horário:</strong> {lesson.startTime} - {lesson.endTime}
               </p>
-              <Button color="primary" onClick={() => navigate(`${lesson.id}`)}>
-                Detalhar
+              <Button
+                color="primary"
+                onClick={() => navigate(`/classes/${lesson.classId}`)}
+              >
+                Ver Turma
               </Button>
             </CardBody>
           </Card>

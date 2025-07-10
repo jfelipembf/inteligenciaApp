@@ -29,7 +29,6 @@ import Attendances from "../pages/Attendance/Attendances";
 
 // // // Teacher classes
 import TeacherClasses from "../pages/Classes/TeacherClasses/TeacherClasses";
-import TeacherLessonDetail from "../pages/Classes/TeacherClasses/TeacherLessonDetail";
 
 // Pages Calendar
 import Calendar from "../pages/Calendar/index";
@@ -320,16 +319,6 @@ const authProtectedRoutes = [
       <RoleProtectedRoute allowedRoles={["professor"]}>
         {" "}
         <TeacherClasses />
-      </RoleProtectedRoute>
-    ),
-  },
-
-  {
-    path: "/myclasses/:lessonId",
-    component: (
-      <RoleProtectedRoute allowedRoles={["professor"]}>
-        {" "}
-        <TeacherLessonDetail />
       </RoleProtectedRoute>
     ),
   },
