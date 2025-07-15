@@ -10,16 +10,16 @@ const ViewDoubt = () => {
   const { userDetails } = useUser();
   const userId = userDetails?.uid;
   const { doubt, messages, loading } = useDoubtMessages(id);
-  const [localMessages, setLocalMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef(null);
 
   // Destinatário é o outro participante da dúvida
   const destinatario =
     doubt?.remetente?.value === userId ? doubt?.destinatario : doubt?.remetente;
   const { sendMessage } = useSendDoubtMessage(id, destinatario);
 
-  // Mensagens combinadas (Firestore + local)
-  const allMessages = [...messages, ...localMessages].sort((a, b) => {
+  // Mensagens do Firestore, ordenadas por createdAt
+  const allMessages = [...messages].sort((a, b) => {
     const aTime = a.createdAt?.seconds || 0;
     const bTime = b.createdAt?.seconds || 0;
     return aTime - bTime;
@@ -28,19 +28,6 @@ const ViewDoubt = () => {
   async function handleSend() {
     if (message.trim()) {
       await sendMessage(message.trim());
-      setLocalMessages((prev) => [
-        ...prev,
-        {
-          id: Math.random().toString(36),
-          remetente: {
-            label: userDetails.displayName || userDetails.name || "Você",
-            value: userId,
-          },
-          destinatario,
-          message: message.trim(),
-          createdAt: { seconds: Math.floor(Date.now() / 1000) }, // temporário
-        },
-      ]);
       setMessage("");
     }
   }
@@ -103,6 +90,7 @@ const ViewDoubt = () => {
                   </div>
                 );
               })}
+              <div ref={messagesEndRef} />
             </div>
             <div
               style={{

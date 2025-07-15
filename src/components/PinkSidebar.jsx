@@ -136,11 +136,11 @@ const PinkSidebar = (props) => {
           {openMenu === "comunicacao" && (
             <div className="sidebar-submenu">
               <NavLink
-                to="/messages"
+                to="/doubts"
                 className="sidebar-btn-no-bg sidebar-btn-sub"
                 end
               >
-                <span>Mensagens</span>
+                <span>Dúvidas</span>
               </NavLink>
               <NavLink
                 to="/notifications"
