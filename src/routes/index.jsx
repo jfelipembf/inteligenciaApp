@@ -251,6 +251,7 @@ import GradesPage from "../pages/Grades/GradesPage";
 import GradesListPage from "../pages/Grades/GradesListPage";
 
 import DoubtsList from "../pages/Doubts/DoubtsList";
+import ViewDoubt from "../pages/Doubts/ViewDoubt";
 
 const EventsRoutes = ({ children }) => (
   <EventsProvider>{children}</EventsProvider>
@@ -331,6 +332,15 @@ const authProtectedRoutes = [
     component: (
       <RoleProtectedRoute allowedRoles={["professor"]}>
         <DoubtsList />
+      </RoleProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/doubts/:id",
+    component: (
+      <RoleProtectedRoute allowedRoles={["professor"]}>
+        <ViewDoubt />
       </RoleProtectedRoute>
     ),
   },
