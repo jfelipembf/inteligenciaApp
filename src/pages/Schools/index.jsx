@@ -303,12 +303,7 @@ const Schools = () => {
           );
         },
       },
-      {
-        header: "CNPJ",
-        accessorKey: "cnpj",
-        enableColumnFilter: false,
-        enableSorting: true,
-      },
+
       {
         header: "Cidade/UF",
         enableColumnFilter: false,
@@ -319,24 +314,7 @@ const Schools = () => {
           return `${addressInfo.city}/${addressInfo.state}`;
         },
       },
-      {
-        header: "Status",
-        accessorKey: "status",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          return (
-            <Badge
-              className={
-                "font-size-11 badge-soft-" +
-                (cellProps.value === "active" ? "success" : "danger")
-              }
-            >
-              {cellProps.value === "active" ? "Ativo" : "Inativo"}
-            </Badge>
-          );
-        },
-      },
+
       {
         header: "Detalhes",
         enableColumnFilter: false,
