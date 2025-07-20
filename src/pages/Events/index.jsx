@@ -148,13 +148,15 @@ const Events = () => {
     }
   };
 
-  // Função para formatar data
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR");
-  };
 
+    // Divide a string da data no formato "yyyy-mm-dd"
+    const [year, month, day] = dateString.split("-");
+
+    // Retorna no formato "dd/mm/yyyy"
+    return `${day}/${month}/${year}`;
+  };
   // Definir colunas para a tabela
   const columns = useMemo(
     () => [
