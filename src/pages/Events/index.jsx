@@ -96,50 +96,6 @@ const Events = () => {
     }
   };
 
-  useEffect(() => {
-    const checkAndUpdateStatuses = async () => {
-      try {
-        // Verifica e atualiza os status dos eventos
-        const updatedEvents = events.map((event) => {
-          const now = new Date();
-          const startDate = new Date(event.startDate);
-          const endDate = new Date(event.endDate);
-
-          let newStatus = event.status;
-
-          if (now >= startDate && now <= endDate) {
-            newStatus = "Em andamento";
-          } else if (now > endDate) {
-            newStatus = "Concluído";
-          }
-
-          return { ...event, status: newStatus };
-        });
-
-        // Filtra apenas os eventos que tiveram o status alterado
-        const eventsToUpdate = updatedEvents.filter(
-          (event, index) => event.status !== events[index].status
-        );
-
-        // Atualiza os eventos no banco de dados
-        if (eventsToUpdate.length > 0) {
-          console.log("Atualizando status dos eventos...");
-          await updateEventStatuses(eventsToUpdate);
-
-          toast.success("Status dos eventos atualizados!");
-          refetch(); // Atualiza a lista de eventos na página
-        }
-      } catch (err) {
-        console.error("Erro ao verificar e atualizar status dos eventos:", err);
-        toast.error("Erro ao atualizar status dos eventos.");
-      }
-    };
-
-    if (events.length > 0) {
-      checkAndUpdateStatuses();
-    }
-  }, [events, updateEventStatuses, refetch]); // Adicione `events` como dependência
-
   // Função para extrair texto de um valor, lidando com objetos
   const getTextValue = (value) => {
     if (value === null || value === undefined) return "";

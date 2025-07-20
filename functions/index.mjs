@@ -129,6 +129,45 @@ export const sendAlertNotification = functions.firestore.onDocumentCreated(
   }
 );
 
+export const updateEventStatuses = onSchedule("every 1 hours", async () => {
+  const db = admin.firestore();
+  const schoolsSnapshot = await db.collection("schools").get();
+
+  const now = new Date();
+
+  const batch = db.batch();
+
+  for (const schoolDoc of schoolsSnapshot.docs) {
+    const eventsSnapshot = await schoolDoc.ref.collection("events").get();
+
+    eventsSnapshot.docs.forEach((eventDoc) => {
+      const eventData = eventDoc.data();
+
+      // Combina a data de início com o horário de início
+      const startDateTime = new Date(
+        `${eventData.startDate}T${eventData.startTime}`
+      );
+      // Combina a data de término com o horário de término
+      const endDateTime = new Date(`${eventData.endDate}T${eventData.endTime}`);
+
+      let newStatus = eventData.status;
+
+      if (now >= startDateTime && now <= endDateTime) {
+        newStatus = "Em andamento";
+      } else if (now > endDateTime) {
+        newStatus = "Concluído";
+      }
+
+      if (newStatus !== eventData.status) {
+        batch.update(eventDoc.ref, { status: newStatus });
+      }
+    });
+  }
+
+  await batch.commit();
+  console.log("Status dos eventos atualizados com sucesso.");
+});
+
 export const cleanOldAlerts = onSchedule("every day 00:00", async () => {
   const now = new Date();
   const oneMonthAgo = new Date(now);
