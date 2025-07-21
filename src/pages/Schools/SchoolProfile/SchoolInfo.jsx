@@ -11,10 +11,10 @@ const InfoItem = ({ label, value }) => (
   </div>
 );
 
-const SchoolInfo = () => {
+const SchoolInfo = ({ schoolData }) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const schoolData = {
+  const schoolData2 = {
     addressInfo: {
       address: "Av. Beira Mar",
       number: "1500",
@@ -107,23 +107,27 @@ const SchoolInfo = () => {
                     <h5 className="font-size-15 mb-3">Endereço</h5>
                     <InfoItem
                       label="Logradouro"
-                      value={`${schoolData.addressInfo.address}, ${schoolData.addressInfo.number}`}
+                      value={`${schoolData.addressInfo?.address || ""}, ${
+                        schoolData.addressInfo?.number || ""
+                      }`}
                     />
                     <InfoItem
                       label="Complemento"
-                      value={schoolData.addressInfo.complement}
+                      value={schoolData.addressInfo?.complement || ""}
                     />
                     <InfoItem
                       label="Bairro"
-                      value={schoolData.addressInfo.neighborhood}
+                      value={schoolData.addressInfo?.neighborhood || ""}
                     />
                     <InfoItem
                       label="Cidade/UF"
-                      value={`${schoolData.addressInfo.city} - ${schoolData.addressInfo.state}`}
+                      value={`${schoolData.addressInfo?.city || ""} - ${
+                        schoolData.addressInfo?.state || ""
+                      }`}
                     />
                     <InfoItem
                       label="CEP"
-                      value={schoolData.addressInfo.zipCode}
+                      value={schoolData.addressInfo?.zipCode || ""}
                     />
                   </div>
                 </Col>
@@ -133,19 +137,19 @@ const SchoolInfo = () => {
                     <h5 className="font-size-15 mb-3">Contato</h5>
                     <InfoItem
                       label="Email"
-                      value={schoolData.contactInfo.email}
+                      value={schoolData.contactInfo?.email || ""}
                     />
                     <InfoItem
                       label="Telefone"
-                      value={schoolData.contactInfo.phone}
+                      value={schoolData.contactInfo?.phone || ""}
                     />
                     <InfoItem
                       label="WhatsApp"
-                      value={schoolData.contactInfo.whatsapp}
+                      value={schoolData.contactInfo?.whatsapp || ""}
                     />
                     <InfoItem
                       label="Website"
-                      value={schoolData.contactInfo.website}
+                      value={schoolData.contactInfo?.website || ""}
                     />
                   </div>
                 </Col>
@@ -155,30 +159,35 @@ const SchoolInfo = () => {
                   <div className="border-bottom pb-3 mb-4">
                     <h5 className="font-size-15 mb-3">Séries Escolares</h5>
                     <div className="d-flex flex-wrap gap-2">
-                      {Object.entries(schoolData.grades).map(([key, value]) => {
-                        if (!value) return null;
-                        const serieLabel = {
-                          infantil: "Educação Infantil",
-                          fundamental1: "Ensino Fundamental I",
-                          fundamental2: "Ensino Fundamental II",
-                          medio: "Ensino Médio",
-                        }[key];
-                        return (
-                          serieLabel && (
-                            <span
-                              key={key}
-                              className="badge bg-primary-subtle text-primary"
-                            >
-                              {serieLabel}
-                            </span>
-                          )
-                        );
-                      })}
+                      {schoolData.grades ? (
+                        Object.entries(schoolData.grades).map(
+                          ([key, value]) => {
+                            if (!value) return null;
+                            const serieLabel = {
+                              infantil: "Educação Infantil",
+                              fundamental1: "Ensino Fundamental I",
+                              fundamental2: "Ensino Fundamental II",
+                              medio: "Ensino Médio",
+                            }[key];
+                            return (
+                              serieLabel && (
+                                <span
+                                  key={key}
+                                  className="badge bg-primary-subtle text-primary"
+                                >
+                                  {serieLabel}
+                                </span>
+                              )
+                            );
+                          }
+                        )
+                      ) : (
+                        <p>Nenhuma série cadastrada.</p>
+                      )}
                     </div>
                   </div>
                 </Col>
               </Row>
-
               <div className="mt-4">
                 <h5 className="font-size-15 mb-3">Responsáveis</h5>
                 <div className="table-responsive">
@@ -193,24 +202,33 @@ const SchoolInfo = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {schoolData.responsibles.map((responsible, index) => (
-                        <tr key={index}>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <div className="avatar-xs me-3">
-                                <span className="avatar-title rounded-circle bg-primary text-white">
-                                  {responsible.name.charAt(0)}
-                                </span>
+                      {Array.isArray(schoolData.responsibles) &&
+                      schoolData.responsibles.length > 0 ? (
+                        schoolData.responsibles.map((responsible, index) => (
+                          <tr key={index}>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <div className="avatar-xs me-3">
+                                  <span className="avatar-title rounded-circle bg-primary text-white">
+                                    {responsible.name.charAt(0)}
+                                  </span>
+                                </div>
+                                {responsible.name}
                               </div>
-                              {responsible.name}
-                            </div>
+                            </td>
+                            <td>{responsible?.role || ""}</td>
+                            <td>{responsible?.email || ""}</td>
+                            <td>{responsible?.phone || ""}</td>
+                            <td>{responsible?.cpf || ""}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="text-center">
+                            Nenhum responsável cadastrado.
                           </td>
-                          <td>{responsible.role}</td>
-                          <td>{responsible.email}</td>
-                          <td>{responsible.phone}</td>
-                          <td>{responsible.cpf}</td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>

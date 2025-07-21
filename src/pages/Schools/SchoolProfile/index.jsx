@@ -151,7 +151,7 @@ const SchoolProfile = () => {
                         <CardBody>
                           <TabContent activeTab={activeTab} className="p-3">
                             <TabPane tabId="1">
-                              <SchoolInfo school={schoolData} />
+                              <SchoolInfo schoolData={schoolData} />
                             </TabPane>
                             <TabPane tabId="2">
                               <Students />
