@@ -84,42 +84,6 @@ const Schools = () => {
   const columns = useMemo(
     () => [
       {
-        id: "select",
-        header: () => (
-          <div className="form-check">
-            <Input
-              type="checkbox"
-              className="form-check-input"
-              id="checkAll"
-              checked={
-                schools.length > 0 && selectedSchools.length === schools.length
-              }
-              onChange={(e) => handleSelectAll(e.target.checked)}
-            />
-            <Label className="form-check-label" htmlFor="checkAll"></Label>
-          </div>
-        ),
-        cell: ({ row }) => {
-          const schoolId = row.original.id;
-          return (
-            <div className="form-check">
-              <Input
-                type="checkbox"
-                className="form-check-input"
-                id={`check${schoolId}`}
-                checked={selectedSchools.includes(schoolId)}
-                onChange={() => handleSelectSchool(schoolId)}
-              />
-              <Label
-                className="form-check-label"
-                htmlFor={`check${schoolId}`}
-              ></Label>
-            </div>
-          );
-        },
-        size: 50,
-      },
-      {
         header: "Nome da Escola",
         accessorKey: "name",
         cell: (cellProps) => {

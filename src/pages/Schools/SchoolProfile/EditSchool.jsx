@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+} from "reactstrap";
 
 const EditSchool = ({ schoolData, onCancel }) => {
   const [formData, setFormData] = useState(schoolData);
@@ -24,7 +34,9 @@ const EditSchool = ({ schoolData, onCancel }) => {
   };
 
   const handleRemoveResponsible = (index) => {
-    const updatedResponsibles = formData.responsibles.filter((_, i) => i !== index);
+    const updatedResponsibles = formData.responsibles.filter(
+      (_, i) => i !== index
+    );
     setFormData({ ...formData, responsibles: updatedResponsibles });
   };
 
@@ -32,7 +44,7 @@ const EditSchool = ({ schoolData, onCancel }) => {
     if (newGrade) {
       setFormData({
         ...formData,
-        grades: { ...formData.grades, [newGrade]: true },
+        grades: { ...(formData.grades || {}), [newGrade]: true },
       });
       setNewGrade("");
     }
@@ -57,7 +69,7 @@ const EditSchool = ({ schoolData, onCancel }) => {
               <div className="d-flex align-items-center mb-4">
                 <h4 className="card-title flex-grow-1 mb-0">Editar Escola</h4>
               </div>
-              
+
               <Form>
                 {/* Dados Básicos */}
                 <Row className="border-bottom pb-3 mb-4">
@@ -71,7 +83,9 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="schoolName"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -82,7 +96,9 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="cnpj"
                         value={formData.cnpj}
-                        onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, cnpj: e.target.value })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -100,10 +116,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="address"
                         value={formData.addressInfo.address}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, address: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              address: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -114,10 +135,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="number"
                         value={formData.addressInfo.number}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, number: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              number: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -128,10 +154,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="complement"
                         value={formData.addressInfo.complement}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, complement: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              complement: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -142,10 +173,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="neighborhood"
                         value={formData.addressInfo.neighborhood}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, neighborhood: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              neighborhood: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -156,10 +192,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="city"
                         value={formData.addressInfo.city}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, city: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              city: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -170,10 +211,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="select"
                         id="state"
                         value={formData.addressInfo.state}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, state: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              state: e.target.value,
+                            },
+                          })
+                        }
                       >
                         <option value="">Selecione</option>
                         <option value="AC">AC</option>
@@ -192,10 +238,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="zipCode"
                         value={formData.addressInfo.zipCode}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          addressInfo: { ...formData.addressInfo, zipCode: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            addressInfo: {
+                              ...formData.addressInfo,
+                              zipCode: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -213,10 +264,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="email"
                         id="email"
                         value={formData.contactInfo.email}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          contactInfo: { ...formData.contactInfo, email: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contactInfo: {
+                              ...formData.contactInfo,
+                              email: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -227,10 +283,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="url"
                         id="website"
                         value={formData.contactInfo.website}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          contactInfo: { ...formData.contactInfo, website: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contactInfo: {
+                              ...formData.contactInfo,
+                              website: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -241,10 +302,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="phone"
                         value={formData.contactInfo.phone}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          contactInfo: { ...formData.contactInfo, phone: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contactInfo: {
+                              ...formData.contactInfo,
+                              phone: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -255,10 +321,15 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         type="text"
                         id="whatsapp"
                         value={formData.contactInfo.whatsapp}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          contactInfo: { ...formData.contactInfo, whatsapp: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contactInfo: {
+                              ...formData.contactInfo,
+                              whatsapp: e.target.value,
+                            },
+                          })
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -271,20 +342,29 @@ const EditSchool = ({ schoolData, onCancel }) => {
                   </Col>
                   <Col lg={12}>
                     <div className="mb-3">
-                      {Object.entries(formData.grades).map(([grade, isActive]) => (
-                        <FormGroup check inline key={grade}>
-                          <Input
-                            type="checkbox"
-                            id={grade}
-                            checked={isActive}
-                            onChange={(e) => setFormData({
-                              ...formData,
-                              grades: { ...formData.grades, [grade]: e.target.checked }
-                            })}
-                          />
-                          <Label check for={grade}>{grade}</Label>
-                        </FormGroup>
-                      ))}
+                      {Object.entries(formData.grades || {}).map(
+                        ([grade, isActive]) => (
+                          <FormGroup check inline key={grade}>
+                            <Input
+                              type="checkbox"
+                              id={grade}
+                              checked={isActive}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  grades: {
+                                    ...(formData.grades || {}),
+                                    [grade]: e.target.checked,
+                                  },
+                                })
+                              }
+                            />
+                            <Label check for={grade}>
+                              {grade}
+                            </Label>
+                          </FormGroup>
+                        )
+                      )}
                     </div>
                     <div className="d-flex gap-2 mb-3">
                       <Input
@@ -307,19 +387,33 @@ const EditSchool = ({ schoolData, onCancel }) => {
                   </Col>
                   <Col lg={12}>
                     <div className="mb-3">
-                      {formData.subjects.map((subject, index) => (
-                        <span key={index} className="badge bg-primary me-2 mb-2">
-                          {subject}
-                          <i
-                            className="mdi mdi-close ms-1"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              const updatedSubjects = formData.subjects.filter((_, i) => i !== index);
-                              setFormData({ ...formData, subjects: updatedSubjects });
-                            }}
-                          ></i>
-                        </span>
-                      ))}
+                      {Array.isArray(formData.subjects) &&
+                      formData.subjects.length > 0 ? (
+                        formData.subjects.map((subject, index) => (
+                          <span
+                            key={index}
+                            className="badge bg-primary me-2 mb-2"
+                          >
+                            {subject}
+                            <i
+                              className="mdi mdi-close ms-1"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                const updatedSubjects =
+                                  formData.subjects.filter(
+                                    (_, i) => i !== index
+                                  );
+                                setFormData({
+                                  ...formData,
+                                  subjects: updatedSubjects,
+                                });
+                              }}
+                            ></i>
+                          </span>
+                        ))
+                      ) : (
+                        <p>Nenhuma disciplina cadastrada.</p>
+                      )}
                     </div>
                     <div className="d-flex gap-2">
                       <Input
@@ -350,12 +444,17 @@ const EditSchool = ({ schoolData, onCancel }) => {
                               type="text"
                               value={responsible.name}
                               onChange={(e) => {
-                                const updatedResponsibles = [...formData.responsibles];
+                                const updatedResponsibles = [
+                                  ...formData.responsibles,
+                                ];
                                 updatedResponsibles[index] = {
                                   ...responsible,
-                                  name: e.target.value
+                                  name: e.target.value,
                                 };
-                                setFormData({ ...formData, responsibles: updatedResponsibles });
+                                setFormData({
+                                  ...formData,
+                                  responsibles: updatedResponsibles,
+                                });
                               }}
                             />
                           </FormGroup>
@@ -367,12 +466,17 @@ const EditSchool = ({ schoolData, onCancel }) => {
                               type="text"
                               value={responsible.role}
                               onChange={(e) => {
-                                const updatedResponsibles = [...formData.responsibles];
+                                const updatedResponsibles = [
+                                  ...formData.responsibles,
+                                ];
                                 updatedResponsibles[index] = {
                                   ...responsible,
-                                  role: e.target.value
+                                  role: e.target.value,
                                 };
-                                setFormData({ ...formData, responsibles: updatedResponsibles });
+                                setFormData({
+                                  ...formData,
+                                  responsibles: updatedResponsibles,
+                                });
                               }}
                             />
                           </FormGroup>
@@ -384,12 +488,17 @@ const EditSchool = ({ schoolData, onCancel }) => {
                               type="email"
                               value={responsible.email}
                               onChange={(e) => {
-                                const updatedResponsibles = [...formData.responsibles];
+                                const updatedResponsibles = [
+                                  ...formData.responsibles,
+                                ];
                                 updatedResponsibles[index] = {
                                   ...responsible,
-                                  email: e.target.value
+                                  email: e.target.value,
                                 };
-                                setFormData({ ...formData, responsibles: updatedResponsibles });
+                                setFormData({
+                                  ...formData,
+                                  responsibles: updatedResponsibles,
+                                });
                               }}
                             />
                           </FormGroup>
@@ -401,12 +510,17 @@ const EditSchool = ({ schoolData, onCancel }) => {
                               type="text"
                               value={responsible.phone}
                               onChange={(e) => {
-                                const updatedResponsibles = [...formData.responsibles];
+                                const updatedResponsibles = [
+                                  ...formData.responsibles,
+                                ];
                                 updatedResponsibles[index] = {
                                   ...responsible,
-                                  phone: e.target.value
+                                  phone: e.target.value,
                                 };
-                                setFormData({ ...formData, responsibles: updatedResponsibles });
+                                setFormData({
+                                  ...formData,
+                                  responsibles: updatedResponsibles,
+                                });
                               }}
                             />
                           </FormGroup>
@@ -418,12 +532,17 @@ const EditSchool = ({ schoolData, onCancel }) => {
                               type="text"
                               value={responsible.cpf}
                               onChange={(e) => {
-                                const updatedResponsibles = [...formData.responsibles];
+                                const updatedResponsibles = [
+                                  ...formData.responsibles,
+                                ];
                                 updatedResponsibles[index] = {
                                   ...responsible,
-                                  cpf: e.target.value
+                                  cpf: e.target.value,
                                 };
-                                setFormData({ ...formData, responsibles: updatedResponsibles });
+                                setFormData({
+                                  ...formData,
+                                  responsibles: updatedResponsibles,
+                                });
                               }}
                             />
                           </FormGroup>
@@ -439,7 +558,7 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         </Col>
                       </Row>
                     ))}
-                    
+
                     {/* Adicionar novo responsável */}
                     <Row className="mt-3">
                       <Col md={3}>
@@ -448,10 +567,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
                             type="text"
                             placeholder="Nome"
                             value={newResponsible.name}
-                            onChange={(e) => setNewResponsible({
-                              ...newResponsible,
-                              name: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setNewResponsible({
+                                ...newResponsible,
+                                name: e.target.value,
+                              })
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -461,10 +582,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
                             type="text"
                             placeholder="Cargo"
                             value={newResponsible.role}
-                            onChange={(e) => setNewResponsible({
-                              ...newResponsible,
-                              role: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setNewResponsible({
+                                ...newResponsible,
+                                role: e.target.value,
+                              })
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -474,10 +597,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
                             type="email"
                             placeholder="Email"
                             value={newResponsible.email}
-                            onChange={(e) => setNewResponsible({
-                              ...newResponsible,
-                              email: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setNewResponsible({
+                                ...newResponsible,
+                                email: e.target.value,
+                              })
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -487,10 +612,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
                             type="text"
                             placeholder="Telefone"
                             value={newResponsible.phone}
-                            onChange={(e) => setNewResponsible({
-                              ...newResponsible,
-                              phone: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setNewResponsible({
+                                ...newResponsible,
+                                phone: e.target.value,
+                              })
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -500,10 +627,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
                             type="text"
                             placeholder="CPF"
                             value={newResponsible.cpf}
-                            onChange={(e) => setNewResponsible({
-                              ...newResponsible,
-                              cpf: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setNewResponsible({
+                                ...newResponsible,
+                                cpf: e.target.value,
+                              })
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -518,7 +647,12 @@ const EditSchool = ({ schoolData, onCancel }) => {
 
                 {/* Botões de ação */}
                 <div className="text-end mt-4">
-                  <Button type="button" color="secondary" className="me-2" onClick={onCancel}>
+                  <Button
+                    type="button"
+                    color="secondary"
+                    className="me-2"
+                    onClick={onCancel}
+                  >
                     Cancelar
                   </Button>
                   <Button type="submit" color="primary">
@@ -534,4 +668,4 @@ const EditSchool = ({ schoolData, onCancel }) => {
   );
 };
 
-export default EditSchool; 
+export default EditSchool;

@@ -79,7 +79,12 @@ const SchoolInfo = ({ schoolData }) => {
   };
 
   if (isEditing) {
-    return <EditSchool schoolData={schoolData} />;
+    return (
+      <EditSchool
+        schoolData={schoolData}
+        onCancel={() => setIsEditing(false)}
+      />
+    );
   }
 
   return (
