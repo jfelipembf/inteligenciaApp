@@ -4,8 +4,10 @@ import EditSchool from "./EditSchool";
 
 const InfoItem = ({ label, value }) => (
   <div className="d-flex align-items-center mb-3">
-    <span className="text-muted" style={{ width: '140px' }}>{label}:</span>
-    <span className="fw-medium">{value || '-'}</span>
+    <span className="text-muted" style={{ width: "140px" }}>
+      {label}:
+    </span>
+    <span className="fw-medium">{value || "-"}</span>
   </div>
 );
 
@@ -87,47 +89,69 @@ const SchoolInfo = () => {
           <Card>
             <CardBody>
               <div className="d-flex align-items-center mb-4">
-                <h4 className="card-title flex-grow-1 mb-0">Informações Gerais</h4>
-                <Button 
-                  color="primary" 
+                <h4 className="card-title flex-grow-1 mb-0">
+                  Informações Gerais
+                </h4>
+                <Button
+                  color="primary"
                   className="btn-sm"
                   onClick={() => setIsEditing(true)}
                 >
                   <i className="bx bx-edit me-1"></i> Editar
                 </Button>
               </div>
-              
+
               <Row>
                 <Col lg={6}>
                   <div className="border-bottom pb-3 mb-4">
                     <h5 className="font-size-15 mb-3">Endereço</h5>
-                    <InfoItem label="Logradouro" value={`${schoolData.addressInfo.address}, ${schoolData.addressInfo.number}`} />
-                    <InfoItem label="Complemento" value={schoolData.addressInfo.complement} />
-                    <InfoItem label="Bairro" value={schoolData.addressInfo.neighborhood} />
-                    <InfoItem label="Cidade/UF" value={`${schoolData.addressInfo.city} - ${schoolData.addressInfo.state}`} />
-                    <InfoItem label="CEP" value={schoolData.addressInfo.zipCode} />
-                  </div>
-
-                  <div className="pb-3">
-                    <h5 className="font-size-15 mb-3">Contato</h5>
-                    <InfoItem label="Email" value={schoolData.contactInfo.email} />
-                    <InfoItem label="Telefone" value={schoolData.contactInfo.phone} />
-                    <InfoItem label="WhatsApp" value={schoolData.contactInfo.whatsapp} />
-                    <InfoItem label="Website" value={schoolData.contactInfo.website} />
+                    <InfoItem
+                      label="Logradouro"
+                      value={`${schoolData.addressInfo.address}, ${schoolData.addressInfo.number}`}
+                    />
+                    <InfoItem
+                      label="Complemento"
+                      value={schoolData.addressInfo.complement}
+                    />
+                    <InfoItem
+                      label="Bairro"
+                      value={schoolData.addressInfo.neighborhood}
+                    />
+                    <InfoItem
+                      label="Cidade/UF"
+                      value={`${schoolData.addressInfo.city} - ${schoolData.addressInfo.state}`}
+                    />
+                    <InfoItem
+                      label="CEP"
+                      value={schoolData.addressInfo.zipCode}
+                    />
                   </div>
                 </Col>
 
                 <Col lg={6}>
-                  <div className="border-bottom pb-3 mb-4">
-                    <h5 className="font-size-15 mb-3">Informações de Pagamento</h5>
-                    <InfoItem label="Banco" value={schoolData.billing.bankInfo.bank} />
-                    <InfoItem label="Agência" value={schoolData.billing.bankInfo.agency} />
-                    <InfoItem label="Conta" value={schoolData.billing.bankInfo.account} />
-                    <InfoItem label="Vencimento" value={`Dia ${schoolData.billing.dueDay}`} />
-                    <InfoItem label="Método" value={schoolData.billing.paymentMethod} />
-                    <InfoItem label="Valor/Aluno" value={`R$ ${schoolData.billing.pricePerStudent}`} />
+                  <div className="pb-3">
+                    <h5 className="font-size-15 mb-3">Contato</h5>
+                    <InfoItem
+                      label="Email"
+                      value={schoolData.contactInfo.email}
+                    />
+                    <InfoItem
+                      label="Telefone"
+                      value={schoolData.contactInfo.phone}
+                    />
+                    <InfoItem
+                      label="WhatsApp"
+                      value={schoolData.contactInfo.whatsapp}
+                    />
+                    <InfoItem
+                      label="Website"
+                      value={schoolData.contactInfo.website}
+                    />
                   </div>
-
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={6}>
                   <div className="border-bottom pb-3 mb-4">
                     <h5 className="font-size-15 mb-3">Séries Escolares</h5>
                     <div className="d-flex flex-wrap gap-2">
@@ -137,43 +161,17 @@ const SchoolInfo = () => {
                           infantil: "Educação Infantil",
                           fundamental1: "Ensino Fundamental I",
                           fundamental2: "Ensino Fundamental II",
-                          medio: "Ensino Médio"
+                          medio: "Ensino Médio",
                         }[key];
                         return (
                           serieLabel && (
-                            <span key={key} className="badge bg-primary-subtle text-primary">
+                            <span
+                              key={key}
+                              className="badge bg-primary-subtle text-primary"
+                            >
                               {serieLabel}
                             </span>
                           )
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="pb-3">
-                    <h5 className="font-size-15 mb-3">Disciplinas</h5>
-                    <div className="d-flex flex-wrap gap-2">
-                      {schoolData.subjects.map((subject, index) => {
-                        const disciplinaLabel = {
-                          matematica: "Matemática",
-                          portugues: "Português",
-                          ciencias: "Ciências",
-                          historia: "História",
-                          geografia: "Geografia",
-                          ingles: "Inglês",
-                          educacaoFisica: "Educação Física",
-                          artes: "Artes",
-                          fisica: "Física",
-                          quimica: "Química",
-                          biologia: "Biologia",
-                          filosofia: "Filosofia",
-                          sociologia: "Sociologia"
-                        }[subject] || subject;
-
-                        return (
-                          <span key={index} className="badge bg-info-subtle text-info">
-                            {disciplinaLabel}
-                          </span>
                         );
                       })}
                     </div>
@@ -225,4 +223,4 @@ const SchoolInfo = () => {
   );
 };
 
-export default SchoolInfo; 
+export default SchoolInfo;
