@@ -17,6 +17,8 @@ import Breadcrumb from "../../../components/Common/Breadcrumb";
 import classnames from "classnames";
 import profileImg from "../../../assets/images/profile-img.png";
 import StudentProfile from "./StudentProfile";
+import useSchools from "../../../hooks/useSchools";
+import { useEffect } from "react";
 
 // Componentes das abas
 import SchoolInfo from "./SchoolInfo";
@@ -29,16 +31,28 @@ import Financeiro from "./Financeiro";
 const SchoolProfile = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("1");
-
-  // Dados fictícios da escola
-  const schoolData = {
-    name: "Colégio Exemplo",
-    email: "contato@colegioexemplo.com.br",
-    phone: "(79) 3241-1234",
-    whatsapp: "(79) 99999-8888",
-    logo: null,
-    // ... outros dados da escola
+  const [schoolData, setSchoolData] = useState({});
+  const [error, setError] = useState(null); // Estado para erros
+  const [loading, setLoading] = useState(true); // Estado para indicar carregamento
+  const { fetchSchoolById } = useSchools();
+  const getSchoolDetails = async (id) => {
+    try {
+      const schoolData = await fetchSchoolById(id);
+      setSchoolData(schoolData); // Armazena os dados no estado
+    } catch (err) {
+      setError("Erro ao carregar os dados da escola.");
+      console.error(err);
+    } finally {
+      setLoading(false); // Finaliza o carregamento
+    }
   };
+
+  useEffect(() => {
+    if (id) {
+      console.log("Chamando getSchoolDetails com ID:", id);
+      getSchoolDetails(id);
+    }
+  }, [id]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -71,7 +85,6 @@ const SchoolProfile = () => {
                                 <h5 className="text-primary">
                                   {schoolData.name}
                                 </h5>
-                                <p className="mb-1">{schoolData.email}</p>
                               </div>
                             </Col>
                             <Col xs="5" className="align-self-end">
@@ -106,32 +119,12 @@ const SchoolProfile = () => {
                                 <h5 className="font-size-16">
                                   {schoolData.name}
                                 </h5>
-                                <p className="text-muted mb-0">
-                                  {schoolData.email}
-                                </p>
                               </div>
                             </Col>
 
                             <Col sm="4" className="text-end pe-1">
                               <div>
                                 <div className="d-flex gap-2 justify-content-end">
-                                  <Button
-                                    color="success"
-                                    className="rounded-circle d-flex align-items-center justify-content-center"
-                                    title="WhatsApp"
-                                    style={{ width: "38px", height: "38px" }}
-                                    onClick={() => {
-                                      window.open(
-                                        `https://wa.me/55${schoolData.whatsapp.replace(
-                                          /\D/g,
-                                          ""
-                                        )}`,
-                                        "_blank"
-                                      );
-                                    }}
-                                  >
-                                    <i className="bx bxl-whatsapp font-size-16"></i>
-                                  </Button>
                                   <Button
                                     color="info"
                                     className="rounded-circle d-flex align-items-center justify-content-center"

@@ -29,7 +29,7 @@ import TableContainer from "../../components/Common/TableContainer";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import classnames from "classnames";
 import axios from "axios";
-import useFetchSchools from "../../hooks/useFetchSchools";
+import useSchools from "../../hooks/useSchools";
 
 // Adicione estes estilos CSS no topo do arquivo
 const checkboxStyle = {
@@ -49,7 +49,7 @@ const Schools = () => {
   const location = useLocation();
 
   // Usar o hook para buscar escolas
-  const { schools, loading, error } = useFetchSchools();
+  const { schools, loading, error } = useSchools();
 
   const [modal, setModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
