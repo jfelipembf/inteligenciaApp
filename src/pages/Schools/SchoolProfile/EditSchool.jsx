@@ -10,9 +10,12 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import useSchools from "../../../hooks/useSchools";
 
-const EditSchool = ({ schoolData, onCancel }) => {
+const EditSchool = ({ schoolData, onCancel, schoolId }) => {
   const [formData, setFormData] = useState(schoolData);
+  const { updateSchool, loading } = useSchools();
+
   const [newResponsible, setNewResponsible] = useState({
     name: "",
     role: "",
@@ -50,13 +53,16 @@ const EditSchool = ({ schoolData, onCancel }) => {
     }
   };
 
-  const handleAddSubject = () => {
-    if (newSubject) {
-      setFormData({
-        ...formData,
-        subjects: [...formData.subjects, newSubject],
-      });
-      setNewSubject("");
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    try {
+      await updateSchool(schoolId, formData);
+
+      alert("Escola atualizada com sucesso!");
+      onCancel(); // Fechar o formulário ou redirecionar
+    } catch (err) {
+      alert("Erro ao atualizar a escola: " + err.message);
     }
   };
 
@@ -70,7 +76,7 @@ const EditSchool = ({ schoolData, onCancel }) => {
                 <h4 className="card-title flex-grow-1 mb-0">Editar Escola</h4>
               </div>
 
-              <Form>
+              <Form onSubmit={handleSave}>
                 {/* Dados Básicos */}
                 <Row className="border-bottom pb-3 mb-4">
                   <Col lg={12}>
@@ -282,7 +288,7 @@ const EditSchool = ({ schoolData, onCancel }) => {
                       <Input
                         type="url"
                         id="website"
-                        value={formData.contactInfo.website}
+                        value={formData.contactInfo.website || ""}
                         onChange={(e) =>
                           setFormData({
                             ...formData,
@@ -374,55 +380,6 @@ const EditSchool = ({ schoolData, onCancel }) => {
                         onChange={(e) => setNewGrade(e.target.value)}
                       />
                       <Button color="primary" onClick={handleAddGrade}>
-                        Adicionar
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-
-                {/* Disciplinas */}
-                <Row className="border-bottom pb-3 mb-4">
-                  <Col lg={12}>
-                    <h5 className="font-size-15 mb-3">Disciplinas</h5>
-                  </Col>
-                  <Col lg={12}>
-                    <div className="mb-3">
-                      {Array.isArray(formData.subjects) &&
-                      formData.subjects.length > 0 ? (
-                        formData.subjects.map((subject, index) => (
-                          <span
-                            key={index}
-                            className="badge bg-primary me-2 mb-2"
-                          >
-                            {subject}
-                            <i
-                              className="mdi mdi-close ms-1"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                const updatedSubjects =
-                                  formData.subjects.filter(
-                                    (_, i) => i !== index
-                                  );
-                                setFormData({
-                                  ...formData,
-                                  subjects: updatedSubjects,
-                                });
-                              }}
-                            ></i>
-                          </span>
-                        ))
-                      ) : (
-                        <p>Nenhuma disciplina cadastrada.</p>
-                      )}
-                    </div>
-                    <div className="d-flex gap-2">
-                      <Input
-                        type="text"
-                        placeholder="Nova disciplina"
-                        value={newSubject}
-                        onChange={(e) => setNewSubject(e.target.value)}
-                      />
-                      <Button color="primary" onClick={handleAddSubject}>
                         Adicionar
                       </Button>
                     </div>
@@ -655,8 +612,8 @@ const EditSchool = ({ schoolData, onCancel }) => {
                   >
                     Cancelar
                   </Button>
-                  <Button type="submit" color="primary">
-                    Salvar Alterações
+                  <Button type="submit" color="primary" disabled={loading}>
+                    {loading ? "Salvando..." : "Salvar Alterações"}
                   </Button>
                 </div>
               </Form>

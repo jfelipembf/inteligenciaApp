@@ -14,74 +14,11 @@ const InfoItem = ({ label, value }) => (
 const SchoolInfo = ({ schoolData }) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const schoolData2 = {
-    addressInfo: {
-      address: "Av. Beira Mar",
-      number: "1500",
-      complement: "Próximo ao Shopping Riomar",
-      neighborhood: "Jardins",
-      city: "Aracaju",
-      state: "SE",
-      zipCode: "49025-040",
-    },
-    contactInfo: {
-      email: "contato@colegioexemplo.com.br",
-      phone: "(79) 3241-1234",
-      whatsapp: "(79) 99999-8888",
-      website: "www.colegioexemplo.com.br",
-    },
-    billing: {
-      bankInfo: {
-        bank: "Banco do Brasil",
-        agency: "1234-5",
-        account: "12345-6",
-      },
-      dueDay: 10,
-      paymentMethod: "Boleto Bancário",
-      pricePerStudent: "150,00",
-    },
-    segments: {
-      "Educação Infantil": true,
-      "Ensino Fundamental I": true,
-      "Ensino Fundamental II": true,
-      "Ensino Médio": true,
-    },
-    responsibles: [
-      {
-        name: "Felipe Macedo",
-        role: "Diretor",
-        email: "felipe.macedo@colegioexemplo.com.br",
-        phone: "(79) 99999-1111",
-        cpf: "123.456.789-00",
-      },
-      {
-        name: "Amanda Silva",
-        role: "Coordenadora Pedagógica",
-        email: "amanda.silva@colegioexemplo.com.br",
-        phone: "(79) 99999-2222",
-        cpf: "987.654.321-00",
-      },
-      {
-        name: "Lucas Oliveira",
-        role: "Financeiro",
-        email: "lucas.oliveira@colegioexemplo.com.br",
-        phone: "(79) 99999-3333",
-        cpf: "456.789.123-00",
-      },
-    ],
-    grades: {
-      infantil: true,
-      fundamental1: true,
-      fundamental2: true,
-      medio: true,
-    },
-    subjects: ["matematica", "portugues", "ciencias", "historia", "geografia"],
-  };
-
   if (isEditing) {
     return (
       <EditSchool
         schoolData={schoolData}
+        schoolId={schoolData.id}
         onCancel={() => setIsEditing(false)}
       />
     );

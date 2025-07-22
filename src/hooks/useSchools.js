@@ -54,12 +54,60 @@ const useSchools = () => {
     }
   };
 
+  // Função para atualizar uma escola
+  const updateSchool = async (schoolId, updatedData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const schoolRef = firebase
+        .firestore()
+        .collection("schools")
+        .doc(schoolId);
+
+      // Obter os dados atuais da escola
+      const schoolSnapshot = await schoolRef.get();
+      if (!schoolSnapshot.exists) {
+        throw new Error("Escola não encontrada");
+      }
+
+      const currentData = schoolSnapshot.data();
+
+      // Atualizar apenas os campos modificados
+      const finalData = {
+        ...currentData,
+        ...updatedData,
+        metadata: {
+          ...currentData.metadata,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        },
+      };
+
+      await schoolRef.update(finalData);
+
+      setLoading(false);
+      return { success: true };
+    } catch (err) {
+      console.error("Erro ao atualizar a escola:", err);
+      setError(err.message);
+      setLoading(false);
+      throw err;
+    }
+  };
+
   // Busca inicial de escolas ao montar o componente
   useEffect(() => {
     fetchSchools();
   }, []);
 
-  return { schools, loading, error, fetchSchools, fetchSchoolById };
+  return {
+    schools,
+    loading,
+    error,
+    fetchSchools,
+    fetchSchoolById,
+    updateSchool,
+  };
 };
 
 export default useSchools;
