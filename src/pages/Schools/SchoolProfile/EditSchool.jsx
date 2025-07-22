@@ -11,11 +11,18 @@ import {
   Button,
 } from "reactstrap";
 import useSchools from "../../../hooks/useSchools";
+import Select from "react-select";
 
 const EditSchool = ({ schoolData, onCancel, schoolId }) => {
   const [formData, setFormData] = useState(schoolData);
   const { updateSchool, loading } = useSchools();
 
+  const educationLevels = [
+    { value: "Educação Infantil", label: "Educação Infantil" },
+    { value: "Ensino Fundamental I", label: "Ensino Fundamental I" },
+    { value: "Ensino Fundamental II", label: "Ensino Fundamental II" },
+    { value: "Ensino Médio", label: "Ensino Médio" },
+  ];
   const estadosBrasileiros = [
     { value: "AC", label: "Acre (AC)" },
     { value: "AL", label: "Alagoas (AL)" },
@@ -369,48 +376,29 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
                   </Col>
                 </Row>
 
-                {/* Séries Escolares */}
+                {/* Níveis de ensino */}
                 <Row className="border-bottom pb-3 mb-4">
                   <Col lg={12}>
-                    <h5 className="font-size-15 mb-3">Séries Escolares</h5>
+                    <h5 className="font-size-15 mb-3">Níveis de Ensino</h5>
                   </Col>
                   <Col lg={12}>
-                    <div className="mb-3">
-                      {Object.entries(formData.grades || {}).map(
-                        ([grade, isActive]) => (
-                          <FormGroup check inline key={grade}>
-                            <Input
-                              type="checkbox"
-                              id={grade}
-                              checked={isActive}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  grades: {
-                                    ...(formData.grades || {}),
-                                    [grade]: e.target.checked,
-                                  },
-                                })
-                              }
-                            />
-                            <Label check for={grade}>
-                              {grade}
-                            </Label>
-                          </FormGroup>
-                        )
-                      )}
-                    </div>
-                    <div className="d-flex gap-2 mb-3">
-                      <Input
-                        type="text"
-                        placeholder="Nova série escolar"
-                        value={newGrade}
-                        onChange={(e) => setNewGrade(e.target.value)}
-                      />
-                      <Button color="primary" onClick={handleAddGrade}>
-                        Adicionar
-                      </Button>
-                    </div>
+                    <Select
+                      isMulti
+                      options={educationLevels}
+                      value={educationLevels.filter((level) =>
+                        formData.segments?.includes(level.value)
+                      )} // Mapeia os valores selecionados para o formato do Select
+                      onChange={(selectedOptions) => {
+                        const updatedSegments = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setFormData({
+                          ...formData,
+                          segments: updatedSegments, // Atualiza o array de segmentos
+                        });
+                      }}
+                      placeholder="Selecione os níveis de ensino"
+                    />
                   </Col>
                 </Row>
 

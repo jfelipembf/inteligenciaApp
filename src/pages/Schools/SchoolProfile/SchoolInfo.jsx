@@ -99,30 +99,17 @@ const SchoolInfo = ({ schoolData }) => {
               <Row>
                 <Col lg={6}>
                   <div className="border-bottom pb-3 mb-4">
-                    <h5 className="font-size-15 mb-3">Séries Escolares</h5>
+                    <h5 className="font-size-15 mb-3">Níveis de Ensino</h5>
                     <div className="d-flex flex-wrap gap-2">
-                      {schoolData.grades ? (
-                        Object.entries(schoolData.grades).map(
-                          ([key, value]) => {
-                            if (!value) return null;
-                            const serieLabel = {
-                              infantil: "Educação Infantil",
-                              fundamental1: "Ensino Fundamental I",
-                              fundamental2: "Ensino Fundamental II",
-                              medio: "Ensino Médio",
-                            }[key];
-                            return (
-                              serieLabel && (
-                                <span
-                                  key={key}
-                                  className="badge bg-primary-subtle text-primary"
-                                >
-                                  {serieLabel}
-                                </span>
-                              )
-                            );
-                          }
-                        )
+                      {schoolData.segments && schoolData.segments.length > 0 ? (
+                        schoolData.segments.map((segment, index) => (
+                          <span
+                            key={index}
+                            className="badge bg-primary-subtle text-primary"
+                          >
+                            {segment}
+                          </span>
+                        ))
                       ) : (
                         <p>Nenhuma série cadastrada.</p>
                       )}
