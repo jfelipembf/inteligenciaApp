@@ -16,6 +16,35 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
   const [formData, setFormData] = useState(schoolData);
   const { updateSchool, loading } = useSchools();
 
+  const estadosBrasileiros = [
+    { value: "AC", label: "Acre (AC)" },
+    { value: "AL", label: "Alagoas (AL)" },
+    { value: "AP", label: "Amapá (AP)" },
+    { value: "AM", label: "Amazonas (AM)" },
+    { value: "BA", label: "Bahia (BA)" },
+    { value: "CE", label: "Ceará (CE)" },
+    { value: "DF", label: "Distrito Federal (DF)" },
+    { value: "ES", label: "Espírito Santo (ES)" },
+    { value: "GO", label: "Goiás (GO)" },
+    { value: "MA", label: "Maranhão (MA)" },
+    { value: "MT", label: "Mato Grosso (MT)" },
+    { value: "MS", label: "Mato Grosso do Sul (MS)" },
+    { value: "MG", label: "Minas Gerais (MG)" },
+    { value: "PA", label: "Pará (PA)" },
+    { value: "PB", label: "Paraíba (PB)" },
+    { value: "PR", label: "Paraná (PR)" },
+    { value: "PE", label: "Pernambuco (PE)" },
+    { value: "PI", label: "Piauí (PI)" },
+    { value: "RJ", label: "Rio de Janeiro (RJ)" },
+    { value: "RN", label: "Rio Grande do Norte (RN)" },
+    { value: "RS", label: "Rio Grande do Sul (RS)" },
+    { value: "RO", label: "Rondônia (RO)" },
+    { value: "RR", label: "Roraima (RR)" },
+    { value: "SC", label: "Santa Catarina (SC)" },
+    { value: "SP", label: "São Paulo (SP)" },
+    { value: "SE", label: "Sergipe (SE)" },
+    { value: "TO", label: "Tocantins (TO)" },
+  ];
   const [newResponsible, setNewResponsible] = useState({
     name: "",
     role: "",
@@ -228,12 +257,11 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
                         }
                       >
                         <option value="">Selecione</option>
-                        <option value="AC">AC</option>
-                        <option value="AL">AL</option>
-                        {/* ... outros estados ... */}
-                        <option value="SE">SE</option>
-                        <option value="SP">SP</option>
-                        <option value="TO">TO</option>
+                        {estadosBrasileiros.map((estado) => (
+                          <option key={estado.value} value={estado.value}>
+                            {estado.label}
+                          </option>
+                        ))}
                       </Input>
                     </FormGroup>
                   </Col>
