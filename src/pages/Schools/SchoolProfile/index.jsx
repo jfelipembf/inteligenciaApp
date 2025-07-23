@@ -34,7 +34,25 @@ const SchoolProfile = () => {
   const [schoolData, setSchoolData] = useState({});
   const [error, setError] = useState(null); // Estado para erros
   const [loading, setLoading] = useState(true); // Estado para indicar carregamento
-  const { fetchSchoolById } = useSchools();
+  const { fetchSchoolById, fetchSchoolLogo } = useSchools();
+  const [logoUrl, setLogoUrl] = useState(null);
+  const [loadingLogo, setLoadingLogo] = useState(true);
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      try {
+        const url = await fetchSchoolLogo(id);
+        setLogoUrl(url);
+      } catch (err) {
+        console.error("Erro ao carregar a logo:", err);
+      } finally {
+        setLoadingLogo(false);
+      }
+    };
+
+    loadLogo();
+  }, [id, fetchSchoolLogo]);
+
   const getSchoolDetails = async (id) => {
     try {
       const schoolData = await fetchSchoolById(id);
@@ -59,6 +77,13 @@ const SchoolProfile = () => {
       setActiveTab(tab);
     }
   };
+
+  if (loadingLogo) {
+    return <p>Carregando logo...</p>;
+  }
+  if (loading) {
+    return <p>Carregando dados da escola...</p>;
+  }
 
   return (
     <React.Fragment>
@@ -100,9 +125,9 @@ const SchoolProfile = () => {
                           <Row className="align-items-center">
                             <Col sm="2">
                               <div className="avatar-xl profile-user-wid mb-4">
-                                {schoolData.logo ? (
+                                {logoUrl ? (
                                   <img
-                                    src={schoolData.logo}
+                                    src={logoUrl}
                                     alt=""
                                     className="img-thumbnail rounded-circle"
                                   />

@@ -202,6 +202,13 @@ const Schools = () => {
                         </Button>
                       </div>
                     )}
+                    <Button
+                      color="success"
+                      size="sm"
+                      onClick={() => navigate("/schools/create")}
+                    >
+                      <i className="bx bx-plus-circle me-1"></i> Nova Escola
+                    </Button>
                   </div>
                   <TableContainer
                     columns={columns}

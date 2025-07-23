@@ -135,14 +135,15 @@ const useSchools = () => {
 
   const CACHE_EXPIRATION = 1000 * 60 * 60 * 24 * 7; // 7 dias
 
-  const fetchSchoolLogo = async (schoolId, logoName) => {
-    if (!schoolId || !logoName) {
-      throw new Error("schoolId ou logoName não fornecido.");
+  const fetchSchoolLogo = async (schoolId) => {
+    if (!schoolId) {
+      throw new Error("schoolId não fornecido.");
     }
 
-    const cacheKey = `school_logo_${schoolId}_${logoName}`;
+    const cacheKey = `school_logo_${schoolId}`;
     const cached = localStorage.getItem(cacheKey);
 
+    // Verifica se há um cache válido
     if (cached) {
       try {
         const { url, timestamp } = JSON.parse(cached);
@@ -155,6 +156,27 @@ const useSchools = () => {
     }
 
     try {
+      // Busca o documento da escola no Firestore
+      const schoolDoc = await firebase
+        .firestore()
+        .collection("schools")
+        .doc(schoolId)
+        .get();
+
+      if (!schoolDoc.exists) {
+        console.warn("Escola não encontrada.");
+        return null; // Retorna null se a escola não existir
+      }
+
+      const schoolData = schoolDoc.data();
+      const logoName = schoolData.logo; // Obtém o nome do logo do campo `logo`
+
+      if (!logoName) {
+        console.warn("Logo não encontrado para esta escola.");
+        return null; // Retorna null se o campo `logo` não existir ou estiver vazio
+      }
+
+      // Busca a URL do logo no Firebase Storage
       const ref = firebase.storage().ref(`${schoolId}/logos/${logoName}`);
       const url = await ref.getDownloadURL();
 
@@ -167,10 +189,9 @@ const useSchools = () => {
       return url;
     } catch (err) {
       console.error("Erro ao buscar a logo da escola:", err);
-      throw err;
+      return null; // Retorna null em caso de erro
     }
   };
-
   // Busca inicial de escolas ao montar o componente
   useEffect(() => {
     fetchSchools();
@@ -182,6 +203,7 @@ const useSchools = () => {
     error,
     fetchSchools,
     fetchSchoolById,
+    fetchSchoolLogo,
     createSchool,
     updateSchoolLogo,
     updateSchool,
