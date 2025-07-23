@@ -209,15 +209,22 @@ const CreateSchool = () => {
                   <Col md={6}>
                     <FormGroup>
                       <Label for="cnpj">CNPJ</Label>
-                      <Input
-                        type="text"
+                      <InputMask
+                        mask="99.999.999/9999-99"
                         id="cnpj"
                         value={formData.cnpj}
                         onChange={(e) =>
                           setFormData({ ...formData, cnpj: e.target.value })
                         }
-                        invalid={!!errors.cnpj}
-                      />
+                      >
+                        {(inputProps) => (
+                          <Input
+                            {...inputProps}
+                            type="text"
+                            invalid={!!errors.cnpj}
+                          />
+                        )}
+                      </InputMask>
                       {errors.cnpj && (
                         <div className="text-danger">{errors.cnpj}</div>
                       )}
