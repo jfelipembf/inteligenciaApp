@@ -200,6 +200,7 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/index";
 import UiProgressbar from "../pages/Ui/UiProgressbar";
 
 import Schools from "../pages/Schools/index";
+import CreateSchool from "../pages/Schools/CreateSchool";
 import SchoolProfile from "../pages/Schools/SchoolProfile";
 import Students from "../pages/Students/index";
 import StudentProfile from "../pages/Students/StudentProfile/index";
@@ -612,7 +613,7 @@ const authProtectedRoutes = [
 
   // Rotas de Escolas
   { path: "/schools", component: <Schools /> }, // Lista de Escolas
-  { path: "/schools/new", component: <Schools /> }, // Nova Escola
+  { path: "/schools/create", component: <CreateSchool /> }, // Nova Escola
   { path: "/schools/:id/*", component: <SchoolProfile /> },
 
   //Rotas de Atividades

@@ -95,6 +95,31 @@ const useSchools = () => {
     }
   };
 
+  // Função para criar uma nova escola
+  const createSchool = async (schoolData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const schoolRef = firebase.firestore().collection("schools");
+      const newSchool = {
+        ...schoolData,
+        metadata: {
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        },
+      };
+
+      const docRef = await schoolRef.add(newSchool);
+      setLoading(false);
+      return { success: true, id: docRef.id };
+    } catch (err) {
+      console.error("Erro ao criar escola:", err);
+      setError(err.message);
+      setLoading(false);
+      throw err;
+    }
+  };
+
   // Busca inicial de escolas ao montar o componente
   useEffect(() => {
     fetchSchools();
@@ -106,6 +131,8 @@ const useSchools = () => {
     error,
     fetchSchools,
     fetchSchoolById,
+    createSchool,
+
     updateSchool,
   };
 };
