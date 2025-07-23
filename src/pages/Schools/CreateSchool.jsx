@@ -15,12 +15,15 @@ import { useNavigate } from "react-router-dom";
 import useSchools from "../../hooks/useSchools";
 import axios from "axios";
 import InputMask from "react-input-mask";
+import uploadToFirebase from "../../utils/uploadToFirebase";
 
 const CreateSchool = () => {
   const navigate = useNavigate();
 
-  const { createSchool, loading } = useSchools();
+  const { createSchool, updateSchoolLogo, loading } = useSchools();
   const [errors, setErrors] = useState({});
+  const [profileImage, setProfileImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -166,11 +169,26 @@ const CreateSchool = () => {
     }
 
     try {
-      const result = await createSchool(formData);
+      const schoolData = { ...formData, logo: "" };
+      const result = await createSchool(schoolData);
+      const schoolId = result.id;
+
+      // Faz o upload da imagem, se houver uma imagem selecionada
+      if (profileImage) {
+        setUploading(true);
+        await uploadToFirebase(profileImage, "logos", schoolId);
+        setUploading(false);
+
+        const filename = profileImage.name;
+
+        await updateSchoolLogo(schoolId, filename);
+      }
+
       alert(`Escola criada com sucesso!`);
       navigate("/schools"); // Redireciona para a lista de escolas
     } catch (err) {
       alert(`Erro ao criar escola: ${err.message}`);
+      setUploading(false);
     }
   };
   return (
@@ -184,6 +202,69 @@ const CreateSchool = () => {
               </div>
 
               <Form onSubmit={handleSubmit}>
+                {/* Logo da escola */}
+                <Row className="border-bottom pb-3 mb-4">
+                  <Col lg={12}>
+                    <h5 className="font-size-15 mb-3">Logo da Escola</h5>
+                  </Col>
+                  <Col lg={12}>
+                    <div className="text-center">
+                      <div
+                        className="border rounded-circle p-4"
+                        style={{
+                          width: "200px",
+                          height: "200px",
+                          margin: "0 auto",
+                          backgroundColor: "#f8f9fa",
+                          position: "relative",
+                          borderRadius: "50%", // Torna o contêiner circular
+                          overflow: "hidden", // Garante que a imagem não ultrapasse os limites do círculo
+                        }}
+                      >
+                        {profileImage ? (
+                          <img
+                            src={URL.createObjectURL(profileImage)}
+                            alt="Preview"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <div>
+                            <i className="bx bx-image-alt text-muted display-4"></i>
+                            <p className="mt-2 text-muted">
+                              Tamanho recomendado: 200x200px
+                            </p>
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setProfileImage(file);
+                            }
+                          }}
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            opacity: 0,
+                            cursor: "pointer",
+                          }}
+                        />
+                      </div>
+                      {uploading && (
+                        <p className="text-muted mt-2">Enviando imagem...</p>
+                      )}
+                    </div>
+                  </Col>
+                </Row>
                 {/* Dados Básicos */}
                 <Row className="border-bottom pb-3 mb-4">
                   <Col lg={12}>

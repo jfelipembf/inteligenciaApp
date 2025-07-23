@@ -120,6 +120,57 @@ const useSchools = () => {
     }
   };
 
+  const updateSchoolLogo = async (schoolId, imageUrl) => {
+    try {
+      const schoolRef = firebase
+        .firestore()
+        .collection("schools")
+        .doc(schoolId);
+      await schoolRef.update({ logo: imageUrl });
+    } catch (err) {
+      console.error("Erro ao atualizar o logo da escola:", err);
+      throw err;
+    }
+  };
+
+  const CACHE_EXPIRATION = 1000 * 60 * 60 * 24 * 7; // 7 dias
+
+  const fetchSchoolLogo = async (schoolId, logoName) => {
+    if (!schoolId || !logoName) {
+      throw new Error("schoolId ou logoName não fornecido.");
+    }
+
+    const cacheKey = `school_logo_${schoolId}_${logoName}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+      try {
+        const { url, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_EXPIRATION) {
+          return url; // Retorna a URL do cache se ainda for válida
+        }
+      } catch {
+        // Se o cache estiver corrompido, ignora e continua
+      }
+    }
+
+    try {
+      const ref = firebase.storage().ref(`${schoolId}/logos/${logoName}`);
+      const url = await ref.getDownloadURL();
+
+      // Armazena a URL no cache
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({ url, timestamp: Date.now() })
+      );
+
+      return url;
+    } catch (err) {
+      console.error("Erro ao buscar a logo da escola:", err);
+      throw err;
+    }
+  };
+
   // Busca inicial de escolas ao montar o componente
   useEffect(() => {
     fetchSchools();
@@ -132,7 +183,7 @@ const useSchools = () => {
     fetchSchools,
     fetchSchoolById,
     createSchool,
-
+    updateSchoolLogo,
     updateSchool,
   };
 };
