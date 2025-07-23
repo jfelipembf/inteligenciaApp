@@ -167,7 +167,7 @@ const CreateSchool = () => {
 
     try {
       const result = await createSchool(formData);
-      alert(`Escola criada com sucesso! ID: ${result.id}`);
+      alert(`Escola criada com sucesso!`);
       navigate("/schools"); // Redireciona para a lista de escolas
     } catch (err) {
       alert(`Erro ao criar escola: ${err.message}`);
