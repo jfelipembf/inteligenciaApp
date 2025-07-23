@@ -34,8 +34,26 @@ const Home = () => {
     { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
   ];
 
+  const masterLinks = [
+    { to: "/schools", icon: "bx bx-building", label: "Escolas" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
+  ];
+
   const filteredLinks =
-    userDetails?.role === "professor"
+    userDetails?.role === "master"
+      ? masterLinks
+      : userDetails?.role === "professor"
       ? (() => {
           // Remove "Coordenadores" e "Professores"
           const base = quickLinks.filter(

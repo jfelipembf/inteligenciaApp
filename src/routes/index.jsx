@@ -612,9 +612,30 @@ const authProtectedRoutes = [
   { path: "/classes", component: <ListClasses /> },
 
   // Rotas de Escolas
-  { path: "/schools", component: <Schools /> }, // Lista de Escolas
-  { path: "/schools/create", component: <CreateSchool /> }, // Nova Escola
-  { path: "/schools/:id/*", component: <SchoolProfile /> },
+  {
+    path: "/schools",
+    component: (
+      <RoleProtectedRoute allowedRoles={["master"]}>
+        <Schools />
+      </RoleProtectedRoute>
+    ),
+  }, // Lista de Escolas
+  {
+    path: "/schools/create",
+    component: (
+      <RoleProtectedRoute allowedRoles={["master"]}>
+        <CreateSchool />
+      </RoleProtectedRoute>
+    ),
+  }, // Nova Escola
+  {
+    path: "/schools/:id/*",
+    component: (
+      <RoleProtectedRoute allowedRoles={["master"]}>
+        <SchoolProfile />
+      </RoleProtectedRoute>
+    ),
+  },
 
   //Rotas de Atividades
   {
