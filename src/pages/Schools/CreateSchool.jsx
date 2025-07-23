@@ -20,6 +20,7 @@ const CreateSchool = () => {
   const navigate = useNavigate();
 
   const { createSchool, loading } = useSchools();
+  const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
     name: "",
@@ -132,13 +133,36 @@ const CreateSchool = () => {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validação dos campos obrigatórios
+    if (!formData.name.trim()) newErrors.name = "Nome da escola é obrigatório.";
+    if (!formData.cnpj.trim()) newErrors.cnpj = "CNPJ é obrigatório.";
+    if (!formData.addressInfo.zipCode.trim())
+      newErrors.zipCode = "CEP é obrigatório.";
+    if (!formData.addressInfo.address.trim())
+      newErrors.address = "Rua é obrigatória.";
+    if (!formData.addressInfo.city.trim())
+      newErrors.city = "Cidade é obrigatória.";
+    if (!formData.addressInfo.neighborhood.trim())
+      newErrors.neighborhood = "Bairro é obrigatório.";
+    if (!formData.addressInfo.number.trim())
+      newErrors.number = "Número é obrigatório.";
+    if (!formData.addressInfo.state.trim())
+      newErrors.state = "Estado é obrigatório.";
+    if (!formData.contactInfo.email.trim())
+      newErrors.email = "Email é obrigatório.";
+
+    setErrors(newErrors); // Atualiza o estado de erros
+    return Object.keys(newErrors).length === 0; // Retorna true se não houver erros
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação básica
-    if (!formData.name || !formData.cnpj) {
-      alert("Por favor, preencha os campos obrigatórios: Nome e CNPJ.");
-      return;
+    if (!validateForm()) {
+      return; // Interrompe o envio se houver erros
     }
 
     try {
@@ -149,7 +173,6 @@ const CreateSchool = () => {
       alert(`Erro ao criar escola: ${err.message}`);
     }
   };
-
   return (
     <React.Fragment>
       <Row>
@@ -176,7 +199,11 @@ const CreateSchool = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
                         }
+                        invalid={!!errors.name}
                       />
+                      {errors.name && (
+                        <div className="text-danger">{errors.name}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={6}>
@@ -189,7 +216,11 @@ const CreateSchool = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, cnpj: e.target.value })
                         }
+                        invalid={!!errors.cnpj}
                       />
+                      {errors.cnpj && (
+                        <div className="text-danger">{errors.cnpj}</div>
+                      )}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -208,8 +239,17 @@ const CreateSchool = () => {
                         value={formData.addressInfo.zipCode}
                         onChange={handleCepChange}
                       >
-                        {(inputProps) => <Input {...inputProps} type="text" />}
+                        {(inputProps) => (
+                          <Input
+                            {...inputProps}
+                            type="text"
+                            invalid={!!errors.zipCode}
+                          />
+                        )}
                       </InputMask>
+                      {errors.zipCode && (
+                        <div className="text-danger">{errors.zipCode}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={2}>
@@ -251,7 +291,11 @@ const CreateSchool = () => {
                             },
                           })
                         }
+                        invalid={!!errors.city}
                       />
+                      {errors.city && (
+                        <div className="text-danger">{errors.city}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={4}>
@@ -270,7 +314,11 @@ const CreateSchool = () => {
                             },
                           })
                         }
+                        invalid={!!errors.neighborhood}
                       />
+                      {errors.neighborhood && (
+                        <div className="text-danger">{errors.neighborhood}</div>
+                      )}
                     </FormGroup>
                   </Col>
 
@@ -290,7 +338,11 @@ const CreateSchool = () => {
                             },
                           })
                         }
+                        invalid={!!errors.address}
                       />
+                      {errors.address && (
+                        <div className="text-danger">{errors.address}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={2}>
@@ -309,7 +361,11 @@ const CreateSchool = () => {
                             },
                           })
                         }
+                        invalid={!!errors.number}
                       />
+                      {errors.number && (
+                        <div className="text-danger">{errors.number}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={4}>
@@ -354,7 +410,11 @@ const CreateSchool = () => {
                             },
                           })
                         }
+                        invalid={!!errors.email}
                       />
+                      {errors.email && (
+                        <div className="text-danger">{errors.email}</div>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md={6}>
@@ -568,7 +628,7 @@ const CreateSchool = () => {
                     type="button"
                     color="secondary"
                     className="me-2"
-                    //onClick={navigate(-1)}
+                    onClick={() => navigate("/schools")}
                   >
                     Cancelar
                   </Button>
