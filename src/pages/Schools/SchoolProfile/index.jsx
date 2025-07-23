@@ -156,7 +156,7 @@ const SchoolProfile = () => {
                                     title="Email"
                                     style={{ width: "38px", height: "38px" }}
                                     onClick={() => {
-                                      window.location.href = `mailto:${schoolData.email}`;
+                                      window.location.href = `mailto:${schoolData.contactInfo.email}`;
                                     }}
                                   >
                                     <i className="bx bx-envelope font-size-16"></i>
