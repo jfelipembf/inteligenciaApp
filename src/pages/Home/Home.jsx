@@ -50,9 +50,29 @@ const Home = () => {
     { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
   ];
 
+  const newUserLinks = [
+    { to: "/create", icon: "bx bx-user", label: "Inserir Dados" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "", icon: "", label: "" },
+    { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
+  ];
+ 
+  const isNameMissing = !userDetails?.personalInfo?.name;
+
   const filteredLinks =
     userDetails?.role === "master"
       ? masterLinks
+      : isNameMissing
+      ? newUserLinks
       : userDetails?.role === "professor"
       ? (() => {
           // Remove "Coordenadores" e "Professores"
