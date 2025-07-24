@@ -32,7 +32,7 @@ const PinkSidebar = (props) => {
   else if (userDetails?.role === "coordinator")
     dashboardTo = "/dashboard-coordenador";
 
-  const isNameMissing = !userDetails?.personalInfo?.name;
+  const isCPFMissing = !userDetails?.personalInfo?.cpf;
 
   return (
     <>
@@ -73,7 +73,7 @@ const PinkSidebar = (props) => {
               <span>Sair</span>
             </button>
           </>
-        ) : isNameMissing ? (
+        ) : isCPFMissing ? (
           <>
             {/* Renderizar apenas "Inserir Dados" se o nome estiver ausente */}
             <NavLink to="/create" className="sidebar-btn-no-bg" end>

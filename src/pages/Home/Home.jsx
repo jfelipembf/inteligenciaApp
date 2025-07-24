@@ -65,13 +65,13 @@ const Home = () => {
     { to: "", icon: "", label: "" },
     { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
   ];
- 
-  const isNameMissing = !userDetails?.personalInfo?.name;
+
+  const isCPFMissing = !userDetails?.personalInfo?.cpf;
 
   const filteredLinks =
     userDetails?.role === "master"
       ? masterLinks
-      : isNameMissing
+      : isCPFMissing
       ? newUserLinks
       : userDetails?.role === "professor"
       ? (() => {

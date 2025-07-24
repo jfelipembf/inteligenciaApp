@@ -35,7 +35,7 @@ const useColaborator = () => {
       await userRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        personalInfo: { email }, // Dados pessoais vazios
+        personalInfo: { names: "Novo Colaborador", email }, // Dados pessoais vazios
         professionalInfo: {}, // Dados profissionais vazios
         address: {}, // Endereço vazio
         role, // Papel do usuário (padrão: "user")
