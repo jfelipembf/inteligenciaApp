@@ -19,6 +19,7 @@ import profileImg from "../../../assets/images/profile-img.png";
 import StudentProfile from "./StudentProfile";
 import useSchools from "../../../hooks/useSchools";
 import { useEffect } from "react";
+import uploadToFirebase from "../../../utils/uploadToFirebase";
 
 // Componentes das abas
 import SchoolInfo from "./SchoolInfo";
@@ -32,11 +33,10 @@ const SchoolProfile = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("1");
   const [schoolData, setSchoolData] = useState({});
-  const [error, setError] = useState(null); // Estado para erros
-  const [loading, setLoading] = useState(true); // Estado para indicar carregamento
-  const { fetchSchoolById, fetchSchoolLogo } = useSchools();
   const [logoUrl, setLogoUrl] = useState(null);
-  const [loadingLogo, setLoadingLogo] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const { fetchSchoolById, fetchSchoolLogo, updateSchoolLogo } = useSchools();
 
   useEffect(() => {
     const loadLogo = async () => {
@@ -45,8 +45,6 @@ const SchoolProfile = () => {
         setLogoUrl(url);
       } catch (err) {
         console.error("Erro ao carregar a logo:", err);
-      } finally {
-        setLoadingLogo(false);
       }
     };
 
@@ -56,21 +54,52 @@ const SchoolProfile = () => {
   const getSchoolDetails = async (id) => {
     try {
       const schoolData = await fetchSchoolById(id);
-      setSchoolData(schoolData); // Armazena os dados no estado
+      setSchoolData(schoolData);
     } catch (err) {
-      setError("Erro ao carregar os dados da escola.");
-      console.error(err);
-    } finally {
-      setLoading(false); // Finaliza o carregamento
+      console.error("Erro ao carregar os dados da escola:", err);
     }
   };
 
   useEffect(() => {
     if (id) {
-      console.log("Chamando getSchoolDetails com ID:", id);
       getSchoolDetails(id);
     }
   }, [id]);
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      setUploading(true);
+
+      // Envia a imagem para o Firebase Storage
+      await uploadToFirebase(file, "logos", id);
+
+      // Atualiza o campo `logo` no Firestore
+      await updateSchoolLogo(id, file.name);
+
+      // Atualiza a URL da logo no estado local e no cache
+      const url = await fetchSchoolLogo(id);
+
+      // Atualiza o cache no localStorage
+      const cacheKey = `school_logo_${id}`;
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({ url, timestamp: Date.now() })
+      );
+
+      // Atualiza o estado local com a nova URL
+      setLogoUrl(url);
+
+      alert("Logo atualizada com sucesso!");
+    } catch (err) {
+      console.error("Erro ao atualizar a logo:", err);
+      alert("Erro ao atualizar a logo.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -78,19 +107,11 @@ const SchoolProfile = () => {
     }
   };
 
-  if (loadingLogo) {
-    return <p>Carregando logo...</p>;
-  }
-  if (loading) {
-    return <p>Carregando dados da escola...</p>;
-  }
-
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           <Routes>
-            <Route path="/students/:id" element={<StudentProfile />} />
             <Route
               path="/"
               element={
@@ -124,21 +145,82 @@ const SchoolProfile = () => {
                         <CardBody className="pt-0">
                           <Row className="align-items-center">
                             <Col sm="2">
-                              <div className="avatar-xl profile-user-wid mb-4">
+                              <div
+                                className="avatar-xl profile-user-wid mb-4 position-relative"
+                                onMouseEnter={() => setHovered(true)}
+                                onMouseLeave={() => setHovered(false)}
+                                style={{
+                                  width: "120px",
+                                  height: "120px",
+                                  borderRadius: "50%",
+                                  overflow: "hidden",
+                                  position: "relative",
+                                  backgroundColor: "#f8f9fa",
+                                }}
+                              >
                                 {logoUrl ? (
                                   <img
                                     src={logoUrl}
-                                    alt=""
-                                    className="img-thumbnail rounded-circle"
+                                    alt="Logo da Escola"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
                                   />
                                 ) : (
-                                  <div className="avatar-xl rounded-circle bg-light d-flex align-items-center justify-content-center">
+                                  <div
+                                    className="d-flex align-items-center justify-content-center"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      backgroundColor: "#e9ecef",
+                                    }}
+                                  >
                                     <i className="bx bx-camera font-size-24 text-body"></i>
                                   </div>
                                 )}
+                                {hovered && (
+                                  <div
+                                    className="position-absolute"
+                                    style={{
+                                      bottom: "10px",
+                                      right: "10px",
+                                      backgroundColor: "#556ee6",
+                                      borderRadius: "50%",
+                                      width: "32px",
+                                      height: "32px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() =>
+                                      document
+                                        .getElementById("logo-upload-input")
+                                        .click()
+                                    }
+                                  >
+                                    <i
+                                      className="bx bx-pencil text-white"
+                                      style={{ fontSize: "18px" }}
+                                    ></i>
+                                  </div>
+                                )}
+                                <input
+                                  type="file"
+                                  id="logo-upload-input"
+                                  accept="image/*"
+                                  onChange={handleLogoUpload}
+                                  style={{ display: "none" }}
+                                />
                               </div>
+                              {uploading && (
+                                <p className="text-muted mt-2">
+                                  Enviando logo...
+                                </p>
+                              )}
                             </Col>
-
                             <Col sm="6" className="ms-n12 ps-0">
                               <div style={{ marginLeft: "-40px" }}>
                                 <h5 className="font-size-16">
