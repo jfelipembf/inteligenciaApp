@@ -20,6 +20,53 @@ const useColaborator = () => {
         throw new Error("schoolId do usuário atual não encontrado.");
       }
 
+      // Verificar se já existe um usuário com o email fornecido
+      const existingUserQuery = await firebase
+        .firestore()
+        .collection("users")
+        .where("personalInfo.email", "==", email)
+        .get();
+
+      if (!existingUserQuery.empty) {
+        // Usuário já existe
+        const existingUserDoc = existingUserQuery.docs[0];
+        const existingUserData = existingUserDoc.data();
+
+        // Verificar se a schoolId já existe no campo schools
+        const existingSchools = existingUserData.schools || [];
+        const schoolExists = existingSchools.some(
+          (school) =>
+            school.schoolId === currentUserSchoolId && school.role === role
+        );
+
+        if (!schoolExists) {
+          // Adicionar a nova schoolId e role ao campo schools
+          const updatedSchools = [
+            ...existingSchools,
+            { schoolId: currentUserSchoolId, role },
+          ];
+
+          const userRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(existingUserDoc.id);
+          await userRef.update({
+            schools: updatedSchools,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+
+          return {
+            success: true,
+            message: "Usuário atualizado com a nova escola/role!",
+          };
+        } else {
+          return {
+            success: true,
+            message: "Usuário já possui acesso com essa escola e role.",
+          };
+        }
+      }
+
       // Gerar uma senha automática
       const generatedPassword = Math.random().toString(36).slice(-8);
 
@@ -38,8 +85,14 @@ const useColaborator = () => {
         personalInfo: { names: "Novo Colaborador", email }, // Dados pessoais vazios
         professionalInfo: {}, // Dados profissionais vazios
         address: {}, // Endereço vazio
-        role, // Papel do usuário (padrão: "user")
+        role, // Papel do usuário
         schoolId: currentUserSchoolId,
+        schools: [
+          {
+            schoolId: currentUserSchoolId,
+            role,
+          },
+        ],
       });
 
       // Enviar e-mail para redefinir a senha

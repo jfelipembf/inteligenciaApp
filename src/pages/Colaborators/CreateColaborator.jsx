@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button, Input, FormGroup, Label, Form } from "reactstrap";
+import {
+  Button,
+  Input,
+  FormGroup,
+  Label,
+  Form,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
+import { useNavigate } from "react-router-dom"; // Importar o hook useNavigate
 import useColaborator from "../../hooks/useColaborator";
 import useUser from "../../hooks/useUser"; // Hook para obter o usuário logado
 
@@ -11,6 +22,8 @@ const CreateColaborator = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [availableRoles, setAvailableRoles] = useState([]); // Roles permitidas
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para o modal de confirmação
+  const navigate = useNavigate();
 
   // Mapeamento de roles (exibido em português -> salvo em inglês)
   const roleMapping = {
@@ -30,21 +43,35 @@ const CreateColaborator = () => {
     }
   }, [userDetails]);
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
 
     if (!role) {
       setMessage("Por favor, selecione uma role.");
-      setLoading(false);
       return;
     }
+
+    // Exibir o modal de confirmação
+    toggleModal();
+  };
+
+  const handleConfirm = async () => {
+    setLoading(true);
+    setMessage("");
+    toggleModal(); // Fechar o modal
 
     const result = await createAccountWithEmail(email, role); // Passar a role (em inglês) para a função de criação
 
     setMessage(result.message);
     setLoading(false);
+
+    if (result.success) {
+      navigate("/colaborators"); 
+    }
   };
 
   return (
@@ -83,6 +110,23 @@ const CreateColaborator = () => {
         </Button>
       </Form>
       {message && <p>{message}</p>}
+
+      {/* Modal de Confirmação */}
+      <Modal isOpen={isModalOpen} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Confirmação</ModalHeader>
+        <ModalBody>
+          Você tem certeza de que deseja adicionar o usuário com o email{" "}
+          <strong>{email}</strong> como <strong>{roleMapping[role]}</strong>?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleConfirm} disabled={loading}>
+            {loading ? "Processando..." : "Sim, confirmar"}
+          </Button>
+          <Button color="secondary" onClick={toggleModal}>
+            Cancelar
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
