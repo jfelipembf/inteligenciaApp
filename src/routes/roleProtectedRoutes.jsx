@@ -13,6 +13,10 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
     return <Navigate to="/login" />;
   }
 
+  if (!userDetails.personalInfo.name) {
+    return <Navigate to="/create" />;
+  }
+
   if (userDetails.role === "aluno") {
     return <Navigate to="/unauthorized" />;
   }

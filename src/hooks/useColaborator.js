@@ -33,10 +33,9 @@ const useColaborator = () => {
       // Criar um objeto vazio na coleção "users" no Firestore
       const userRef = firebase.firestore().collection("users").doc(userId);
       await userRef.set({
-        email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        personalInfo: {}, // Dados pessoais vazios
+        personalInfo: { email }, // Dados pessoais vazios
         professionalInfo: {}, // Dados profissionais vazios
         address: {}, // Endereço vazio
         role, // Papel do usuário (padrão: "user")
