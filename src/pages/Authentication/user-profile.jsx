@@ -36,6 +36,7 @@ import PersonCircle from "react-bootstrap-icons/dist/icons/person-circle";
 import useUser from "../../hooks/useUser";
 import { format, parseISO } from "date-fns";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
+import ImageUploader from "../../components/Common/ImageUploader";
 
 const UserProfile = () => {
   document.title = "Perfil";
@@ -46,6 +47,7 @@ const UserProfile = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+
   const [editForm, setEditForm] = useState({
     name: "",
     cpf: "",
@@ -61,6 +63,8 @@ const UserProfile = () => {
     state: "",
     cep: "",
     country: "",
+    registration: "",
+    profileImage: null,
   });
 
   const {
@@ -130,6 +134,7 @@ const UserProfile = () => {
         rg: userData.personalInfo?.rg || "",
         birthDate: userData.personalInfo?.birthDate || "",
         specialization: userData.professionalInfo?.specialization || "",
+        registration: userData.professionalInfo?.registration || "",
         gender: userData.personalInfo?.gender || "",
         street: userData.address?.street || "",
         number: userData.address?.number || "",
@@ -204,10 +209,14 @@ const UserProfile = () => {
         professionalInfo: {
           ...userData.professionalInfo,
           specialization: editForm.specialization,
+          registration: editForm.registration,
         },
       };
 
-      const success = await updateUserProfile(updateData);
+      const success = await updateUserProfile(
+        updateData,
+        editForm.profileImage
+      );
       if (success) {
         setIsEditing(false);
         setUserData((prev) => ({
@@ -282,16 +291,16 @@ const UserProfile = () => {
                   <Row>
                     <Col sm="4">
                       <div
-                        className="avatar-md profile-user-wid mb-4 bg-primary-subtle"
+                        className="avatar-md profile-user-wid mb-4 bg-primary-subtle position-relative"
                         style={{
                           width: "75px",
                           height: "75px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-
                           borderRadius: "50%",
                           border: "1px solid #dee2e6",
+                          overflow: "hidden",
                         }}
                       >
                         {avatarUrl ? (
@@ -306,10 +315,35 @@ const UserProfile = () => {
                             }}
                           />
                         ) : (
-                          // Ícone padrão de avatar
                           <PersonCircle size={75} color="#f7f7fa" />
                         )}
+
+                        {/* Mostrar o overlay com o lápis apenas no modo de edição */}
+                        {isEditing && (
+                          <div className="d-flex align-items-center">
+                            <ImageUploader
+                              image={editForm.profileImage}
+                              onImageChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setEditForm((prev) => ({
+                                    ...prev,
+                                    profileImage: file,
+                                  }));
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
+                      {isEditing && (
+                        <p className="text-muted mb-3 text-truncate">
+                          Clique no ícone para mudar sua imagem
+                        </p>
+                      )}
+
+                      {/* Input de upload de imagem */}
+
                       <h5 className="font-size-15 text-truncate">
                         {userData.personalInfo?.name || "N/A"}
                       </h5>
@@ -387,7 +421,8 @@ const UserProfile = () => {
                                   ? editForm.cpf
                                   : userData.personalInfo?.cpf || ""
                               }
-                              disabled={true}
+                              onChange={handleInputChange}
+                              disabled={!isEditing}
                             />
                           </div>
                         </Col>
@@ -402,7 +437,8 @@ const UserProfile = () => {
                                   ? editForm.rg
                                   : userData.personalInfo?.rg || ""
                               }
-                              disabled={true}
+                              onChange={handleInputChange}
+                              disabled={!isEditing}
                             />
                           </div>
                         </Col>
@@ -509,7 +545,8 @@ const UserProfile = () => {
                                       : userData.professionalInfo
                                           ?.registration || ""
                                   }
-                                  disabled={true}
+                                  onChange={handleInputChange}
+                                  disable={!isEditing}
                                 />
                               </div>
                             </Col>
@@ -530,10 +567,26 @@ const UserProfile = () => {
                       <Row>
                         <Col md={6}>
                           <div className="mb-3">
+                            <Label>CEP</Label>
+                            <Input
+                              type="text"
+                              name="cep"
+                              value={
+                                isEditing
+                                  ? editForm.cep
+                                  : userData.address?.cep || ""
+                              }
+                              onChange={handleInputChange}
+                              disabled={!isEditing}
+                            />
+                          </div>
+                        </Col>
+                        <Col md={6}>
+                          <div className="mb-3">
                             <Label>Rua</Label>
                             <Input
                               type="text"
-                              name="address"
+                              name="street"
                               value={
                                 isEditing
                                   ? editForm.street
@@ -618,22 +671,6 @@ const UserProfile = () => {
                                 isEditing
                                   ? editForm.state
                                   : userData.address?.state || ""
-                              }
-                              onChange={handleInputChange}
-                              disabled={!isEditing}
-                            />
-                          </div>
-                        </Col>
-                        <Col md={6}>
-                          <div className="mb-3">
-                            <Label>CEP</Label>
-                            <Input
-                              type="text"
-                              name="cep"
-                              value={
-                                isEditing
-                                  ? editForm.cep
-                                  : userData.address?.cep || ""
                               }
                               onChange={handleInputChange}
                               disabled={!isEditing}

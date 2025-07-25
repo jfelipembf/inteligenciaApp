@@ -51,7 +51,7 @@ const Home = () => {
   ];
 
   const newUserLinks = [
-    { to: "/create", icon: "bx bx-user", label: "Inserir Dados" },
+    { to: "/profile", icon: "bx bx-user", label: "Inserir Dados" },
     { to: "", icon: "", label: "" },
     { to: "", icon: "", label: "" },
     { to: "", icon: "", label: "" },

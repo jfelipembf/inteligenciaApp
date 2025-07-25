@@ -229,7 +229,6 @@ import AddCoordinator from "../pages/Coordinator/AddCoordinator";
 import Coordinators from "../pages/Coordinator/index";
 //Colaborator
 import CreateColaborator from "../pages/Colaborators/CreateColaborator";
-import InsertColaboratorData from "../pages/Colaborators/InsertColaboratorData";
 
 //Admin
 import Administrators from "../pages/Administrators/index";
@@ -473,16 +472,7 @@ const authProtectedRoutes = [
     ),
   },
 
-  {
-    path: "/create",
-    component: (
-      <RoleProtectedRoute
-        allowedRoles={["ceo", "principal", "coordinator", "professor"]}
-      >
-        <InsertColaboratorData />{" "}
-      </RoleProtectedRoute>
-    ),
-  },
+  
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },

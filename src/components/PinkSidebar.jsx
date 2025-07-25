@@ -76,7 +76,7 @@ const PinkSidebar = (props) => {
         ) : isCPFMissing ? (
           <>
             {/* Renderizar apenas "Inserir Dados" se o nome estiver ausente */}
-            <NavLink to="/create" className="sidebar-btn-no-bg" end>
+            <NavLink to="/profile" className="sidebar-btn-no-bg" end>
               <i className="bx bx-user"></i>
               <span>Inserir Dados</span>
             </NavLink>

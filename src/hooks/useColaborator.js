@@ -92,6 +92,7 @@ const useColaborator = () => {
         professionalInfo: {}, // Dados profissionais vazios
         address: {}, // Endereço vazio
         role, // Papel do usuário
+        uid: userId,
         schoolId: currentUserSchoolId,
         schools: [
           {
@@ -106,8 +107,19 @@ const useColaborator = () => {
 
       return { success: true, message: "Conta criada com sucesso!" };
     } catch (error) {
-      console.error("Erro ao criar conta:", error);
-      return { success: false, message: error.message };
+      console.error("Erro na criação do coordenador:", error);
+      setError(error.message);
+
+      // Limpar conta do Auth em caso de erro
+      try {
+        const user = firebase.auth().currentUser;
+        if (user && user.email === email) {
+          console.log("Removendo coordenador criado no Auth devido a erro...");
+          await user.delete();
+        }
+      } catch (deleteError) {
+        console.error("Erro ao limpar conta no Auth:", deleteError);
+      }
     }
   };
 
@@ -136,6 +148,7 @@ const useColaborator = () => {
         .collection("users")
         .doc(currentUserId);
 
+      // Upload da foto de perfil se existir
       let profileImageUrl = null;
       if (profileImage) {
         console.log("Fazendo upload da imagem de perfil...");
@@ -145,7 +158,6 @@ const useColaborator = () => {
         profileImageUrl = await imageRef.getDownloadURL();
         console.log("Imagem de perfil carregada com sucesso:", profileImageUrl);
       }
-
       await userRef.update({
         ...updatedData,
         personalInfo: {
