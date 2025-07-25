@@ -7,7 +7,13 @@ const useColaborator = () => {
   const allowedRoles = ["professor", "coordinator", "principal", "ceo"];
   const { userDetails } = useUser(); // Obter detalhes do usuário logado
   const currentUserSchoolId = userDetails?.schoolId;
-
+  const currentUserId = userDetails?.uid;
+  console.log(
+    "detalhes do usuario",
+    userDetails,
+    currentUserSchoolId,
+    currentUserId
+  );
   // Função para criar uma conta com email
   const createAccountWithEmail = async (email, role) => {
     try {
@@ -82,7 +88,7 @@ const useColaborator = () => {
       await userRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        personalInfo: { names: "Novo Colaborador", email }, // Dados pessoais vazios
+        personalInfo: { name: "Novo Colaborador", email }, // Dados pessoais vazios
         professionalInfo: {}, // Dados profissionais vazios
         address: {}, // Endereço vazio
         role, // Papel do usuário
@@ -123,12 +129,33 @@ const useColaborator = () => {
   };
 
   // Função para atualizar os dados de um colaborador
-  const updateColaborator = async (userId, updatedData) => {
+  const updateColaborator = async (updatedData, profileImage) => {
     try {
-      const userRef = firebase.firestore().collection("users").doc(userId);
+      const userRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUserId);
+
+      let profileImageUrl = null;
+      if (profileImage) {
+        console.log("Fazendo upload da imagem de perfil...");
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`profile_images/${currentUserId}`);
+        await imageRef.put(profileImage);
+        profileImageUrl = await imageRef.getDownloadURL();
+        console.log("Imagem de perfil carregada com sucesso:", profileImageUrl);
+      }
+
       await userRef.update({
         ...updatedData,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        personalInfo: {
+          ...updatedData.personalInfo,
+
+          profileImage: profileImageUrl,
+        },
+        metadata: {
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        },
       });
 
       return { success: true, message: "Dados atualizados com sucesso!" };

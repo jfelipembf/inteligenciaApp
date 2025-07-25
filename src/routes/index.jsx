@@ -229,6 +229,7 @@ import AddCoordinator from "../pages/Coordinator/AddCoordinator";
 import Coordinators from "../pages/Coordinator/index";
 //Colaborator
 import CreateColaborator from "../pages/Colaborators/CreateColaborator";
+import InsertColaboratorData from "../pages/Colaborators/InsertColaboratorData";
 
 //Admin
 import Administrators from "../pages/Administrators/index";
@@ -468,6 +469,17 @@ const authProtectedRoutes = [
     component: (
       <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         <CreateColaborator />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/create",
+    component: (
+      <RoleProtectedRoute
+        allowedRoles={["ceo", "principal", "coordinator", "professor"]}
+      >
+        <InsertColaboratorData />{" "}
       </RoleProtectedRoute>
     ),
   },

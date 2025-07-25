@@ -13,7 +13,7 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
     return <Navigate to="/login" />;
   }
 
-  if (!userDetails.personalInfo.cpf) {
+  if (!userDetails.personalInfo.cpf && location.pathname !== "/create") {
     return <Navigate to="/create" />;
   }
 
