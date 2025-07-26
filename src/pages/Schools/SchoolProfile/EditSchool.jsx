@@ -12,10 +12,12 @@ import {
 } from "reactstrap";
 import useSchools from "../../../hooks/useSchools";
 import Select from "react-select";
+import useColaborator from "../../../hooks/useColaborator";
 
 const EditSchool = ({ schoolData, onCancel, schoolId }) => {
   const [formData, setFormData] = useState(schoolData);
   const { updateSchool, loading } = useSchools();
+  const { createCeoAccountWithEmail } = useColaborator();
 
   const educationLevels = [
     { value: "Educação Infantil", label: "Educação Infantil" },
@@ -63,13 +65,13 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
   const [newSubject, setNewSubject] = useState("");
 
   const handleAddResponsible = () => {
-    if (newResponsible.name && newResponsible.role) {
-      setFormData({
-        ...formData,
-        responsibles: [...formData.responsibles, newResponsible],
-      });
-      setNewResponsible({ name: "", role: "", email: "", phone: "", cpf: "" });
-    }
+    setFormData({
+      ...formData,
+      responsibles: [
+        ...formData.responsibles,
+        { email: "", isNew: true }, // Adiciona a propriedade isNew
+      ],
+    });
   };
 
   const handleRemoveResponsible = (index) => {
@@ -78,7 +80,6 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
     );
     setFormData({ ...formData, responsibles: updatedResponsibles });
   };
-
   const handleAddGrade = () => {
     if (newGrade) {
       setFormData({
@@ -93,7 +94,18 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
     e.preventDefault();
 
     try {
+      // Atualizar os dados da escola
       await updateSchool(schoolId, formData);
+
+      // Enviar e-mails para criar contas de responsáveis
+      for (const responsible of formData.responsibles) {
+        try {
+          await createCeoAccountWithEmail(responsible.email, schoolId);
+          console.log(`Conta criada para ${responsible.email}`);
+        } catch (err) {
+          console.error(`Erro ao criar conta para ${responsible.email}:`, err);
+        }
+      }
 
       alert("Escola atualizada com sucesso!");
       onCancel(); // Fechar o formulário ou redirecionar
@@ -410,51 +422,7 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
                   <Col lg={12}>
                     {formData.responsibles.map((responsible, index) => (
                       <Row key={index} className="mb-3">
-                        <Col md={3}>
-                          <FormGroup>
-                            <Label>Nome</Label>
-                            <Input
-                              type="text"
-                              value={responsible.name}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index] = {
-                                  ...responsible,
-                                  name: e.target.value,
-                                };
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>Cargo</Label>
-                            <Input
-                              type="text"
-                              value={responsible.role}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index] = {
-                                  ...responsible,
-                                  role: e.target.value,
-                                };
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
+                        <Col md={10}>
                           <FormGroup>
                             <Label>Email</Label>
                             <Input
@@ -464,157 +432,33 @@ const EditSchool = ({ schoolData, onCancel, schoolId }) => {
                                 const updatedResponsibles = [
                                   ...formData.responsibles,
                                 ];
-                                updatedResponsibles[index] = {
-                                  ...responsible,
-                                  email: e.target.value,
-                                };
+                                updatedResponsibles[index].email =
+                                  e.target.value;
                                 setFormData({
                                   ...formData,
                                   responsibles: updatedResponsibles,
                                 });
                               }}
+                              required
                             />
                           </FormGroup>
                         </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>Telefone</Label>
-                            <Input
-                              type="text"
-                              value={responsible.phone}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index] = {
-                                  ...responsible,
-                                  phone: e.target.value,
-                                };
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>CPF</Label>
-                            <Input
-                              type="text"
-                              value={responsible.cpf}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index] = {
-                                  ...responsible,
-                                  cpf: e.target.value,
-                                };
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={1} className="d-flex align-items-end">
-                          <Button
-                            color="danger"
-                            className="mb-3"
-                            onClick={() => handleRemoveResponsible(index)}
-                          >
-                            <i className="bx bx-trash"></i>
-                          </Button>
-                        </Col>
+                        {responsible.isNew && ( // Exibe o botão apenas para responsáveis recém-criados
+                          <Col md={2} className="d-flex align-items-end">
+                            <Button
+                              color="danger"
+                              className="mb-3"
+                              onClick={() => handleRemoveResponsible(index)}
+                            >
+                              <i className="bx bx-trash"></i>
+                            </Button>
+                          </Col>
+                        )}
                       </Row>
                     ))}
-
-                    {/* Adicionar novo responsável */}
-                    <Row className="mt-3">
-                      <Col md={3}>
-                        <FormGroup>
-                          <Input
-                            type="text"
-                            placeholder="Nome"
-                            value={newResponsible.name}
-                            onChange={(e) =>
-                              setNewResponsible({
-                                ...newResponsible,
-                                name: e.target.value,
-                              })
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={2}>
-                        <FormGroup>
-                          <Input
-                            type="text"
-                            placeholder="Cargo"
-                            value={newResponsible.role}
-                            onChange={(e) =>
-                              setNewResponsible({
-                                ...newResponsible,
-                                role: e.target.value,
-                              })
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={2}>
-                        <FormGroup>
-                          <Input
-                            type="email"
-                            placeholder="Email"
-                            value={newResponsible.email}
-                            onChange={(e) =>
-                              setNewResponsible({
-                                ...newResponsible,
-                                email: e.target.value,
-                              })
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={2}>
-                        <FormGroup>
-                          <Input
-                            type="text"
-                            placeholder="Telefone"
-                            value={newResponsible.phone}
-                            onChange={(e) =>
-                              setNewResponsible({
-                                ...newResponsible,
-                                phone: e.target.value,
-                              })
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={2}>
-                        <FormGroup>
-                          <Input
-                            type="text"
-                            placeholder="CPF"
-                            value={newResponsible.cpf}
-                            onChange={(e) =>
-                              setNewResponsible({
-                                ...newResponsible,
-                                cpf: e.target.value,
-                              })
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={1}>
-                        <Button color="success" onClick={handleAddResponsible}>
-                          <i className="bx bx-plus"></i>
-                        </Button>
-                      </Col>
-                    </Row>
+                    <Button color="success" onClick={handleAddResponsible}>
+                      Adicionar Responsável
+                    </Button>
                   </Col>
                 </Row>
 

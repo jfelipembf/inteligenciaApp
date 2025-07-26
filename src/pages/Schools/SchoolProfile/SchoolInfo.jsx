@@ -139,7 +139,7 @@ const SchoolInfo = ({ schoolData }) => {
                               <div className="d-flex align-items-center">
                                 <div className="avatar-xs me-3">
                                   <span className="avatar-title rounded-circle bg-primary text-white">
-                                    {responsible.name.charAt(0)}
+                                    {responsible.email.charAt(0)}
                                   </span>
                                 </div>
                                 {responsible.name}
