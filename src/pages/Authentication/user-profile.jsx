@@ -54,6 +54,7 @@ const UserProfile = () => {
     rg: "",
     birthDate: "",
     specialization: "",
+    subjects: [],
     gender: "",
     street: "",
     number: "",
@@ -134,6 +135,7 @@ const UserProfile = () => {
         rg: userData.personalInfo?.rg || "",
         birthDate: userData.personalInfo?.birthDate || "",
         specialization: userData.professionalInfo?.specialization || "",
+        subjects: userData.professionalInfo?.subjects || [],
         registration: userData.professionalInfo?.registration || "",
         gender: userData.personalInfo?.gender || "",
         street: userData.address?.street || "",
@@ -209,6 +211,7 @@ const UserProfile = () => {
         professionalInfo: {
           ...userData.professionalInfo,
           specialization: editForm.specialization,
+          subjects: editForm.subjects,
           registration: editForm.registration,
         },
       };
@@ -516,23 +519,59 @@ const UserProfile = () => {
                             Informações profissionais
                           </h5>
                           <Row>
-                            <Col md={6}>
-                              <div className="mb-3">
-                                <Label>Especialização</Label>
-                                <Input
-                                  type="text"
-                                  name="specialization"
-                                  value={
-                                    isEditing
-                                      ? editForm.specialization
-                                      : userData.professionalInfo
-                                          ?.specialization || ""
-                                  }
-                                  onChange={handleInputChange}
-                                  disabled={!isEditing}
-                                />
-                              </div>
-                            </Col>
+                            {userDetails.role === "professor" && (
+                              <Col md={6}>
+                                <div className="mb-3">
+                                  <Label>Especialização</Label>
+                                  <Input
+                                    type="text"
+                                    name="specialization"
+                                    value={
+                                      isEditing
+                                        ? editForm.specialization
+                                        : userData.professionalInfo
+                                            ?.specialization || ""
+                                    }
+                                    onChange={handleInputChange}
+                                    disabled={!isEditing}
+                                  />
+                                </div>
+                              </Col>
+                            )}
+
+                            {/* Campo Disciplinas (apenas para professores) */}
+                            {userDetails.role === "professor" && (
+                              <Col md={6}>
+                                <div className="mb-3">
+                                  <Label>Disciplinas</Label>
+                                  <Input
+                                    type="text"
+                                    name="subjects"
+                                    value={
+                                      isEditing
+                                        ? editForm.subjects?.join(", ")
+                                        : userData.professionalInfo?.subjects?.join(
+                                            ", "
+                                          ) || ""
+                                    }
+                                    onChange={(e) => {
+                                      const value = e.target.value
+                                        .split(",")
+                                        .map((s) => s.trim());
+                                      setEditForm((prev) => ({
+                                        ...prev,
+                                        subjects: value,
+                                      }));
+                                    }}
+                                    disabled={!isEditing}
+                                  />
+                                  <FormFeedback>
+                                    Separe as disciplinas por vírgulas (ex.:
+                                    Matemática, Física).
+                                  </FormFeedback>
+                                </div>
+                              </Col>
+                            )}
                             <Col md={6}>
                               <div className="mb-3">
                                 <Label>Matricula</Label>
