@@ -15,8 +15,10 @@ const useUpdateUserProfile = () => {
     setLoading(true);
     setError(null);
     try {
-      let avatarImage = null;
-      if (profileImage) {
+      let avatarImage = userDetails?.personalInfo?.avatar || null; // Mantém o avatar atual por padrão
+
+      // Fazer upload da imagem, se fornecida
+      if (profileImage instanceof File) {
         const ext = profileImage.name.split(".").pop();
         const fileName = `${userUid}.${ext}`;
         await uploadToFirebase(
@@ -25,19 +27,30 @@ const useUpdateUserProfile = () => {
           schoolId,
           fileName
         );
-        avatarImage = fileName;
+        avatarImage = fileName; // Atualiza o nome do avatar com o novo arquivo
       }
 
       if (!userDetails?.uid) throw new Error("Usuário não autenticado.");
+
+      // Cria o objeto de atualização
+      const updatePayload = {
+        ...data,
+        "metadata.updatedAt": firebase.firestore.FieldValue.serverTimestamp(),
+      };
+
+      // Adiciona o avatar ao payload
+      if (avatarImage) {
+        updatePayload["personalInfo.avatar"] = avatarImage;
+      }
+
+      // Atualiza o Firestore
       await firebase
         .firestore()
         .collection("users")
         .doc(userDetails.uid)
-        .update({
-          ...data,
-          "personalInfo.avatar": avatarImage, // Adiciona avatarImage ao personalInfo
-          "metadata.updatedAt": firebase.firestore.FieldValue.serverTimestamp(),
-        });
+        .update(updatePayload);
+
+      // Atualiza os dados do usuário localmente
       await refreshUserData();
       setLoading(false);
       return true;
