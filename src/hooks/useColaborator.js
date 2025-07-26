@@ -123,6 +123,111 @@ const useColaborator = () => {
     }
   };
 
+  const createCeoAccountWithEmail = async (email, newSchoolId) => {
+    try {
+      const role = "ceo";
+
+      if (!newSchoolId) {
+        throw new Error("newSchoolId não fornecido.");
+      }
+
+      // Verificar se já existe um usuário com o email fornecido
+      const existingUserQuery = await firebase
+        .firestore()
+        .collection("users")
+        .where("personalInfo.email", "==", email)
+        .get();
+
+      if (!existingUserQuery.empty) {
+        // Usuário já existe
+        const existingUserDoc = existingUserQuery.docs[0];
+        const existingUserData = existingUserDoc.data();
+
+        // Verificar se a schoolId já existe no campo schools
+        const existingSchools = existingUserData.schools || [];
+        const schoolExists = existingSchools.some(
+          (school) => school.schoolId === newSchoolId && school.role === role
+        );
+
+        if (!schoolExists) {
+          // Adicionar a nova schoolId e role ao campo schools
+          const updatedSchools = [
+            ...existingSchools,
+            { schoolId: newSchoolId, role },
+          ];
+
+          const userRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(existingUserDoc.id);
+          await userRef.update({
+            schools: updatedSchools,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+
+          return {
+            success: true,
+            message: "Usuário atualizado com a nova escola/role!",
+          };
+        } else {
+          return {
+            success: true,
+            message: "Usuário já possui acesso com essa escola e role.",
+          };
+        }
+      }
+
+      // Gerar uma senha automática
+      const generatedPassword = Math.random().toString(36).slice(-8);
+
+      // Criar o usuário no Firebase Authentication
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, generatedPassword);
+
+      const userId = userCredential.user.uid;
+
+      // Criar um objeto vazio na coleção "users" no Firestore
+      const userRef = firebase.firestore().collection("users").doc(userId);
+      await userRef.set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        personalInfo: { name: "Novo Colaborador", email }, // Dados pessoais vazios
+        professionalInfo: {}, // Dados profissionais vazios
+        address: {}, // Endereço vazio
+        role, // Papel do usuário
+        uid: userId,
+        schoolId: newSchoolId, // Usar o newSchoolId
+        schools: [
+          {
+            schoolId: newSchoolId,
+            role,
+          },
+        ],
+      });
+
+      // Enviar e-mail para redefinir a senha
+      await firebase.auth().sendPasswordResetEmail(email);
+
+      return { success: true, message: "Conta criada com sucesso!" };
+    } catch (error) {
+      console.error("Erro na criação do colaborador:", error);
+
+      // Limpar conta do Auth em caso de erro
+      try {
+        const user = firebase.auth().currentUser;
+        if (user && user.email === email) {
+          console.log("Removendo colaborador criado no Auth devido a erro...");
+          await user.delete();
+        }
+      } catch (deleteError) {
+        console.error("Erro ao limpar conta no Auth:", deleteError);
+      }
+
+      return { success: false, message: error.message };
+    }
+  };
+
   // Função para buscar um colaborador pelo ID
   const fetchColaboratorById = async (userId) => {
     try {
@@ -196,6 +301,7 @@ const useColaborator = () => {
   };
 
   return {
+    createCeoAccountWithEmail,
     createAccountWithEmail,
     fetchColaboratorById,
     updateColaborator,

@@ -52,6 +52,7 @@ const UserProfile = () => {
     name: "",
     cpf: "",
     rg: "",
+    phone: "",
     birthDate: "",
     specialization: "",
     subjects: [],
@@ -133,6 +134,7 @@ const UserProfile = () => {
         name: userData.personalInfo?.name || "",
         cpf: userData.personalInfo?.cpf || "",
         rg: userData.personalInfo?.rg || "",
+        phone: userData.personalInfo?.phone || "",
         birthDate: userData.personalInfo?.birthDate || "",
         specialization: userData.professionalInfo?.specialization || "",
         subjects: userData.professionalInfo?.subjects || [],
@@ -195,6 +197,7 @@ const UserProfile = () => {
           name: editForm.name,
           cpf: editForm.cpf,
           rg: editForm.rg,
+          phone: editForm.phone,
           birthDate: birthDateISO,
           gender: editForm.gender,
         },
@@ -501,6 +504,22 @@ const UserProfile = () => {
                                 readOnly
                               />
                             )}
+                          </div>
+                        </Col>
+                        <Col md={6}>
+                          <div className="mb-3">
+                            <Label>Telefone</Label>
+                            <Input
+                              type="text"
+                              name="phone"
+                              value={
+                                isEditing
+                                  ? editForm.phone
+                                  : userData.personalInfo?.phone || ""
+                              }
+                              onChange={handleInputChange}
+                              disabled={!isEditing}
+                            />
                           </div>
                         </Col>
                         <Col md={6}></Col>

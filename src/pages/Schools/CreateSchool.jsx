@@ -16,6 +16,7 @@ import useSchools from "../../hooks/useSchools";
 import axios from "axios";
 import InputMask from "react-input-mask";
 import uploadToFirebase from "../../utils/uploadToFirebase";
+import useColaborator from "../../hooks/useColaborator";
 
 const CreateSchool = () => {
   const navigate = useNavigate();
@@ -24,9 +25,11 @@ const CreateSchool = () => {
   const [errors, setErrors] = useState({});
   const [profileImage, setProfileImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const { createCeoAccountWithEmail } = useColaborator();
 
   const [formData, setFormData] = useState({
     name: "",
+    socialName: "",
     cnpj: "",
     addressInfo: {
       address: "",
@@ -88,10 +91,7 @@ const CreateSchool = () => {
   const handleAddResponsible = () => {
     setFormData({
       ...formData,
-      responsibles: [
-        ...formData.responsibles,
-        { name: "", role: "", email: "", phone: "", cpf: "" },
-      ],
+      responsibles: [...formData.responsibles, { email: "" }],
     });
   };
 
@@ -140,7 +140,10 @@ const CreateSchool = () => {
     const newErrors = {};
 
     // Validação dos campos obrigatórios
-    if (!formData.name.trim()) newErrors.name = "Nome da escola é obrigatório.";
+    if (!formData.name.trim())
+      newErrors.name = "O Nome Fantasia é obrigatório.";
+    if (!formData.socialName.trim())
+      newErrors.socialName = "A Razão Social é obrigatória";
     if (!formData.cnpj.trim()) newErrors.cnpj = "CNPJ é obrigatório.";
     if (!formData.addressInfo.zipCode.trim())
       newErrors.zipCode = "CEP é obrigatório.";
@@ -180,8 +183,17 @@ const CreateSchool = () => {
         setUploading(false);
 
         const filename = profileImage.name;
-
         await updateSchoolLogo(schoolId, filename);
+      }
+
+      // Enviar e-mails para criar contas de responsáveis
+      for (const responsible of formData.responsibles) {
+        try {
+          await createCeoAccountWithEmail(responsible.email, schoolId);
+          console.log(`Conta criada para ${responsible.email}`);
+        } catch (err) {
+          console.error(`Erro ao criar conta para ${responsible.email}:`, err);
+        }
       }
 
       alert(`Escola criada com sucesso!`);
@@ -272,7 +284,7 @@ const CreateSchool = () => {
                   </Col>
                   <Col md={6}>
                     <FormGroup>
-                      <Label for="schoolName">Nome da Escola</Label>
+                      <Label for="schoolName">Nome Fantasia</Label>
                       <Input
                         type="text"
                         id="schoolName"
@@ -284,6 +296,26 @@ const CreateSchool = () => {
                       />
                       {errors.name && (
                         <div className="text-danger">{errors.name}</div>
+                      )}
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="schoolName">Razão Social</Label>
+                      <Input
+                        type="text"
+                        id="schoolName"
+                        value={formData.socialName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            socialName: e.target.value,
+                          })
+                        }
+                        invalid={!!errors.socialName}
+                      />
+                      {errors.socialName && (
+                        <div className="text-danger">{errors.socialName}</div>
                       )}
                     </FormGroup>
                   </Col>
@@ -595,47 +627,7 @@ const CreateSchool = () => {
                   <Col lg={12}>
                     {formData.responsibles.map((responsible, index) => (
                       <Row key={index} className="mb-3">
-                        <Col md={3}>
-                          <FormGroup>
-                            <Label>Nome</Label>
-                            <Input
-                              type="text"
-                              value={responsible.name}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index].name =
-                                  e.target.value;
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>Cargo</Label>
-                            <Input
-                              type="text"
-                              value={responsible.role}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index].role =
-                                  e.target.value;
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
+                        <Col md={10}>
                           <FormGroup>
                             <Label>Email</Label>
                             <Input
@@ -652,49 +644,11 @@ const CreateSchool = () => {
                                   responsibles: updatedResponsibles,
                                 });
                               }}
+                              required
                             />
                           </FormGroup>
                         </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>Telefone</Label>
-                            <Input
-                              type="text"
-                              value={responsible.phone}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index].phone =
-                                  e.target.value;
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                          <FormGroup>
-                            <Label>CPF</Label>
-                            <Input
-                              type="text"
-                              value={responsible.cpf}
-                              onChange={(e) => {
-                                const updatedResponsibles = [
-                                  ...formData.responsibles,
-                                ];
-                                updatedResponsibles[index].cpf = e.target.value;
-                                setFormData({
-                                  ...formData,
-                                  responsibles: updatedResponsibles,
-                                });
-                              }}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={1} className="d-flex align-items-end">
+                        <Col md={2} className="d-flex align-items-end">
                           <Button
                             color="danger"
                             className="mb-3"
