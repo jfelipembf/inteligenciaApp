@@ -52,12 +52,19 @@ const useColaborator = () => {
             { schoolId: currentUserSchoolId, role },
           ];
 
+          // Atualizar o array de schoolIds
+          const updatedSchoolIds = [
+            ...(existingUserData.schoolIds || []),
+            currentUserSchoolId,
+          ];
+
           const userRef = firebase
             .firestore()
             .collection("users")
             .doc(existingUserDoc.id);
           await userRef.update({
             schools: updatedSchools,
+            schoolIds: updatedSchoolIds,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
 
@@ -100,6 +107,7 @@ const useColaborator = () => {
             role,
           },
         ],
+        schoolIds: [currentUserSchoolId], // Adiciona o array de schoolIds
       });
 
       // Enviar e-mail para redefinir a senha
@@ -107,19 +115,20 @@ const useColaborator = () => {
 
       return { success: true, message: "Conta criada com sucesso!" };
     } catch (error) {
-      console.error("Erro na criação do coordenador:", error);
-      setError(error.message);
+      console.error("Erro na criação do colaborador:", error);
 
       // Limpar conta do Auth em caso de erro
       try {
         const user = firebase.auth().currentUser;
         if (user && user.email === email) {
-          console.log("Removendo coordenador criado no Auth devido a erro...");
+          console.log("Removendo colaborador criado no Auth devido a erro...");
           await user.delete();
         }
       } catch (deleteError) {
         console.error("Erro ao limpar conta no Auth:", deleteError);
       }
+
+      return { success: false, message: error.message };
     }
   };
 
@@ -156,12 +165,19 @@ const useColaborator = () => {
             { schoolId: newSchoolId, role },
           ];
 
+          // Atualizar o array de schoolIds
+          const updatedSchoolIds = [
+            ...(existingUserData.schoolIds || []),
+            newSchoolId,
+          ];
+
           const userRef = firebase
             .firestore()
             .collection("users")
             .doc(existingUserDoc.id);
           await userRef.update({
             schools: updatedSchools,
+            schoolIds: updatedSchoolIds,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
 
@@ -204,6 +220,7 @@ const useColaborator = () => {
             role,
           },
         ],
+        schoolIds: [newSchoolId], // Adiciona o array de schoolIds
       });
 
       // Enviar e-mail para redefinir a senha

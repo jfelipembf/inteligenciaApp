@@ -29,7 +29,11 @@ const PinkSidebar = (props) => {
 
   let dashboardTo = "/dashboard";
   if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
-  else if (userDetails?.role === "coordinator")
+  else if (
+    userDetails?.role === "coordinator" ||
+    userDetails?.role === "principal" ||
+    userDetails?.role === "ceo"
+  )
     dashboardTo = "/dashboard-coordenador";
 
   const isCPFMissing = !userDetails?.personalInfo?.cpf;
@@ -100,7 +104,9 @@ const PinkSidebar = (props) => {
             </NavLink>
 
             {/* Colaboradores */}
-            {(role === "ceo" || role === "coordinator") && (
+            {(role === "ceo" ||
+              role === "coordinator" ||
+              role === "principal") && (
               <div className="sidebar-menu-group">
                 <button
                   className="sidebar-btn-no-bg sidebar-btn-parent"

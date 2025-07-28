@@ -284,7 +284,7 @@ const authProtectedRoutes = [
   {
     path: "/dashboard-coordenador",
     component: (
-      <RoleProtectedRoute allowedRoles={["coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         <CoordinatorDashboardProvider>
           <CoordenadorDashboard />
         </CoordinatorDashboardProvider>
@@ -363,7 +363,7 @@ const authProtectedRoutes = [
   {
     path: "/create-class",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         <CreateClass />
       </RoleProtectedRoute>
     ),
@@ -375,7 +375,7 @@ const authProtectedRoutes = [
   {
     path: "classes/:classId/create-classroom",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         <CreateClassroom />
       </RoleProtectedRoute>
     ),
@@ -386,7 +386,7 @@ const authProtectedRoutes = [
   {
     path: "/add-student",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <AddStudent />{" "}
       </RoleProtectedRoute>
@@ -398,7 +398,7 @@ const authProtectedRoutes = [
   {
     path: "/teachers",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <Teachers />{" "}
       </RoleProtectedRoute>
@@ -407,7 +407,7 @@ const authProtectedRoutes = [
   {
     path: "/add-teacher",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <AddTeacher />{" "}
       </RoleProtectedRoute>
@@ -416,7 +416,7 @@ const authProtectedRoutes = [
   {
     path: "/teachers/:id",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <TeacherProfile />{" "}
       </RoleProtectedRoute>
@@ -447,7 +447,7 @@ const authProtectedRoutes = [
   {
     path: "/add-coordinator",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <AddCoordinator />{" "}
       </RoleProtectedRoute>
@@ -457,7 +457,7 @@ const authProtectedRoutes = [
   {
     path: "/coordinators",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         <Coordinators />{" "}
       </RoleProtectedRoute>
     ),
@@ -471,8 +471,6 @@ const authProtectedRoutes = [
       </RoleProtectedRoute>
     ),
   },
-
-  
 
   //   //Crypto
   { path: "/crypto-wallet", component: <CryptoWallet /> },
@@ -617,7 +615,7 @@ const authProtectedRoutes = [
   {
     path: "/create-class",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "coordinator", "principal"]}>
         {" "}
         <CreateClass />{" "}
       </RoleProtectedRoute>
@@ -800,7 +798,7 @@ const publicRoutes = [
   {
     path: "/add-student",
     component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "coordinator"]}>
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <AddStudent />{" "}
       </RoleProtectedRoute>

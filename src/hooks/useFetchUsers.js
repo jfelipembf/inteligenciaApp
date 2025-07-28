@@ -30,9 +30,8 @@ const useFetchUsers = () => {
         const usersSnapshot = await firebase
           .firestore()
           .collection("users")
-          .where("schoolId", "==", schoolId) // Filtrar pelo schoolId
+          .where("schoolId", "==", schoolId) // Usar == para comparar
           .get();
-
         const fetchedUsers = usersSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
