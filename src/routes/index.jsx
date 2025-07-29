@@ -627,7 +627,7 @@ const authProtectedRoutes = [
   {
     path: "/schools",
     component: (
-      <RoleProtectedRoute allowedRoles={["master"]}>
+      <RoleProtectedRoute allowedRoles={["master", "ceo"]}>
         <Schools />
       </RoleProtectedRoute>
     ),
@@ -643,7 +643,7 @@ const authProtectedRoutes = [
   {
     path: "/schools/:id/*",
     component: (
-      <RoleProtectedRoute allowedRoles={["master"]}>
+      <RoleProtectedRoute allowedRoles={["master", "ceo"]}>
         <SchoolProfile />
       </RoleProtectedRoute>
     ),
