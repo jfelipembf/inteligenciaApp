@@ -62,14 +62,31 @@ const useSchools = () => {
     setError(null);
 
     try {
+      // Verificar se o usuário é um `ceo`
+      if (userDetails?.role === "ceo") {
+        if (!userDetails.schoolIds || userDetails.schoolIds.length === 0) {
+          throw new Error("schoolIds não encontrados para o usuário ceo.");
+        }
+
+        // Verificar se o schoolId solicitado está no array schoolIds do CEO
+        if (!userDetails.schoolIds.includes(schoolId)) {
+          throw new Error(
+            "Acesso negado: o CEO não tem permissão para acessar esta escola."
+          );
+        }
+      }
+
+      // Buscar a escola pelo ID
       const schoolDoc = await firebase
         .firestore()
         .collection("schools")
         .doc(schoolId)
         .get();
+
       if (!schoolDoc.exists) {
         throw new Error("Escola não encontrada");
       }
+
       return { id: schoolDoc.id, ...schoolDoc.data() };
     } catch (err) {
       console.error("Erro ao buscar escola:", err);
