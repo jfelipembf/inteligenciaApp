@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import useUser from "./useUser";
 
 const useSchools = () => {
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { userDetails } = useUser();
 
   // Função para buscar todas as escolas
   const fetchSchools = async () => {
@@ -13,15 +15,39 @@ const useSchools = () => {
     setError(null);
 
     try {
-      const schoolsSnapshot = await firebase
-        .firestore()
-        .collection("schools")
-        .get();
-      const fetchedSchools = schoolsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setSchools(fetchedSchools);
+      const firestore = firebase.firestore();
+
+      // Verificar se o usuário é um `ceo`
+      if (userDetails?.role === "ceo") {
+        if (!userDetails.schoolIds || userDetails.schoolIds.length === 0) {
+          throw new Error("schoolIds não encontrados para o usuário ceo.");
+        }
+
+        // Buscar apenas as escolas cujo ID está no array schoolIds do CEO
+        const schoolsSnapshot = await firestore
+          .collection("schools")
+          .where(
+            firebase.firestore.FieldPath.documentId(),
+            "in",
+            userDetails.schoolIds
+          )
+          .get();
+
+        const fetchedSchools = schoolsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setSchools(fetchedSchools);
+      } else {
+        // Buscar todas as escolas para outros papéis
+        const schoolsSnapshot = await firestore.collection("schools").get();
+        const fetchedSchools = schoolsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setSchools(fetchedSchools);
+      }
     } catch (err) {
       console.error("Erro ao buscar escolas:", err);
       setError(err.message);

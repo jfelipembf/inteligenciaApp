@@ -92,10 +92,10 @@ const Home = () => {
   const filteredLinks =
     userDetails?.role === "master"
       ? masterLinks
-      : userDetails?.role === "ceo"
-      ? ceoLinks
       : isCPFMissing
       ? newUserLinks
+      : userDetails?.role === "ceo"
+      ? ceoLinks
       : userDetails?.role === "professor"
       ? (() => {
           // Remove "Coordenadores" e "Professores"

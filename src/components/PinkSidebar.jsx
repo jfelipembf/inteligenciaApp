@@ -77,6 +77,18 @@ const PinkSidebar = (props) => {
               <span>Sair</span>
             </button>
           </>
+        ) : isCPFMissing ? (
+          <>
+            {/* Renderizar apenas "Inserir Dados" se o nome estiver ausente */}
+            <NavLink to="/profile" className="sidebar-btn-no-bg" end>
+              <i className="bx bx-user"></i>
+              <span>Inserir Dados</span>
+            </NavLink>
+            <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
+              <i className="bx bx-power-off"></i>
+              <span>Sair</span>
+            </button>
+          </>
         ) : role === "ceo" ? (
           <>
             {/* Home */}
@@ -95,9 +107,7 @@ const PinkSidebar = (props) => {
             </NavLink>
 
             {/* Colaboradores */}
-            {(role === "ceo" ||
-              role === "coordinator" ||
-              role === "principal") && (
+            {role === "ceo" && (
               <div className="sidebar-menu-group">
                 <button
                   className="sidebar-btn-no-bg sidebar-btn-parent"
@@ -380,18 +390,6 @@ const PinkSidebar = (props) => {
                 </div>
               )}
             </div>
-            <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
-              <i className="bx bx-power-off"></i>
-              <span>Sair</span>
-            </button>
-          </>
-        ) : isCPFMissing ? (
-          <>
-            {/* Renderizar apenas "Inserir Dados" se o nome estiver ausente */}
-            <NavLink to="/profile" className="sidebar-btn-no-bg" end>
-              <i className="bx bx-user"></i>
-              <span>Inserir Dados</span>
-            </NavLink>
             <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
               <i className="bx bx-power-off"></i>
               <span>Sair</span>
