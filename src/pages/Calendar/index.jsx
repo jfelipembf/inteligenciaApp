@@ -7,8 +7,6 @@ import { useClassContext } from "../../contexts/ClassContext";
 import useFetchLessons from "../../hooks/useFetchLessons";
 
 const Calendar = () => {
-  document.title = "Calendário Escolar | Painel Escolar";
-
   const diasSemana = [
     { label: "Segunda", value: "segunda" },
     { label: "Terça", value: "terca" },

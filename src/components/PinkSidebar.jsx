@@ -138,15 +138,13 @@ const PinkSidebar = (props) => {
                     >
                       <span>Coordenadores</span>
                     </NavLink>
-                    {role === "ceo" && (
-                      <NavLink
-                        to="/administrators"
-                        className="sidebar-btn-no-bg sidebar-btn-sub"
-                        end
-                      >
-                        <span>Administradores</span>
-                      </NavLink>
-                    )}
+                    <NavLink
+                      to="/colaborators/create"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Adicionar Colaborador</span>
+                    </NavLink>
                   </div>
                 )}
               </div>
@@ -443,15 +441,13 @@ const PinkSidebar = (props) => {
                     >
                       <span>Coordenadores</span>
                     </NavLink>
-                    {role === "ceo" && (
-                      <NavLink
-                        to="/administrators"
-                        className="sidebar-btn-no-bg sidebar-btn-sub"
-                        end
-                      >
-                        <span>Administradores</span>
-                      </NavLink>
-                    )}
+                    <NavLink
+                      to="/colaborators/create"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Adicionar Colaborador</span>
+                    </NavLink>
                   </div>
                 )}
               </div>

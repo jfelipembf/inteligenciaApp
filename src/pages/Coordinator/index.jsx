@@ -51,9 +51,6 @@ const Coordinators = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{ width: "250px" }}
                       />
-                      <Button color="primary" tag={Link} to="/add-coordinator">
-                        <i className="bx bx-plus me-1"></i> Novo Coordenador
-                      </Button>
                     </div>
                   </div>
 

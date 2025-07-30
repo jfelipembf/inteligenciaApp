@@ -216,7 +216,6 @@ import Caixa from "../pages/Financeiro/Caixa/index";
 
 // Student routes
 import AddStudent from "../pages/Students/AddStudent";
-import AddTeacher from "../pages/Teachers/AddTeacher";
 
 // Acivities routes
 import Activities from "../pages/Activities/Activities";
@@ -225,7 +224,7 @@ import EditActivity from "../pages/Activities/EditActivity";
 import Activity from "../pages/Activities/Activity";
 
 //Coordenador
-import AddCoordinator from "../pages/Coordinator/AddCoordinator";
+
 import Coordinators from "../pages/Coordinator/index";
 //Colaborator
 import CreateColaborator from "../pages/Colaborators/CreateColaborator";
@@ -404,15 +403,7 @@ const authProtectedRoutes = [
       </RoleProtectedRoute>
     ),
   },
-  {
-    path: "/add-teacher",
-    component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
-        {" "}
-        <AddTeacher />{" "}
-      </RoleProtectedRoute>
-    ),
-  },
+
   {
     path: "/teachers/:id",
     component: (
@@ -444,15 +435,6 @@ const authProtectedRoutes = [
   },
 
   //Coordinator
-  {
-    path: "/add-coordinator",
-    component: (
-      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
-        {" "}
-        <AddCoordinator />{" "}
-      </RoleProtectedRoute>
-    ),
-  },
 
   {
     path: "/coordinators",

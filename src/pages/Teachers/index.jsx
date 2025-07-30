@@ -243,9 +243,6 @@ const Teachers = () => {
                       Lista de Professores
                     </h5>
                     <div className="flex-shrink-0">
-                      <Link to="/add-teacher" className="btn btn-primary me-1">
-                        <i className="bx bx-plus me-1"></i> Novo Professor
-                      </Link>
                       <Link
                         to="#!"
                         onClick={refetch}
