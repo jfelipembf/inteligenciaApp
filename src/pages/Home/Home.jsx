@@ -10,7 +10,11 @@ const Home = () => {
   // Defina o dashboard correto conforme o role
   let dashboardLink = "/dashboard";
   if (userDetails?.role === "professor") dashboardLink = "/dashboard-professor";
-  else if (userDetails?.role === "coordinator")
+  else if (
+    userDetails?.role === "coordinator" ||
+    userDetails?.role === "ceo" ||
+    userDetails?.role === "principal"
+  )
     dashboardLink = "/dashboard-coordenador";
 
   const quickLinks = [

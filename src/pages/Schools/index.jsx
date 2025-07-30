@@ -30,6 +30,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import classnames from "classnames";
 import axios from "axios";
 import useSchools from "../../hooks/useSchools";
+import useUser from "../../hooks/useUser";
+import useSwitchSchool from "../../hooks/useSwitchSchool";
 
 // Adicione estes estilos CSS no topo do arquivo
 const checkboxStyle = {
@@ -47,6 +49,8 @@ const Schools = () => {
   document.title = "Escolas | InteliTec";
   const navigate = useNavigate();
   const location = useLocation();
+  const { userDetails } = useUser();
+  const { switchSchool } = useSwitchSchool();
 
   // Usar o hook para buscar escolas
   const { schools, loading, error } = useSchools();
@@ -69,16 +73,18 @@ const Schools = () => {
     });
   }, []);
 
-  const handleSelectAll = React.useCallback(
-    (checked) => {
-      if (checked) {
-        const allIds = schools.map((school) => school.id);
-        setSelectedSchools(allIds);
-      } else {
-        setSelectedSchools([]);
+  const handleSwitchSchool = React.useCallback(
+    async (schoolId) => {
+      try {
+        await switchSchool(schoolId);
+
+        alert("Escola selecionada com sucesso!");
+        window.location.reload();
+      } catch (err) {
+        console.error("Erro ao selecionar escola:", err);
       }
     },
-    [schools]
+    [switchSchool, userDetails]
   );
 
   const columns = useMemo(
@@ -89,13 +95,31 @@ const Schools = () => {
         cell: (cellProps) => {
           const schoolName =
             cellProps.row.original.name || "Nome não disponível";
+          const schoolId = cellProps.row.original.id;
+          const isCurrentSchool =
+            userDetails?.role === "ceo" && schoolId === userDetails.schoolId;
+
           return (
-            <div className="d-flex align-items-center">
+            <div
+              className={`d-flex align-items-center ${
+                isCurrentSchool ? "bg-light-primary" : ""
+              }`}
+              style={{
+                padding: "5px",
+                borderRadius: "5px",
+                backgroundColor: isCurrentSchool ? "#e6f7ff" : "transparent",
+              }}
+            >
               <div className="font-size-14 mb-1">
                 <Link to="#" className="text-dark">
                   {schoolName}
                 </Link>
               </div>
+              {isCurrentSchool && (
+                <Badge color="primary" className="ms-2">
+                  Atual
+                </Badge>
+              )}
             </div>
           );
         },
@@ -109,25 +133,44 @@ const Schools = () => {
         },
       },
       {
-        header: "Detalhes",
+        header: "Ações",
         cell: (cellProps) => {
           const schoolId = cellProps.row.original.id;
+          const isCurrentSchool =
+            userDetails?.role === "ceo" && schoolId === userDetails.schoolId;
+
           return (
-            <Button
-              type="button"
-              color="primary"
-              className="btn-sm"
-              onClick={() => {
-                navigate(`/schools/${schoolId}`);
-              }}
-            >
-              Ver Detalhes
-            </Button>
+            <div className="d-flex align-items-center">
+              {userDetails?.role === "ceo" && !isCurrentSchool && (
+                <Button
+                  type="button"
+                  color="success"
+                  className="btn-sm me-2"
+                  onClick={() => handleSwitchSchool(schoolId)}
+                >
+                  Selecionar Escola
+                </Button>
+              )}
+              <Button
+                type="button"
+                color="primary"
+                className="btn-sm"
+                onClick={() => {
+                  console.log(
+                    "Clicando no botão Ver Detalhes com schoolId:",
+                    schoolId
+                  );
+                  navigate(`/schools/${schoolId}`);
+                }}
+              >
+                Ver Detalhes
+              </Button>
+            </div>
           );
         },
       },
     ],
-    [schools, selectedSchools, handleSelectAll, handleSelectSchool, navigate]
+    [schools, selectedSchools, handleSelectSchool, navigate]
   );
 
   if (loading) {
@@ -202,13 +245,15 @@ const Schools = () => {
                         </Button>
                       </div>
                     )}
-                    <Button
-                      color="success"
-                      size="sm"
-                      onClick={() => navigate("/schools/create")}
-                    >
-                      <i className="bx bx-plus-circle me-1"></i> Nova Escola
-                    </Button>
+                    {userDetails?.role !== "ceo" && (
+                      <Button
+                        color="success"
+                        size="sm"
+                        onClick={() => navigate("/schools/create")}
+                      >
+                        <i className="bx bx-plus-circle me-1"></i> Nova Escola
+                      </Button>
+                    )}
                   </div>
                   <TableContainer
                     columns={columns}
