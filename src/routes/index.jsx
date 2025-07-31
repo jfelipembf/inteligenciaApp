@@ -255,6 +255,8 @@ import GradesListPage from "../pages/Grades/GradesListPage";
 import DoubtsList from "../pages/Doubts/DoubtsList";
 import ViewDoubt from "../pages/Doubts/ViewDoubt";
 
+import Principals from "../pages/Principals/index";
+
 const EventsRoutes = ({ children }) => (
   <EventsProvider>{children}</EventsProvider>
 );
@@ -415,6 +417,17 @@ const authProtectedRoutes = [
   },
   { path: "/teachers/:id/activities", component: <TeacherActivities /> },
   { path: "/teachers/:id/messages", component: <TeacherMessages /> },
+
+  //Principals
+  {
+    path: "/principals",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
+        {" "}
+        <Principals />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
 
   // Administrators
   {
