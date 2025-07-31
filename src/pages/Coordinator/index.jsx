@@ -86,34 +86,6 @@ const Coordinators = () => {
               >
                 <i className="mdi mdi-eye-outline" />
               </Button>
-              <UncontrolledDropdown>
-                <DropdownToggle
-                  type="button"
-                  className="btn btn-sm btn-soft-secondary"
-                >
-                  <i className="mdi mdi-dots-vertical" />
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem
-                    onClick={() =>
-                      toast.info(
-                        `Exportar dados de ${cellProps.row.original.personalInfo?.name}`
-                      )
-                    }
-                  >
-                    Exportar Dados
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() =>
-                      toast.warning(
-                        `Excluir ${cellProps.row.original.personalInfo?.name}`
-                      )
-                    }
-                  >
-                    Excluir
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
             </div>
           );
         },

@@ -122,16 +122,6 @@ const Principals = () => {
                   <i className="mdi mdi-eye-outline" />
                 </Button>
               </li>
-
-              <li>
-                <Button
-                  color="soft-danger"
-                  className="btn btn-sm btn-soft-danger"
-                  onClick={() => onClickDelete(cellProps.row.original)}
-                >
-                  <i className="mdi mdi-delete-outline" />
-                </Button>
-              </li>
             </ul>
           );
         },
