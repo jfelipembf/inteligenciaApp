@@ -75,6 +75,27 @@ const Home = () => {
     { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
   ];
 
+  const principalLinks = [
+    { to: dashboardLink, icon: "bx bx-line-chart", label: "Dashboard" },
+    { to: "/coordinators", icon: "bx bx-user", label: "Coordenadores" },
+    { to: "/principals", icon: "bx bx-user", label: "Diretores" },
+    { to: "/teachers", icon: "bx bx-user-voice", label: "Professores" },
+    {
+      to: "/messages",
+      icon: "bx bx-message-square-dots",
+      label: "Mensagens",
+    },
+    { to: "/notifications", icon: "bx bx-bell", label: "Notificações" },
+    { to: "/classes", icon: "bx bx-group", label: "Turmas" },
+    { to: "/students", icon: "bx bx-user-circle", label: "Alunos" },
+    { to: "/attendances", icon: "bx bx-bar-chart-alt-2", label: "Frequências" },
+    { to: "/grades-list", icon: "bx bx-calculator", label: "Notas" },
+    { to: "/calendar", icon: "bx bx-calendar", label: "Calendário" },
+    { to: "/events", icon: "bx bx-calendar-event", label: "Eventos" },
+
+    { to: "/logout", icon: "bx bx-power-off", label: "Sair", special: true },
+  ];
+
   const newUserLinks = [
     { to: "/profile", icon: "bx bx-user", label: "Inserir Dados" },
     { to: "", icon: "", label: "" },
@@ -100,6 +121,8 @@ const Home = () => {
       ? newUserLinks
       : userDetails?.role === "ceo"
       ? ceoLinks
+      : userDetails?.role === "principal"
+      ? principalLinks
       : userDetails?.role === "professor"
       ? (() => {
           // Remove "Coordenadores" e "Professores"

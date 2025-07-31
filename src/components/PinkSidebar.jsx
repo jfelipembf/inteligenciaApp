@@ -139,6 +139,13 @@ const PinkSidebar = (props) => {
                       <span>Coordenadores</span>
                     </NavLink>
                     <NavLink
+                      to="/principals"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Diretores</span>
+                    </NavLink>
+                    <NavLink
                       to="/colaborators/create"
                       className="sidebar-btn-no-bg sidebar-btn-sub"
                       end
@@ -440,6 +447,13 @@ const PinkSidebar = (props) => {
                       end
                     >
                       <span>Coordenadores</span>
+                    </NavLink>
+                    <NavLink
+                      to="/principals"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Diretores</span>
                     </NavLink>
                     <NavLink
                       to="/colaborators/create"
