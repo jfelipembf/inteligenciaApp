@@ -7,6 +7,82 @@ admin.initializeApp();
 
 const corsHandler = cors({ origin: true });
 
+export const createUserWithDetails = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, async () => {
+    try {
+      // Verificar o método HTTP
+      if (req.method !== "POST") {
+        return res.status(405).send({ error: "Método não permitido" });
+      }
+
+      // Obter os dados do corpo da requisição
+      const {
+        email,
+        password,
+        userData,
+        role,
+        schoolId,
+        createdBy,
+        avatarImage,
+      } = req.body;
+
+      console.log("Dados recebidos na função:", {
+        email,
+        role,
+        schoolId,
+        createdBy,
+        avatarImage,
+      });
+
+      if (!email || !password || !role || !schoolId || !createdBy) {
+        return res
+          .status(400)
+          .send({ error: "Parâmetros inválidos fornecidos." });
+      }
+
+      // Criar o usuário no Firebase Authentication
+      const userRecord = await admin.auth().createUser({
+        email,
+        password,
+      });
+
+      console.log("Usuário criado no Firebase Auth:", userRecord.uid);
+
+      // Preparar os dados para o Firestore
+      const finalUserData = {
+        uid: userRecord.uid,
+        role,
+        schoolId,
+        ...userData,
+        personalInfo: {
+          ...userData.personalInfo,
+          email,
+          avatar: avatarImage,
+        },
+        metadata: {
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdBy,
+        },
+      };
+
+      // Salvar os dados no Firestore
+      await admin
+        .firestore()
+        .collection("users")
+        .doc(userRecord.uid)
+        .set(finalUserData);
+
+      console.log("Usuário salvo no Firestore com sucesso.");
+
+      return res.status(200).send({ success: true, uid: userRecord.uid });
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      return res.status(500).send({ error: "Erro ao criar usuário." });
+    }
+  });
+});
+
 export const createUserWithEmail = functions.https.onRequest((req, res) => {
   corsHandler(req, res, async () => {
     try {

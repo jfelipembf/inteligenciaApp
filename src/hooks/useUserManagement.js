@@ -3,6 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import axios from "axios";
 import useUser from "./useUser";
 import uploadToFirebase from "../utils/uploadToFirebase";
 
@@ -37,19 +38,12 @@ export const useUserManagement = () => {
       }
 
       const schoolId = userDetails.schoolId;
-      // Criar usuário no Auth
-      console.log("Criando usuário no Firebase Auth...");
-      const userCredential = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      console.log("Usuário criado com sucesso:", userCredential);
-      const newUserUid = userCredential.user.uid;
 
       // Upload da foto de perfil se existir
       let avatarImage = null;
       if (profileImage) {
         const ext = profileImage.name.split(".").pop();
-        const fileName = `${newUserUid}.${ext}`;
+        const fileName = `${email.replace(/[@.]/g, "_")}.${ext}`;
         await uploadToFirebase(
           profileImage,
           `profileImages`,
@@ -59,49 +53,42 @@ export const useUserManagement = () => {
         avatarImage = fileName;
       }
 
-      // Preparar dados do usuário para o Firestore
+      // Preparar os dados do usuário
       const finalUserData = {
-        uid: newUserUid,
-        role,
-        schoolId,
         ...userData,
         personalInfo: {
           ...userData.personalInfo,
           email,
           avatar: avatarImage,
         },
-        metadata: {
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          createdBy: currentUser.uid,
-        },
       };
 
-      console.log("Salvando dados do usuário no Firestore:", finalUserData);
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(newUserUid)
-        .set(finalUserData);
-      console.log("Usuário salvo no Firestore com sucesso.");
+      // Chamar a Cloud Function para criar o usuário
+      const response = await axios.post(
+        "https://createuserwithdetails-5pamugswja-uc.a.run.app",
+        {
+          email,
+          password,
+          userData: finalUserData,
+          role,
+          schoolId,
+          createdBy: currentUser.uid,
+          avatarImage,
+        }
+      );
 
-      setLoading(false);
-      return { success: true, uid: newUserUid };
+      if (response.data.success) {
+        console.log("Usuário criado com sucesso:", response.data.uid);
+        setLoading(false);
+        return { success: true, uid: response.data.uid };
+      } else {
+        throw new Error(
+          response.data.error || "Erro desconhecido ao criar usuário."
+        );
+      }
     } catch (error) {
       console.error("Erro na criação do usuário:", error);
       setError(error.message);
-
-      // Limpar conta do Auth em caso de erro
-      try {
-        const user = firebase.auth().currentUser;
-        if (user && user.email === email) {
-          console.log("Removendo usuário criado no Auth devido a erro...");
-          await user.delete();
-        }
-      } catch (deleteError) {
-        console.error("Erro ao limpar conta no Auth:", deleteError);
-      }
-
       setLoading(false);
       throw error;
     }
