@@ -1,6 +1,8 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/functions";
+import axios from "axios";
 import useUser from "./useUser";
 
 const useColaborator = () => {
@@ -17,7 +19,6 @@ const useColaborator = () => {
   // Função para criar uma conta com email
   const createAccountWithEmail = async (email, role) => {
     try {
-      // Validar role
       if (!allowedRoles.includes(role)) {
         throw new Error(`Role "${role}" não é permitida.`);
       }
@@ -26,36 +27,62 @@ const useColaborator = () => {
         throw new Error("schoolId do usuário atual não encontrado.");
       }
 
-      // Gerar uma senha automática
-      const generatedPassword = Math.random().toString(36).slice(-8);
-
-      // Criar o usuário no Firebase Authentication
-      const userCredential = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, generatedPassword);
-
-      const userId = userCredential.user.uid;
-
-      // Criar um objeto vazio na coleção "users" no Firestore
-      const userRef = firebase.firestore().collection("users").doc(userId);
-      await userRef.set({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        personalInfo: { names: "Novo Colaborador", email }, // Dados pessoais vazios
-        professionalInfo: {}, // Dados profissionais vazios
-        address: {}, // Endereço vazio
-        role, // Papel do usuário (padrão: "user")
+      console.log("Iniciando criação de conta com email...");
+      console.log("Dados enviados:", {
+        email,
+        role,
         schoolId: currentUserSchoolId,
-        uid: userId, // ID do usuário
       });
 
-      // Enviar e-mail para redefinir a senha
-      await firebase.auth().sendPasswordResetEmail(email);
+      // Verificar se o e-mail já existe no Firebase Authentication
+      const existingUserQuery = await firebase
+        .firestore()
+        .collection("users")
+        .where("personalInfo.email", "==", email)
+        .get();
 
-      return { success: true, message: "Conta criada com sucesso!" };
+      if (!existingUserQuery.empty) {
+        console.log("Usuário já existe no sistema.");
+        return {
+          success: true,
+          message: "Usuário já existe no sistema.",
+        };
+      }
+
+      // Criar a conta no backend
+      const response = await axios.post(
+        "https://createuserwithemail-5pamugswja-uc.a.run.app",
+        {
+          email,
+          role,
+          schoolId: currentUserSchoolId,
+        }
+      );
+
+      if (response.data.success) {
+        console.log(
+          "Conta criada com sucesso. Enviando e-mail de redefinição de senha..."
+        );
+
+        // Enviar e-mail para redefinir a senha
+        await firebase.auth().sendPasswordResetEmail(email);
+
+        return {
+          success: true,
+          message:
+            "Conta criada com sucesso! E-mail para login enviado ao usuário.",
+        };
+      } else {
+        throw new Error(
+          response.data.message || "Erro desconhecido ao criar conta."
+        );
+      }
     } catch (error) {
       console.error("Erro ao criar conta:", error);
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message,
+      };
     }
   };
 
@@ -120,40 +147,34 @@ const useColaborator = () => {
         }
       }
 
-      // Gerar uma senha automática
-      const generatedPassword = Math.random().toString(36).slice(-8);
+      // Caso o usuário não exista, chamar a função HTTP para criar o usuário
+      const response = await axios.post(
+        "https://createuserwithemail-5pamugswja-uc.a.run.app",
+        {
+          email,
+          role,
+          schoolId: newSchoolId,
+        }
+      );
 
-      // Criar o usuário no Firebase Authentication
-      const userCredential = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, generatedPassword);
+      if (response.data.success) {
+        console.log(
+          "Conta criada com sucesso. Enviando e-mail de redefinição de senha..."
+        );
 
-      const userId = userCredential.user.uid;
+        // Enviar e-mail para redefinir a senha
+        await firebase.auth().sendPasswordResetEmail(email);
 
-      // Criar um objeto vazio na coleção "users" no Firestore
-      const userRef = firebase.firestore().collection("users").doc(userId);
-      await userRef.set({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        personalInfo: { name: "Novo Colaborador", email }, // Dados pessoais vazios
-        professionalInfo: {}, // Dados profissionais vazios
-        address: {}, // Endereço vazio
-        role, // Papel do usuário
-        uid: userId,
-        schoolId: newSchoolId, // Usar o newSchoolId
-        schools: [
-          {
-            schoolId: newSchoolId,
-            role,
-          },
-        ],
-        schoolIds: [newSchoolId], // Adiciona o array de schoolIds
-      });
-
-      // Enviar e-mail para redefinir a senha
-      await firebase.auth().sendPasswordResetEmail(email);
-
-      return { success: true, message: "Conta criada com sucesso!" };
+        return {
+          success: true,
+          message:
+            "Conta criada com sucesso! E-mail para login enviado ao usuário.",
+        };
+      } else {
+        throw new Error(
+          response.data.message || "Erro desconhecido ao criar conta."
+        );
+      }
     } catch (error) {
       console.error("Erro na criação do colaborador:", error);
 

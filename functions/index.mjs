@@ -1,7 +1,65 @@
 import admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { onSchedule } from "firebase-functions/v2/scheduler";
+import cors from "cors";
+
 admin.initializeApp();
+
+const corsHandler = cors({ origin: true });
+
+export const createUserWithEmail = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, async () => {
+    try {
+      // Verificar o método HTTP
+      if (req.method !== "POST") {
+        return res.status(405).send({ error: "Método não permitido" });
+      }
+
+      // Obter os dados do corpo da requisição
+      const { email, role, schoolId } = req.body;
+
+      console.log("Dados recebidos na função:", { email, role, schoolId });
+
+      if (!email || !role || !schoolId) {
+        return res
+          .status(400)
+          .send({ error: "Parâmetros inválidos fornecidos." });
+      }
+
+      // Gerar uma senha aleatória
+      const generatedPassword = Math.random().toString(36).slice(-8);
+
+      // Criar o usuário no Firebase Authentication
+      const userRecord = await admin.auth().createUser({
+        email,
+        password: generatedPassword,
+      });
+
+      // Adicionar o usuário ao Firestore
+      await admin
+        .firestore()
+        .collection("users")
+        .doc(userRecord.uid)
+        .set({
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          personalInfo: { name: "Novo Colaborador", email },
+          professionalInfo: {},
+          address: {},
+          role,
+          schoolId,
+          uid: userRecord.uid,
+        });
+
+      return res
+        .status(200)
+        .send({ success: true, message: "Usuário criado com sucesso!" });
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      return res.status(500).send({ error: "Erro ao criar usuário." });
+    }
+  });
+});
 
 // Função utilitária para envio (reutilizável)
 async function sendAlert(alert, alertRef) {

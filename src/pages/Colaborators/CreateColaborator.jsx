@@ -70,7 +70,7 @@ const CreateColaborator = () => {
     setLoading(false);
 
     if (result.success) {
-      navigate("/colaborators"); 
+      navigate("/colaborators/create");
     }
   };
 
