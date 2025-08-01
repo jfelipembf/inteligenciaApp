@@ -160,6 +160,25 @@ const UserProfile = () => {
     }));
   };
 
+  const handlePasswordReset = async () => {
+    try {
+      if (!email) {
+        setAlertMessage("E-mail não encontrado para redefinição de senha.");
+        return;
+      }
+
+      await firebase.auth().sendPasswordResetEmail(email);
+      setAlertMessage("E-mail de redefinição de senha enviado com sucesso!");
+      setTimeout(() => setAlertMessage(""), 3000);
+    } catch (error) {
+      console.error("Erro ao enviar e-mail de redefinição de senha:", error);
+      setAlertMessage(
+        "Erro ao enviar e-mail de redefinição de senha. Tente novamente."
+      );
+      setTimeout(() => setAlertMessage(""), 3000);
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       let birthDateISO = editForm.birthDate;
@@ -383,6 +402,15 @@ const UserProfile = () => {
                             Salvar
                           </Button>
                         )}
+                        <Button
+                          color="warning"
+                          size="sm"
+                          className="ms-2"
+                          onClick={handlePasswordReset}
+                        >
+                          <i className="bx bx-mail-send me-1"></i>
+                          Redefinir Senha
+                        </Button>
                       </div>
                     </Col>
                   </Row>
