@@ -24,12 +24,11 @@ Chart.register(...registerables);
 import WelcomeCard from "./components/WelcomeCard";
 import InformationTab from "./components/InformationTab";
 
-const CoordinatorProfile = () => {
+const PrincipalProfile = () => {
   const { id } = useParams(); // Obter o ID do coordenador da URL
   const [activeTab, setActiveTab] = useState("1"); // Estado para controlar as abas
   const { user, loading, error } = useFetchUserById(id); // Buscar os dados do coordenador
 
-  
   // Função para alternar entre as abas
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -106,4 +105,4 @@ const CoordinatorProfile = () => {
   );
 };
 
-export default CoordinatorProfile;
+export default PrincipalProfile;

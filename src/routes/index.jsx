@@ -228,6 +228,8 @@ import Activity from "../pages/Activities/Activity";
 import Coordinators from "../pages/Coordinator/index";
 import CoordinatorProfile from "../pages/Coordinator/CoordinatorProfile/index";
 
+
+
 //Colaborator
 import CreateColaborator from "../pages/Colaborators/CreateColaborator";
 
@@ -257,7 +259,9 @@ import GradesListPage from "../pages/Grades/GradesListPage";
 import DoubtsList from "../pages/Doubts/DoubtsList";
 import ViewDoubt from "../pages/Doubts/ViewDoubt";
 
+//Principals
 import Principals from "../pages/Principals/index";
+import PrincipalProfile from "../pages/Principals/PrincipalProfile/index";
 
 const EventsRoutes = ({ children }) => (
   <EventsProvider>{children}</EventsProvider>
@@ -427,6 +431,16 @@ const authProtectedRoutes = [
       <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
         <Principals />{" "}
+      </RoleProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/principals/:id",
+    component: (
+      <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
+        {" "}
+        <PrincipalProfile />
       </RoleProtectedRoute>
     ),
   },
