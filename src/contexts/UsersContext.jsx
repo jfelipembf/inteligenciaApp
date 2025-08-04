@@ -22,3 +22,5 @@ export const UsersProvider = ({ children }) => {
     </UsersContext.Provider>
   );
 };
+
+export default UsersContext;

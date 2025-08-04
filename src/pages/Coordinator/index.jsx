@@ -81,7 +81,7 @@ const Coordinators = () => {
                 color="soft-primary"
                 className="btn btn-sm btn-soft-primary"
                 onClick={() =>
-                  navigate(`/coordinators/${cellProps.row.original.id}`)
+                  navigate(`/coordinators/${cellProps.row.original.uid}`)
                 }
               >
                 <i className="mdi mdi-eye-outline" />

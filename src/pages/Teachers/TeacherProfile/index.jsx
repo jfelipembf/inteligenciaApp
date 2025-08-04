@@ -26,12 +26,15 @@ import ClassesTab from "./components/ClassesTab";
 import PerformanceTab from "./components/PerformanceTab";
 import NotificationsTab from "./components/NotificationsTab";
 
+
 // Import Data
 import { teacherData } from "./components/data";
 
 const TeacherProfile = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("1");
+  
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
