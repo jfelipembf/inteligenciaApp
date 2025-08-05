@@ -33,17 +33,6 @@ import TeacherClasses from "../pages/Classes/TeacherClasses/TeacherClasses";
 // Pages Calendar
 import Calendar from "../pages/Calendar/index";
 
-// // //Tasks
-import TasksList from "../pages/Tasks/tasks-list";
-import TasksCreate from "../pages/Tasks/tasks-create";
-import TasksKanban from "../pages/Tasks/tasks-kanban";
-
-// // //Projects
-import ProjectsGrid from "../pages/Projects/projects-grid";
-import ProjectsList from "../pages/Projects/projects-list";
-import ProjectsOverview from "../pages/Projects/ProjectOverview/projects-overview";
-import ProjectsCreate from "../pages/Projects/projects-create";
-
 // // //Ecommerce Pages
 import EcommerceProducts from "../pages/Ecommerce/EcommerceProducts";
 import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProductDetail/index";
@@ -94,7 +83,7 @@ import Dashboard from "../pages/Dashboard/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import DashboardFinanceiro from "../pages/Dashboard-financeiro/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
-import Blog from "../pages/Dashboard-Blog/index";
+
 import DashboardJob from "../pages/DashboardJob/index";
 import GestorDashboard from "../pages/Dashboard/GestorDashboard";
 import CoordenadorDashboard from "../pages/Dashboard/CoordenadorDashboard";
@@ -117,32 +106,11 @@ import SparklineChart from "../pages/Charts/SparklineChart";
 import ChartsKnob from "../pages/Charts/charts-knob";
 import ReCharts from "../pages/Charts/ReCharts";
 
-// // Maps
-import MapsGoogle from "../pages/Maps/MapsGoogle";
-
 // //Icons
 import IconBoxicons from "../pages/Icons/IconBoxicons";
 import IconDripicons from "../pages/Icons/IconDripicons";
 import IconMaterialdesign from "../pages/Icons/IconMaterialdesign";
 import IconFontawesome from "../pages/Icons/IconFontawesome";
-
-// //Tables
-import BasicTables from "../pages/Tables/BasicTables";
-import DatatableTables from "../pages/Tables/DatatableTables";
-
-// //Blog
-import BlogList from "../pages/Blog/BlogList/index";
-import BlogGrid from "../pages/Blog/BlogGrid/index";
-import BlogDetails from "../pages/Blog/BlogDetails";
-
-//Job
-import JobGrid from "../pages/JobPages/JobGrid/index";
-import JobDetails from "../pages/JobPages/JobDetails";
-import JobCategories from "../pages/JobPages/JobCategories";
-import JobList from "../pages/JobPages/JobList/index";
-import ApplyJobs from "../pages/JobPages/ApplyJobs/index";
-import CandidateList from "../pages/JobPages/CandidateList";
-import CandidateOverview from "../pages/JobPages/CandidateOverview";
 
 // // Forms
 import FormElements from "../pages/Forms/FormElements";
@@ -154,7 +122,6 @@ import FormMask from "../pages/Forms/FormMask";
 import FormRepeater from "../pages/Forms/FormRepeater";
 import FormUpload from "../pages/Forms/FormUpload";
 import FormWizard from "../pages/Forms/FormWizard";
-import DualListbox from "../pages/Tables/DualListbox";
 
 // //Ui
 import UiAlert from "../pages/Ui/UiAlerts/index";
@@ -228,14 +195,9 @@ import Activity from "../pages/Activities/Activity";
 import Coordinators from "../pages/Coordinator/index";
 import CoordinatorProfile from "../pages/Coordinator/CoordinatorProfile/index";
 
-
-
 //Colaborator
 import CreateColaborator from "../pages/Colaborators/CreateColaborator";
 
-//Admin
-import Administrators from "../pages/Administrators/index";
-import AddAdministrator from "../pages/Administrators/AddAdministrator";
 import CreateClassroom from "../pages/Classes/Classroom/CreateClassroom";
 
 import Events from "../pages/Events/index";
@@ -308,8 +270,6 @@ const authProtectedRoutes = [
       </RoleProtectedRoute>
     ),
   },
-  { path: "/blog", component: <Blog /> },
-  { path: "/dashboard-job", component: <DashboardJob /> },
 
   // Home
   { path: "/home", component: <Home /> },
@@ -445,24 +405,6 @@ const authProtectedRoutes = [
     ),
   },
 
-  // Administrators
-  {
-    path: "/administrators",
-    component: (
-      <RoleProtectedRoute allowedRoles={["ceo"]}>
-        <Administrators />{" "}
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: "/add-administrator",
-    component: (
-      <RoleProtectedRoute allowedRoles={["ceo"]}>
-        <AddAdministrator />{" "}
-      </RoleProtectedRoute>
-    ),
-  },
-
   //Coordinator
 
   {
@@ -533,31 +475,6 @@ const authProtectedRoutes = [
   { path: "/invoices-detail", component: <InvoiceDetail /> },
   { path: "/invoices-detail/:id?", component: <InvoiceDetail /> },
 
-  //   // Tasks
-  { path: "/tasks-list", component: <TasksList /> },
-  { path: "/tasks-create", component: <TasksCreate /> },
-  { path: "/tasks-kanban", component: <TasksKanban /> },
-
-  //   //Projects
-  { path: "/projects-grid", component: <ProjectsGrid /> },
-  { path: "/projects-list", component: <ProjectsList /> },
-  { path: "/projects-overview", component: <ProjectsOverview /> },
-  { path: "/projects-overview/:id", component: <ProjectsOverview /> },
-  { path: "/projects-create", component: <ProjectsCreate /> },
-
-  //   //Blog
-  { path: "/blog-list", component: <BlogList /> },
-  { path: "/blog-grid", component: <BlogGrid /> },
-  { path: "/blog-details", component: <BlogDetails /> },
-
-  { path: "/job-grid", component: <JobGrid /> },
-  { path: "/job-details", component: <JobDetails /> },
-  { path: "/job-categories", component: <JobCategories /> },
-  { path: "/job-list", component: <JobList /> },
-  { path: "/job-apply", component: <ApplyJobs /> },
-  { path: "/candidate-list", component: <CandidateList /> },
-  { path: "/candidate-overview", component: <CandidateOverview /> },
-
   // Contacts
   { path: "/contacts-grid", component: <ContactsGrid /> },
   { path: "/contacts-list", component: <ContactsList /> },
@@ -580,13 +497,6 @@ const authProtectedRoutes = [
   { path: "/icons-materialdesign", component: <IconMaterialdesign /> },
   { path: "/icons-fontawesome", component: <IconFontawesome /> },
 
-  //   // Tables
-  { path: "/tables-basic", component: <BasicTables /> },
-  { path: "/tables-datatable", component: <DatatableTables /> },
-
-  //   // Maps
-  { path: "/maps-google", component: <MapsGoogle /> },
-
   //   // Forms
   { path: "/form-elements", component: <FormElements /> },
   { path: "/form-layouts", component: <FormLayouts /> },
@@ -597,7 +507,6 @@ const authProtectedRoutes = [
   { path: "/form-uploads", component: <FormUpload /> },
   { path: "/form-wizard", component: <FormWizard /> },
   { path: "/form-validation", component: <FormValidations /> },
-  { path: "/dual-listbox", component: <DualListbox /> },
 
   //   // Ui
   { path: "/ui-alerts", component: <UiAlert /> },

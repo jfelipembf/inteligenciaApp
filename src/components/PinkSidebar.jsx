@@ -179,13 +179,6 @@ const PinkSidebar = (props) => {
                     className="sidebar-btn-no-bg sidebar-btn-sub"
                     end
                   >
-                    <span>Dúvidas</span>
-                  </NavLink>
-                  <NavLink
-                    to="/notifications"
-                    className="sidebar-btn-no-bg sidebar-btn-sub"
-                    end
-                  >
                     <span>Notificações</span>
                   </NavLink>
                 </div>
