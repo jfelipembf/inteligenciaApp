@@ -273,6 +273,7 @@ const authProtectedRoutes = [
 
   // Home
   { path: "/home", component: <Home /> },
+  { path: "/app", component: <Home /> },
 
   // Attendance
   {
