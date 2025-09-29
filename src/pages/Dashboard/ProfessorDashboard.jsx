@@ -360,8 +360,7 @@ const ProfessorDashboard = (props) => {
     .sort((a, b) => (a.average || 0) - (b.average || 0))
     .slice(0, 7);
 
-  //meta title
-  document.title = "Dashboard do Professor | Painel Escolar";
+  
 
   if (loading) {
     return (

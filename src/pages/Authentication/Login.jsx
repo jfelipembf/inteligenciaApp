@@ -19,7 +19,7 @@ import { loginUser } from "/src/store/actions";
 import logo from "../../assets/images/lgo.png";
 
 const Login = (props) => {
-  document.title = "Login | Inteligência";
+  
 
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
