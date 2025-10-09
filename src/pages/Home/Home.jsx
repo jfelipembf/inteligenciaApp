@@ -178,7 +178,7 @@ const Home = () => {
         {filteredLinks.map((item, idx) => (
           <Link
             to={item.to}
-            key={item.to}
+            key={`${item.to}-${idx}`}
             className={`home-atalho-btn${item.special ? " sair" : ""}`}
           >
             <i className={item.icon}></i>

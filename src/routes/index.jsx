@@ -109,8 +109,8 @@ import ReCharts from "../pages/Charts/ReCharts";
 // //Icons
 import IconBoxicons from "../pages/Icons/IconBoxicons";
 import IconDripicons from "../pages/Icons/IconDripicons";
-import IconMaterialdesign from "../pages/Icons/IconMaterialdesign";
-import IconFontawesome from "../pages/Icons/IconFontawesome";
+import IconMaterialdesign from "../pages/Icons/IconTest";
+import IconFontawesome from "../pages/Icons/IconFontawesomeSimple";
 
 // // Forms
 import FormElements from "../pages/Forms/FormElements";
