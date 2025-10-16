@@ -1,4 +1,7 @@
+/* Importações principais do React e bibliotecas auxiliares*/
 import React, { useState, useMemo, useCallback } from "react";
+
+/*Componentes de reactstrap(estrutura e estilo)*/
 import {
   Container,
   Row,
@@ -16,67 +19,41 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+
+/*Navegação e Breadcrumbs*/
 import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import TableContainer from "../../../components/Common/TableContainer";
+/*Contexto e Hooks personalizados*/
 import { useClassContext } from "../../../contexts/ClassContext";
-import {
-  EDUCATION_LEVELS,
-  ALL_SCHOOL_YEARS,
-  SCHOOL_YEAR_STATUS,
-} from "../../../constants/schoolYear";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useDeleteClass from "../../../hooks/useDeleteClass";
 import useUser from "../../../hooks/useUser";
 
-// Constantes para período
-const PERIOD_OPTIONS = [
-  { value: "Manhã", label: "Manhã", color: "primary" },
-  { value: "Tarde", label: "Tarde", color: "success" },
-  { value: "Noite", label: "Noite", color: "info" },
-  { value: "Integral", label: "Integral", color: "warning" },
-];
-
-// Constantes para status
-const CLASS_STATUS_OPTIONS = [
-  { value: "Ativo", label: "Ativo", color: "success" },
-  { value: "Inativo", label: "Inativo", color: "danger" },
-  { value: "Pendente", label: "Pendente", color: "warning" },
-];
-
+/*Componente principal da página de listagem de turmas*/
 const ListClasses = () => {
-  const { userDetails } = useUser(true); // Obter dados do usuário atual
-
+  const { userDetails } = useUser(true);
   const navigate = useNavigate();
   const { classes, loading, error, refetch } = useClassContext();
+  /*Estados de controle da exclusão */
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { deleteClass } = useDeleteClass();
+  const { deleteClass } = useDeleteClass(); /* Hook para exclusão de turma */
 
-  // Função para extrair texto de um valor, lidando com objetos
+  /* Função para extrair texto de um valor */
   const getTextValue = (value) => {
-    if (value === null || value === undefined) return "";
-
-    // Se for um objeto com propriedade label (react-select)
-    if (typeof value === "object" && value.label !== undefined) {
+    if (!value) return "";
+    if (typeof value === "object" && value.label !== undefined)
       return value.label;
-    }
-
-    // Se for um objeto com propriedade value (react-select)
-    if (typeof value === "object" && value.value !== undefined) {
+    if (typeof value === "object" && value.value !== undefined)
       return value.value;
-    }
-
-    // Se for outro tipo de objeto, converta para string
-    if (typeof value === "object") {
-      return JSON.stringify(value);
-    }
-
+    if (typeof value === "object") return JSON.stringify(value);
     return String(value);
   };
 
+  /*Redireciona para detalhes da turma*/
   const handleViewClass = useCallback(
     (id) => {
       navigate(`/classes/${id}`);
@@ -85,6 +62,7 @@ const ListClasses = () => {
     [navigate]
   );
 
+  /*Redireciona para a tela de edição da turma*/
   const handleEditClass = useCallback(
     (id) => {
       navigate(`/classes/${id}/edit`);
@@ -93,193 +71,162 @@ const ListClasses = () => {
     [navigate]
   );
 
+  /*Excecuta a exclusão da turma*/
   const onClickDelete = useCallback((classItem) => {
     setCurrentClass(classItem);
     setDeleteModal(true);
   }, []);
 
   const handleDeleteClass = async () => {
-    if (!currentClass || !currentClass.id) {
+    if (!currentClass?.id) {
       setDeleteModal(false);
       return;
     }
 
     try {
       setIsDeleting(true);
-
-      await deleteClass(currentClass.id, userDetails.schoolId); // Exclusão usando o hook useDeleteClass
+      await deleteClass(currentClass.id, userDetails.schoolId);
       setIsDeleting(false);
       setDeleteModal(false);
       setCurrentClass(null);
       toast.success("Turma excluída com sucesso!");
-      refetch(); // Recarregar a lista de turmas
+      refetch(); /* Atualiza a lista de turmas */
     } catch (err) {
       setIsDeleting(false);
-      console.error("Erro ao excluir a turma:", err);
       toast.error(
         "Erro ao excluir a turma: " + (err.message || "Erro desconhecido")
       );
     }
   };
 
-  // Função para obter a cor do período
-  const getPeriodColor = (period) => {
-    const periodMap = {
+  /*Define cores para os badges de período*/
+  const getPeriodColor = (period) =>
+    ({
       Manhã: "primary",
       Tarde: "success",
       Noite: "info",
       Integral: "warning",
-    };
+    }[period] || "secondary");
 
-    return periodMap[period] || "secondary";
-  };
-
-  // Função para obter a cor do status
-  const getStatusColor = (status) => {
-    const statusMap = {
+  /*Define cores para os badges de status*/
+  const getStatusColor = (status) =>
+    ({
       Ativo: "success",
       Inativo: "danger",
       Pendente: "warning",
-    };
+    }[status] || "secondary");
 
-    return statusMap[status] || "secondary";
-  };
-
-  // Definir colunas para a tabela
+  /*Colunas da tabela*/
   const columns = useMemo(
     () => [
       {
         header: "Série",
         accessorKey: "series",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          const series = cellProps.row.original.series;
-          const seriesText = series ? getTextValue(series) : "N/A";
-          return (
-            <Link
-              to="#"
-              onClick={() => handleViewClass(cellProps.row.original.id)}
-              className="text-body fw-bold"
-            >
-              {seriesText}
-            </Link>
-          );
-        },
+        cell: (cellProps) => (
+          <Link
+            to="#"
+            onClick={() => handleViewClass(cellProps.row.original.id)}
+            className="text-body fw-bold"
+          >
+            {getTextValue(cellProps.row.original.series) || "N/A"}
+          </Link>
+        ),
       },
       {
         header: "Turma",
         accessorKey: "identifier",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          const identifier = cellProps.row.original.identifier;
-          const identifierText = identifier ? getTextValue(identifier) : "N/A";
-          return <span>{identifierText}</span>;
-        },
+        cell: (cellProps) => (
+          <span>
+            {getTextValue(cellProps.row.original.identifier) || "N/A"}
+          </span>
+        ),
       },
       {
         header: "Nível de Ensino",
         accessorKey: "educationLevel",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          const educationLevel = cellProps.row.original.educationLevel;
-          const educationLevelText = educationLevel
-            ? getTextValue(educationLevel)
-            : "N/A";
-          return <span>{educationLevelText}</span>;
-        },
+        cell: (cellProps) => (
+          <span>
+            {getTextValue(cellProps.row.original.educationLevel) || "N/A"}
+          </span>
+        ),
       },
       {
         header: "Período",
         accessorKey: "period",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          const period = cellProps.row.original.period;
-          const periodText = period ? getTextValue(period) : "N/A";
-          const periodColor = getPeriodColor(periodText);
-
-          return <Badge color={periodColor}>{periodText}</Badge>;
-        },
+        cell: (cellProps) => (
+          <Badge
+            color={getPeriodColor(getTextValue(cellProps.row.original.period))}
+          >
+            {getTextValue(cellProps.row.original.period) || "N/A"}
+          </Badge>
+        ),
       },
       {
         header: "Alunos",
         accessorKey: "studentCount",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          return <span>{cellProps.row.original.studentCount || 0}</span>;
-        },
+        cell: (cellProps) => (
+          <span>{cellProps.row.original.studentCount || 0}</span>
+        ),
       },
       {
         header: "Status",
         accessorKey: "status",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps) => {
-          const status = getTextValue(cellProps.row.original.status);
-          const statusColor = getStatusColor(status);
-
-          return <Badge color={statusColor}>{status || "N/A"}</Badge>;
-        },
+        cell: (cellProps) => (
+          <Badge
+            color={getStatusColor(getTextValue(cellProps.row.original.status))}
+          >
+            {getTextValue(cellProps.row.original.status) || "N/A"}
+          </Badge>
+        ),
       },
       {
         header: "Ações",
         accessorKey: "actions",
-        disableSortBy: true,
-        enableColumnFilter: false,
-        enableSorting: false,
-        cell: (cellProps) => {
-          return (
-            <ul className="list-unstyled hstack gap-1 mb-0">
-              <li>
-                <Button
-                  color="soft-primary"
-                  className="btn btn-sm btn-soft-primary"
-                  onClick={() => handleViewClass(cellProps.row.original.id)}
-                >
-                  <i className="mdi mdi-eye-outline" />
-                </Button>
-              </li>
-
-              {userDetails?.role !== "professor" && (
-                <>
-                  <li>
-                    <Button
-                      color="soft-info"
-                      className="btn btn-sm btn-soft-info"
-                      onClick={() => handleEditClass(cellProps.row.original.id)}
-                    >
-                      <i className="mdi mdi-pencil-outline" />
-                    </Button>
-                  </li>
-
-                  <li>
-                    <Button
-                      color="soft-danger"
-                      className="btn btn-sm btn-soft-danger"
-                      onClick={() => onClickDelete(cellProps.row.original)}
-                    >
-                      <i className="mdi mdi-delete-outline" />
-                    </Button>
-                  </li>
-                </>
-              )}
-            </ul>
-          );
-        },
+        cell: (cellProps) => (
+          <ul className="list-unstyled hstack gap-1 mb-0">
+            <li>
+              <Button
+                color="soft-primary"
+                className="btn btn-sm btn-soft-primary"
+                onClick={() => handleViewClass(cellProps.row.original.id)}
+              >
+                <i className="mdi mdi-eye-outline" />
+              </Button>
+            </li>
+            {userDetails?.role !== "professor" && (
+              <>
+                <li>
+                  <Button
+                    color="soft-info"
+                    className="btn btn-sm btn-soft-info"
+                    onClick={() => handleEditClass(cellProps.row.original.id)}
+                  >
+                    <i className="mdi mdi-pencil-outline" />
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    color="soft-danger"
+                    className="btn btn-sm btn-soft-danger"
+                    onClick={() => onClickDelete(cellProps.row.original)}
+                  >
+                    <i className="mdi mdi-delete-outline" />
+                  </Button>
+                </li>
+              </>
+            )}
+          </ul>
+        ),
       },
     ],
     [handleViewClass, handleEditClass, onClickDelete]
   );
 
+  /*Retorno do JSX*/
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Breadcrumb */}
           <Breadcrumbs title="Turmas" breadcrumbItem="Visualizar Turmas" />
 
           <Row>
@@ -308,27 +255,28 @@ const ListClasses = () => {
                       </Link>
                       <UncontrolledDropdown className="dropdown d-inline-block me-1">
                         <DropdownToggle
-                          type="menu"
+                          type="button"
                           className="btn btn-success"
                           id="dropdownMenuButton1"
                         >
                           <i className="mdi mdi-dots-vertical"></i>
                         </DropdownToggle>
                         <DropdownMenu>
-                          <li>
-                            <DropdownItem href="#">Exportar PDF</DropdownItem>
-                          </li>
-                          <li>
-                            <DropdownItem href="#">Exportar Excel</DropdownItem>
-                          </li>
-                          <li>
-                            <DropdownItem href="#">Imprimir</DropdownItem>
-                          </li>
+                          <DropdownItem onClick={() => handleExport("pdf")}>
+                            Exportar PDF
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleExport("excel")}>
+                            Exportar Excel
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleExport("print")}>
+                            Imprimir
+                          </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
                     </div>
                   </div>
                 </CardBody>
+
                 <CardBody>
                   {loading ? (
                     <div className="text-center my-4">
@@ -359,11 +307,6 @@ const ListClasses = () => {
                       isCustomPageSize={true}
                       isGlobalFilter={true}
                       isJobListGlobalFilter={false}
-                      isPagination={true}
-                      SearchPlaceholder="Pesquisar por série, turma..."
-                      tableClass="align-middle table-nowrap dt-responsive nowrap w-100 table-check dataTable no-footer dtr-inline mt-4 border-top"
-                      pagination="pagination"
-                      paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
                     />
                   )}
                 </CardBody>
@@ -371,12 +314,11 @@ const ListClasses = () => {
             </Col>
           </Row>
 
-          {/* Modal de Exclusão */}
+          {/* Modal de Confirmação de Exclusão */}
           <Modal
             isOpen={deleteModal}
             toggle={() => setDeleteModal(false)}
-            centered={true}
-            size="sm"
+            centered
           >
             <ModalHeader toggle={() => setDeleteModal(false)}>
               Confirmar Exclusão
@@ -392,19 +334,18 @@ const ListClasses = () => {
               </p>
             </ModalBody>
             <ModalFooter>
+              <Button color="light" onClick={() => setDeleteModal(false)}>
+                Cancelar
+              </Button>
               <Button
                 color="danger"
                 onClick={handleDeleteClass}
                 disabled={isDeleting}
               >
-                {isDeleting ? "Excluindo..." : "Sim, Excluir"}
-              </Button>
-              <Button color="secondary" onClick={() => setDeleteModal(false)}>
-                Cancelar
+                {isDeleting ? "Excluindo..." : "Excluir"}
               </Button>
             </ModalFooter>
           </Modal>
-
           {/* Toast Container */}
           <ToastContainer
             position="top-right"
@@ -419,6 +360,7 @@ const ListClasses = () => {
           />
         </Container>
       </div>
+      <ToastContainer />
     </React.Fragment>
   );
 };

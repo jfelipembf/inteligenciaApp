@@ -24,15 +24,19 @@ import "react-toastify/dist/ReactToastify.css";
 // Formik validation
 import { useFormik } from "formik";
 // Importando esquema de validação e valores iniciais
-import { studentValidationSchema, studentInitialValues } from "./validationSchemas";
+import {
+  studentValidationSchema,
+  studentInitialValues,
+} from "./validationSchemas";
+
 // Importando constantes
-import { 
-  GENDER_OPTIONS, 
-  RELATIONSHIP_OPTIONS, 
+import {
+  GENDER_OPTIONS,
+  RELATIONSHIP_OPTIONS,
   BRAZILIAN_STATES,
   PRESCHOOL_YEARS,
   ELEMENTARY_SCHOOL_YEARS,
-  HIGH_SCHOOL_YEARS
+  HIGH_SCHOOL_YEARS,
 } from "../../constants";
 
 const AddStudent = () => {
@@ -105,7 +109,7 @@ const AddStudent = () => {
           role: "aluno",
         });
 
-        toast.success("Aluno cadastrado com sucesso!", { 
+        toast.success("Aluno cadastrado com sucesso!", {
           autoClose: 3000,
           position: "top-right",
           hideProgressBar: false,
@@ -113,13 +117,13 @@ const AddStudent = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        
+
         // Navegar para a lista de alunos após um breve atraso
         setTimeout(() => {
           navigate("/students");
         }, 1500);
       } catch (err) {
-        toast.error(`Erro ao criar aluno: ${err.message}`, { 
+        toast.error(`Erro ao criar aluno: ${err.message}`, {
           autoClose: 5000,
           position: "top-right",
           hideProgressBar: false,
@@ -128,7 +132,7 @@ const AddStudent = () => {
           draggable: true,
         });
       }
-    }
+    },
   });
 
   // Handler para CEP com busca automática
@@ -179,11 +183,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.fullName || ""}
                             invalid={
-                              validation.touched.fullName && validation.errors.fullName ? true : false
+                              validation.touched.fullName &&
+                              validation.errors.fullName
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.fullName && validation.errors.fullName ? (
-                            <FormFeedback type="invalid">{validation.errors.fullName}</FormFeedback>
+                          {validation.touched.fullName &&
+                          validation.errors.fullName ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.fullName}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -198,11 +208,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.email || ""}
                             invalid={
-                              validation.touched.email && validation.errors.email ? true : false
+                              validation.touched.email &&
+                              validation.errors.email
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.email && validation.errors.email ? (
-                            <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                          {validation.touched.email &&
+                          validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.email}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -222,13 +238,18 @@ const AddStudent = () => {
                                 name="cpf"
                                 placeholder="000.000.000-00"
                                 invalid={
-                                  validation.touched.cpf && validation.errors.cpf ? true : false
+                                  validation.touched.cpf &&
+                                  validation.errors.cpf
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
                           {validation.touched.cpf && validation.errors.cpf ? (
-                            <FormFeedback type="invalid">{validation.errors.cpf}</FormFeedback>
+                            <FormFeedback type="invalid">
+                              {validation.errors.cpf}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -248,13 +269,19 @@ const AddStudent = () => {
                                 name="phone"
                                 placeholder="(00) 00000-0000"
                                 invalid={
-                                  validation.touched.phone && validation.errors.phone ? true : false
+                                  validation.touched.phone &&
+                                  validation.errors.phone
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
-                          {validation.touched.phone && validation.errors.phone ? (
-                            <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
+                          {validation.touched.phone &&
+                          validation.errors.phone ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.phone}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -274,13 +301,19 @@ const AddStudent = () => {
                                 type="text"
                                 name="birthDate"
                                 invalid={
-                                  validation.touched.birthDate && validation.errors.birthDate ? true : false
+                                  validation.touched.birthDate &&
+                                  validation.errors.birthDate
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
-                          {validation.touched.birthDate && validation.errors.birthDate ? (
-                            <FormFeedback type="invalid">{validation.errors.birthDate}</FormFeedback>
+                          {validation.touched.birthDate &&
+                          validation.errors.birthDate ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.birthDate}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -295,11 +328,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.registration || ""}
                             invalid={
-                              validation.touched.registration && validation.errors.registration ? true : false
+                              validation.touched.registration &&
+                              validation.errors.registration
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.registration && validation.errors.registration ? (
-                            <FormFeedback type="invalid">{validation.errors.registration}</FormFeedback>
+                          {validation.touched.registration &&
+                          validation.errors.registration ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.registration}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -316,7 +355,8 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.gender || ""}
                             invalid={
-                              validation.touched.gender && validation.errors.gender
+                              validation.touched.gender &&
+                              validation.errors.gender
                                 ? true
                                 : false
                             }
@@ -328,7 +368,8 @@ const AddStudent = () => {
                               </option>
                             ))}
                           </Input>
-                          {validation.touched.gender && validation.errors.gender ? (
+                          {validation.touched.gender &&
+                          validation.errors.gender ? (
                             <FormFeedback type="invalid">
                               {validation.errors.gender}
                             </FormFeedback>
@@ -358,13 +399,18 @@ const AddStudent = () => {
                                 name="cep"
                                 placeholder="00000-000"
                                 invalid={
-                                  validation.touched.cep && validation.errors.cep ? true : false
+                                  validation.touched.cep &&
+                                  validation.errors.cep
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
                           {validation.touched.cep && validation.errors.cep ? (
-                            <FormFeedback type="invalid">{validation.errors.cep}</FormFeedback>
+                            <FormFeedback type="invalid">
+                              {validation.errors.cep}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -379,11 +425,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.street || ""}
                             invalid={
-                              validation.touched.street && validation.errors.street ? true : false
+                              validation.touched.street &&
+                              validation.errors.street
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.street && validation.errors.street ? (
-                            <FormFeedback type="invalid">{validation.errors.street}</FormFeedback>
+                          {validation.touched.street &&
+                          validation.errors.street ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.street}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -398,11 +450,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.number || ""}
                             invalid={
-                              validation.touched.number && validation.errors.number ? true : false
+                              validation.touched.number &&
+                              validation.errors.number
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.number && validation.errors.number ? (
-                            <FormFeedback type="invalid">{validation.errors.number}</FormFeedback>
+                          {validation.touched.number &&
+                          validation.errors.number ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.number}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -430,11 +488,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.neighborhood || ""}
                             invalid={
-                              validation.touched.neighborhood && validation.errors.neighborhood ? true : false
+                              validation.touched.neighborhood &&
+                              validation.errors.neighborhood
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.neighborhood && validation.errors.neighborhood ? (
-                            <FormFeedback type="invalid">{validation.errors.neighborhood}</FormFeedback>
+                          {validation.touched.neighborhood &&
+                          validation.errors.neighborhood ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.neighborhood}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -450,7 +514,8 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.state || ""}
                             invalid={
-                              validation.touched.state && validation.errors.state
+                              validation.touched.state &&
+                              validation.errors.state
                                 ? true
                                 : false
                             }
@@ -462,7 +527,8 @@ const AddStudent = () => {
                               </option>
                             ))}
                           </Input>
-                          {validation.touched.state && validation.errors.state ? (
+                          {validation.touched.state &&
+                          validation.errors.state ? (
                             <FormFeedback type="invalid">
                               {validation.errors.state}
                             </FormFeedback>
@@ -480,11 +546,15 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.city || ""}
                             invalid={
-                              validation.touched.city && validation.errors.city ? true : false
+                              validation.touched.city && validation.errors.city
+                                ? true
+                                : false
                             }
                           />
                           {validation.touched.city && validation.errors.city ? (
-                            <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
+                            <FormFeedback type="invalid">
+                              {validation.errors.city}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -505,11 +575,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.guardianName || ""}
                             invalid={
-                              validation.touched.guardianName && validation.errors.guardianName ? true : false
+                              validation.touched.guardianName &&
+                              validation.errors.guardianName
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.guardianName && validation.errors.guardianName ? (
-                            <FormFeedback type="invalid">{validation.errors.guardianName}</FormFeedback>
+                          {validation.touched.guardianName &&
+                          validation.errors.guardianName ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.guardianName}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -524,11 +600,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.guardianEmail || ""}
                             invalid={
-                              validation.touched.guardianEmail && validation.errors.guardianEmail ? true : false
+                              validation.touched.guardianEmail &&
+                              validation.errors.guardianEmail
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.guardianEmail && validation.errors.guardianEmail ? (
-                            <FormFeedback type="invalid">{validation.errors.guardianEmail}</FormFeedback>
+                          {validation.touched.guardianEmail &&
+                          validation.errors.guardianEmail ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.guardianEmail}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -548,13 +630,19 @@ const AddStudent = () => {
                                 name="guardianCpf"
                                 placeholder="000.000.000-00"
                                 invalid={
-                                  validation.touched.guardianCpf && validation.errors.guardianCpf ? true : false
+                                  validation.touched.guardianCpf &&
+                                  validation.errors.guardianCpf
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
-                          {validation.touched.guardianCpf && validation.errors.guardianCpf ? (
-                            <FormFeedback type="invalid">{validation.errors.guardianCpf}</FormFeedback>
+                          {validation.touched.guardianCpf &&
+                          validation.errors.guardianCpf ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.guardianCpf}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -574,13 +662,19 @@ const AddStudent = () => {
                                 name="guardianPhone"
                                 placeholder="(00) 00000-0000"
                                 invalid={
-                                  validation.touched.guardianPhone && validation.errors.guardianPhone ? true : false
+                                  validation.touched.guardianPhone &&
+                                  validation.errors.guardianPhone
+                                    ? true
+                                    : false
                                 }
                               />
                             )}
                           </InputMask>
-                          {validation.touched.guardianPhone && validation.errors.guardianPhone ? (
-                            <FormFeedback type="invalid">{validation.errors.guardianPhone}</FormFeedback>
+                          {validation.touched.guardianPhone &&
+                          validation.errors.guardianPhone ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.guardianPhone}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -596,7 +690,8 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.guardianRelationship || ""}
                             invalid={
-                              validation.touched.guardianRelationship && validation.errors.guardianRelationship
+                              validation.touched.guardianRelationship &&
+                              validation.errors.guardianRelationship
                                 ? true
                                 : false
                             }
@@ -608,7 +703,8 @@ const AddStudent = () => {
                               </option>
                             ))}
                           </Input>
-                          {validation.touched.guardianRelationship && validation.errors.guardianRelationship ? (
+                          {validation.touched.guardianRelationship &&
+                          validation.errors.guardianRelationship ? (
                             <FormFeedback type="invalid">
                               {validation.errors.guardianRelationship}
                             </FormFeedback>
@@ -630,11 +726,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.password || ""}
                             invalid={
-                              validation.touched.password && validation.errors.password ? true : false
+                              validation.touched.password &&
+                              validation.errors.password
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.password && validation.errors.password ? (
-                            <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                          {validation.touched.password &&
+                          validation.errors.password ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.password}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>
@@ -649,11 +751,17 @@ const AddStudent = () => {
                             onBlur={validation.handleBlur}
                             value={validation.values.confirmPassword || ""}
                             invalid={
-                              validation.touched.confirmPassword && validation.errors.confirmPassword ? true : false
+                              validation.touched.confirmPassword &&
+                              validation.errors.confirmPassword
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.confirmPassword && validation.errors.confirmPassword ? (
-                            <FormFeedback type="invalid">{validation.errors.confirmPassword}</FormFeedback>
+                          {validation.touched.confirmPassword &&
+                          validation.errors.confirmPassword ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.confirmPassword}
+                            </FormFeedback>
                           ) : null}
                         </FormGroup>
                       </Col>

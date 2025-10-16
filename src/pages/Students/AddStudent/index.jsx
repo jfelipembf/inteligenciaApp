@@ -17,7 +17,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const AddStudent = () => {
   const navigate = useNavigate();
-  
+
   // Estado para armazenar as séries e turmas
   const [series, setSeries] = useState([
     { id: 1, name: "1º Ano - Ensino Fundamental" },
@@ -63,12 +63,12 @@ const AddStudent = () => {
       );
       setTurmasFiltradas(turmasDaSerie);
       // Limpa a turma selecionada se não estiver disponível na nova série
-      if (!turmasDaSerie.find(t => t.id === parseInt(formData.turma))) {
-        setFormData(prev => ({ ...prev, turma: "" }));
+      if (!turmasDaSerie.find((t) => t.id === parseInt(formData.turma))) {
+        setFormData((prev) => ({ ...prev, turma: "" }));
       }
     } else {
       setTurmasFiltradas([]);
-      setFormData(prev => ({ ...prev, turma: "" }));
+      setFormData((prev) => ({ ...prev, turma: "" }));
     }
   }, [formData.serie, turmas]);
 
@@ -300,7 +300,9 @@ const AddStudent = () => {
                     </Col>
                     <Col md={6}>
                       <FormGroup>
-                        <Label for="responsavelEmail">E-mail do Responsável</Label>
+                        <Label for="responsavelEmail">
+                          E-mail do Responsável
+                        </Label>
                         <Input
                           type="email"
                           name="responsavelEmail"
@@ -316,7 +318,9 @@ const AddStudent = () => {
                   <Row>
                     <Col md={6}>
                       <FormGroup>
-                        <Label for="responsavelTelefone">Telefone do Responsável</Label>
+                        <Label for="responsavelTelefone">
+                          Telefone do Responsável
+                        </Label>
                         <InputMask
                           mask="(99) 99999-9999"
                           value={formData.responsavelTelefone}

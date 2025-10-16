@@ -352,7 +352,7 @@ const authProtectedRoutes = [
   // Students
   { path: "/students", component: <Students /> },
   {
-    path: "/add-student",
+    path: "classes/:classId/add-student",
     component: (
       <RoleProtectedRoute allowedRoles={["ceo", "principal", "coordinator"]}>
         {" "}
@@ -361,6 +361,7 @@ const authProtectedRoutes = [
     ),
   },
   { path: "/students/:id", component: <StudentProfile /> },
+  { path: "classes/:classId/students/:id", component: <StudentProfile /> },
 
   // Teachers
   {
