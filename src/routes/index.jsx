@@ -1,5 +1,5 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { UsersProvider } from "../contexts/UsersContext";
 import { NotificationsProvider } from "../contexts/NotificationsContext";
@@ -81,10 +81,8 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 // // Dashboard
 import Dashboard from "../pages/Dashboard/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
-import DashboardFinanceiro from "../pages/Dashboard-financeiro/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
 
-import DashboardJob from "../pages/DashboardJob/index";
 import GestorDashboard from "../pages/Dashboard/GestorDashboard";
 import CoordenadorDashboard from "../pages/Dashboard/CoordenadorDashboard";
 import ProfessorDashboard from "../pages/Dashboard/ProfessorDashboard";
@@ -109,7 +107,7 @@ import ReCharts from "../pages/Charts/ReCharts";
 // //Icons
 import IconBoxicons from "../pages/Icons/IconBoxicons";
 import IconDripicons from "../pages/Icons/IconDripicons";
-import IconMaterialdesign from "../pages/Icons/IconTest";
+import IconMaterialdesign from "../pages/Icons/IconMaterialTreeShaking";
 import IconFontawesome from "../pages/Icons/IconFontawesomeSimple";
 
 // // Forms
@@ -228,6 +226,10 @@ import PrincipalProfile from "../pages/Principals/PrincipalProfile/index";
 const EventsRoutes = ({ children }) => (
   <EventsProvider>{children}</EventsProvider>
 );
+
+EventsRoutes.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const authProtectedRoutes = [
   {

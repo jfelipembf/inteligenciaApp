@@ -6,7 +6,7 @@ import logo from "../assets/images/lgo.png";
 import "../assets/scss/pink-sidebar.scss";
 import useUser from "../hooks/useUser";
 
-const PinkSidebar = (props) => {
+const PinkSidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const dispatch = useDispatch();
