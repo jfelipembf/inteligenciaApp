@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import { ClassProvider } from "../contexts/ClassContext";
@@ -6,6 +5,7 @@ import { LessonsProvider } from "../contexts/LessonContext";
 import { StudentsProvider } from "../contexts/StudentsContext";
 import { TeachersProvider } from "../contexts/TeachersContext";
 import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContext";
+import PropTypes from "prop-types";
 
 const Authmiddleware = ({ children }) => {
   const { isAuthenticated, loading, userDetails } = useAuthContext();
@@ -27,7 +27,8 @@ const Authmiddleware = ({ children }) => {
     return <Navigate to="/login" />;
   }
 
-  if (userDetails.role === "aluno") {
+  // Se userDetails existe e o role é aluno, redirecionar
+  if (userDetails && userDetails.role === "aluno") {
     return <Navigate to="/unauthorized" />;
   }
 
@@ -35,11 +36,20 @@ const Authmiddleware = ({ children }) => {
     <ClassProvider>
       <TeachersProvider>
         <LessonsProvider>
-          <StudentsProvider>{children || <Outlet />}</StudentsProvider>
+          <StudentsProvider>
+            <ProfessorDashboardProvider>
+              {children || <Outlet />}
+            </ProfessorDashboardProvider>
+          </StudentsProvider>
         </LessonsProvider>
       </TeachersProvider>
     </ClassProvider>
   );
+};
+
+// PropTypes para validação
+Authmiddleware.propTypes = {
+  children: PropTypes.node,
 };
 
 export default Authmiddleware;

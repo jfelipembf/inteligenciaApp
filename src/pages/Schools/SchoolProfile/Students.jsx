@@ -30,15 +30,15 @@ const Students = () => {
           date: "2024-03-15T10:30:00",
           type: "Mensagem",
           description: "Visualizou comunicado sobre a reunião de pais",
-          status: "read"
+          status: "read",
         },
         {
           date: "2024-03-14T15:45:00",
           type: "Atividade",
           description: "Entregou trabalho de matemática",
-          status: "completed"
-        }
-      ]
+          status: "completed",
+        },
+      ],
     },
     {
       name: "Maria Santos",
@@ -104,7 +104,9 @@ const Students = () => {
     },
     {
       header: () => (
-        <div className="text-end" style={{ marginRight: '30px' }}>Ações</div>
+        <div className="text-end" style={{ marginRight: "30px" }}>
+          Ações
+        </div>
       ),
       accessorKey: "actions",
       enableColumnFilter: false,
@@ -112,14 +114,20 @@ const Students = () => {
       cell: (cellProps) => {
         const student = cellProps.row.original;
         return (
-          <div className="d-flex gap-2 justify-content-end" style={{ marginRight: '-5px' }}>
+          <div
+            className="d-flex gap-2 justify-content-end"
+            style={{ marginRight: "-5px" }}
+          >
             <button
               type="button"
               className="btn btn-success btn-sm rounded-circle d-flex align-items-center justify-content-center"
-              style={{ width: '32px', height: '32px' }}
+              style={{ width: "32px", height: "32px" }}
               title="WhatsApp"
               onClick={() => {
-                window.open(`https://wa.me/55${student.phone?.replace(/\D/g, '')}`, '_blank');
+                window.open(
+                  `https://wa.me/55${student.phone?.replace(/\D/g, "")}`,
+                  "_blank"
+                );
               }}
             >
               <i className="bx bxl-whatsapp font-size-14"></i>
@@ -127,7 +135,7 @@ const Students = () => {
             <button
               type="button"
               className="btn btn-info btn-sm rounded-circle d-flex align-items-center justify-content-center"
-              style={{ width: '32px', height: '32px' }}
+              style={{ width: "32px", height: "32px" }}
               title="Email"
               onClick={() => {
                 window.location.href = `mailto:${student.email}`;
@@ -138,7 +146,7 @@ const Students = () => {
             <button
               type="button"
               className="btn btn-primary btn-sm rounded-circle d-flex align-items-center justify-content-center"
-              style={{ width: '32px', height: '32px' }}
+              style={{ width: "32px", height: "32px" }}
               title="Ver Detalhes"
               onClick={() => {
                 setSelectedStudent(student);
@@ -155,8 +163,8 @@ const Students = () => {
 
   if (isViewingDetails && selectedStudent) {
     return (
-      <StudentProfile 
-        student={selectedStudent} 
+      <StudentProfile
+        student={selectedStudent}
         onBack={() => {
           setIsViewingDetails(false);
           setSelectedStudent(null);
@@ -189,4 +197,4 @@ const Students = () => {
   );
 };
 
-export default Students; 
+export default Students;

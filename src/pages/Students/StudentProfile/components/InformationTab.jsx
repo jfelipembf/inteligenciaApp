@@ -32,29 +32,47 @@ const InformationTab = ({ studentData }) => {
 
   // Atualizar o formulário quando os dados do aluno mudarem
   useEffect(() => {
-    if (studentData) {
-      setFormData({
-        ...formData,
-        name: studentData.personalInfo?.name || "",
-        email: studentData.personalInfo?.email || "",
-        phone: studentData.personalInfo?.phone || "",
-        birthDate: studentData.personalInfo?.birthDate || "",
-        registration: studentData.academicInfo?.registration || "",
-        grade: studentData.academicInfo?.grade || "",
-        class: studentData.academicInfo?.className || "Não possui",
-        parentName: studentData.guardian?.name || "",
-        parentPhone: studentData.guardian?.phone || "",
-        parentEmail: studentData.guardian?.email || "",
-      });
-    }
+    if (!studentData) return;
+
+    const name = studentData.name ?? studentData.personalInfo?.name ?? "";
+    const email = studentData.email ?? studentData.personalInfo?.email ?? "";
+    const phone = studentData.phone ?? studentData.personalInfo?.phone ?? "";
+    const birthDate =
+      studentData.birthDate ?? studentData.personalInfo?.birthDate ?? "";
+    const registration =
+      studentData.registration ?? studentData.academicInfo?.registration ?? "";
+    const grade = studentData.grade ?? studentData.academicInfo?.grade ?? "";
+    const className =
+      studentData.class ?? studentData.academicInfo?.className ?? "Não possui";
+    const parentName = studentData.guardian?.name ?? "";
+    const parentPhone = studentData.guardian?.phone ?? "";
+    const parentEmail = studentData.guardian?.email ?? "";
+
+    console.log(studentData);
+
+    // atualiza o estado usando o valor anterior (mais seguro)
+    setFormData((prev) => ({
+      ...prev,
+      name,
+      email,
+      phone,
+      birthDate,
+      registration,
+      grade,
+      class: className,
+      parentName,
+      parentPhone,
+      parentEmail,
+    }));
   }, [studentData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    /* usa o valor anterior e atualiza só o campo que mudou*/
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -165,6 +183,7 @@ const InformationTab = ({ studentData }) => {
                     type="text"
                     id="name"
                     name="name"
+                    className="form-control"
                     value={formData.name}
                     onChange={handleChange}
                     disabled

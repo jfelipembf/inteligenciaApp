@@ -220,6 +220,9 @@ export const AuthProvider = ({ children }) => {
       } catch (err) {
         localStorage.removeItem("authUser");
       }
+    } else {
+      // Se não há usuário armazenado, definir loading como false
+      setLoading(false);
     }
 
     return () => unsubscribe();

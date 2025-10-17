@@ -57,12 +57,12 @@ const useFetchStudents = (options = {}) => {
   }, []);
 
   useEffect(() => {
-    if (!skipInitialFetch) {
+    if (!skipInitialFetch && userDetails?.schoolId) {
       fetchStudents().catch((err) => {
         // Erro já tratado dentro de fetchStudents
       });
     }
-  }, [fetchStudents, skipInitialFetch]);
+  }, [fetchStudents, skipInitialFetch, userDetails?.schoolId]);
 
   return { students, loading, error, fetchStudents };
 };

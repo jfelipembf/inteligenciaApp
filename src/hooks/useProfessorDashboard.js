@@ -293,7 +293,6 @@ const useProfessorDashboard = () => {
 
         // Salvar as médias ordenadas por unidade
         setUnitAverages(sortedUnitAverages);
-        console.log("Média por unidade (ordenada):", sortedUnitAverages);
 
         setTeacherClassCount(count);
         setStudentsLength(totalStudents);
@@ -304,13 +303,6 @@ const useProfessorDashboard = () => {
         setGradeDistribution(gradeDistributionTemp);
         setUnitAveragesByClass(unitAveragesByClassTemp);
         setGradeDistributionByClass(gradeDistributionByClassTemp);
-        console.log("studensbyclass", studentsByClassTemp);
-        console.log("Média por unidade:", unitAveragesFinal);
-        console.log("Distribuição de notas:", gradeDistributionTemp);
-        console.log(
-          "Distribuição de notas por turma:",
-          gradeDistributionByClassTemp
-        );
       } catch (err) {
         console.error("Erro ao buscar turmas do professor:", err);
         setError(err.message);

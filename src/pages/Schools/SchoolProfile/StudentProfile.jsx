@@ -1,5 +1,18 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane, Badge, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  Badge,
+  Button,
+} from "reactstrap";
 import { useParams } from "react-router-dom";
 import classnames from "classnames";
 import Breadcrumb from "../../../components/Common/Breadcrumb";
@@ -32,18 +45,18 @@ const StudentProfile = () => {
         date: "2024-03-15T10:30:00",
         type: "Mensagem",
         description: "Visualizou comunicado sobre a reunião de pais",
-        status: "read"
+        status: "read",
       },
       {
         date: "2024-03-14T15:45:00",
         type: "Atividade",
         description: "Entregou trabalho de matemática",
-        status: "completed"
-      }
-    ]
+        status: "completed",
+      },
+    ],
   };
 
-  const toggleTab = tab => {
+  const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
@@ -52,7 +65,7 @@ const StudentProfile = () => {
   return (
     <React.Fragment>
       <Breadcrumb title="Alunos" breadcrumbItem={student.name} />
-      
+
       <Row>
         <Col lg={12}>
           <Card className="overflow-hidden">
@@ -83,7 +96,9 @@ const StudentProfile = () => {
                 <Col sm="6" className="ms-n12 ps-0">
                   <div style={{ marginLeft: "-40px" }}>
                     <h5 className="font-size-16">{student.name}</h5>
-                    <p className="text-muted mb-1">{student.grade} - {student.class}</p>
+                    <p className="text-muted mb-1">
+                      {student.grade} - {student.class}
+                    </p>
                     <p className="text-muted mb-0">{student.email}</p>
                   </div>
                 </Col>
@@ -95,9 +110,15 @@ const StudentProfile = () => {
                         color="success"
                         className="rounded-circle d-flex align-items-center justify-content-center"
                         title="WhatsApp"
-                        style={{ width: '38px', height: '38px' }}
+                        style={{ width: "38px", height: "38px" }}
                         onClick={() => {
-                          window.open(`https://wa.me/55${student.phone.replace(/\D/g, '')}`, '_blank');
+                          window.open(
+                            `https://wa.me/55${student.phone.replace(
+                              /\D/g,
+                              ""
+                            )}`,
+                            "_blank"
+                          );
                         }}
                       >
                         <i className="bx bxl-whatsapp font-size-16"></i>
@@ -106,7 +127,7 @@ const StudentProfile = () => {
                         color="info"
                         className="rounded-circle d-flex align-items-center justify-content-center"
                         title="Email"
-                        style={{ width: '38px', height: '38px' }}
+                        style={{ width: "38px", height: "38px" }}
                         onClick={() => {
                           window.location.href = `mailto:${student.email}`;
                         }}
@@ -117,7 +138,7 @@ const StudentProfile = () => {
                         color="primary"
                         className="rounded-circle d-flex align-items-center justify-content-center"
                         title="Enviar Notificação"
-                        style={{ width: '38px', height: '38px' }}
+                        style={{ width: "38px", height: "38px" }}
                         onClick={() => {
                           // TODO: Implementar envio de notificação push
                         }}
@@ -143,7 +164,9 @@ const StudentProfile = () => {
                     className={classnames({ active: activeTab === "1" })}
                     onClick={() => toggleTab("1")}
                   >
-                    <span className="d-block d-sm-none"><i className="fas fa-user"></i></span>
+                    <span className="d-block d-sm-none">
+                      <i className="fas fa-user"></i>
+                    </span>
                     <span className="d-none d-sm-block">
                       <i className="bx bx-user-circle me-1"></i> Informações
                     </span>
@@ -154,7 +177,9 @@ const StudentProfile = () => {
                     className={classnames({ active: activeTab === "2" })}
                     onClick={() => toggleTab("2")}
                   >
-                    <span className="d-block d-sm-none"><i className="fas fa-chart-line"></i></span>
+                    <span className="d-block d-sm-none">
+                      <i className="fas fa-chart-line"></i>
+                    </span>
                     <span className="d-none d-sm-block">
                       <i className="bx bx-chart me-1"></i> Notas
                     </span>
@@ -165,7 +190,9 @@ const StudentProfile = () => {
                     className={classnames({ active: activeTab === "3" })}
                     onClick={() => toggleTab("3")}
                   >
-                    <span className="d-block d-sm-none"><i className="fas fa-history"></i></span>
+                    <span className="d-block d-sm-none">
+                      <i className="fas fa-history"></i>
+                    </span>
                     <span className="d-none d-sm-block">
                       <i className="bx bx-history me-1"></i> Atividades
                     </span>
@@ -174,15 +201,9 @@ const StudentProfile = () => {
               </Nav>
 
               <TabContent activeTab={activeTab} className="p-3">
-                <TabPane tabId="1">
-                  {/* Conteúdo da aba Informações */}
-                </TabPane>
-                <TabPane tabId="2">
-                  {/* Conteúdo da aba Notas */}
-                </TabPane>
-                <TabPane tabId="3">
-                  {/* Conteúdo da aba Atividades */}
-                </TabPane>
+                <TabPane tabId="1">{/* Conteúdo da aba Informações */}</TabPane>
+                <TabPane tabId="2">{/* Conteúdo da aba Notas */}</TabPane>
+                <TabPane tabId="3">{/* Conteúdo da aba Atividades */}</TabPane>
               </TabContent>
             </CardBody>
           </Card>
@@ -192,4 +213,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile; 
+export default StudentProfile;

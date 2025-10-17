@@ -334,7 +334,7 @@ const ViewClass = () => {
                                   size="sm"
                                   className="me-1"
                                   onClick={() =>
-                                    (window.location.href = `/students/${student.id}`)
+                                    navigate(`students/${student.id}`)
                                   }
                                 >
                                   Ver Perfil
