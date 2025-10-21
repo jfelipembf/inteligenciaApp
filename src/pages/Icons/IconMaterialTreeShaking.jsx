@@ -59,8 +59,6 @@ import {
   mdiWifi,
   mdiBluetooth,
   mdiBattery,
-  mdiBatteryLow,
-  mdiBatteryEmpty,
   mdiVolumeHigh,
   mdiVolumeLow,
   mdiVolumeOff,
@@ -82,50 +80,6 @@ import {
   mdiSquareOutline,
   mdiTriangleOutline,
   mdiDiamondOutline,
-  mdiGithub,
-  mdiTwitter,
-  mdiFacebook,
-  mdiInstagram,
-  mdiLinkedin,
-  mdiYoutube,
-  mdiGoogle,
-  mdiApple,
-  mdiMicrosoft,
-  mdiAmazon,
-  mdiSpotify,
-  mdiDiscord,
-  mdiSlack,
-  mdiTrello,
-  mdiDocker,
-  mdiGit,
-  mdiGitlab,
-  mdiBitbucket,
-  mdiStackOverflow,
-  mdiReddit,
-  mdiPinterest,
-  mdiSnapchat,
-  mdiTiktok,
-  mdiWhatsapp,
-  mdiTelegram,
-  mdiViber,
-  mdiSkype,
-  mdiZoom,
-  mdiTeams,
-  mdiDropbox,
-  mdiGoogleDrive,
-  mdiOneDrive,
-  mdiBox,
-  mdiSalesforce,
-  mdiHubspot,
-  mdiMailchimp,
-  mdiStripe,
-  mdiPaypal,
-  mdiVisa,
-  mdiMastercard,
-  mdiAmex,
-  mdiDiscover,
-  mdiJcb,
-  mdiDinersClub,
 } from "@mdi/js";
 
 // Componente de ícone individual
@@ -146,7 +100,6 @@ IconItem.propTypes = {
 
 const IconMaterialTreeShaking = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Ícones organizados por categoria
   const iconCategories = useMemo(() => {
@@ -196,8 +149,6 @@ const IconMaterialTreeShaking = () => {
       { icon: mdiWifi, name: "wifi" },
       { icon: mdiBluetooth, name: "bluetooth" },
       { icon: mdiBattery, name: "battery" },
-      { icon: mdiBatteryLow, name: "battery-low" },
-      { icon: mdiBatteryEmpty, name: "battery-empty" },
       { icon: mdiVolumeHigh, name: "volume-high" },
       { icon: mdiVolumeLow, name: "volume-low" },
       { icon: mdiVolumeOff, name: "volume-off" },
@@ -221,68 +172,14 @@ const IconMaterialTreeShaking = () => {
       { icon: mdiDiamondOutline, name: "diamond-outline" },
     ];
 
-    const brandIcons = [
-      { icon: mdiGithub, name: "github" },
-      { icon: mdiTwitter, name: "twitter" },
-      { icon: mdiFacebook, name: "facebook" },
-      { icon: mdiInstagram, name: "instagram" },
-      { icon: mdiLinkedin, name: "linkedin" },
-      { icon: mdiYoutube, name: "youtube" },
-      { icon: mdiGoogle, name: "google" },
-      { icon: mdiApple, name: "apple" },
-      { icon: mdiMicrosoft, name: "microsoft" },
-      { icon: mdiAmazon, name: "amazon" },
-      { icon: mdiSpotify, name: "spotify" },
-      { icon: mdiDiscord, name: "discord" },
-      { icon: mdiSlack, name: "slack" },
-      { icon: mdiTrello, name: "trello" },
-      { icon: mdiDocker, name: "docker" },
-      { icon: mdiGit, name: "git" },
-      { icon: mdiGitlab, name: "gitlab" },
-      { icon: mdiBitbucket, name: "bitbucket" },
-      { icon: mdiStackOverflow, name: "stack-overflow" },
-      { icon: mdiReddit, name: "reddit" },
-      { icon: mdiPinterest, name: "pinterest" },
-      { icon: mdiSnapchat, name: "snapchat" },
-      { icon: mdiTiktok, name: "tiktok" },
-      { icon: mdiWhatsapp, name: "whatsapp" },
-      { icon: mdiTelegram, name: "telegram" },
-      { icon: mdiViber, name: "viber" },
-      { icon: mdiSkype, name: "skype" },
-      { icon: mdiZoom, name: "zoom" },
-      { icon: mdiTeams, name: "teams" },
-      { icon: mdiDropbox, name: "dropbox" },
-      { icon: mdiGoogleDrive, name: "google-drive" },
-      { icon: mdiOneDrive, name: "onedrive" },
-      { icon: mdiBox, name: "box" },
-      { icon: mdiSalesforce, name: "salesforce" },
-      { icon: mdiHubspot, name: "hubspot" },
-      { icon: mdiMailchimp, name: "mailchimp" },
-      { icon: mdiStripe, name: "stripe" },
-      { icon: mdiPaypal, name: "paypal" },
-      { icon: mdiVisa, name: "visa" },
-      { icon: mdiMastercard, name: "mastercard" },
-      { icon: mdiAmex, name: "amex" },
-      { icon: mdiDiscover, name: "discover" },
-      { icon: mdiJcb, name: "jcb" },
-      { icon: mdiDinersClub, name: "diners-club" },
-    ];
-
     return {
       basic: basicIcons,
-      brands: brandIcons,
     };
   }, []);
 
   // Filtrar ícones baseado na busca e categoria
   const filteredIcons = useMemo(() => {
-    let icons = [];
-
-    if (selectedCategory === "all") {
-      icons = [...iconCategories.basic, ...iconCategories.brands];
-    } else {
-      icons = iconCategories[selectedCategory] || [];
-    }
+    let icons = iconCategories.basic;
 
     if (searchTerm) {
       icons = icons.filter((icon) =>
@@ -291,7 +188,7 @@ const IconMaterialTreeShaking = () => {
     }
 
     return icons;
-  }, [iconCategories, searchTerm, selectedCategory]);
+  }, [iconCategories, searchTerm]);
 
   //meta title
   React.useEffect(() => {
@@ -317,21 +214,6 @@ const IconMaterialTreeShaking = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </FormGroup>
-            </Col>
-            <Col md="6">
-              <FormGroup>
-                <Label for="category">Categoria</Label>
-                <Input
-                  type="select"
-                  id="category"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  <option value="all">Todos</option>
-                  <option value="basic">Básicos</option>
-                  <option value="brands">Marcas</option>
-                </Input>
               </FormGroup>
             </Col>
           </Row>
