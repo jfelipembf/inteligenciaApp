@@ -83,6 +83,15 @@ const Events = () => {
   const { events, loading, error, refetch } = useEventsContext();
   const { updateEventStatuses, loading: updatingStatuses } =
     useUpdateEventStatuses();
+
+  const [localEvents, setLocalEvents] = useState(events || []);
+
+  useEffect(() => {
+  if (events && events.length > 0) {
+    setLocalEvents(events);
+  }
+}, [events]);
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -133,12 +142,12 @@ const Events = () => {
       setIsDeleting(true);
       // Simulação de exclusão bem-sucedida
       setTimeout(() => {
-        setEvents(events.filter((event) => event.id !== currentEvent.id));
+        setLocalEvents(prev => prev.filter(event => event.id !== currentEvent.id));
         setIsDeleting(false);
         setDeleteModal(false);
         setCurrentEvent(null);
-        toast.success("Evento excluído com sucesso!");
-      }, 1000);
+  toast.success("Evento excluído com sucesso!");
+}, 1000);
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir o evento:", err);
@@ -356,7 +365,7 @@ const Events = () => {
                   ) : (
                     <TableContainer
                       columns={columns}
-                      data={events}
+                      data={localEvents}
                       isCustomPageSize={true}
                       isGlobalFilter={true}
                       isJobListGlobalFilter={false}
