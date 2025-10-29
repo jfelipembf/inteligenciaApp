@@ -23,6 +23,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEventsContext } from "../../contexts/EventsContext";
 import useUpdateEventStatuses from "../../hooks/useUpdateEventStatuses";
+import useDeleteEvent from "../../hooks/useDeleteEvent";
 
 // Constantes para status de evento
 const EVENT_STATUS_OPTIONS = [
@@ -80,18 +81,10 @@ const SAMPLE_EVENTS = [
 
 const Events = () => {
   const navigate = useNavigate();
-  const { events, loading, error, refetch } = useEventsContext();
+  const { events, loading, error, refetchEvents } = useEventsContext();
   const { updateEventStatuses, loading: updatingStatuses } =
     useUpdateEventStatuses();
-
-  const [localEvents, setLocalEvents] = useState(events || []);
-
-  useEffect(() => {
-  if (events && events.length > 0) {
-    setLocalEvents(events);
-  }
-}, [events]);
-
+  const { deleteEvent } = useDeleteEvent();
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -140,20 +133,20 @@ const Events = () => {
 
     try {
       setIsDeleting(true);
-      // Simulação de exclusão bem-sucedida
-      setTimeout(() => {
-        setLocalEvents(prev => prev.filter(event => event.id !== currentEvent.id));
-        setIsDeleting(false);
-        setDeleteModal(false);
-        setCurrentEvent(null);
-  toast.success("Evento excluído com sucesso!");
-}, 1000);
+      //exclui do firebase
+      await deleteEvent(currentEvent.id);
+      await refetchEvents();
+
+      toast.success("evento excluido com sucesso!");
     } catch (err) {
-      setIsDeleting(false);
-      console.error("Erro ao excluir o evento:", err);
+      console.error("Erro ao excluir evento:", err);
       toast.error(
-        "Erro ao excluir o evento: " + (err.message || "Erro desconhecido")
+        "Erro ao excluir evento." + (err.message || "Erro desconhecido.")
       );
+    } finally {
+      setIsDeleting(false);
+      setDeleteModal(false);
+      setCurrentEvent(null);
     }
   };
 
@@ -365,7 +358,7 @@ const Events = () => {
                   ) : (
                     <TableContainer
                       columns={columns}
-                      data={localEvents}
+                      data={events}
                       isCustomPageSize={true}
                       isGlobalFilter={true}
                       isJobListGlobalFilter={false}

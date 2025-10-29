@@ -19,7 +19,7 @@ const useFetchEvents = () => {
       }
 
       const schoolId = userDetails.schoolId;
-
+      /*alteração teste evelyn*/
       const eventsSnapshot = await firebase
         .firestore()
         .collection("schools")

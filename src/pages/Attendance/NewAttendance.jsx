@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   Row,
@@ -23,6 +23,8 @@ import useSaveAttendance from "../../hooks/useSaveAttendance";
 registerLocale("pt-BR", ptBR);
 
 const NewAttendance = () => {
+  const [justificationFile, setJustificationFile] = useState({});
+
   const { classes, loading: loadingClasses } = useClassContext();
   const { lessons, setSelectedClassId } = useLessonsContext();
   const { userDetails } = useAuthContext();
@@ -87,8 +89,51 @@ const NewAttendance = () => {
       [studentId]: {
         ...prev[studentId],
         status,
+
+        justificationFileName:
+          status === "justified"
+            ? prev[studentId]?.justificationFileName
+            : null,
       },
     }));
+  };
+
+  //Nova função para lidar com a seleção do arquivo//
+  const handleFileSelect = (studentId, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setJustificationFile((prev) => ({
+        //Armazena o arquivo no estado local(para posterior upload real quando necessário) )
+        ...prev,
+        [studentId]: file,
+      }));
+
+      setAttendance((prev) => ({
+        //Atualiza o estado de frequência com o nome e informação do arquivo
+        ...prev,
+        [studentId]: {
+          ...prev[studentId],
+          status: "justified",
+          justificationFileName: file.name,
+        },
+      }));
+    }
+    event.target.value = null; // Reseta o input para permitir re-seleção do mesmo arquivo
+  };
+
+  //Função para acionar o clique no input file
+  const triggerFileInput = (studentId) => {
+    const inputId = `fileInput-${studentId}`;
+    const fileInput = document.getElementById(inputId);
+
+    if (fileInput) {
+      if (attendance[studentId]?.status === "justified" && fileInput.value) {
+        handleStatusChange(studentId, "absent");
+        fileInput.value = null;
+      } else {
+        fileInput.click();
+      }
+    }
   };
 
   const handleSubmit = async () => {
@@ -109,8 +154,10 @@ const NewAttendance = () => {
       studentId: student.id,
       studentName: student.name,
       status: attendance[student.id]?.status || "absent", // Padrão: "absent"
-    }));
 
+      justificationFileName:
+        attendance[student.id]?.justificationFileName || null, // Nome do arquivo de justificativa, se houver
+    }));
     try {
       // Chamar o hook para salvar a frequência no Firestore
       await saveAttendance(
@@ -151,7 +198,7 @@ const NewAttendance = () => {
                   </Input>
                 </Col>
                 <Col md={6}>
-                  <label>Selecione a Data</label>
+                  <label>Selecione a Data</label>{" "}
                   <DatePicker
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
@@ -243,15 +290,31 @@ const NewAttendance = () => {
                                         ? "warning"
                                         : "secondary"
                                     }
-                                    onClick={() =>
-                                      handleStatusChange(
-                                        student.id,
-                                        "justified"
-                                      )
-                                    }
+                                    onClick={() => triggerFileInput(student.id)}
                                   >
                                     📝
                                   </Button>
+                                  {attendance[student.id]
+                                    ?.justificationFileName && (
+                                    <span
+                                      className="ms-2 text-muted"
+                                      style={{ fontSize: "0.8em" }}
+                                    >
+                                      {
+                                        attendance[student.id]
+                                          ?.justificationFileName
+                                      }
+                                    </span>
+                                  )}
+                                  <input
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    id={`fileInput-${student.id}`}
+                                    onChange={(e) =>
+                                      handleFileSelect(student.id, e)
+                                    }
+                                    accept=".pdf,image/*"
+                                  />
                                 </td>
                               </tr>
                             ))}
