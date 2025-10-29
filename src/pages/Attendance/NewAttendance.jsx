@@ -36,6 +36,7 @@ const NewAttendance = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [filteredLessons, setFilteredLessons] = useState([]);
   const [allowedDays, setAllowedDays] = useState([]);
+  const fileInputRefs = useRef({});
 
   const {
     students,
@@ -123,16 +124,14 @@ const NewAttendance = () => {
 
   //Função para acionar o clique no input file
   const triggerFileInput = (studentId) => {
-    const inputId = `fileInput-${studentId}`;
-    const fileInput = document.getElementById(inputId);
+    const fileInput = fileInputRefs.current[studentId];
+    if (!fileInput) return;
 
-    if (fileInput) {
-      if (attendance[studentId]?.status === "justified" && fileInput.value) {
-        handleStatusChange(studentId, "absent");
-        fileInput.value = null;
-      } else {
-        fileInput.click();
-      }
+    if (attendance[studentId]?.status === "justified" && fileInput.value) {
+      handleStatusChange(studentId, "absent");
+      fileInput.value = null;
+    } else {
+      fileInput.click();
     }
   };
 
@@ -309,7 +308,9 @@ const NewAttendance = () => {
                                   <input
                                     type="file"
                                     style={{ display: "none" }}
-                                    id={`fileInput-${student.id}`}
+                                    ref={(el) =>
+                                      (fileInputRefs.current[student.id] = el)
+                                    }
                                     onChange={(e) =>
                                       handleFileSelect(student.id, e)
                                     }
