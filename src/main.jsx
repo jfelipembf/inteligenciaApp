@@ -6,15 +6,20 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 import { Provider } from "react-redux";
 import store from "./store/index.js";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider as OldAuthProvider } from "./contexts/AuthContext";
+import { AppProvider } from "./hooks";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
     <Provider store={store}>
       <BrowserRouter>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        {/* AuthProvider antigo mantido temporariamente para compatibilidade */}
+        <OldAuthProvider>
+          {/* Novo AppProvider com nova arquitetura DDD */}
+          <AppProvider>
+            <App />
+          </AppProvider>
+        </OldAuthProvider>
       </BrowserRouter>
     </Provider>
   </React.Fragment>
