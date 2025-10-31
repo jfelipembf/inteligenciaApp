@@ -1,14 +1,6 @@
-/**
- * Repository de Cache de Permissões
- * Abstração de dados para cache
- */
-
 import { permissionsCacheClient } from "../../infrastructure/firebase/clients/cache/permissionsCacheClient";
 
 class PermissionsCacheRepository {
-  /**
-   * Buscar cache por usuário e escola
-   */
   async getCacheByUserAndSchool(userId, schoolId) {
     try {
       return await permissionsCacheClient.getCacheByUserAndSchool(
@@ -23,9 +15,6 @@ class PermissionsCacheRepository {
     }
   }
 
-  /**
-   * Criar ou atualizar cache
-   */
   async createOrUpdateCache(userId, schoolId, permissions) {
     try {
       return await permissionsCacheClient.createOrUpdateCache(
@@ -41,9 +30,6 @@ class PermissionsCacheRepository {
     }
   }
 
-  /**
-   * Deletar cache
-   */
   async deleteCache(cacheId) {
     try {
       return await permissionsCacheClient.deleteCache(cacheId);
@@ -55,9 +41,6 @@ class PermissionsCacheRepository {
     }
   }
 
-  /**
-   * Invalidar cache
-   */
   async invalidateCache(userId, schoolId) {
     try {
       return await permissionsCacheClient.invalidateCache(userId, schoolId);
@@ -69,9 +52,6 @@ class PermissionsCacheRepository {
     }
   }
 
-  /**
-   * Invalidar cache da escola
-   */
   async invalidateCacheBySchool(schoolId) {
     try {
       return await permissionsCacheClient.invalidateCacheBySchool(schoolId);

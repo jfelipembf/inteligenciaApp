@@ -1,16 +1,8 @@
-/**
- * Service de Roles
- * Lógica de negócio para roles
- */
-
 import { rolesRepository } from "../../repositories/roles/rolesRepository";
 import { permissionsCacheService } from "../cache/permissionsCacheService";
 import { DEFAULT_ROLES } from "../../constants/defaultRoles";
 
 class RolesService {
-  /**
-   * Buscar role por ID
-   */
   async getRoleById(roleId) {
     try {
       return await rolesRepository.getRoleById(roleId);
@@ -22,9 +14,6 @@ class RolesService {
     }
   }
 
-  /**
-   * Buscar todos os roles de uma escola
-   */
   async getRolesBySchool(schoolId) {
     try {
       return await rolesRepository.getRolesBySchool(schoolId);
@@ -36,9 +25,6 @@ class RolesService {
     }
   }
 
-  /**
-   * Buscar roles padrão
-   */
   async getDefaultRoles(schoolId) {
     try {
       return await rolesRepository.getDefaultRoles(schoolId);
@@ -50,9 +36,6 @@ class RolesService {
     }
   }
 
-  /**
-   * Buscar roles customizados
-   */
   async getCustomRoles(schoolId) {
     try {
       return await rolesRepository.getCustomRoles(schoolId);
@@ -64,12 +47,8 @@ class RolesService {
     }
   }
 
-  /**
-   * Criar novo role
-   */
   async createRole(schoolId, roleData, createdBy) {
     try {
-      // Validar permissões antes de criar
       if (!roleData.name || !roleData.permissionIds) {
         return {
           success: false,
@@ -97,17 +76,12 @@ class RolesService {
     }
   }
 
-  /**
-   * Atualizar role
-   */
   async updateRole(roleId, roleData) {
     try {
-      // Ao atualizar role, invalidar cache de todos os usuários com esse role
       const roleResult = await rolesRepository.getRoleById(roleId);
 
       if (roleResult.success && roleResult.data) {
         const role = roleResult.data;
-        // Invalidar cache da escola (todos os usuários serão atualizados na próxima busca)
         await permissionsCacheService.invalidateCacheBySchool(role.schoolId);
       }
 
@@ -120,12 +94,8 @@ class RolesService {
     }
   }
 
-  /**
-   * Deletar role
-   */
   async deleteRole(roleId) {
     try {
-      // Verificar se role pode ser deletado (não pode deletar roles padrão)
       const roleResult = await rolesRepository.getRoleById(roleId);
 
       if (roleResult.success && roleResult.data) {
@@ -138,7 +108,6 @@ class RolesService {
           };
         }
 
-        // Invalidar cache
         await permissionsCacheService.invalidateCacheBySchool(role.schoolId);
       }
 
@@ -151,10 +120,6 @@ class RolesService {
     }
   }
 
-  /**
-   * Inicializar roles padrão para uma escola
-   * Executar quando escola é criada
-   */
   async initializeDefaultRoles(schoolId, createdBy) {
     try {
       const existingRoles = await rolesRepository.getDefaultRoles(schoolId);
@@ -166,7 +131,6 @@ class RolesService {
         };
       }
 
-      // Criar roles padrão a partir das constantes
       const results = await Promise.all(
         DEFAULT_ROLES.map((role) =>
           rolesRepository.createRole({

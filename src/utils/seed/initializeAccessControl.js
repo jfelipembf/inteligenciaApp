@@ -5,22 +5,10 @@ import "firebase/compat/auth";
 import { permissionsService } from "../../services/permissions/permissionsService";
 import { rolesService } from "../../services/roles/rolesService";
 
-/**
- * Seed de ambiente de desenvolvimento para Controle de Acesso
- *
- * Atenção: Executar apenas em desenvolvimento.
- */
-
-/**
- * 1) Popular a coleção permissions com as permissões padrão
- */
 export async function seedPermissions() {
   return await permissionsService.initializeDefaultPermissions();
 }
 
-/**
- * 2) Criar roles padrão para uma escola existente
- */
 export async function seedDefaultRolesForSchool(schoolId, createdBy) {
   if (!schoolId) {
     return { success: false, error: "schoolId é obrigatório" };
@@ -28,12 +16,6 @@ export async function seedDefaultRolesForSchool(schoolId, createdBy) {
   return await rolesService.initializeDefaultRoles(schoolId, createdBy || null);
 }
 
-/**
- * 3) Criar uma conta/usuário CEO master (Auth + Firestore)
- * - Cria usuário no Firebase Auth (email/senha)
- * - Cria documento em users com role "ceo" e sem schools inicialmente
- * - Cria documento em accounts (conta master)
- */
 export async function seedCeoAccount({ email, password, accountName }) {
   if (!email || !password || !accountName) {
     return {
@@ -43,14 +25,12 @@ export async function seedCeoAccount({ email, password, accountName }) {
   }
 
   try {
-    // 3.1 Criar usuário no Firebase Auth
     const userCredential = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
 
     const user = userCredential.user;
 
-    // 3.2 Criar conta em accounts
     const accountRef = await firebase
       .firestore()
       .collection("accounts")
@@ -63,7 +43,6 @@ export async function seedCeoAccount({ email, password, accountName }) {
         },
       });
 
-    // 3.3 Criar documento em users
     await firebase
       .firestore()
       .collection("users")
@@ -73,7 +52,7 @@ export async function seedCeoAccount({ email, password, accountName }) {
         personalInfo: { name: "CEO Master" },
         schools: [],
         currentSchoolId: null,
-        role: "ceo", // compatibilidade com código antigo ainda lendo role simples
+        role: "ceo",
         accounts: [{ accountId: accountRef.id, role: "ceo", status: "active" }],
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -96,9 +75,6 @@ export async function seedCeoAccount({ email, password, accountName }) {
   }
 }
 
-/**
- * 4) Seed completo (executa todos os passos). Opcionalmente recebe schoolId
- */
 export async function runFullAccessControlSeed({
   ceoEmail,
   ceoPassword,
@@ -108,17 +84,14 @@ export async function runFullAccessControlSeed({
 }) {
   const steps = [];
 
-  // Permissions
   const p = await seedPermissions();
   steps.push({ step: "permissions", result: p });
 
-  // Roles por escola (se for informado schoolId)
   if (schoolId) {
     const r = await seedDefaultRolesForSchool(schoolId, createdBy);
     steps.push({ step: "defaultRoles", result: r });
   }
 
-  // CEO
   const c = await seedCeoAccount({
     email: ceoEmail,
     password: ceoPassword,

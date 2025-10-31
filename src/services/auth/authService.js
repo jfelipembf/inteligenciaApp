@@ -1,20 +1,11 @@
-/**
- * Service de Auth
- * Lógica de negócio para autenticação
- */
-
 import { authRepository } from "../../repositories/auth/authRepository";
 import { usersRepository } from "../../repositories/users/usersRepository";
 import { permissionsCacheService } from "../cache/permissionsCacheService";
 import { rolesRepository } from "../../repositories/roles/rolesRepository";
 
 class AuthService {
-  /**
-   * Fazer login completo (auth + buscar dados do usuário)
-   */
   async signIn(email, password) {
     try {
-      // 1. Fazer login no Firebase Auth
       const authResult = await authRepository.signInWithEmailPassword(
         email,
         password
@@ -26,11 +17,9 @@ class AuthService {
 
       const firebaseUser = authResult.data;
 
-      // 2. Buscar dados do usuário no Firestore
       const userResult = await usersRepository.getUserById(firebaseUser.uid);
 
       if (!userResult.success) {
-        // Usuário não existe no Firestore, criar com dados básicos
         const newUserResult = await usersRepository.createUser({
           email: firebaseUser.email,
           personalInfo: {
@@ -60,16 +49,13 @@ class AuthService {
 
       const user = userResult.data;
 
-      // 3. Buscar escolas do usuário
       const schools = user.schools || [];
       const currentSchoolId = user.currentSchoolId || schools[0]?.schoolId;
 
-      // 4. Se tem escola atual, buscar permissões
       let permissions = [];
       if (currentSchoolId) {
         const schoolData = schools.find((s) => s.schoolId === currentSchoolId);
         if (schoolData) {
-          // Buscar role para obter permissionIds
           const roleResult = await rolesRepository.getRoleByName(
             currentSchoolId,
             schoolData.role
@@ -77,7 +63,6 @@ class AuthService {
 
           if (roleResult.success && roleResult.data) {
             const rolePermissionIds = roleResult.data.permissionIds || [];
-            // Buscar permissões do cache ou resolver
             const permissionsResult =
               await permissionsCacheService.getPermissions(
                 user.id,
@@ -110,9 +95,6 @@ class AuthService {
     }
   }
 
-  /**
-   * Fazer logout
-   */
   async signOut() {
     try {
       return await authRepository.signOut();
@@ -124,9 +106,6 @@ class AuthService {
     }
   }
 
-  /**
-   * Obter usuário atual
-   */
   async getCurrentUser() {
     try {
       const authResult = authRepository.getCurrentUser();
@@ -141,7 +120,6 @@ class AuthService {
 
       const firebaseUser = authResult.data;
 
-      // Buscar dados do usuário no Firestore
       const userResult = await usersRepository.getUserById(firebaseUser.uid);
 
       if (!userResult.success) {
@@ -168,9 +146,6 @@ class AuthService {
     }
   }
 
-  /**
-   * Observar mudanças no estado de autenticação
-   */
   onAuthStateChange(callback) {
     try {
       return authRepository.onAuthStateChange(async (firebaseUser) => {
@@ -179,7 +154,6 @@ class AuthService {
           return;
         }
 
-        // Buscar dados do usuário no Firestore
         const userResult = await usersRepository.getUserById(firebaseUser.uid);
 
         if (userResult.success) {
@@ -200,12 +174,8 @@ class AuthService {
     }
   }
 
-  /**
-   * Criar conta (registro)
-   */
   async createAccount(email, password, userData) {
     try {
-      // 1. Criar usuário no Firebase Auth
       const authResult = await authRepository.createUserWithEmailPassword(
         email,
         password
@@ -217,14 +187,12 @@ class AuthService {
 
       const firebaseUser = authResult.data;
 
-      // 2. Criar perfil no Firestore
       const userResult = await usersRepository.createUser({
         email,
         ...userData,
       });
 
       if (!userResult.success) {
-        // Se falhar, remover usuário do Auth
         await authRepository.signOut();
         return userResult;
       }
@@ -244,9 +212,6 @@ class AuthService {
     }
   }
 
-  /**
-   * Enviar email de redefinição de senha
-   */
   async sendPasswordResetEmail(email) {
     try {
       return await authRepository.sendPasswordResetEmail(email);

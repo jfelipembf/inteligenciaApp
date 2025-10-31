@@ -1,20 +1,11 @@
-/**
- * Cliente Firebase para Auth
- * Responsável apenas por comunicação com Firebase Auth
- */
-
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 class AuthClient {
   constructor() {
-    // Firebase Auth já está inicializado via firebase_helper
     this.auth = firebase.auth();
   }
 
-  /**
-   * Fazer login com email e senha
-   */
   async signInWithEmailPassword(email, password) {
     try {
       const userCredential = await this.auth.signInWithEmailAndPassword(
@@ -35,9 +26,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Fazer logout
-   */
   async signOut() {
     try {
       await this.auth.signOut();
@@ -55,9 +43,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Obter usuário atual
-   */
   getCurrentUser() {
     try {
       const user = this.auth.currentUser;
@@ -75,9 +60,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Observar mudanças no estado de autenticação
-   */
   onAuthStateChange(callback) {
     try {
       const unsubscribe = this.auth.onAuthStateChanged((user) => {
@@ -90,9 +72,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Criar usuário com email e senha
-   */
   async createUserWithEmailPassword(email, password) {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(
@@ -113,9 +92,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Enviar email de redefinição de senha
-   */
   async sendPasswordResetEmail(email) {
     try {
       await this.auth.sendPasswordResetEmail(email);
@@ -133,9 +109,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Atualizar perfil do usuário
-   */
   async updateProfile(profileData) {
     try {
       const user = this.auth.currentUser;
@@ -162,9 +135,6 @@ class AuthClient {
     }
   }
 
-  /**
-   * Helper para tratar erros do Firebase Auth
-   */
   _handleError(error) {
     const errorMap = {
       "auth/user-not-found": "Usuário não encontrado",

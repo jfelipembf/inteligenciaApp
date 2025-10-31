@@ -1,18 +1,9 @@
-/**
- * Service de Cache de Permissões
- * Lógica de negócio para cache inteligente
- */
-
 import { permissionsCacheRepository } from "../../repositories/cache/permissionsCacheRepository";
 import { permissionsService } from "../permissions/permissionsService";
 
 class PermissionsCacheService {
-  // Cache válido por 1 hora
-  static CACHE_EXPIRATION = 60 * 60 * 1000; // 1 hora em milissegundos
+  static CACHE_EXPIRATION = 60 * 60 * 1000;
 
-  /**
-   * Buscar permissões do cache ou resolver se não existir/expirado
-   */
   async getPermissions(
     userId,
     schoolId,
@@ -27,7 +18,6 @@ class PermissionsCacheService {
         };
       }
 
-      // Se não forçar refresh, verificar cache
       if (!forceRefresh) {
         const cacheResult =
           await permissionsCacheRepository.getCacheByUserAndSchool(
@@ -41,7 +31,6 @@ class PermissionsCacheService {
             cache.lastUpdated?.toMillis?.() || cache.lastUpdated;
           const currentTime = Date.now();
 
-          // Verificar se cache ainda é válido
           if (
             lastUpdated &&
             currentTime - lastUpdated < PermissionsCacheService.CACHE_EXPIRATION
@@ -55,7 +44,6 @@ class PermissionsCacheService {
         }
       }
 
-      // Cache não encontrado/expirado, resolver permissões do role
       const permissionsResult = await permissionsService.resolvePermissions(
         rolePermissionIds
       );
@@ -66,7 +54,6 @@ class PermissionsCacheService {
 
       const permissions = permissionsResult.data.map((p) => p.name);
 
-      // Atualizar cache
       await permissionsCacheRepository.createOrUpdateCache(
         userId,
         schoolId,
@@ -86,9 +73,6 @@ class PermissionsCacheService {
     }
   }
 
-  /**
-   * Buscar permissões apenas do cache (sem resolver)
-   */
   async getCachedPermissions(userId, schoolId) {
     try {
       const result = await permissionsCacheRepository.getCacheByUserAndSchool(
@@ -116,9 +100,6 @@ class PermissionsCacheService {
     }
   }
 
-  /**
-   * Invalidar cache (forçar refresh na próxima busca)
-   */
   async invalidateCache(userId, schoolId) {
     try {
       return await permissionsCacheRepository.invalidateCache(userId, schoolId);
@@ -130,10 +111,6 @@ class PermissionsCacheService {
     }
   }
 
-  /**
-   * Invalidar cache de todos os usuários de uma escola
-   * Útil quando roles/permissões são alterados
-   */
   async invalidateCacheBySchool(schoolId) {
     try {
       return await permissionsCacheRepository.invalidateCacheBySchool(schoolId);
@@ -145,9 +122,6 @@ class PermissionsCacheService {
     }
   }
 
-  /**
-   * Verificar se usuário tem uma permissão específica
-   */
   async hasPermission(userId, schoolId, permissionName, rolePermissionIds) {
     try {
       const result = await this.getPermissions(

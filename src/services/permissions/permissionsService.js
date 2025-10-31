@@ -1,16 +1,7 @@
-/**
- * Service de Permissions
- * Lógica de negócio para permissões
- */
-
 import { permissionsRepository } from "../../repositories/permissions/permissionsRepository";
 import { PERMISSIONS } from "../../constants/permissions";
 
 class PermissionsService {
-  /**
-   * Resolver permissões de uma lista de permissionIds
-   * Retorna array de objetos de permissão completos
-   */
   async resolvePermissions(permissionIds) {
     try {
       if (!Array.isArray(permissionIds) || permissionIds.length === 0) {
@@ -40,9 +31,6 @@ class PermissionsService {
     }
   }
 
-  /**
-   * Verificar se uma permissão existe e retornar seu objeto
-   */
   async getPermission(permissionId) {
     try {
       return await permissionsRepository.getPermissionById(permissionId);
@@ -54,9 +42,6 @@ class PermissionsService {
     }
   }
 
-  /**
-   * Buscar todas as permissões
-   */
   async getAllPermissions() {
     try {
       return await permissionsRepository.getAllPermissions();
@@ -68,9 +53,6 @@ class PermissionsService {
     }
   }
 
-  /**
-   * Buscar permissões por módulo
-   */
   async getPermissionsByModule(module) {
     try {
       return await permissionsRepository.getPermissionsByModule(module);
@@ -82,15 +64,10 @@ class PermissionsService {
     }
   }
 
-  /**
-   * Inicializar permissões padrão no Firestore
-   * Executar apenas uma vez (setup inicial)
-   */
   async initializeDefaultPermissions() {
     try {
       const allPermissions = [];
 
-      // Criar array com todas as permissões
       Object.keys(PERMISSIONS).forEach((module) => {
         Object.keys(PERMISSIONS[module]).forEach((action) => {
           const permissionName = PERMISSIONS[module][action];
@@ -103,14 +80,12 @@ class PermissionsService {
         });
       });
 
-      // Verificar quais já existem
       const existingResult = await permissionsRepository.getAllPermissions();
       const existingPermissions =
         existingResult.success && existingResult.data
           ? existingResult.data.map((p) => p.name)
           : [];
 
-      // Criar apenas as que não existem
       const permissionsToCreate = allPermissions.filter(
         (p) => !existingPermissions.includes(p.name)
       );
@@ -122,7 +97,6 @@ class PermissionsService {
         };
       }
 
-      // Criar permissões em batch
       const results = await Promise.all(
         permissionsToCreate.map((permission) =>
           permissionsRepository.createPermission(permission)
@@ -148,9 +122,6 @@ class PermissionsService {
     }
   }
 
-  /**
-   * Helper para gerar descrição da permissão
-   */
   _getPermissionDescription(module, action) {
     const descriptions = {
       access_control: {

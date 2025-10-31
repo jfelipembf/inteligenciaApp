@@ -1,8 +1,3 @@
-/**
- * Cliente Firebase para Users
- * Responsável apenas por comunicação com Firestore
- */
-
 import { getFirestoreInstance } from "../../config/firebaseConfig";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -12,9 +7,6 @@ class UsersClient {
     this.db = getFirestoreInstance() || firebase.firestore();
   }
 
-  /**
-   * Buscar usuário por ID
-   */
   async getUserById(userId) {
     try {
       const doc = await this.db.collection("users").doc(userId).get();
@@ -44,9 +36,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Buscar usuário por email
-   */
   async getUserByEmail(email) {
     try {
       const snapshot = await this.db
@@ -81,9 +70,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Criar novo usuário
-   */
   async createUser(userData) {
     try {
       const userRef = await this.db.collection("users").add({
@@ -111,9 +97,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Atualizar usuário
-   */
   async updateUser(userId, userData) {
     try {
       await this.db
@@ -177,9 +160,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Adicionar escola ao usuário (multi-escola)
-   */
   async addSchoolToUser(userId, schoolData) {
     try {
       const userRef = this.db.collection("users").doc(userId);
@@ -196,7 +176,6 @@ class UsersClient {
       const userData = userDoc.data();
       const schools = userData.schools || [];
 
-      // Verificar se escola já existe
       const schoolExists = schools.some(
         (s) => s.schoolId === schoolData.schoolId
       );
@@ -209,7 +188,6 @@ class UsersClient {
         };
       }
 
-      // Adicionar nova escola
       schools.push({
         schoolId: schoolData.schoolId,
         role: schoolData.role,
@@ -220,7 +198,7 @@ class UsersClient {
 
       await userRef.update({
         schools,
-        currentSchoolId: schools[0].schoolId, // Se não tinha escola, define como atual
+        currentSchoolId: schools[0].schoolId,
       });
 
       return {
@@ -240,9 +218,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Atualizar escola atual do usuário
-   */
   async updateCurrentSchool(userId, schoolId) {
     try {
       const userRef = this.db.collection("users").doc(userId);
@@ -259,7 +234,6 @@ class UsersClient {
       const userData = userDoc.data();
       const schools = userData.schools || [];
 
-      // Verificar se escola existe no array
       const schoolExists = schools.some((s) => s.schoolId === schoolId);
 
       if (!schoolExists) {
@@ -292,9 +266,6 @@ class UsersClient {
     }
   }
 
-  /**
-   * Buscar múltiplos usuários por IDs
-   */
   async getUsersByIds(userIds) {
     try {
       if (!Array.isArray(userIds) || userIds.length === 0) {
@@ -305,7 +276,6 @@ class UsersClient {
         };
       }
 
-      // Firestore limita queries "in" a 10 itens
       const batches = [];
       for (let i = 0; i < userIds.length; i += 10) {
         batches.push(userIds.slice(i, i + 10));

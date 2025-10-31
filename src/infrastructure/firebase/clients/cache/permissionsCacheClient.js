@@ -1,8 +1,3 @@
-/**
- * Cliente Firebase para Cache de Permissões
- * Responsável apenas por comunicação com Firestore
- */
-
 import { getFirestoreInstance } from "../../config/firebaseConfig";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -12,9 +7,6 @@ class PermissionsCacheClient {
     this.db = getFirestoreInstance() || firebase.firestore();
   }
 
-  /**
-   * Buscar cache por usuário e escola
-   */
   async getCacheByUserAndSchool(userId, schoolId) {
     try {
       const snapshot = await this.db
@@ -50,12 +42,8 @@ class PermissionsCacheClient {
     }
   }
 
-  /**
-   * Criar ou atualizar cache
-   */
   async createOrUpdateCache(userId, schoolId, permissions) {
     try {
-      // Verificar se já existe
       const existingResult = await this.getCacheByUserAndSchool(
         userId,
         schoolId
@@ -69,7 +57,6 @@ class PermissionsCacheClient {
       };
 
       if (existingResult.success && existingResult.data) {
-        // Atualizar existente
         await this.db
           .collection("user_permissions_cache")
           .doc(existingResult.data.id)
@@ -84,7 +71,6 @@ class PermissionsCacheClient {
           error: null,
         };
       } else {
-        // Criar novo
         const docRef = await this.db
           .collection("user_permissions_cache")
           .add(cacheData);
@@ -107,9 +93,6 @@ class PermissionsCacheClient {
     }
   }
 
-  /**
-   * Deletar cache
-   */
   async deleteCache(cacheId) {
     try {
       await this.db.collection("user_permissions_cache").doc(cacheId).delete();
@@ -128,9 +111,6 @@ class PermissionsCacheClient {
     }
   }
 
-  /**
-   * Invalidar cache (deletar por userId e schoolId)
-   */
   async invalidateCache(userId, schoolId) {
     try {
       const result = await this.getCacheByUserAndSchool(userId, schoolId);
@@ -153,9 +133,6 @@ class PermissionsCacheClient {
     }
   }
 
-  /**
-   * Invalidar cache de múltiplos usuários (quando role/permissões mudam)
-   */
   async invalidateCacheBySchool(schoolId) {
     try {
       const snapshot = await this.db

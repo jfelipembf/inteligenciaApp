@@ -3,10 +3,8 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-// Criando o contexto
 const AuthContext = createContext();
 
-// Hook personalizado para usar o contexto de autenticação
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -15,14 +13,12 @@ export const useAuthContext = () => {
   return context;
 };
 
-// Provedor do contexto de autenticação
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Função para fazer login
   const login = async (email, password) => {
     try {
       setError(null);
@@ -41,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para fazer logout
   const logout = async () => {
     try {
       setError(null);
@@ -58,7 +53,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para criar um novo usuário
   const signup = async (email, password, userData = {}) => {
     try {
       setError(null);
@@ -67,7 +61,6 @@ export const AuthProvider = ({ children }) => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
 
-      // Se tiver dados adicionais do usuário, salvar no Firestore
       if (Object.keys(userData).length > 0) {
         await firebase
           .firestore()
@@ -90,7 +83,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para recuperar senha
   const resetPassword = async (email) => {
     try {
       setError(null);
@@ -104,7 +96,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para buscar detalhes do usuário
   const fetchUserDetails = async (uid) => {
     if (!uid && !currentUser) {
       return null;
@@ -132,7 +123,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para atualizar detalhes do usuário
   const updateUserDetails = async (data) => {
     if (!currentUser) {
       throw new Error("Usuário não autenticado");
@@ -149,7 +139,6 @@ export const AuthProvider = ({ children }) => {
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
-      // Atualizar o estado local
       setUserDetails((prev) => ({
         ...prev,
         ...data,
@@ -164,7 +153,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para buscar detalhes da escola do usuário
   const fetchSchoolDetails = async (schoolId) => {
     if (!schoolId && (!userDetails || !userDetails.schoolId)) {
       return null;
@@ -190,19 +178,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Efeito para monitorar o estado de autenticação
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       setCurrentUser(user);
 
       if (user) {
-        // Armazenar o usuário no localStorage
         localStorage.setItem("authUser", JSON.stringify(user));
 
-        // Buscar detalhes do usuário
         await fetchUserDetails(user.uid);
       } else {
-        // Remover o usuário do localStorage
         localStorage.removeItem("authUser");
         setUserDetails(null);
       }
@@ -210,7 +194,6 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     });
 
-    // Verificar se já existe um usuário no localStorage
     const storedUser = localStorage.getItem("authUser");
     if (storedUser && !currentUser) {
       try {
@@ -221,14 +204,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("authUser");
       }
     } else {
-      // Se não há usuário armazenado, definir loading como false
       setLoading(false);
     }
 
     return () => unsubscribe();
   }, []);
 
-  // Valor do contexto
   const value = {
     currentUser,
     userDetails,

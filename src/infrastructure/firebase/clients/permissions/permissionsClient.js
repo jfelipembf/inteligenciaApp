@@ -1,8 +1,3 @@
-/**
- * Cliente Firebase para Permissions
- * Responsável apenas por comunicação com Firestore
- */
-
 import { getFirestoreInstance } from "../../config/firebaseConfig";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -12,9 +7,6 @@ class PermissionsClient {
     this.db = getFirestoreInstance() || firebase.firestore();
   }
 
-  /**
-   * Buscar uma permissão por ID
-   */
   async getPermissionById(permissionId) {
     try {
       const docRef = this.db.collection("permissions").doc(permissionId);
@@ -45,9 +37,6 @@ class PermissionsClient {
     }
   }
 
-  /**
-   * Buscar múltiplas permissões por IDs
-   */
   async getPermissionsByIds(permissionIds) {
     try {
       if (!Array.isArray(permissionIds) || permissionIds.length === 0) {
@@ -58,7 +47,6 @@ class PermissionsClient {
         };
       }
 
-      // Firestore limita queries "in" a 10 itens, então precisamos fazer em batches
       const batches = [];
       for (let i = 0; i < permissionIds.length; i += 10) {
         const batch = permissionIds.slice(i, i + 10);
@@ -98,9 +86,6 @@ class PermissionsClient {
     }
   }
 
-  /**
-   * Buscar todas as permissões
-   */
   async getAllPermissions() {
     try {
       const snapshot = await this.db.collection("permissions").get();
@@ -124,9 +109,6 @@ class PermissionsClient {
     }
   }
 
-  /**
-   * Buscar permissões por módulo
-   */
   async getPermissionsByModule(module) {
     try {
       const snapshot = await this.db
@@ -153,9 +135,6 @@ class PermissionsClient {
     }
   }
 
-  /**
-   * Criar uma nova permissão
-   */
   async createPermission(permissionData) {
     try {
       const docRef = await this.db.collection("permissions").add({
@@ -181,9 +160,6 @@ class PermissionsClient {
     }
   }
 
-  /**
-   * Atualizar uma permissão
-   */
   async updatePermission(permissionId, permissionData) {
     try {
       await this.db

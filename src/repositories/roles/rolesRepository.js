@@ -1,14 +1,6 @@
-/**
- * Repository de Roles
- * Abstração de dados para roles
- */
-
 import { rolesClient } from "../../infrastructure/firebase/clients/roles/rolesClient";
 
 class RolesRepository {
-  /**
-   * Buscar role por ID
-   */
   async getRoleById(roleId) {
     try {
       return await rolesClient.getRoleById(roleId);
@@ -20,9 +12,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Buscar roles por escola
-   */
   async getRolesBySchool(schoolId) {
     try {
       return await rolesClient.getRolesBySchool(schoolId);
@@ -34,9 +23,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Buscar roles padrão
-   */
   async getDefaultRoles(schoolId) {
     try {
       return await rolesClient.getDefaultRoles(schoolId);
@@ -48,9 +34,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Buscar roles customizados
-   */
   async getCustomRoles(schoolId) {
     try {
       return await rolesClient.getCustomRoles(schoolId);
@@ -62,9 +45,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Buscar role por nome
-   */
   async getRoleByName(schoolId, roleName) {
     try {
       return await rolesClient.getRoleByName(schoolId, roleName);
@@ -76,9 +56,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Criar novo role
-   */
   async createRole(roleData) {
     try {
       return await rolesClient.createRole(roleData);
@@ -90,9 +67,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Atualizar role
-   */
   async updateRole(roleId, roleData) {
     try {
       return await rolesClient.updateRole(roleId, roleData);
@@ -104,9 +78,6 @@ class RolesRepository {
     }
   }
 
-  /**
-   * Deletar role
-   */
   async deleteRole(roleId) {
     try {
       return await rolesClient.deleteRole(roleId);

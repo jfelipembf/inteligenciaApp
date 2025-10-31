@@ -1,14 +1,6 @@
-/**
- * Repository de Users
- * Abstração de dados para usuários
- */
-
 import { usersClient } from "../../infrastructure/firebase/clients/users/usersClient";
 
 class UsersRepository {
-  /**
-   * Buscar usuário por ID
-   */
   async getUserById(userId) {
     try {
       return await usersClient.getUserById(userId);
@@ -20,9 +12,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Buscar usuário por email
-   */
   async getUserByEmail(email) {
     try {
       return await usersClient.getUserByEmail(email);
@@ -34,9 +23,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Criar novo usuário
-   */
   async createUser(userData) {
     try {
       return await usersClient.createUser(userData);
@@ -48,9 +34,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Atualizar usuário
-   */
   async updateUser(userId, userData) {
     try {
       return await usersClient.updateUser(userId, userData);
@@ -62,9 +45,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Buscar usuários por escola
-   */
   async getUsersBySchool(schoolId) {
     try {
       return await usersClient.getUsersBySchool(schoolId);
@@ -76,9 +56,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Adicionar escola ao usuário
-   */
   async addSchoolToUser(userId, schoolData) {
     try {
       return await usersClient.addSchoolToUser(userId, schoolData);
@@ -90,9 +67,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Atualizar escola atual do usuário
-   */
   async updateCurrentSchool(userId, schoolId) {
     try {
       return await usersClient.updateCurrentSchool(userId, schoolId);
@@ -104,9 +78,6 @@ class UsersRepository {
     }
   }
 
-  /**
-   * Buscar múltiplos usuários por IDs
-   */
   async getUsersByIds(userIds) {
     try {
       return await usersClient.getUsersByIds(userIds);

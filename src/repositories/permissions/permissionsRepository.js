@@ -1,14 +1,6 @@
-/**
- * Repository de Permissions
- * Abstração de dados para permissões
- */
-
 import { permissionsClient } from "../../infrastructure/firebase/clients/permissions/permissionsClient";
 
 class PermissionsRepository {
-  /**
-   * Buscar permissão por ID
-   */
   async getPermissionById(permissionId) {
     try {
       return await permissionsClient.getPermissionById(permissionId);
@@ -20,9 +12,6 @@ class PermissionsRepository {
     }
   }
 
-  /**
-   * Buscar múltiplas permissões por IDs
-   */
   async getPermissionsByIds(permissionIds) {
     try {
       return await permissionsClient.getPermissionsByIds(permissionIds);
@@ -34,9 +23,6 @@ class PermissionsRepository {
     }
   }
 
-  /**
-   * Buscar todas as permissões
-   */
   async getAllPermissions() {
     try {
       return await permissionsClient.getAllPermissions();
@@ -48,9 +34,6 @@ class PermissionsRepository {
     }
   }
 
-  /**
-   * Buscar permissões por módulo
-   */
   async getPermissionsByModule(module) {
     try {
       return await permissionsClient.getPermissionsByModule(module);
@@ -62,9 +45,6 @@ class PermissionsRepository {
     }
   }
 
-  /**
-   * Criar nova permissão
-   */
   async createPermission(permissionData) {
     try {
       return await permissionsClient.createPermission(permissionData);
@@ -76,9 +56,6 @@ class PermissionsRepository {
     }
   }
 
-  /**
-   * Atualizar permissão
-   */
   async updatePermission(permissionId, permissionData) {
     try {
       return await permissionsClient.updatePermission(

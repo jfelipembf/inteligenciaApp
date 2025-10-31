@@ -1,8 +1,3 @@
-/**
- * Cliente Firebase para Roles
- * Responsável apenas por comunicação com Firestore
- */
-
 import { getFirestoreInstance } from "../../config/firebaseConfig";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -12,9 +7,6 @@ class RolesClient {
     this.db = getFirestoreInstance() || firebase.firestore();
   }
 
-  /**
-   * Buscar role por ID
-   */
   async getRoleById(roleId) {
     try {
       const doc = await this.db.collection("roles").doc(roleId).get();
@@ -44,9 +36,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Buscar roles por escola
-   */
   async getRolesBySchool(schoolId) {
     try {
       const snapshot = await this.db
@@ -73,9 +62,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Buscar roles padrão (type === "default")
-   */
   async getDefaultRoles(schoolId) {
     try {
       const snapshot = await this.db
@@ -103,9 +89,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Buscar roles customizados (type === "custom")
-   */
   async getCustomRoles(schoolId) {
     try {
       const snapshot = await this.db
@@ -133,9 +116,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Buscar role por nome (dentro de uma escola)
-   */
   async getRoleByName(schoolId, roleName) {
     try {
       const snapshot = await this.db
@@ -171,9 +151,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Criar novo role
-   */
   async createRole(roleData) {
     try {
       const docRef = await this.db.collection("roles").add({
@@ -201,9 +178,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Atualizar role
-   */
   async updateRole(roleId, roleData) {
     try {
       await this.db
@@ -231,9 +205,6 @@ class RolesClient {
     }
   }
 
-  /**
-   * Deletar role
-   */
   async deleteRole(roleId) {
     try {
       await this.db.collection("roles").doc(roleId).delete();

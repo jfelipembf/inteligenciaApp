@@ -1,14 +1,6 @@
-/**
- * Repository de Auth
- * Abstração de dados para autenticação
- */
-
 import { authClient } from "../../infrastructure/firebase/clients/auth/authClient";
 
 class AuthRepository {
-  /**
-   * Fazer login
-   */
   async signInWithEmailPassword(email, password) {
     try {
       return await authClient.signInWithEmailPassword(email, password);
@@ -20,9 +12,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Fazer logout
-   */
   async signOut() {
     try {
       return await authClient.signOut();
@@ -34,9 +23,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Obter usuário atual
-   */
   getCurrentUser() {
     try {
       return authClient.getCurrentUser();
@@ -48,9 +34,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Observar mudanças no estado de autenticação
-   */
   onAuthStateChange(callback) {
     try {
       return authClient.onAuthStateChange(callback);
@@ -60,9 +43,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Criar usuário
-   */
   async createUserWithEmailPassword(email, password) {
     try {
       return await authClient.createUserWithEmailPassword(email, password);
@@ -74,9 +54,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Enviar email de redefinição de senha
-   */
   async sendPasswordResetEmail(email) {
     try {
       return await authClient.sendPasswordResetEmail(email);
@@ -88,9 +65,6 @@ class AuthRepository {
     }
   }
 
-  /**
-   * Atualizar perfil
-   */
   async updateProfile(profileData) {
     try {
       return await authClient.updateProfile(profileData);
