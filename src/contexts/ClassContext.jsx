@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useFetchClasses } from "../hooks/useFetchClasses";
-import { useAuthContext } from "./AuthContext";
+import { useAuth } from "../hooks/auth/auth.jsx";
 import { useLocation } from "react-router-dom";
 
 const ClassContext = createContext();
@@ -16,9 +16,9 @@ export const useClassContext = () => {
 };
 
 export const ClassProvider = ({ children }) => {
-  const { userDetails, loading: authLoading } = useAuthContext();
+  const { user, currentSchoolId, loading: authLoading } = useAuth();
   const location = useLocation();
-  const schoolId = userDetails?.schoolId;
+  const schoolId = currentSchoolId;
 
   const excludedRoutes = ["/login"];
   if (excludedRoutes.includes(location.pathname)) {

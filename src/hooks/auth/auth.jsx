@@ -1,8 +1,3 @@
-/**
- * Auth Hook + Context + Provider
- * Padrão: Context API + Custom Hook (igual ao mobile)
- */
-
 import React, {
   createContext,
   useContext,
@@ -15,10 +10,8 @@ import { permissionsCacheService } from "../../services/cache/permissionsCacheSe
 import { rolesRepository } from "../../repositories/roles/rolesRepository";
 import { usersRepository } from "../../repositories/users/usersRepository";
 
-// 1. Criar o Context
 const AuthContext = createContext(undefined);
 
-// 2. Provider (gerencia estado e chama services)
 export function AuthProvider({ children }) {
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [user, setUser] = useState(null);
@@ -28,9 +21,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  /**
-   * Carregar permissões do usuário
-   */
   const loadPermissions = useCallback(async (userId, schoolId, roleName) => {
     try {
       if (!userId || !schoolId || !roleName) {
@@ -38,7 +28,6 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // Buscar role para obter permissionIds
       const roleResult = await rolesRepository.getRoleByName(
         schoolId,
         roleName
@@ -51,7 +40,6 @@ export function AuthProvider({ children }) {
 
       const rolePermissionIds = roleResult.data.permissionIds || [];
 
-      // Buscar permissões do cache ou resolver
       const permissionsResult = await permissionsCacheService.getPermissions(
         userId,
         schoolId,
@@ -69,16 +57,12 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  /**
-   * Carregar dados completos do usuário
-   */
   const loadUserData = useCallback(
     async (firebaseUser) => {
       try {
         setLoading(true);
         setError(null);
 
-        // Buscar dados do usuário no Firestore
         const userResult = await usersRepository.getUserById(firebaseUser.uid);
 
         if (!userResult.success) {
@@ -89,16 +73,13 @@ export function AuthProvider({ children }) {
 
         const userData = userResult.data;
 
-        // Carregar escolas
         const userSchools = userData.schools || [];
         setSchools(userSchools);
 
-        // Definir escola atual
         const currentSchool =
           userData.currentSchoolId || userSchools[0]?.schoolId;
         setCurrentSchoolId(currentSchool);
 
-        // Carregar permissões se tiver escola atual
         if (currentSchool) {
           const schoolData = userSchools.find(
             (s) => s.schoolId === currentSchool
@@ -121,13 +102,9 @@ export function AuthProvider({ children }) {
     [loadPermissions]
   );
 
-  /**
-   * Observar mudanças no estado de autenticação
-   */
   useEffect(() => {
     const unsubscribe = authService.onAuthStateChange(async (authData) => {
       if (!authData || !authData.firebaseUser) {
-        // Logout
         setFirebaseUser(null);
         setUser(null);
         setPermissions([]);
@@ -137,7 +114,6 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // Login
       setFirebaseUser(authData.firebaseUser);
       await loadUserData(authData.firebaseUser);
     });
@@ -147,9 +123,6 @@ export function AuthProvider({ children }) {
     };
   }, [loadUserData]);
 
-  /**
-   * Fazer login
-   */
   const signIn = useCallback(async (email, password) => {
     try {
       setLoading(true);
@@ -185,9 +158,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  /**
-   * Fazer logout
-   */
   const signOut = useCallback(async () => {
     try {
       setLoading(true);
@@ -209,9 +179,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  /**
-   * Trocar escola atual
-   */
   const switchSchool = useCallback(
     async (schoolId) => {
       try {
@@ -222,7 +189,6 @@ export function AuthProvider({ children }) {
         setLoading(true);
         setError(null);
 
-        // Atualizar escola atual no Firestore
         const updateResult = await usersRepository.updateCurrentSchool(
           user.id,
           schoolId
@@ -234,10 +200,8 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        // Atualizar estado local
         setCurrentSchoolId(schoolId);
 
-        // Carregar permissões da nova escola
         const schoolData = schools.find((s) => s.schoolId === schoolId);
         if (schoolData) {
           await loadPermissions(user.id, schoolId, schoolData.role);
@@ -245,7 +209,6 @@ export function AuthProvider({ children }) {
           setPermissions([]);
         }
 
-        // Atualizar user no estado
         setUser({
           ...user,
           currentSchoolId: schoolId,
@@ -261,9 +224,6 @@ export function AuthProvider({ children }) {
     [user, schools, loadPermissions]
   );
 
-  /**
-   * Verificar se usuário tem uma permissão específica
-   */
   const hasPermission = useCallback(
     (permissionName) => {
       if (!currentSchoolId) {
@@ -274,9 +234,6 @@ export function AuthProvider({ children }) {
     [permissions, currentSchoolId]
   );
 
-  /**
-   * Verificar se usuário tem pelo menos uma das permissões
-   */
   const hasAnyPermission = useCallback(
     (permissionNames) => {
       if (!Array.isArray(permissionNames)) {
@@ -289,9 +246,6 @@ export function AuthProvider({ children }) {
     [permissions]
   );
 
-  /**
-   * Verificar se usuário tem todas as permissões
-   */
   const hasAllPermissions = useCallback(
     (permissionNames) => {
       if (!Array.isArray(permissionNames)) {
@@ -304,9 +258,6 @@ export function AuthProvider({ children }) {
     [permissions]
   );
 
-  /**
-   * Obter role do usuário na escola atual
-   */
   const getCurrentRole = useCallback(() => {
     if (!currentSchoolId || !schools.length) {
       return null;
@@ -316,9 +267,7 @@ export function AuthProvider({ children }) {
     return schoolData?.role || null;
   }, [currentSchoolId, schools]);
 
-  // Valor do Context
   const value = {
-    // Estado
     firebaseUser,
     user,
     permissions,
@@ -326,8 +275,6 @@ export function AuthProvider({ children }) {
     currentSchoolId,
     loading,
     error,
-
-    // Métodos
     signIn,
     signOut,
     switchSchool,
@@ -335,8 +282,6 @@ export function AuthProvider({ children }) {
     hasAnyPermission,
     hasAllPermissions,
     getCurrentRole,
-
-    // Helpers
     isAuthenticated: !!firebaseUser && !!user,
     currentSchool: schools.find((s) => s.schoolId === currentSchoolId) || null,
   };
@@ -344,7 +289,6 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// 3. Hook customizado para consumir o Context
 export function useAuth() {
   const context = useContext(AuthContext);
 

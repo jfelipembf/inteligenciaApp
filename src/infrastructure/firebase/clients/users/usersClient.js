@@ -3,8 +3,13 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
 class UsersClient {
-  constructor() {
-    this.db = getFirestoreInstance() || firebase.firestore();
+  get db() {
+    if (firebase.apps.length === 0) {
+      throw new Error(
+        "Firebase não foi inicializado. Chame initializeApp() primeiro."
+      );
+    }
+    return getFirestoreInstance() || firebase.firestore();
   }
 
   async getUserById(userId) {

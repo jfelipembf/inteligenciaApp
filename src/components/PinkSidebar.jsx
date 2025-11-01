@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/actions";
 import logo from "../assets/images/lgo.png";
 import "../assets/scss/pink-sidebar.scss";
-import useUser from "../hooks/useUser";
+import { useAuth } from "../hooks/auth/auth.jsx";
 
 const PinkSidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
@@ -12,8 +12,9 @@ const PinkSidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { userDetails } = useUser();
-  const role = userDetails?.role;
+  const { currentSchool, user } = useAuth();
+  const role = currentSchool?.role;
+  const isCPFMissing = !user?.personalInfo?.cpf;
 
   const toggleMenu = (idx) => {
     setOpenMenu((prev) => (prev === idx ? null : idx));
@@ -28,15 +29,9 @@ const PinkSidebar = () => {
   };
 
   let dashboardTo = "/dashboard";
-  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
-  else if (
-    userDetails?.role === "coordinator" ||
-    userDetails?.role === "principal" ||
-    userDetails?.role === "ceo"
-  )
+  if (role === "professor") dashboardTo = "/dashboard-professor";
+  else if (role === "coordinator" || role === "principal" || role === "ceo")
     dashboardTo = "/dashboard-coordenador";
-
-  const isCPFMissing = !userDetails?.personalInfo?.cpf;
 
   return (
     <>
@@ -388,6 +383,37 @@ const PinkSidebar = () => {
                 </div>
               )}
             </div>
+
+            {/* Administração */}
+            {(role === "master" || role === "ceo") && (
+              <div className="sidebar-menu-group">
+                <button
+                  className="sidebar-btn-no-bg sidebar-btn-parent"
+                  onClick={() => toggleMenu("administracao")}
+                  type="button"
+                >
+                  <i className="bx bx-cog"></i>
+                  <span>Administração</span>
+                  <i
+                    className={`bx bx-chevron-${
+                      openMenu === "administracao" ? "up" : "down"
+                    } ms-auto`}
+                  ></i>
+                </button>
+                {openMenu === "administracao" && (
+                  <div className="sidebar-submenu">
+                    <NavLink
+                      to="/permissions"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Permissões</span>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            )}
+
             <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>
               <i className="bx bx-power-off"></i>
               <span>Sair</span>
@@ -698,6 +724,36 @@ const PinkSidebar = () => {
                 </div>
               )}
             </div>
+
+            {/* Administração */}
+            {(role === "master" || role === "ceo") && (
+              <div className="sidebar-menu-group">
+                <button
+                  className="sidebar-btn-no-bg sidebar-btn-parent"
+                  onClick={() => toggleMenu("administracao")}
+                  type="button"
+                >
+                  <i className="bx bx-cog"></i>
+                  <span>Administração</span>
+                  <i
+                    className={`bx bx-chevron-${
+                      openMenu === "administracao" ? "up" : "down"
+                    } ms-auto`}
+                  ></i>
+                </button>
+                {openMenu === "administracao" && (
+                  <div className="sidebar-submenu">
+                    <NavLink
+                      to="/permissions"
+                      className="sidebar-btn-no-bg sidebar-btn-sub"
+                      end
+                    >
+                      <span>Permissões</span>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Logout */}
             <button className="sidebar-btn-no-bg logout" onClick={handleLogout}>

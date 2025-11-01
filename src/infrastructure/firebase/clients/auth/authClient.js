@@ -2,8 +2,13 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 class AuthClient {
-  constructor() {
-    this.auth = firebase.auth();
+  get auth() {
+    if (firebase.apps.length === 0) {
+      throw new Error(
+        "Firebase não foi inicializado. Chame initializeApp() primeiro."
+      );
+    }
+    return firebase.auth();
   }
 
   async signInWithEmailPassword(email, password) {

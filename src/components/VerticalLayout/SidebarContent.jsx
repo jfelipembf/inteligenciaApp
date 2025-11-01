@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
-import useUser from "../../hooks/useUser";
+import { useAuth } from "../../hooks/auth/auth.jsx";
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
@@ -17,8 +17,8 @@ import { useCallback } from "react";
 const SidebarContent = (props) => {
   const ref = useRef();
   const path = useLocation();
-  const { userDetails } = useUser();
-  const role = userDetails?.role;
+  const { currentSchool } = useAuth();
+  const role = currentSchool?.role;
 
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active");
@@ -148,9 +148,8 @@ const SidebarContent = (props) => {
   }
 
   let dashboardTo = "/dashboard";
-  if (userDetails?.role === "professor") dashboardTo = "/dashboard-professor";
-  else if (userDetails?.role === "coordinator")
-    dashboardTo = "/dashboard-coordenador";
+  if (role === "professor") dashboardTo = "/dashboard-professor";
+  else if (role === "coordinator") dashboardTo = "/dashboard-coordenador";
 
   return (
     <React.Fragment>
@@ -333,6 +332,22 @@ const SidebarContent = (props) => {
                 <span className="menu-item">{props.t("Financeiro")}</span>
               </Link>
             </li>*/}
+
+            {/* Administração */}
+            {(role === "master" || role === "ceo") && (
+              <li>
+                <Link to="/#" className="has-arrow">
+                  <i className="bx bx-cog"></i>
+                  <span>{props.t("Administração")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                  <li>
+                    <Link to="/permissions">{props.t("Permissões")}</Link>
+                  </li>
+                  {/* Futuramente: <li><Link to="/roles">Roles</Link></li> */}
+                </ul>
+              </li>
+            )}
 
             {/* Logout - positioned at bottom */}
             <li className="sidebar-menu-item-bottom logout">

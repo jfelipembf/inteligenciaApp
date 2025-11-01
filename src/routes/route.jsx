@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/auth/auth.jsx";
 import { ClassProvider } from "../contexts/ClassContext";
 import { LessonsProvider } from "../contexts/LessonContext";
 import { StudentsProvider } from "../contexts/StudentsContext";
@@ -8,7 +8,7 @@ import { ProfessorDashboardProvider } from "../contexts/ProfessorDashboardContex
 import PropTypes from "prop-types";
 
 const Authmiddleware = ({ children }) => {
-  const { isAuthenticated, loading, userDetails } = useAuthContext();
+  const { isAuthenticated, loading, user, currentSchool } = useAuth();
 
   if (loading) {
     return (
@@ -27,8 +27,9 @@ const Authmiddleware = ({ children }) => {
     return <Navigate to="/login" />;
   }
 
-  // Se userDetails existe e o role é aluno, redirecionar
-  if (userDetails && userDetails.role === "aluno") {
+  // Se usuário existe e o role é aluno, redirecionar
+  const currentRole = currentSchool?.role;
+  if (currentRole === "aluno") {
     return <Navigate to="/unauthorized" />;
   }
 

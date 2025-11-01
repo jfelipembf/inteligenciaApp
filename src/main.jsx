@@ -8,11 +8,25 @@ import { Provider } from "react-redux";
 import store from "./store/index.js";
 import { AuthProvider as OldAuthProvider } from "./contexts/AuthContext";
 import { AppProvider } from "./hooks";
+import { initFirebaseBackend } from "./helpers/firebase_helper";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_APP_APIKEY,
+  authDomain: import.meta.env.VITE_APP_AUTHDOMAIN,
+  databaseURL: import.meta.env.VITE_APP_DATABASEURL,
+  projectId: import.meta.env.VITE_APP_PROJECTID,
+  storageBucket: import.meta.env.VITE_APP_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APP_APPID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENTID,
+};
+
+initFirebaseBackend(firebaseConfig);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/app">
         {/* AuthProvider antigo mantido temporariamente para compatibilidade */}
         <OldAuthProvider>
           {/* Novo AppProvider com nova arquitetura DDD */}

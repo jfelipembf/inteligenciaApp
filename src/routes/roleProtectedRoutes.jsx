@@ -1,9 +1,10 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuthContext } from "../contexts/AuthContext";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/auth/auth.jsx";
+import PropTypes from "prop-types";
 
 const RoleProtectedRoute = ({ allowedRoles, children }) => {
-  const { isAuthenticated, loading, userDetails } = useAuthContext();
+  const { isAuthenticated, loading, user, currentSchool } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -13,19 +14,31 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
     return <Navigate to="/login" />;
   }
 
-  if (!userDetails.personalInfo.cpf && location.pathname !== "/profile") {
+  const currentRole = currentSchool?.role;
+
+  // Verificar se tem CPF cadastrado (se necessário)
+  if (
+    user?.personalInfo &&
+    !user.personalInfo.cpf &&
+    location.pathname !== "/profile"
+  ) {
     return <Navigate to="/profile" />;
   }
 
-  if (userDetails.role === "aluno") {
+  if (currentRole === "aluno") {
     return <Navigate to="/unauthorized" />;
   }
 
-  if (!allowedRoles.includes(userDetails?.role)) {
+  if (!currentRole || !allowedRoles.includes(currentRole)) {
     return <Navigate to="/unauthorized" />;
   }
 
   return children;
+};
+
+RoleProtectedRoute.propTypes = {
+  allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default RoleProtectedRoute;

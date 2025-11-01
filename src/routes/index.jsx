@@ -211,6 +211,8 @@ import CreateMessage from "../pages/Messages/CreateMessage";
 import ReplyMessage from "../pages/Messages/ReplyMessage";
 
 import Settings from "../pages/Settings/index";
+import Permissions from "../pages/Permissions/index";
+import SeedPage from "../pages/Admin/SeedPage";
 
 import GradesPage from "../pages/Grades/GradesPage";
 
@@ -678,18 +680,28 @@ const authProtectedRoutes = [
     ),
   },
 
-  // Rotas de Mensagens
+  {
+    path: "/permissions",
+    component: (
+      <RoleProtectedRoute allowedRoles={["master", "ceo"]}>
+        <Permissions />
+      </RoleProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/admin/seed",
+    component: <SeedPage />,
+  },
+
   { path: "/messages", component: <Messages /> },
   { path: "/messages/create", component: <CreateMessage /> },
   { path: "/messages/:id", component: <ReplyMessage /> },
   { path: "/messages/reply/:id", component: <ReplyMessage /> },
   { path: "/messages/forward/:id", component: <CreateMessage /> },
 
-  // Redirecionamento de /chat para /messages
   { path: "/chat", component: <Navigate to="/messages" /> },
 
-  //   // this route should be at the end of all other routes
-  //   // eslint-disable-next-line react/display-name
   { path: "/", exact: true, component: <Navigate to="/home" /> },
 ];
 

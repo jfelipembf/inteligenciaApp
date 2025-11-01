@@ -25,16 +25,75 @@ export async function seedCeoAccount({ email, password, accountName }) {
   }
 
   try {
-    const userCredential = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password);
+    let user;
+    let isNewUser = false;
 
-    const user = userCredential.user;
+    // Tentar criar o usuário, ou usar se já existir
+    try {
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      user = userCredential.user;
+      isNewUser = true;
+    } catch (authError) {
+      if (authError.code === "auth/email-already-in-use") {
+        // Usuário já existe no Auth, buscar no Firestore pelo email
+        const usersSnapshot = await firebase
+          .firestore()
+          .collection("users")
+          .where("email", "==", email)
+          .limit(1)
+          .get();
 
-    const accountRef = await firebase
+        if (!usersSnapshot.empty) {
+          // Usuário já existe no Firestore também
+          const userDoc = usersSnapshot.docs[0];
+          user = { uid: userDoc.id };
+          
+          // Verificar se já tem conta e documento completo
+          const accountSnapshot = await firebase
+            .firestore()
+            .collection("accounts")
+            .where("metadata.createdBy", "==", user.uid)
+            .limit(1)
+            .get();
+
+          if (!accountSnapshot.empty) {
+            return {
+              success: true,
+              data: {
+                userId: user.uid,
+                accountId: accountSnapshot.docs[0].id,
+                message: "Usuário CEO já existe no sistema",
+                existing: true,
+              },
+            };
+          }
+        } else {
+          // Usuário existe no Auth mas não no Firestore
+          // Não podemos buscar o UID sem fazer sign in, então retornamos erro informativo
+          return {
+            success: false,
+            error: `Email já está em uso no Firebase Auth, mas não foi encontrado no Firestore. Por favor, delete o usuário no Firebase Auth Console ou use um email diferente.`,
+          };
+        }
+      } else {
+        throw authError;
+      }
+    }
+
+    // Verificar se já existe conta associada ao usuário
+    const existingAccountSnapshot = await firebase
       .firestore()
       .collection("accounts")
-      .add({
+      .where("metadata.createdBy", "==", user.uid)
+      .limit(1)
+      .get();
+
+    let accountRef;
+    if (existingAccountSnapshot.empty) {
+      // Criar nova conta
+      accountRef = await firebase.firestore().collection("accounts").add({
         name: accountName,
         status: "active",
         metadata: {
@@ -42,29 +101,63 @@ export async function seedCeoAccount({ email, password, accountName }) {
           createdBy: user.uid,
         },
       });
+    } else {
+      accountRef = existingAccountSnapshot.docs[0].ref;
+    }
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.uid)
-      .set({
+    // Verificar/criar documento do usuário no Firestore
+    const userDocRef = firebase.firestore().collection("users").doc(user.uid);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+      // Criar documento do usuário
+      await userDocRef.set({
         email,
         personalInfo: { name: "CEO Master" },
         schools: [],
         currentSchoolId: null,
         role: "ceo",
-        accounts: [{ accountId: accountRef.id, role: "ceo", status: "active" }],
+        accounts: [
+          { accountId: accountRef.id, role: "ceo", status: "active" },
+        ],
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: null,
         },
       });
+    } else {
+      // Atualizar documento existente para garantir que tem role CEO
+      const userData = userDoc.data();
+      const hasAccount = userData.accounts?.some(
+        (acc) => acc.accountId === accountRef.id
+      );
+
+      if (!hasAccount) {
+        const accounts = userData.accounts || [];
+        accounts.push({
+          accountId: accountRef.id,
+          role: "ceo",
+          status: "active",
+        });
+
+        await userDocRef.update({
+          role: "ceo",
+          accounts,
+          "metadata.updatedAt":
+            firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+    }
 
     return {
       success: true,
       data: {
         userId: user.uid,
         accountId: accountRef.id,
+        isNewUser,
+        message: isNewUser
+          ? "Usuário CEO criado com sucesso"
+          : "Usuário CEO atualizado/criado com sucesso",
       },
     };
   } catch (error) {
