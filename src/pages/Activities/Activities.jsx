@@ -213,7 +213,7 @@ const Activities = () => {
                               >
                                 <i className="bx bx-edit-alt"></i>
                               </Button>
-                            <Button
+                              <Button
                                 color="danger"
                                 size="sm"
                                 onClick={() => handleDeleteClick(activity)}

@@ -22,6 +22,7 @@ import { useEventsContext } from "../../contexts/EventsContext";
 import "react-toastify/dist/ReactToastify.css";
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
+import "firebase/compat/firestore";
 
 const ViewEvent = () => {
   const { id } = useParams();

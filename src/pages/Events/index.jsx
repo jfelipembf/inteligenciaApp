@@ -87,10 +87,10 @@ const Events = () => {
   const [localEvents, setLocalEvents] = useState(events || []);
 
   useEffect(() => {
-  if (events && events.length > 0) {
-    setLocalEvents(events);
-  }
-}, [events]);
+    if (events && events.length > 0) {
+      setLocalEvents(events);
+    }
+  }, [events]);
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -142,12 +142,14 @@ const Events = () => {
       setIsDeleting(true);
       // Simulação de exclusão bem-sucedida
       setTimeout(() => {
-        setLocalEvents(prev => prev.filter(event => event.id !== currentEvent.id));
+        setLocalEvents((prev) =>
+          prev.filter((event) => event.id !== currentEvent.id)
+        );
         setIsDeleting(false);
         setDeleteModal(false);
         setCurrentEvent(null);
-  toast.success("Evento excluído com sucesso!");
-}, 1000);
+        toast.success("Evento excluído com sucesso!");
+      }, 1000);
     } catch (err) {
       setIsDeleting(false);
       console.error("Erro ao excluir o evento:", err);

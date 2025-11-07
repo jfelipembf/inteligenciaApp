@@ -60,10 +60,9 @@ const ForgetPasswordPage = (props) => {
     })
   );
 
-  const {
-    forgetError,
-    forgetSuccessMsg
-  } = useSelector(ForgotPasswordProperties);
+  const { forgetError, forgetSuccessMsg } = useSelector(
+    ForgotPasswordProperties
+  );
 
   return (
     <React.Fragment>

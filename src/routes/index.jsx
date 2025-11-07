@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { UsersProvider } from "../contexts/UsersContext";
@@ -67,6 +67,7 @@ import Register1 from "../pages/AuthenticationInner/Register";
 import Register2 from "../pages/AuthenticationInner/Register2";
 import Recoverpw from "../pages/AuthenticationInner/Recoverpw";
 import Recoverpw2 from "../pages/AuthenticationInner/Recoverpw2";
+import ResetPage from "../pages/ResetYourPassword/ResetPage"; //evelyn teste
 import ForgetPwd1 from "../pages/AuthenticationInner/ForgetPassword";
 import ForgetPwd2 from "../pages/AuthenticationInner/ForgetPassword2";
 import LockScreen from "../pages/AuthenticationInner/auth-lock-screen";
@@ -222,6 +223,16 @@ import ViewDoubt from "../pages/Doubts/ViewDoubt";
 //Principals
 import Principals from "../pages/Principals/index";
 import PrincipalProfile from "../pages/Principals/PrincipalProfile/index";
+
+const LoginResetWrapper = () => {
+  const query = new URLSearchParams(useLocation().search);
+  const mode = query.get("mode");
+
+  if (mode === "resetPassword") {
+    return <ResetPage />;
+  }
+  return <Login />;
+};
 
 const EventsRoutes = ({ children }) => (
   <EventsProvider>{children}</EventsProvider>
@@ -695,7 +706,7 @@ const authProtectedRoutes = [
 
 const publicRoutes = [
   { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
+  { path: "/login", component: <LoginResetWrapper /> },
   { path: "/forgot-password", component: <ForgetPwd /> },
   { path: "/register", component: <Register /> },
 

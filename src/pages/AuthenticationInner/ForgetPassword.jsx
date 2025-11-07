@@ -1,5 +1,16 @@
 import React from "react";
-import { Row, Col, CardBody, Card, Container, Button, Form, Label, Input, FormFeedback } from "reactstrap";
+import {
+  Row,
+  Col,
+  CardBody,
+  Card,
+  Container,
+  Button,
+  Form,
+  Label,
+  Input,
+  FormFeedback,
+} from "reactstrap";
 
 import { Link } from "react-router-dom";
 
@@ -17,13 +28,12 @@ const ForgetPasswordPage = () => {
     enableReinitialize: true,
 
     initialValues: {
-      email: '',
+      email: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
     }),
-    onSubmit: (values) => {
-    }
+    onSubmit: (values) => {},
   });
   return (
     <React.Fragment>
@@ -85,11 +95,15 @@ const ForgetPasswordPage = () => {
                           onBlur={validation.handleBlur}
                           value={validation.values.email || ""}
                           invalid={
-                            validation.touched.email && validation.errors.email ? true : false
+                            validation.touched.email && validation.errors.email
+                              ? true
+                              : false
                           }
                         />
                         {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                          <FormFeedback type="invalid">
+                            {validation.errors.email}
+                          </FormFeedback>
                         ) : null}
                       </div>
                       <Row className="mb-3">

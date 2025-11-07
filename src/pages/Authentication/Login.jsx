@@ -19,8 +19,6 @@ import { loginUser } from "/src/store/actions";
 import logo from "../../assets/images/lgo.png";
 
 const Login = (props) => {
-  
-
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth?.user);
