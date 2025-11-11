@@ -17,6 +17,7 @@ import {
   seedPermissions,
   seedDefaultRolesForSchool,
   seedCeoAccount,
+  resetCeoPassword,
   runFullAccessControlSeed,
 } from "../../utils/seed/initializeAccessControl";
 
@@ -86,6 +87,25 @@ const SeedPage = () => {
       });
       setResults({ ceo: result });
       console.log("Resultado CEO:", result);
+    } catch (err) {
+      setError(err.message);
+      console.error("Erro:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetCeoPassword = async () => {
+    if (!seedData.ceoEmail) {
+      setError("Email é obrigatório");
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await resetCeoPassword(seedData.ceoEmail);
+      setResults({ resetPassword: result });
+      console.log("Resultado reset de senha:", result);
     } catch (err) {
       setError(err.message);
       console.error("Erro:", err);
@@ -265,6 +285,25 @@ const SeedPage = () => {
                     </Button>
                   </Col>
                   <Col md={6} className="mb-3">
+                    <Button
+                      color="warning"
+                      block
+                      onClick={handleResetCeoPassword}
+                      disabled={loading || !seedData.ceoEmail}
+                    >
+                      {loading ? (
+                        <>
+                          <Spinner size="sm" className="me-2" />
+                          Carregando...
+                        </>
+                      ) : (
+                        "🔑 Resetar Senha do CEO"
+                      )}
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} className="mb-3">
                     <Button
                       color="danger"
                       block

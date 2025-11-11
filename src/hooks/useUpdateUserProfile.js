@@ -1,61 +1,79 @@
 import { useState } from "react";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import useUser from "./useUser";
+import { useAuth } from "./auth/auth.jsx";
+import { usersRepository } from "../repositories/users/usersRepository";
 import uploadToFirebase from "../utils/uploadToFirebase";
 
 const useUpdateUserProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { userDetails, refreshUserData } = useUser();
-  const userUid = userDetails?.uid;
-  const schoolId = userDetails?.schoolId;
+  const { user, currentSchoolId } = useAuth();
 
   const updateUserProfile = async (data, profileImage) => {
     setLoading(true);
     setError(null);
+    
     try {
-      let avatarImage = userDetails?.personalInfo?.avatar || null; // Mantém o avatar atual por padrão
+      if (!user || !user.id) {
+        throw new Error("Usuário não autenticado.");
+      }
+
+      // Verificar se precisa de schoolId (apenas para roles diferentes de CEO e Master)
+      const userRole = user.role;
+      const needsSchoolId = userRole !== "ceo" && userRole !== "master";
+      
+      if (needsSchoolId && !currentSchoolId) {
+        throw new Error("schoolId é obrigatório para atualizar o perfil.");
+      }
+
+      let avatarImage = user.personalInfo?.avatar || null;
 
       // Fazer upload da imagem, se fornecida
       if (profileImage instanceof File) {
-        const ext = profileImage.name.split(".").pop();
-        const fileName = `${userUid}.${ext}`;
-        await uploadToFirebase(
-          profileImage,
-          `profileImages`,
-          schoolId,
-          fileName
-        );
-        avatarImage = fileName; // Atualiza o nome do avatar com o novo arquivo
+        try {
+          const ext = profileImage.name.split(".").pop();
+          const fileName = `${user.id}.${ext}`;
+          
+          // Para CEO/Master sem schoolId, usa "default"; para outros, usa currentSchoolId
+          const uploadSchoolId = currentSchoolId || "default";
+          
+          await uploadToFirebase(
+            profileImage,
+            `profileImages`,
+            uploadSchoolId,
+            fileName
+          );
+          avatarImage = fileName;
+        } catch (uploadError) {
+          console.error("Erro ao fazer upload da imagem:", uploadError);
+          // Continua mesmo se o upload falhar, mas não atualiza o avatar
+        }
       }
 
-      if (!userDetails?.uid) throw new Error("Usuário não autenticado.");
-
-      // Cria o objeto de atualização
+      // Prepara o objeto de atualização
       const updatePayload = {
         ...data,
-        "metadata.updatedAt": firebase.firestore.FieldValue.serverTimestamp(),
       };
 
-      // Adiciona o avatar ao payload
+      // Adiciona o avatar ao payload se foi atualizado
       if (avatarImage) {
-        updatePayload["personalInfo.avatar"] = avatarImage;
+        if (!updatePayload.personalInfo) {
+          updatePayload.personalInfo = {};
+        }
+        updatePayload.personalInfo.avatar = avatarImage;
       }
 
-      // Atualiza o Firestore
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(userDetails.uid)
-        .update(updatePayload);
+      // Atualiza o Firestore usando o repository
+      const result = await usersRepository.updateUser(user.id, updatePayload);
 
-      // Atualiza os dados do usuário localmente
-      await refreshUserData();
+      if (!result.success) {
+        throw new Error(result.error || "Erro ao atualizar perfil");
+      }
+
       setLoading(false);
       return true;
     } catch (err) {
-      setError(err.message);
+      console.error("Erro ao atualizar perfil:", err);
+      setError(err.message || "Erro ao atualizar perfil");
       setLoading(false);
       return false;
     }

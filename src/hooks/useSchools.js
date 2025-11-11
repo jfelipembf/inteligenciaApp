@@ -17,30 +17,14 @@ const useSchools = () => {
     try {
       const firestore = firebase.firestore();
 
-      // Verificar se o usuário é um `ceo`
-      if (userDetails?.role === "ceo") {
-        if (!userDetails.schoolIds || userDetails.schoolIds.length === 0) {
-          throw new Error("schoolIds não encontrados para o usuário ceo.");
-        }
-
-        // Buscar apenas as escolas cujo ID está no array schoolIds do CEO
-        const schoolsSnapshot = await firestore
-          .collection("schools")
-          .where(
-            firebase.firestore.FieldPath.documentId(),
-            "in",
-            userDetails.schoolIds
-          )
-          .get();
-
+      if (userDetails?.role === "ceo" || userDetails?.role === "master") {
+        const schoolsSnapshot = await firestore.collection("schools").get();
         const fetchedSchools = schoolsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
         setSchools(fetchedSchools);
       } else {
-        // Buscar todas as escolas para outros papéis
         const schoolsSnapshot = await firestore.collection("schools").get();
         const fetchedSchools = schoolsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -62,21 +46,6 @@ const useSchools = () => {
     setError(null);
 
     try {
-      // Verificar se o usuário é um `ceo`
-      if (userDetails?.role === "ceo") {
-        if (!userDetails.schoolIds || userDetails.schoolIds.length === 0) {
-          throw new Error("schoolIds não encontrados para o usuário ceo.");
-        }
-
-        // Verificar se o schoolId solicitado está no array schoolIds do CEO
-        if (!userDetails.schoolIds.includes(schoolId)) {
-          throw new Error(
-            "Acesso negado: o CEO não tem permissão para acessar esta escola."
-          );
-        }
-      }
-
-      // Buscar a escola pelo ID
       const schoolDoc = await firebase
         .firestore()
         .collection("schools")
@@ -91,7 +60,7 @@ const useSchools = () => {
     } catch (err) {
       console.error("Erro ao buscar escola:", err);
       setError(err.message);
-      throw err; // Repassa o erro para o chamador
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -108,7 +77,6 @@ const useSchools = () => {
         .collection("schools")
         .doc(schoolId);
 
-      // Obter os dados atuais da escola
       const schoolSnapshot = await schoolRef.get();
       if (!schoolSnapshot.exists) {
         throw new Error("Escola não encontrada");
@@ -116,7 +84,6 @@ const useSchools = () => {
 
       const currentData = schoolSnapshot.data();
 
-      // Atualizar apenas os campos modificados
       const finalData = {
         ...currentData,
         ...updatedData,
@@ -138,7 +105,6 @@ const useSchools = () => {
     }
   };
 
-  // Função para criar uma nova escola
   const createSchool = async (schoolData) => {
     setLoading(true);
     setError(null);
@@ -186,12 +152,11 @@ const useSchools = () => {
     const cacheKey = `school_logo_${schoolId}`;
     const cached = localStorage.getItem(cacheKey);
 
-    // Verifica se há um cache válido
     if (cached) {
       try {
         const { url, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_EXPIRATION) {
-          return url; // Retorna a URL do cache se ainda for válida
+          return url;
         }
       } catch {
         // Se o cache estiver corrompido, ignora e continua
@@ -199,7 +164,6 @@ const useSchools = () => {
     }
 
     try {
-      // Busca o documento da escola no Firestore
       const schoolDoc = await firebase
         .firestore()
         .collection("schools")
@@ -208,22 +172,20 @@ const useSchools = () => {
 
       if (!schoolDoc.exists) {
         console.warn("Escola não encontrada.");
-        return null; // Retorna null se a escola não existir
+        return null;
       }
 
       const schoolData = schoolDoc.data();
-      const logoName = schoolData.logo; // Obtém o nome do logo do campo `logo`
+      const logoName = schoolData.logo;
 
       if (!logoName) {
         console.warn("Logo não encontrado para esta escola.");
-        return null; // Retorna null se o campo `logo` não existir ou estiver vazio
+        return null;
       }
 
-      // Busca a URL do logo no Firebase Storage
       const ref = firebase.storage().ref(`${schoolId}/logos/${logoName}`);
       const url = await ref.getDownloadURL();
 
-      // Armazena a URL no cache
       localStorage.setItem(
         cacheKey,
         JSON.stringify({ url, timestamp: Date.now() })

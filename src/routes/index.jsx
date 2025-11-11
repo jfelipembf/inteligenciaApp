@@ -569,7 +569,7 @@ const authProtectedRoutes = [
   {
     path: "/schools/create",
     component: (
-      <RoleProtectedRoute allowedRoles={["master"]}>
+      <RoleProtectedRoute allowedRoles={["master", "ceo"]}>
         <CreateSchool />
       </RoleProtectedRoute>
     ),
@@ -689,11 +689,6 @@ const authProtectedRoutes = [
     ),
   },
 
-  {
-    path: "/admin/seed",
-    component: <SeedPage />,
-  },
-
   { path: "/messages", component: <Messages /> },
   { path: "/messages/create", component: <CreateMessage /> },
   { path: "/messages/:id", component: <ReplyMessage /> },
@@ -710,6 +705,9 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPwd /> },
   { path: "/register", component: <Register /> },
+
+  // Seed page - Acesso público para desenvolvimento
+  { path: "/admin/seed", component: <SeedPage /> },
 
   { path: "/pages-maintenance", component: <PagesMaintenance /> },
   { path: "/pages-comingsoon", component: <PagesComingsoon /> },

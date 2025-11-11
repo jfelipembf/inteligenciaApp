@@ -17,9 +17,13 @@ import axios from "axios";
 import InputMask from "react-input-mask";
 import uploadToFirebase from "../../utils/uploadToFirebase";
 import useColaborator from "../../hooks/useColaborator";
+import { usersRepository } from "../../repositories/users/usersRepository";
+import { rolesService } from "../../services/roles/rolesService";
+import { useAuth } from "../../hooks/auth/auth.jsx";
 
 const CreateSchool = () => {
   const navigate = useNavigate();
+  const { user, switchSchool } = useAuth();
 
   const { createSchool, updateSchoolLogo, loading } = useSchools();
   const [errors, setErrors] = useState({});
@@ -186,6 +190,42 @@ const CreateSchool = () => {
         await updateSchoolLogo(schoolId, filename);
       }
 
+      // Sempre criar roles padrão para a nova escola
+      try {
+        await rolesService.initializeDefaultRoles(schoolId, user?.id || null);
+        console.log("Roles padrão criadas para a escola:", schoolId);
+      } catch (err) {
+        console.error("Erro ao criar roles padrão:", err);
+      }
+
+      // Associar CEO à escola criada (se for CEO sem escola)
+      if (
+        user &&
+        user.role === "ceo" &&
+        (!user.schools || user.schools.length === 0)
+      ) {
+        try {
+          const addSchoolResult = await usersRepository.addSchoolToUser(
+            user.id,
+            {
+              schoolId: schoolId,
+              role: "ceo",
+              status: "active",
+            }
+          );
+
+          if (addSchoolResult.success) {
+            await usersRepository.updateCurrentSchool(user.id, schoolId);
+
+            await switchSchool(schoolId);
+
+            console.log("CEO associado à escola automaticamente");
+          }
+        } catch (err) {
+          console.error("Erro ao associar CEO à escola:", err);
+        }
+      }
+
       // Enviar e-mails para criar contas de responsáveis
       for (const responsible of formData.responsibles) {
         try {
@@ -197,7 +237,7 @@ const CreateSchool = () => {
       }
 
       alert(`Escola criada com sucesso!`);
-      navigate("/schools"); // Redireciona para a lista de escolas
+      navigate("/schools");
     } catch (err) {
       alert(`Erro ao criar escola: ${err.message}`);
       setUploading(false);

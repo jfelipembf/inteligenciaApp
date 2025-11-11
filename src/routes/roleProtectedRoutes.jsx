@@ -15,8 +15,8 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
   }
 
   const currentRole = currentSchool?.role;
+  const userRole = user?.role;
 
-  // Verificar se tem CPF cadastrado (se necessário)
   if (
     user?.personalInfo &&
     !user.personalInfo.cpf &&
@@ -27,6 +27,30 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
 
   if (currentRole === "aluno") {
     return <Navigate to="/unauthorized" />;
+  }
+
+  if (
+    (allowedRoles.includes("ceo") || allowedRoles.includes("master")) &&
+    !currentRole &&
+    (userRole === "ceo" || userRole === "master") &&
+    (location.pathname === "/schools/create" ||
+      location.pathname === "/schools" ||
+      location.pathname.startsWith("/schools/"))
+  ) {
+    return children;
+  }
+
+  // Verificação normal: se tem role e está permitido
+  if (currentRole && allowedRoles.includes(currentRole)) {
+    return children;
+  }
+
+  // Verificação para CEO/Master com escola (usando userRole como fallback)
+  if (
+    (userRole === "ceo" || userRole === "master") &&
+    allowedRoles.includes(userRole)
+  ) {
+    return children;
   }
 
   if (!currentRole || !allowedRoles.includes(currentRole)) {

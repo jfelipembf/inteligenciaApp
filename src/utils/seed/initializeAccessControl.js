@@ -16,7 +16,12 @@ export async function seedDefaultRolesForSchool(schoolId, createdBy) {
   return await rolesService.initializeDefaultRoles(schoolId, createdBy || null);
 }
 
-export async function seedCeoAccount({ email, password, accountName }) {
+export async function seedCeoAccount({
+  email,
+  password,
+  accountName,
+  forceReset = false,
+}) {
   if (!email || !password || !accountName) {
     return {
       success: false,
@@ -37,7 +42,33 @@ export async function seedCeoAccount({ email, password, accountName }) {
       isNewUser = true;
     } catch (authError) {
       if (authError.code === "auth/email-already-in-use") {
-        // Usuário já existe no Auth, buscar no Firestore pelo email
+        // Usuário já existe no Auth, verificar se a senha está correta
+        try {
+          // Tentar fazer login para verificar se a senha está correta
+          await firebase.auth().signInWithEmailAndPassword(email, password);
+          // Login bem-sucedido, buscar dados do usuário
+          const currentUser = firebase.auth().currentUser;
+          if (currentUser) {
+            user = currentUser;
+            await firebase.auth().signOut(); // Fazer logout para não interferir
+          }
+        } catch (loginError) {
+          // Senha incorreta ou outro erro de login
+          if (
+            loginError.code === "auth/wrong-password" ||
+            loginError.code === "auth/invalid-credential"
+          ) {
+            // Senha está incorreta, retornar erro informativo
+            return {
+              success: false,
+              error: `Usuário já existe no Firebase Auth, mas a senha fornecida está incorreta. Use o botão 'Resetar Senha' ou delete o usuário no Firebase Auth Console e execute o seed novamente.`,
+            };
+          }
+          // Outro erro de login
+          throw loginError;
+        }
+
+        // Usuário existe e senha está correta, buscar no Firestore
         const usersSnapshot = await firebase
           .firestore()
           .collection("users")
@@ -49,7 +80,7 @@ export async function seedCeoAccount({ email, password, accountName }) {
           // Usuário já existe no Firestore também
           const userDoc = usersSnapshot.docs[0];
           user = { uid: userDoc.id };
-          
+
           // Verificar se já tem conta e documento completo
           const accountSnapshot = await firebase
             .firestore()
@@ -59,12 +90,29 @@ export async function seedCeoAccount({ email, password, accountName }) {
             .get();
 
           if (!accountSnapshot.empty) {
+            if (forceReset) {
+              // Forçar reset enviando email de redefinição de senha
+              await firebase.auth().sendPasswordResetEmail(email);
+              return {
+                success: true,
+                data: {
+                  userId: user.uid,
+                  accountId: accountSnapshot.docs[0].id,
+                  message:
+                    "Email de redefinição de senha enviado. Verifique sua caixa de entrada.",
+                  existing: true,
+                  passwordResetSent: true,
+                },
+              };
+            }
+
             return {
               success: true,
               data: {
                 userId: user.uid,
                 accountId: accountSnapshot.docs[0].id,
-                message: "Usuário CEO já existe no sistema",
+                message:
+                  "Usuário CEO já existe no sistema e a senha está correta.",
                 existing: true,
               },
             };
@@ -93,14 +141,17 @@ export async function seedCeoAccount({ email, password, accountName }) {
     let accountRef;
     if (existingAccountSnapshot.empty) {
       // Criar nova conta
-      accountRef = await firebase.firestore().collection("accounts").add({
-        name: accountName,
-        status: "active",
-        metadata: {
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          createdBy: user.uid,
-        },
-      });
+      accountRef = await firebase
+        .firestore()
+        .collection("accounts")
+        .add({
+          name: accountName,
+          status: "active",
+          metadata: {
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            createdBy: user.uid,
+          },
+        });
     } else {
       accountRef = existingAccountSnapshot.docs[0].ref;
     }
@@ -117,9 +168,7 @@ export async function seedCeoAccount({ email, password, accountName }) {
         schools: [],
         currentSchoolId: null,
         role: "ceo",
-        accounts: [
-          { accountId: accountRef.id, role: "ceo", status: "active" },
-        ],
+        accounts: [{ accountId: accountRef.id, role: "ceo", status: "active" }],
         metadata: {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: null,
@@ -143,8 +192,7 @@ export async function seedCeoAccount({ email, password, accountName }) {
         await userDocRef.update({
           role: "ceo",
           accounts,
-          "metadata.updatedAt":
-            firebase.firestore.FieldValue.serverTimestamp(),
+          "metadata.updatedAt": firebase.firestore.FieldValue.serverTimestamp(),
         });
       }
     }
@@ -164,6 +212,31 @@ export async function seedCeoAccount({ email, password, accountName }) {
     return {
       success: false,
       error: error.message || "Erro ao criar CEO",
+    };
+  }
+}
+
+export async function resetCeoPassword(email) {
+  if (!email) {
+    return {
+      success: false,
+      error: "Email é obrigatório",
+    };
+  }
+
+  try {
+    await firebase.auth().sendPasswordResetEmail(email);
+    return {
+      success: true,
+      data: {
+        message:
+          "Email de redefinição de senha enviado. Verifique sua caixa de entrada.",
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || "Erro ao enviar email de redefinição de senha",
     };
   }
 }

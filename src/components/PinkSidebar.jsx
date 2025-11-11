@@ -13,7 +13,7 @@ const PinkSidebar = () => {
   const navigate = useNavigate();
 
   const { currentSchool, user } = useAuth();
-  const role = currentSchool?.role;
+  const role = currentSchool?.role || user?.role; // Fallback para user.role quando não tem escola
   const isCPFMissing = !user?.personalInfo?.cpf;
 
   const toggleMenu = (idx) => {
@@ -91,10 +91,41 @@ const PinkSidebar = () => {
               <i className="bx bx-home"></i>
               <span>Home</span>
             </NavLink>
-            <NavLink to="/schools" className="sidebar-btn-no-bg" end>
-              <i className="bx bx-building"></i>
-              <span>Escolas</span>
-            </NavLink>
+
+            {/* Escolas */}
+            <div className="sidebar-menu-group">
+              <button
+                className="sidebar-btn-no-bg sidebar-btn-parent"
+                onClick={() => toggleMenu("escolas")}
+                type="button"
+              >
+                <i className="bx bx-building"></i>
+                <span>Escolas</span>
+                <i
+                  className={`bx bx-chevron-${
+                    openMenu === "escolas" ? "up" : "down"
+                  } ms-auto`}
+                ></i>
+              </button>
+              {openMenu === "escolas" && (
+                <div className="sidebar-submenu">
+                  <NavLink
+                    to="/schools"
+                    className="sidebar-btn-no-bg sidebar-btn-sub"
+                    end
+                  >
+                    <span>Listar Escolas</span>
+                  </NavLink>
+                  <NavLink
+                    to="/schools/create"
+                    className="sidebar-btn-no-bg sidebar-btn-sub"
+                    end
+                  >
+                    <span>Criar Escola</span>
+                  </NavLink>
+                </div>
+              )}
+            </div>
             {/* Dashboards */}
             <NavLink to={dashboardTo} className="sidebar-btn-no-bg" end>
               <i className="bx bx-line-chart"></i>
@@ -385,7 +416,10 @@ const PinkSidebar = () => {
             </div>
 
             {/* Administração */}
-            {(role === "master" || role === "ceo") && (
+            {(role === "master" ||
+              role === "ceo" ||
+              user?.role === "master" ||
+              user?.role === "ceo") && (
               <div className="sidebar-menu-group">
                 <button
                   className="sidebar-btn-no-bg sidebar-btn-parent"
@@ -726,7 +760,10 @@ const PinkSidebar = () => {
             </div>
 
             {/* Administração */}
-            {(role === "master" || role === "ceo") && (
+            {(role === "master" ||
+              role === "ceo" ||
+              user?.role === "master" ||
+              user?.role === "ceo") && (
               <div className="sidebar-menu-group">
                 <button
                   className="sidebar-btn-no-bg sidebar-btn-parent"

@@ -17,8 +17,8 @@ import { useCallback } from "react";
 const SidebarContent = (props) => {
   const ref = useRef();
   const path = useLocation();
-  const { currentSchool } = useAuth();
-  const role = currentSchool?.role;
+  const { currentSchool, user } = useAuth();
+  const role = currentSchool?.role || user?.role; // Fallback para user.role quando não tem escola
 
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active");
@@ -333,8 +333,36 @@ const SidebarContent = (props) => {
               </Link>
             </li>*/}
 
+            {/* Escolas - CEO/Master */}
+            {(role === "master" ||
+              role === "ceo" ||
+              user?.role === "master" ||
+              user?.role === "ceo") && (
+              <li>
+                <Link to="/#" className="has-arrow">
+                  <i className="bx bx-building"></i>
+                  <span>{props.t("Escolas")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                  <li>
+                    <Link to="/schools">{props.t("Listar Escolas")}</Link>
+                  </li>
+                  {(role === "ceo" || user?.role === "ceo") && (
+                    <li>
+                      <Link to="/schools/create">
+                        {props.t("Criar Escola")}
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </li>
+            )}
+
             {/* Administração */}
-            {(role === "master" || role === "ceo") && (
+            {(role === "master" ||
+              role === "ceo" ||
+              user?.role === "master" ||
+              user?.role === "ceo") && (
               <li>
                 <Link to="/#" className="has-arrow">
                   <i className="bx bx-cog"></i>

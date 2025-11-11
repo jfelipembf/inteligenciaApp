@@ -13,7 +13,20 @@ const PermissionModule = ({ moduleName, permissions, defaultOpen = false }) => {
     return null;
   }
 
+  const moduleTranslations = {
+    access_control: "Controle de Acesso",
+    subjects: "Disciplinas",
+    classes: "Turmas",
+    lessons_activities: "Aulas e Atividades",
+    communication: "Comunicação",
+    reports_analytics: "Relatórios e Analytics",
+  };
+
   const formatModuleName = (name) => {
+    if (moduleTranslations[name]) {
+      return moduleTranslations[name];
+    }
+
     return name
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
